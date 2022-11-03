@@ -1,26 +1,43 @@
 const path = require('path');
-
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //추가
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //추가
 
-const mode = process.env.NODE_ENV || 'development'; //1
+const mode = process.env.NODE_ENV || 'development';
 
 module.exports = {
   mode,
   entry: './src/index.tsx',
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      '@common': path.resolve(__dirname, 'src/common'),
+      '@constants': path.resolve(__dirname, 'src/common/constants'),
+      '@api': path.resolve(__dirname, 'src/common/lib'),
+      '@wcomponents': path.resolve(__dirname, 'src/web/components'),
+      '@mcomponents': path.resolve(__dirname, 'src/mobile/components'),
+    },
   },
+  devServer: {
+    historyApiFallback: true,
+    static: path.join(__dirname, './public/index.html'),
+  },
+  devtool: 'eval-cheap-source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.min.js',
+    filename: '[name].js',
+    publicPath: '/',
   },
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.(ts|tsx)?$/,
         use: ['babel-loader', 'ts-loader'],
-        exclude: /node_modules/,
+        exclude: path.join(__dirname, 'node_modules'),
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
