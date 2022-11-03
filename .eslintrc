@@ -1,0 +1,12 @@
+{
+  "env": {
+    "browser": true
+  },
+  "parser": "@typescript-eslint/parser", // Specifies the ESLint parser
+  "extends": [
+    "plugin:react/recommended", // from eslint-plugin-react
+    "plugin:react-hooks/recommended", // from eslint-plugin-react-hooks
+    "plugin:@typescript-eslint/recommended", // from @typescript-eslint/eslint-plugin
+    "plugin:prettier/recommended" // from eslint-plugin-prettier
+  ]
+}
