@@ -4632,17 +4632,12 @@ __metadata:
     "@babel/preset-env": ^7.19.4
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
-<<<<<<< HEAD
     "@fullcalendar/daygrid": ^5.11.3
     "@fullcalendar/interaction": ^5.11.3
     "@fullcalendar/react": ^5.11.2
     "@fullcalendar/timegrid": ^5.11.3
-    "@types/react": ^18.0.24
-    "@types/react-dom": ^18.0.8
-=======
     "@types/react": ^17.0.19
     "@types/react-dom": ^17.0.11
->>>>>>> 5c506324ca84a302fb7fa4672fb9706048b72220
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
     "@wapl/ui": ^0.2.13

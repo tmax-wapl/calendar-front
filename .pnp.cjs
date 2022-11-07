@@ -34,17 +34,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-env", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:7.19.4"],\
             ["@babel/preset-react", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:7.18.6"],\
             ["@babel/preset-typescript", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:7.18.6"],\
-<<<<<<< HEAD
             ["@fullcalendar/daygrid", "npm:5.11.3"],\
             ["@fullcalendar/interaction", "npm:5.11.3"],\
             ["@fullcalendar/react", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:5.11.2"],\
             ["@fullcalendar/timegrid", "npm:5.11.3"],\
-            ["@types/react", "npm:18.0.24"],\
-            ["@types/react-dom", "npm:18.0.8"],\
-=======
             ["@types/react", "npm:17.0.52"],\
             ["@types/react-dom", "npm:17.0.18"],\
->>>>>>> 5c506324ca84a302fb7fa4672fb9706048b72220
             ["@typescript-eslint/eslint-plugin", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:5.42.0"],\
             ["@typescript-eslint/parser", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:5.42.0"],\
             ["@wapl/ui", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:0.2.15"],\
@@ -3562,10 +3557,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@fullcalendar/react", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:5.11.2"],\
             ["@fullcalendar/common", "npm:5.11.3"],\
-            ["@types/react", "npm:18.0.24"],\
-            ["@types/react-dom", "npm:18.0.8"],\
-            ["react", "npm:18.2.0"],\
-            ["react-dom", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:18.2.0"],\
+            ["@types/react", "npm:17.0.52"],\
+            ["@types/react-dom", "npm:17.0.18"],\
+            ["react", "npm:17.0.2"],\
+            ["react-dom", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:17.0.2"],\
             ["tslib", "npm:2.4.1"]\
           ],\
           "packagePeers": [\
@@ -7245,17 +7240,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-env", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:7.19.4"],\
             ["@babel/preset-react", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:7.18.6"],\
             ["@babel/preset-typescript", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:7.18.6"],\
-<<<<<<< HEAD
             ["@fullcalendar/daygrid", "npm:5.11.3"],\
             ["@fullcalendar/interaction", "npm:5.11.3"],\
             ["@fullcalendar/react", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:5.11.2"],\
             ["@fullcalendar/timegrid", "npm:5.11.3"],\
-            ["@types/react", "npm:18.0.24"],\
-            ["@types/react-dom", "npm:18.0.8"],\
-=======
             ["@types/react", "npm:17.0.52"],\
             ["@types/react-dom", "npm:17.0.18"],\
->>>>>>> 5c506324ca84a302fb7fa4672fb9706048b72220
             ["@typescript-eslint/eslint-plugin", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:5.42.0"],\
             ["@typescript-eslint/parser", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:5.42.0"],\
             ["@wapl/ui", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:0.2.15"],\
