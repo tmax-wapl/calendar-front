@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+
 interface APIInstance extends AxiosInstance {
   get: (url: string, queryString?: any) => Promise<any>;
   post: (url: string, payload?: any, config?: any) => Promise<any>;
@@ -7,7 +8,7 @@ interface APIInstance extends AxiosInstance {
 }
 
 const baseUrl = 'https://calendar.teespace.net';
-class API {
+class APIClass {
   instance: APIInstance;
 
   constructor() {
@@ -22,7 +23,6 @@ class API {
 
   public async get(url: string, config?: any) {
     const res = await this.instance.get(url, config);
-
     return res;
   }
 
@@ -42,4 +42,4 @@ class API {
   }
 }
 
-export default API;
+export const API = new APIClass();
