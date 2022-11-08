@@ -1,11 +1,9 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import Header from '@wcomponents/header/Header';
+import Calendar from '@wcomponents/body/Calendar';
 
 const CalendarView: React.FC = () => {
-  const Header: React.FC = React.memo(() => {
-    return <div style={{ display: 'flex', width: '100%', height: '30px', background: 'orange' }}>Header 이다 ~~~</div>;
-  });
-
   return (
     <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
       <Header />
@@ -17,7 +15,7 @@ const CalendarView: React.FC = () => {
           height: 'calc(100vh - 52px)',
         }}
       >
-        <div style={{ display: 'flex', width: '100%', background: 'yellow' }}>전체 뷰이다~~~~</div>
+        <Calendar />
         <Outlet />
       </div>
     </div>
