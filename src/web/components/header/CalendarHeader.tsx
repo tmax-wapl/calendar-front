@@ -6,7 +6,7 @@ import {
   PrevButton,
   TodayButton,
   ViewSelect,
-} from './ClaendarHeader.style';
+} from './CalendarHeader.style';
 
 const CalendarHeader: React.FC = () => {
   const handlePrevMonth = () => {
