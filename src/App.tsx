@@ -1,4 +1,5 @@
 import React from 'react';
+import { StoreProvider } from './stores/StoreProvider';
 import { WaplUiProvider } from '@wapl/ui';
 import Web from './web';
 import Mobile from './mobile';
@@ -9,7 +10,7 @@ const App: React.FC = () => {
   return (
     <WaplUiProvider>
       <div id="appProvider">
-        <div id="storeProvider">{isMobile ? <Mobile /> : <Web />}</div>
+        <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
       </div>
     </WaplUiProvider>
   );
