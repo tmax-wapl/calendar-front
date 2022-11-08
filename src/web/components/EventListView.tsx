@@ -1,4 +1,4 @@
-import { Wrapper, DateInfo, Date, Holiday, Lunar } from './EventListView.style';
+import { Wrapper, DateInfo, DateDay, Holiday, Lunar } from './EventListView.style';
 import EventItem from './EventItem';
 import NoResult from './NoResult';
 
@@ -8,7 +8,7 @@ const EventListView = () => {
   return (
     <Wrapper>
       <DateInfo>
-        <Date>9월 20일 월요일</Date>
+        <DateDay>9월 20일 월요일</DateDay>
         <Holiday>추석 연휴</Holiday>
         <Lunar>음력 8.14.</Lunar>
       </DateInfo>

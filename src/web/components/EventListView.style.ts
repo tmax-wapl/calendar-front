@@ -24,7 +24,7 @@ export const DateInfo = styled.div`
   }
 `;
 
-export const Date = styled.span`
+export const DateDay = styled.span`
   display: flex;
   font-weight: 700;
   font-size: 16px;
