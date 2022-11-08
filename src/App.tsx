@@ -1,4 +1,5 @@
 import React from 'react';
+import { StoreProvider } from './stores/StoreProvider';
 import Web from './web';
 import Mobile from './mobile';
 
@@ -7,7 +8,7 @@ const App: React.FC = () => {
 
   return (
     <div id="appProvider">
-      <div id="storeProvider">{isMobile ? <Mobile /> : <Web />}</div>
+      <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
     </div>
   );
 };
