@@ -1,36 +1,78 @@
+import React, { useEffect, useState } from 'react';
 import {
   ButtonWrapper,
   CalendarHeaderContainer,
-  DateButton,
+  DateButton as DateButtonComponent,
   NextButton,
   PrevButton,
   TodayButton,
   ViewSelect,
 } from './CalendarHeader.style';
+import { useCalendarStores } from '@/stores/StoreProvider';
+import { DateTime } from 'luxon';
+import { observer } from 'mobx-react-lite';
+
+const DateButton = observer(() => {
+  const [title, setTitle] = useState<string>('');
+  const { uiStore } = useCalendarStores();
+  const { dateRange } = uiStore;
+
+  useEffect(() => {
+    setTitle(dateRange.view.toFormat('yyyy.MM'));
+  }, [dateRange, title]);
+
+  return <DateButtonComponent>{title}</DateButtonComponent>;
+});
 
 const CalendarHeader: React.FC = () => {
-  const handlePrevMonth = () => {
-    console.log('prev');
+  const { uiStore } = useCalendarStores();
+  const { dateRange, setDateRange } = uiStore;
+
+  const handlePrevClick = () => {
+    const { mainApi, miniApi } = uiStore.getApi();
+
+    mainApi?.prev();
+    miniApi?.gotoDate(mainApi.getDate());
+    setDateRange({
+      start: dateRange.start,
+      view: DateTime.fromJSDate(mainApi?.getDate()),
+      end: dateRange.end,
+    });
   };
 
-  const handleNextMonth = () => {
-    console.log('next');
+  const handleNextClick = () => {
+    const { mainApi, miniApi } = uiStore.getApi();
+
+    mainApi.next();
+    miniApi.gotoDate(mainApi.getDate());
+    setDateRange({
+      start: dateRange.start,
+      view: DateTime.fromJSDate(mainApi?.getDate()),
+      end: dateRange.end,
+    });
   };
 
   const handleViewChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-    console.log(value);
+    const { mainApi } = uiStore.getApi();
+    mainApi.changeView(value);
+  };
+
+  const handleToday = () => {
+    const { mainApi, miniApi } = uiStore.getApi();
+    mainApi.today();
+    miniApi.today();
   };
 
   return (
     <CalendarHeaderContainer>
       <div style={{ display: 'flex' }}>
-        <DateButton>2022.11</DateButton>
+        <DateButton />
         <ButtonWrapper>
-          <PrevButton onClick={handlePrevMonth} />
-          <NextButton onClick={handleNextMonth} />
+          <PrevButton onClick={handlePrevClick} />
+          <NextButton onClick={handleNextClick} />
         </ButtonWrapper>
-        <TodayButton>오늘</TodayButton>
+        <TodayButton onClick={handleToday}>오늘</TodayButton>
       </div>
       <div style={{ display: 'flex' }}>
         <ViewSelect onChange={handleViewChange}>

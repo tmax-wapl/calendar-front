@@ -1477,7 +1477,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.18.9, @babel/runtime@npm:^7.19.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.18.9, @babel/runtime@npm:^7.19.0, @babel/runtime@npm:^7.20.1, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
   version: 7.20.1
   resolution: "@babel/runtime@npm:7.20.1"
   dependencies:
@@ -3184,6 +3184,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/luxon@npm:^3":
+  version: 3.1.0
+  resolution: "@types/luxon@npm:3.1.0"
+  checksum: 04768029342ad76fc2a9339436c143ea64797b35cf9b03ddded787c13eae30f0ca1246e51c2c5365ed912f98068e13a967a3931b137eb4585248a0ad7ec3fa86
+  languageName: node
+  linkType: hard
+
 "@types/mime@npm:*":
   version: 3.0.1
   resolution: "@types/mime@npm:3.0.1"
@@ -4632,10 +4639,12 @@ __metadata:
     "@babel/preset-env": ^7.19.4
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
+    "@babel/runtime": ^7.20.1
     "@fullcalendar/daygrid": ^5.11.3
     "@fullcalendar/interaction": ^5.11.3
     "@fullcalendar/react": ^5.11.2
     "@fullcalendar/timegrid": ^5.11.3
+    "@types/luxon": ^3
     "@types/react": ^17.0.19
     "@types/react-dom": ^17.0.11
     "@typescript-eslint/eslint-plugin": ^5.42.0
@@ -4653,10 +4662,15 @@ __metadata:
     fullcalendar: ^5.11.3
     html-webpack-plugin: ^5.5.0
     ignore-loader: ^0.1.2
+    luxon: ^3.1.0
+    mobx: ^6.6.2
+    mobx-react: ^7.5.3
+    mobx-react-lite: ^3.4.0
     prettier: ^2.7.1
     react: ^17.0.2
     react-dom: ^17.0.2
     react-router-dom: ^6.4.3
+    rrule: ^2.7.1
     style-loader: ^3.3.1
     ts-loader: ^9.4.1
     typescript: ^4.8.4
@@ -8998,6 +9012,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"luxon@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "luxon@npm:3.1.0"
+  checksum: f8a850b759ba7a2e009d904c522ed7bc264bf4add57578f8948e52a0ed96b627b025b5aad8032295b570ae19fac41f0ffab91bdb128715fb0cc020798a7ba886
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.25.0, magic-string@npm:^0.25.7":
   version: 0.25.9
   resolution: "magic-string@npm:0.25.9"
@@ -9292,7 +9313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mobx-react-lite@npm:^3.3.0":
+"mobx-react-lite@npm:^3.3.0, mobx-react-lite@npm:^3.4.0":
   version: 3.4.0
   resolution: "mobx-react-lite@npm:3.4.0"
   peerDependencies:
@@ -9307,7 +9328,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mobx@npm:^6.3.12":
+"mobx-react@npm:^7.5.3":
+  version: 7.5.3
+  resolution: "mobx-react@npm:7.5.3"
+  dependencies:
+    mobx-react-lite: ^3.4.0
+  peerDependencies:
+    mobx: ^6.1.0
+    react: ^16.8.0 || ^17 || ^18
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 6c1c1edc778109f789c6fa9b7a49e633e45a2b3c8fd12c7bd594f6ffec58048d21841936eaf67b0b7c19a32813fbd70fa9025a8c3bca3309f607824bd5aecd1e
+  languageName: node
+  linkType: hard
+
+"mobx@npm:^6.3.12, mobx@npm:^6.6.2":
   version: 6.6.2
   resolution: "mobx@npm:6.6.2"
   checksum: b913abea51ed023d60c71eec0198e953c0b7faee93820be2e8f07037a789b3acf6fd89c340cb9d34e888532ebd34d34b10add7d129277a96026537e5ca48bda6
@@ -11623,6 +11661,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rrule@npm:^2.7.1":
+  version: 2.7.1
+  resolution: "rrule@npm:2.7.1"
+  dependencies:
+    tslib: ^2.4.0
+  checksum: 80b81c5b1c1d12539a2af6de6fc8ebff8d763d8006cd9a418a1de7adbd634ae84ea853f1590d73ea72737422b8775cd53ca64c59e7c4625eda09a2746596f1d9
+  languageName: node
+  linkType: hard
+
 "run-parallel@npm:^1.1.9":
   version: 1.2.0
   resolution: "run-parallel@npm:1.2.0"
@@ -12716,7 +12763,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3, tslib@npm:^2.1.0":
+"tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0":
   version: 2.4.1
   resolution: "tslib@npm:2.4.1"
   checksum: 19480d6e0313292bd6505d4efe096a6b31c70e21cf08b5febf4da62e95c265c8f571f7b36fcc3d1a17e068032f59c269fab3459d6cd3ed6949eafecf64315fca
