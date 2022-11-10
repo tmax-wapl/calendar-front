@@ -82,8 +82,13 @@ export const CalendarContainer = styled.div`
       border-radius: 15px;
       transform: translate(12px, 11px);
 
+      .fc-daygrid-day-top {
+        align-items: center;
+        justify-content: center;
+        margin-top: 2px;
+      }
+
       .fc-daygrid-day-number {
-        margin: 3px 8px;
         padding: 0px;
         color: white;
       }
