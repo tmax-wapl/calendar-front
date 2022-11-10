@@ -108,6 +108,13 @@ export const CalendarContainer = styled.div`
     }
   }
 
+  .fc-day-sun {
+    .fc-daygrid-day-number,
+    .fc-col-header-cell-cushion {
+      color: red;
+    }
+  }
+
   .fc-timegrid.fc-view {
     // 주/일 보기모드
     // 1. 요일영역
