@@ -26,6 +26,20 @@ const CalendarLayout: React.FC = () => {
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin]}
           initialView="dayGridMonth"
+          events={[
+            {
+              title: 'The Title',
+              start: '2022-11-11',
+              end: '2022-11-14',
+              color: '#000000',
+            },
+            {
+              title: 'The Title',
+              start: '2022-11-01',
+              end: '2022-11-03',
+              color: '#000000',
+            },
+          ]}
         />
       </div>
     );

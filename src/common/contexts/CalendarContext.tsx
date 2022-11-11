@@ -4,6 +4,7 @@ export const CalendarContext = createContext({ mode: '' });
 
 /**
  * @props mode : app의 모드 'full' | 'module'
+ * @todo : appId ... 등등 props로 정의 필요
  */
 interface CalendarProviderProps {
   mode: string;

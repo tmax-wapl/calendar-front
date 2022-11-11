@@ -43,8 +43,8 @@ const CalendarHeader: React.FC = () => {
   const handleNextClick = () => {
     const { mainApi, miniApi } = uiStore.getApi();
 
-    mainApi.next();
-    miniApi.gotoDate(mainApi.getDate());
+    mainApi?.next();
+    miniApi?.gotoDate(mainApi?.getDate());
     setDateRange({
       start: dateRange.start,
       view: DateTime.fromJSDate(mainApi?.getDate()),
@@ -55,13 +55,18 @@ const CalendarHeader: React.FC = () => {
   const handleViewChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
     const { mainApi } = uiStore.getApi();
-    mainApi.changeView(value);
+    mainApi?.changeView(value);
   };
 
   const handleToday = () => {
     const { mainApi, miniApi } = uiStore.getApi();
-    mainApi.today();
-    miniApi.today();
+    mainApi?.today();
+    miniApi?.today();
+    setDateRange({
+      start: dateRange.start,
+      view: DateTime.fromJSDate(mainApi?.getDate()),
+      end: dateRange.end,
+    });
   };
 
   return (

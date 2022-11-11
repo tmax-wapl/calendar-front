@@ -189,3 +189,8 @@ export const CalendarContainer = styled.div`
     width: 100% !important;
   }
 `;
+
+export const FullCalendarWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
