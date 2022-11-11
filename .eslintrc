@@ -12,6 +12,7 @@
   ],
   "rules": {
     "@typescript-eslint/no-var-requires": 0,
-    "prettier/prettier": ["error", { "endOfLine": "auto" }]
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "react/display-name": "off"
   }
 }

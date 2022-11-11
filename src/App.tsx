@@ -1,6 +1,8 @@
 import React from 'react';
 import { StoreProvider } from './stores/StoreProvider';
 import { WaplUiProvider } from '@wapl/ui';
+import CalendarProvider from '@contexts/CalendarContext';
+import { MODE } from './common/constants/common';
 import Web from './web';
 import Mobile from './mobile';
 
@@ -9,9 +11,9 @@ const App: React.FC = () => {
 
   return (
     <WaplUiProvider>
-      <div id="appProvider">
+      <CalendarProvider mode={MODE.FULL}>
         <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
-      </div>
+      </CalendarProvider>
     </WaplUiProvider>
   );
 };

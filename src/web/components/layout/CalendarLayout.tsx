@@ -1,13 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Outlet } from 'react-router-dom';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { RefKey } from '@/stores/UiStore';
+import { CalendarContext } from '@contexts/CalendarContext';
+import { MODE } from '@constants/common';
 
 const CalendarLayout: React.FC = () => {
+  const { mode } = useContext(CalendarContext);
   const { uiStore } = useCalendarStores();
+
   const LNB = React.memo(() => {
     const calendarRef = useRef<FullCalendar>(null);
 
@@ -26,12 +30,19 @@ const CalendarLayout: React.FC = () => {
       </div>
     );
   });
-  LNB.displayName = 'LNB';
+
+  const RenderMode = React.memo(() => {
+    return (
+      <>
+        {mode === MODE.FULL ? <LNB /> : null}
+        <Outlet />
+      </>
+    );
+  });
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-      <LNB />
-      <Outlet />
+      <RenderMode />
     </div>
   );
 };

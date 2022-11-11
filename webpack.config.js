@@ -16,6 +16,7 @@ module.exports = {
       '@api': path.resolve(__dirname, 'src/common/lib'),
       '@wcomponents': path.resolve(__dirname, 'src/web/components'),
       '@mcomponents': path.resolve(__dirname, 'src/mobile/components'),
+      '@contexts': path.resolve(__dirname, 'src/common/contexts'),
     },
   },
   devServer: {

@@ -20,7 +20,8 @@
       "@constants/*": ["src/common/constants/*"],
       "@api/*": ["src/common/lib/*"],
       "@wcomponents/*": ["src/web/components/*"],
-      "@mcomponents/*": ["src/mobile/components/*"]
+      "@mcomponents/*": ["src/mobile/components/*"],
+      "@contexts/*": ["src/common/contexts/*"]
     }
   },
   "include": ["src/*"]
