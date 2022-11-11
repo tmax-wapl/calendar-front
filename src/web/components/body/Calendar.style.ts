@@ -57,13 +57,9 @@ export const CalendarContainer = styled.div`
     // 주/일 보기모드 종일/시간영역 분리자
     display: none;
   }
-  .fc-daygrid-event {
-    width: 10px;
-    height: 10px;
-    border-radius: 6px;
-  }
+
   .fc-daygrid-day-events {
-    display: flex;
+    margin-top: 23px;
   }
   .fc-daygrid.fc-view {
     // 월 보기모드
@@ -75,21 +71,17 @@ export const CalendarContainer = styled.div`
     }
     .fc-day-today {
       // 오늘 daygrid
-      width: 26px;
-      height: 26px;
-      display: inline-block;
-      background-color: #ff6258;
-      border-radius: 15px;
-      transform: translate(12px, 11px);
-
+      background: inherit;
       .fc-daygrid-day-top {
-        align-items: center;
-        justify-content: center;
-        margin-top: 2px;
+        width: 26px;
+        height: 26px;
+        background-color: #ff6258;
+        border-radius: 15px;
+        transform: translate(11px, 11px);
       }
 
       .fc-daygrid-day-number {
-        padding: 0px;
+        padding: 4px;
         color: white;
       }
       .MuiBox-root {
