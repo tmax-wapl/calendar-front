@@ -11,6 +11,9 @@ import {
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { DateTime } from 'luxon';
 import { observer } from 'mobx-react-lite';
+import { DATE_EVENT } from '@constants/common';
+
+type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
 
 const DateButton = observer(() => {
   const [title, setTitle] = useState<string>('');
@@ -28,40 +31,16 @@ const CalendarHeader: React.FC = () => {
   const { uiStore } = useCalendarStores();
   const { dateRange, setDateRange } = uiStore;
 
-  const handlePrevClick = () => {
-    const { mainApi, miniApi } = uiStore.getApi();
-
-    mainApi?.prev();
-    miniApi?.gotoDate(mainApi.getDate());
-    setDateRange({
-      start: dateRange.start,
-      view: DateTime.fromJSDate(mainApi?.getDate()),
-      end: dateRange.end,
-    });
-  };
-
-  const handleNextClick = () => {
-    const { mainApi, miniApi } = uiStore.getApi();
-
-    mainApi?.next();
-    miniApi?.gotoDate(mainApi?.getDate());
-    setDateRange({
-      start: dateRange.start,
-      view: DateTime.fromJSDate(mainApi?.getDate()),
-      end: dateRange.end,
-    });
-  };
-
   const handleViewChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
     const { mainApi } = uiStore.getApi();
     mainApi?.changeView(value);
   };
 
-  const handleToday = () => {
+  const handleDate = (type: DateHandleType) => {
     const { mainApi, miniApi } = uiStore.getApi();
-    mainApi?.today();
-    miniApi?.today();
+    mainApi?.[type]();
+    miniApi?.[type]();
     setDateRange({
       start: dateRange.start,
       view: DateTime.fromJSDate(mainApi?.getDate()),
@@ -74,10 +53,10 @@ const CalendarHeader: React.FC = () => {
       <div style={{ display: 'flex' }}>
         <DateButton />
         <ButtonWrapper>
-          <PrevButton onClick={handlePrevClick} />
-          <NextButton onClick={handleNextClick} />
+          <PrevButton onClick={() => handleDate(DATE_EVENT.PREV)} />
+          <NextButton onClick={() => handleDate(DATE_EVENT.NEXT)} />
         </ButtonWrapper>
-        <TodayButton onClick={handleToday}>오늘</TodayButton>
+        <TodayButton onClick={() => handleDate(DATE_EVENT.TODAY)}>오늘</TodayButton>
       </div>
       <div style={{ display: 'flex' }}>
         <ViewSelect onChange={handleViewChange}>
