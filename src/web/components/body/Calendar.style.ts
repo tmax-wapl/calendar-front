@@ -188,6 +188,16 @@ export const CalendarContainer = styled.div`
   .fc-scrollgrid-sync-table {
     width: 100% !important;
   }
+
+  .fc-daygrid-body tr {
+    height: 16.6666%;
+  }
+  .fc-daygrid-more-link {
+    float: right;
+  }
+  .fc-more-popover {
+    visibility: hidden;
+  }
 `;
 
 export const FullCalendarWrapper = styled.div`
