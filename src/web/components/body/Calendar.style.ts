@@ -111,7 +111,7 @@ export const CalendarContainer = styled.div`
   }
 
   .fc-timeGridWeek-view {
-    tr.fc-scrollgrid-section:first-child {
+    tr.fc-scrollgrid-section:first-of-type {
       .fc-daygrid-day-top {
         display: none;
       }
@@ -230,7 +230,7 @@ export const AllDayText = styled.span`
   margin-right: 5px;
 `;
 
-export const ArrowButton = styled.div<{ direction: boolean }>`
+export const ArrowButton = styled.div<{ direction: string }>`
   display: flex;
   width: 8px;
   height: 8px;

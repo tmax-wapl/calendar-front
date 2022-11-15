@@ -48,7 +48,7 @@ const Calendar: React.FC = () => {
     uiStore.viewMode === VIEW_MODE.WEEK ? (
       <AllDayWrapper>
         <AllDayText>{text}</AllDayText>
-        <ArrowButton direction={direction} onClick={handleArrow} />
+        <ArrowButton direction={direction.toString()} onClick={handleArrow} />
       </AllDayWrapper>
     ) : (
       text
