@@ -17,6 +17,8 @@ export const PopoverHeader = styled.div`
 `;
 export const PopoverBody = styled.div`
   padding: 0 20px;
+  max-height: 180px;
+  overflow: auto;
 `;
 export const PopoverTitle = styled.span`
   font-weight: 500;

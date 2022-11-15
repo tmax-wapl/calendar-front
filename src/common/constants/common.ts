@@ -8,3 +8,9 @@ export enum DATE_EVENT {
   NEXT = 'next',
   TODAY = 'today',
 }
+
+export enum VIEW_MODE {
+  MONTH = 'dayGridMonth',
+  WEEK = 'timeGridWeek',
+  DAY = 'timeGridDay',
+}

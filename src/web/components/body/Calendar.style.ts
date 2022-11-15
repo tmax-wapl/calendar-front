@@ -99,11 +99,28 @@ export const CalendarContainer = styled.div`
       }
     }
   }
+  .fc-timegrid-axis-frame {
+    justify-content: center;
+  }
 
   .fc-day-sun {
     .fc-daygrid-day-number,
     .fc-col-header-cell-cushion {
       color: red;
+    }
+  }
+
+  .fc-timeGridWeek-view {
+    tr.fc-scrollgrid-section:first-child {
+      .fc-daygrid-day-top {
+        display: none;
+      }
+      .fc-daygrid-day-events {
+        margin: 8px 0;
+      }
+      .fc-scroller {
+        max-height: 165px;
+      }
     }
   }
 
@@ -203,4 +220,35 @@ export const CalendarContainer = styled.div`
 export const FullCalendarWrapper = styled.div`
   width: 100%;
   height: 100%;
+`;
+
+export const AllDayWrapper = styled.div`
+  display: flex;
+`;
+
+export const AllDayText = styled.span`
+  margin-right: 5px;
+`;
+
+export const ArrowButton = styled.div<{ direction: boolean }>`
+  display: flex;
+  width: 8px;
+  height: 8px;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
+  &::after {
+    content: '';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8px;
+    height: 8px;
+    border-top: 0.1rem solid #202124;
+    border-right: 0.1rem solid #202124;
+    margin-top: ${props => (props.direction ? '7px;' : '0px;')};
+    transform: ${props => (props.direction ? 'rotate(-45deg);' : 'rotate(135deg);')};
+  }
 `;

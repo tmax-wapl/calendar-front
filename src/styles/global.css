@@ -3,3 +3,16 @@ body {
     height:100%;
     margin:0px;
 }
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 4px;
+    border-radius: 8px;
+    background-color: #BDC1C6;
+    border: 0px;
+    opacity: 1;
+}

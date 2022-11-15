@@ -9,11 +9,12 @@ import FullCalendar, {
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { CalendarContainer, FullCalendarWrapper } from './Calendar.style';
+import { AllDayText, AllDayWrapper, ArrowButton, CalendarContainer, FullCalendarWrapper } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { RefKey } from '@/stores/UiStore';
 import Popover from '@/common/components/Popover/Popover';
 import { DateTime } from 'luxon';
+import { VIEW_MODE } from '@/common/constants/common';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -34,6 +35,7 @@ export type MoreLink = {
 const Calendar: React.FC = () => {
   const calendarRef = useRef<FullCalendar>(null);
   const { uiStore } = useCalendarStores();
+  const [direction, setDirection] = useState(false);
   const [moreLinkData, setMoreLinkData] = useState<MoreLink>({
     target: null,
     date: null,
@@ -41,6 +43,22 @@ const Calendar: React.FC = () => {
     events: null,
   });
   const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
+
+  const renderAllDayContent = ({ text }: { text: string }) =>
+    uiStore.viewMode === VIEW_MODE.WEEK ? (
+      <AllDayWrapper>
+        <AllDayText>{text}</AllDayText>
+        <ArrowButton direction={direction} onClick={handleArrow} />
+      </AllDayWrapper>
+    ) : (
+      text
+    );
+
+  const handleArrow = () => {
+    const { mainApi } = uiStore.getApi();
+    direction ? mainApi.setOption('dayMaxEvents', 3) : mainApi.setOption('dayMaxEvents', false);
+    setDirection(!direction);
+  };
 
   const handleEventClick = (eventInfo: EventClickArg) => {
     eventInfo.jsEvent.stopPropagation();
@@ -57,6 +75,19 @@ const Calendar: React.FC = () => {
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
 
   const renderMoreClick = (args: MoreLinkArgCustom) => {
+    switch (uiStore.viewMode) {
+      case VIEW_MODE.MONTH:
+        renderMoreMonth(args);
+        break;
+      case VIEW_MODE.WEEK:
+        renderMoreWeek();
+        break;
+      default:
+        renderMoreMonth(args);
+    }
+  };
+
+  const renderMoreMonth = (args: MoreLinkArgCustom) => {
     const { jsEvent, allSegs, date } = args;
     setMoreLinkData({
       date: DateTime.fromJSDate(date).toFormat('MM/dd') + ` (${getDay(date.getDay())})`,
@@ -64,6 +95,12 @@ const Calendar: React.FC = () => {
       position: { top: jsEvent.clientY, left: jsEvent.clientX },
       events: allSegs,
     });
+  };
+
+  const renderMoreWeek = () => {
+    const { mainApi } = uiStore.getApi();
+    mainApi.setOption('dayMaxEvents', false);
+    setDirection(true);
   };
 
   const getDay = (dayDate: number) => {
@@ -83,9 +120,10 @@ const Calendar: React.FC = () => {
           locale="ko"
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
+          initialView={VIEW_MODE.MONTH}
           dayCellContent={renderDayContent}
           eventClick={handleEventClick}
+          allDayText="종일"
           events={[
             {
               title: 'The Title',
@@ -124,6 +162,30 @@ const Calendar: React.FC = () => {
               color: 'green',
             },
             {
+              title: '어나1',
+              start: '2022-11-13',
+              end: '2022-11-17',
+              color: '#4432a8',
+            },
+            {
+              title: '어나2',
+              start: '2022-11-13',
+              end: '2022-11-18',
+              color: 'black',
+            },
+            {
+              title: '어나3',
+              start: '2022-11-13',
+              end: '2022-11-16',
+              color: '#4432a8',
+            },
+            {
+              title: '어나4',
+              start: '2022-11-13',
+              end: '2022-11-17',
+              color: '#4432a8',
+            },
+            {
               title: 'The Title',
               start: '2022-11-01',
               end: '2022-11-04',
@@ -132,6 +194,7 @@ const Calendar: React.FC = () => {
           ]}
           dayMaxEvents={5}
           moreLinkContent={renderMoreLinkContent}
+          allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
         />
       </FullCalendarWrapper>
