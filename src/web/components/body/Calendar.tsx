@@ -11,7 +11,6 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { AllDayText, AllDayWrapper, ArrowButton, CalendarContainer, FullCalendarWrapper } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { RefKey } from '@/stores/UiStore';
 import Popover from '@/common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@/common/constants/common';
@@ -55,7 +54,7 @@ const Calendar: React.FC = () => {
     );
 
   const handleArrow = () => {
-    const { mainApi } = uiStore.getApi();
+    const mainApi = uiStore.getApi();
     direction ? mainApi.setOption('dayMaxEvents', 3) : mainApi.setOption('dayMaxEvents', false);
     setDirection(!direction);
   };
@@ -98,7 +97,7 @@ const Calendar: React.FC = () => {
   };
 
   const renderMoreWeek = () => {
-    const { mainApi } = uiStore.getApi();
+    const mainApi = uiStore.getApi();
     mainApi.setOption('dayMaxEvents', false);
     setDirection(true);
   };
@@ -109,7 +108,7 @@ const Calendar: React.FC = () => {
 
   useEffect(() => {
     if (calendarRef) {
-      uiStore.setApi(RefKey.MAIN, calendarRef?.current?.getApi());
+      uiStore.setApi(calendarRef?.current?.getApi());
     }
   }, []);
 

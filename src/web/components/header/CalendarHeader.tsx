@@ -3,6 +3,8 @@ import {
   ButtonWrapper,
   CalendarHeaderContainer,
   DateButton as DateButtonComponent,
+  LeftContainer,
+  LeftContainer as RightContainer,
   NextButton,
   PrevButton,
   TodayButton,
@@ -33,14 +35,14 @@ const CalendarHeader: React.FC = () => {
 
   const handleViewChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-    const { mainApi } = uiStore.getApi();
+    const mainApi = uiStore.getApi();
     uiStore.setViewMode(value);
     mainApi?.changeView(value);
     handleDayMaxEvents();
   };
 
   const handleDayMaxEvents = () => {
-    const { mainApi } = uiStore.getApi();
+    const mainApi = uiStore.getApi();
     switch (uiStore.viewMode) {
       case VIEW_MODE.MONTH:
         mainApi?.setOption('dayMaxEvents', 5);
@@ -55,9 +57,8 @@ const CalendarHeader: React.FC = () => {
   };
 
   const handleDate = (type: DateHandleType) => {
-    const { mainApi, miniApi } = uiStore.getApi();
+    const mainApi = uiStore.getApi();
     mainApi?.[type]();
-    miniApi?.[type]();
     setDateRange({
       start: dateRange.start,
       view: DateTime.fromJSDate(mainApi?.getDate()),
@@ -67,21 +68,21 @@ const CalendarHeader: React.FC = () => {
 
   return (
     <CalendarHeaderContainer>
-      <div style={{ display: 'flex' }}>
+      <LeftContainer>
         <DateButton />
         <ButtonWrapper>
           <PrevButton onClick={() => handleDate(DATE_EVENT.PREV)} />
           <NextButton onClick={() => handleDate(DATE_EVENT.NEXT)} />
         </ButtonWrapper>
         <TodayButton onClick={() => handleDate(DATE_EVENT.TODAY)}>오늘</TodayButton>
-      </div>
-      <div style={{ display: 'flex' }}>
+      </LeftContainer>
+      <RightContainer>
         <ViewSelect onChange={handleViewChange}>
           <option value={VIEW_MODE.MONTH}>월</option>
           <option value={VIEW_MODE.WEEK}>주</option>
           <option value={VIEW_MODE.DAY}>일</option>
         </ViewSelect>
-      </div>
+      </RightContainer>
     </CalendarHeaderContainer>
   );
 };

@@ -248,7 +248,7 @@ export const ArrowButton = styled.div<{ direction: string }>`
     height: 8px;
     border-top: 0.1rem solid #202124;
     border-right: 0.1rem solid #202124;
-    margin-top: ${props => (props.direction ? '7px;' : '0px;')};
-    transform: ${props => (props.direction ? 'rotate(-45deg);' : 'rotate(135deg);')};
+    margin-top: ${props => (props.direction === 'true' ? '7px;' : '0px;')};
+    transform: ${props => (props.direction === 'true' ? 'rotate(-45deg);' : 'rotate(135deg);')};
   }
 `;

@@ -81,3 +81,7 @@ export const ViewSelect = styled.select`
   border-radius: 6px;
   color: #202124;
 `;
+
+export const LeftContainer = styled.div`
+  display: flex;
+`;

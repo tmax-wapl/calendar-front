@@ -2,23 +2,15 @@ import RootStore from './RootStore';
 import { DateTime } from 'luxon';
 import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable } from 'mobx';
-import { VIEW_MODE } from '@/common/constants/common';
 
 type DateRange = { start: DateTime; view: DateTime; end: DateTime };
-
-export enum RefKey {
-  MAIN = 'mainApi',
-  MINI = 'miniApi',
-}
-
-type Api = { mainApi: CalendarApi; miniApi: CalendarApi };
 
 export default class UiStore {
   rootStore: RootStore;
 
   dateRange: DateRange = { start: DateTime.now(), view: DateTime.now(), end: DateTime.now() };
 
-  api: Api = { mainApi: null, miniApi: null };
+  mainApi: CalendarApi = null;
 
   viewMode: string;
 
@@ -35,11 +27,9 @@ export default class UiStore {
 
   setViewMode: (view: string) => void = view => (this.viewMode = view);
 
-  setApi: (key: RefKey, params: CalendarApi) => void = (key, params) => {
-    this.api[key] = params;
-  };
+  setApi: (ref: CalendarApi) => void = ref => (this.mainApi = ref);
 
-  getApi(): Api {
-    return this.api;
+  getApi(): CalendarApi {
+    return this.mainApi;
   }
 }
