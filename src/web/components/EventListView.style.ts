@@ -1,6 +1,6 @@
 import { styled } from '@wapl/ui';
 
-export const Wrapper = styled.div`
+export const EventListViewContainer = styled.div`
   display: flex;
   flex-shrink: 0;
   flex-direction: column;

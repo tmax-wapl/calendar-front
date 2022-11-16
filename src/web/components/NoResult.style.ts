@@ -1,6 +1,6 @@
 import { styled } from '@wapl/ui';
 
-export const Wrapper = styled.div`
+export const NoResultContainer = styled.div`
   display: flex;
   height: 100%;
   flex-direction: column;
