@@ -12,7 +12,7 @@ import {
 interface Props {
   notifications: string[];
   editable?: boolean;
-  onChange: (data: any[]) => void;
+  onChange?: (data: any[]) => void;
 }
 
 interface Unit {
@@ -59,6 +59,7 @@ const Notifications = ({ notifications, editable = false, onChange }: Props) => 
   };
 
   useEffect(() => {
+    if (!onChange) return;
     onChange(
       data.map(notification => {
         const [time, unit] = notification.split(' ');

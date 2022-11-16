@@ -12,7 +12,7 @@ interface Props {
   rightSide?: EventBarButton[];
 }
 
-const EventBar = ({ title = 'title', leftSide = [], rightSide = [] }: Props) => {
+const EventBar = ({ title, leftSide = [], rightSide = [] }: Props) => {
   const ButtonIcon = {
     prev: <Icon.ArrowBackLine color="#202124" width={20} height={20} />,
     share: <Icon.ShareLine color="#202124" width={20} height={20} />,

@@ -56,10 +56,7 @@ const EventDetailView = () => {
         {event.participants?.length && <Participants participants={event.participants} />}
         {event.location && <Location location={event.location} />}
         {event.notifications?.length && (
-          <Notifications
-            notifications={event.notifications.map(({ time, unit }) => `${time} ${unit}`)}
-            onChange={data => console.log(data, 'changed')}
-          />
+          <Notifications notifications={event.notifications.map(({ time, unit }) => `${time} ${unit}`)} />
         )}
         {event.description && <Description description={event.description} />}
         {event.attachments?.length && <Attachments attachments={event.attachments} />}
