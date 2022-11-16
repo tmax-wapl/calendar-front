@@ -3,7 +3,7 @@ import CalendarLayout from '@wcomponents/layout/CalendarLayout';
 import Calendar from '@wcomponents/CalendarView';
 import Share from '@wcomponents/ShareView';
 import EventList from '@wcomponents/EventListView';
-import Detail from '@wcomponents/DetailView';
+import Detail from '@wcomponents/EventDetailView';
 import { ROUTES } from '@constants/routes';
 
 const WebApp: React.FC = () => {
