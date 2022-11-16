@@ -34,19 +34,32 @@ export const CalendarContainer = styled.div`
   }
   .fc-theme-standard .fc-daygrid td {
     // 월 보기모드 week cell
-    border: none;
+    border: 1px solid #e8eaed;
+  }
+
+  .fc-scrollgrid table {
+    border-top: 1px solid;
+    border-bottom-style: hidden;
+  }
+  .fc-col-header-cell-cushion {
+    display: flex;
+    font-size: 14px;
+    padding: 12px 0px 7px 13px;
+  }
+
+  .fc-daygrid-day-number {
+    padding: 14px 0px 0px 16px;
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 700;
+    font-size: 14px;
   }
   .fc-timegrid-divider {
     // 주/일 보기모드 종일/시간영역 분리자
     display: none;
   }
-  .fc-daygrid-event {
-    width: 10px;
-    height: 10px;
-    border-radius: 6px;
-  }
+
   .fc-daygrid-day-events {
-    display: flex;
+    margin-top: 23px;
   }
   .fc-daygrid.fc-view {
     // 월 보기모드
@@ -58,7 +71,19 @@ export const CalendarContainer = styled.div`
     }
     .fc-day-today {
       // 오늘 daygrid
-      background-color: transparent;
+      background: inherit;
+      .fc-daygrid-day-top {
+        width: 26px;
+        height: 26px;
+        background-color: #ff6258;
+        border-radius: 15px;
+        transform: translate(11px, 11px);
+      }
+
+      .fc-daygrid-day-number {
+        padding: 4px;
+        color: white;
+      }
       .MuiBox-root {
         // 날짜 숫자 박스
         position: relative;
@@ -70,7 +95,31 @@ export const CalendarContainer = styled.div`
         height: 18px;
         border-radius: 50%;
         //background-color: #ff6258;
-        //color: white;
+        color: white;
+      }
+    }
+  }
+  .fc-timegrid-axis-frame {
+    justify-content: center;
+  }
+
+  .fc-day-sun {
+    .fc-daygrid-day-number,
+    .fc-col-header-cell-cushion {
+      color: red;
+    }
+  }
+
+  .fc-timeGridWeek-view {
+    tr.fc-scrollgrid-section:first-of-type {
+      .fc-daygrid-day-top {
+        display: none;
+      }
+      .fc-daygrid-day-events {
+        margin: 8px 0;
+      }
+      .fc-scroller {
+        max-height: 165px;
       }
     }
   }
@@ -155,5 +204,51 @@ export const CalendarContainer = styled.div`
   .fc-daygrid-body,
   .fc-scrollgrid-sync-table {
     width: 100% !important;
+  }
+
+  .fc-daygrid-body tr {
+    height: 16.6666%;
+  }
+  .fc-daygrid-more-link {
+    float: right;
+  }
+  .fc-more-popover {
+    visibility: hidden;
+  }
+`;
+
+export const FullCalendarWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+export const AllDayWrapper = styled.div`
+  display: flex;
+`;
+
+export const AllDayText = styled.span`
+  margin-right: 5px;
+`;
+
+export const ArrowButton = styled.div<{ direction: string }>`
+  display: flex;
+  width: 8px;
+  height: 8px;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
+  &::after {
+    content: '';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8px;
+    height: 8px;
+    border-top: 0.1rem solid #202124;
+    border-right: 0.1rem solid #202124;
+    margin-top: ${props => (props.direction === 'true' ? '7px;' : '0px;')};
+    transform: ${props => (props.direction === 'true' ? 'rotate(-45deg);' : 'rotate(135deg);')};
   }
 `;

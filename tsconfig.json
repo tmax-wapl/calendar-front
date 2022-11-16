@@ -13,13 +13,15 @@
     "noEmit": false,
     "jsx": "react-jsx",
     "declarationDir": "dist",
+    "strictNullChecks": false,
     "paths": {
       "@/*": ["src/*"],
       "@common/*": ["src/common/*"],
       "@constants/*": ["src/common/constants/*"],
       "@api/*": ["src/common/lib/*"],
       "@wcomponents/*": ["src/web/components/*"],
-      "@mcomponents/*": ["src/mobile/components/*"]
+      "@mcomponents/*": ["src/mobile/components/*"],
+      "@contexts/*": ["src/common/contexts/*"]
     }
   },
   "include": ["src/*"]
