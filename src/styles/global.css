@@ -1,7 +1,11 @@
 html,
 body {
-    height:100%;
-    margin:0px;
+  height: 100%;
+  margin: 0px;
+}
+
+.favicon {
+  margin-right: 8px;
 }
 
 ::-webkit-scrollbar {
