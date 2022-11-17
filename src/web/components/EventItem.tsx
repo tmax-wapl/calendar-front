@@ -1,40 +1,25 @@
+import { EventDTO } from '@common/constants/interfaces';
 import { Icon } from '@wapl/ui';
-import { Wrapper, ItemTitleWrapper, EventTitle, EventDate, CalendarName } from './EventItem.style';
-
-interface Event {
-  color: string;
-  importance: boolean;
-  title: string;
-  date: string;
-  calendarName: string;
-}
+import { EventItemContainer, ItemTitleContainer, EventTitle, EventInfo, CalendarName } from './EventItem.style';
 
 interface Props {
-  event: Event;
+  event: EventDTO;
+  isDetail?: boolean;
 }
 
-const EventItem = ({ event }: Props) => {
+const EventItem = ({ event, isDetail = false }: Props) => {
   return (
-    <Wrapper>
-      <ItemTitleWrapper>
+    <EventItemContainer isDetail={isDetail}>
+      <ItemTitleContainer isDetail={isDetail}>
         <Icon.CalendarDotFill color={event.color} width={20} height={20} />
-        {event.importance && <Icon.BookmarkFill color="#fcbb00" width={16} height={16} />}
+        {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
         <EventTitle>{event.title}</EventTitle>
-      </ItemTitleWrapper>
-      <EventDate>{event.date}</EventDate>
-      <CalendarName>{event.calendarName}</CalendarName>
-    </Wrapper>
+      </ItemTitleContainer>
+      <EventInfo>{event.time}</EventInfo>
+      <EventInfo>{event.repeat}</EventInfo>
+      {isDetail ? <EventInfo>{event.endDate}</EventInfo> : <CalendarName>{event.calendarName}</CalendarName>}
+    </EventItemContainer>
   );
-};
-
-EventItem.defaultProps = {
-  event: {
-    color: '#FF46B5',
-    importance: true,
-    title: '일정 제목',
-    date: '오전 9:00 ~ 오전 9:30, 1주 간격, 월 화 수 목 금 토 일 반복',
-    calendarName: '캐릭터A의 캘린더',
-  },
 };
 
 export default EventItem;

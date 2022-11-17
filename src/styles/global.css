@@ -1,18 +1,22 @@
 html,
 body {
-    height:100%;
-    margin:0px;
+  height: 100%;
+  margin: 0px;
+}
+
+.mr-8 {
+  margin-right: 8px;
 }
 
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-    width: 4px;
-    border-radius: 8px;
-    background-color: #BDC1C6;
-    border: 0px;
-    opacity: 1;
+  width: 4px;
+  border-radius: 8px;
+  background-color: #bdc1c6;
+  border: 0px;
+  opacity: 1;
 }
