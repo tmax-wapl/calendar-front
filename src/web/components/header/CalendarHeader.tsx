@@ -14,6 +14,7 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { DateTime } from 'luxon';
 import { observer } from 'mobx-react-lite';
 import { DATE_EVENT, VIEW_MODE } from '@constants/common';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
 
@@ -31,11 +32,15 @@ const DateButton = observer(() => {
 
 const CalendarHeader: React.FC = () => {
   const { uiStore } = useCalendarStores();
+  const navigate = useNavigate();
+  const { viewMode } = useParams();
+  const { pathname } = useLocation();
   const { dateRange, setDateRange } = uiStore;
 
   const handleViewChange = (value: string) => {
     const mainApi = uiStore.getApi();
     uiStore.setViewMode(value);
+    if (pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`, { replace: true });
     mainApi?.changeView(value);
     handleDayMaxEvents();
   };
@@ -79,7 +84,7 @@ const CalendarHeader: React.FC = () => {
         <ViewSelect
           name="viewSelect"
           types="box"
-          defaultValue={VIEW_MODE.MONTH}
+          defaultValue={viewMode ?? VIEW_MODE.MONTH}
           items={[
             {
               label: '월',

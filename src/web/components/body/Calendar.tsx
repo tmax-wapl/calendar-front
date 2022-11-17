@@ -14,6 +14,7 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@/common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@/common/constants/common';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -34,7 +35,10 @@ export type MoreLink = {
 const Calendar: React.FC = () => {
   const calendarRef = useRef<FullCalendar>(null);
   const { uiStore } = useCalendarStores();
+  const { viewMode } = useParams();
   const [direction, setDirection] = useState(false);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [moreLinkData, setMoreLinkData] = useState<MoreLink>({
     target: null,
     date: null,
@@ -65,10 +69,27 @@ const Calendar: React.FC = () => {
   };
 
   const handleDateClick = (e: any) => {
-    // event delegation을 위함
-    if (e.target.closest('.fc-col-header-cell-cushion')) return;
-    const { date } = e?.target?.closest('td')?.dataset;
-    console.log(date);
+    if (e.target.closest('.fc-col-header-cell-cushion') || e.target.closest('.fc-daygrid-more-link')) return;
+    const {
+      view: { type },
+    } = uiStore.getApi();
+    type === VIEW_MODE.MONTH
+      ? handleMonthViewClick(e?.target?.closest('td.fc-day')?.dataset)
+      : handleWeekViewClick(e?.target?.closest('td.fc-timegrid-slot')?.dataset);
+  };
+
+  const handleMonthViewClick = ({ date }: { date: string }) => {
+    const { setDateDay } = uiStore;
+    setDateDay(DateTime.fromJSDate(new Date(date)));
+    if (!pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`);
+  };
+
+  const handleWeekViewClick = ({ time }: { time: string }) => {
+    console.log(time);
+  };
+
+  const handleDateTimeSelect = (selectInfo: any) => {
+    console.log(selectInfo);
   };
 
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
@@ -112,6 +133,11 @@ const Calendar: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (viewMode) uiStore.setViewMode(viewMode);
+    else uiStore.setViewMode(VIEW_MODE.MONTH);
+  }, [viewMode]);
+
   return (
     <CalendarContainer>
       <FullCalendarWrapper onClick={handleDateClick}>
@@ -119,24 +145,27 @@ const Calendar: React.FC = () => {
           locale="ko"
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView={VIEW_MODE.MONTH}
+          initialView={viewMode}
           dayCellContent={renderDayContent}
           eventClick={handleEventClick}
           allDayText="종일"
           events={[
             {
+              id: '1',
               title: 'The Title',
               start: '2022-11-11',
               end: '2022-11-15',
               color: 'red',
             },
             {
+              id: '2',
               title: '다른거',
               start: '2022-11-11',
               end: '2022-11-13',
               color: '#32a852',
             },
             {
+              id: '3',
               title: '어나더~',
               start: '2022-11-11',
               end: '2022-11-20',
@@ -202,4 +231,4 @@ const Calendar: React.FC = () => {
   );
 };
 
-export default Calendar;
+export default React.memo(Calendar);

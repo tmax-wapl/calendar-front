@@ -84,6 +84,6 @@ export const ViewSelect = styled(Select<string>)`
   border-radius: 6px;
 
   ~ .MuiSelectUnstyled-popper {
-    z-index: 2;
+    z-index: 3;
   }
 `;

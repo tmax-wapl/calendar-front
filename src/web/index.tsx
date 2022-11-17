@@ -35,6 +35,7 @@ const WebApp: React.FC = () => {
         <Route element={<CalendarLayout />}>
           <Route path="*" element={<Navigate to={ROUTES.PATH_MAIN} replace />} />
           <Route path={ROUTES.MAIN} element={<Calendar />}>
+            <Route path={ROUTES.DAY} element={<EventList />} />
             <Route path={ROUTES.CREATE} element={<EventList />} />
             <Route path={ROUTES.DETAIL} element={<Detail />} />
           </Route>

@@ -14,15 +14,22 @@ export default class UiStore {
 
   viewMode: string;
 
+  dateDay: DateTime = DateTime.now();
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
       dateRange: observable,
+      dateDay: observable,
     });
   }
 
   setDateRange: (dateRange: DateRange) => void = dateRange => {
     this.dateRange = dateRange;
+  };
+
+  setDateDay: (dateDay: DateTime) => void = dateDay => {
+    this.dateDay = dateDay;
   };
 
   setViewMode: (view: string) => void = view => (this.viewMode = view);
