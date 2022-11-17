@@ -27,7 +27,7 @@ const Attachments = ({ attachments, editable = false }: Props) => {
   return (
     <Accordion disableGutters elevation={0} defaultExpanded={!!data?.length} expanded={editable || undefined}>
       <AccordionSummary expandIcon={<ExpandIcon />}>
-        <Icon.AttachLine className="favicon" color="#202124" width={20} height={20} />
+        <Icon.AttachLine className="mr-8" color="#202124" width={20} height={20} />
         첨부파일
         {!editable && <AttachmentsCount>&nbsp;{data.length}</AttachmentsCount>}
       </AccordionSummary>
@@ -35,7 +35,7 @@ const Attachments = ({ attachments, editable = false }: Props) => {
         {data.length ? (
           data.map(attachment => (
             <AttachmentItem key={attachment.id}>
-              <Icon.ImageColor className="favicon" width={20} height={20} />
+              <Icon.ImageColor className="mr-8" width={20} height={20} />
               <AttachmentName>
                 {`${attachment.name}${attachment.extension ? `.${attachment.extension}` : ''}`}
               </AttachmentName>

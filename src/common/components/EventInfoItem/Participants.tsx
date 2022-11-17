@@ -28,7 +28,7 @@ const Participants = ({ participants, editable = false }: Props) => {
   return (
     <Accordion disableGutters elevation={0} defaultExpanded={!!data?.length} expanded={editable || undefined}>
       <AccordionSummary expandIcon={<ExpandIcon />} {...(editable && { onClick: handleSummaryClick })}>
-        <Icon.UserLine className="favicon" color="#202124" width={20} height={20} />
+        <Icon.UserLine className="mr-8" color="#202124" width={20} height={20} />
         참여 구성원
         {!editable && <ParticipantsCount>&nbsp;{data?.length}</ParticipantsCount>}
       </AccordionSummary>

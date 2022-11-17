@@ -16,7 +16,7 @@ const Location = ({ location, editable = false }: Props) => {
 
   return (
     <LocationContainer>
-      <Icon.LocationLine className="favicon" color="#202124" width={20} height={20} />
+      <Icon.LocationLine className="mr-8" color="#202124" width={20} height={20} />
       <LocationInput value={data} placeholder="장소 추가" onChange={handleInputChange} readOnly={!editable} />
     </LocationContainer>
   );

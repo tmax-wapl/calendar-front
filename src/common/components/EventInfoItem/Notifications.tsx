@@ -70,7 +70,7 @@ const Notifications = ({ notifications, editable = false, onChange }: Props) => 
 
   return (
     <NotificationsContainer>
-      <Icon.AlarmOnLine className="favicon" color="#202124" width={20} height={20} />
+      <Icon.AlarmOnLine className="mr-8" color="#202124" width={20} height={20} />
       {editable ? (
         <ItemContainer>
           {data?.map((notification, index) => (
