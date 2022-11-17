@@ -33,8 +33,7 @@ const CalendarHeader: React.FC = () => {
   const { uiStore } = useCalendarStores();
   const { dateRange, setDateRange } = uiStore;
 
-  const handleViewChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
+  const handleViewChange = (value: string) => {
     const mainApi = uiStore.getApi();
     uiStore.setViewMode(value);
     mainApi?.changeView(value);
@@ -77,11 +76,23 @@ const CalendarHeader: React.FC = () => {
         <TodayButton onClick={() => handleDate(DATE_EVENT.TODAY)}>오늘</TodayButton>
       </LeftContainer>
       <RightContainer>
-        <ViewSelect onChange={handleViewChange}>
-          <option value={VIEW_MODE.MONTH}>월</option>
-          <option value={VIEW_MODE.WEEK}>주</option>
-          <option value={VIEW_MODE.DAY}>일</option>
-        </ViewSelect>
+        <ViewSelect
+          name="viewSelect"
+          types="box"
+          defaultValue={VIEW_MODE.MONTH}
+          items={[
+            {
+              label: '월',
+
+              value: VIEW_MODE.MONTH,
+            },
+            {
+              label: '주',
+              value: VIEW_MODE.WEEK,
+            },
+          ]}
+          onChange={handleViewChange}
+        />
       </RightContainer>
     </CalendarHeaderContainer>
   );

@@ -1,4 +1,4 @@
-import { styled } from '@wapl/ui';
+import { Select, styled } from '@wapl/ui';
 
 export const CalendarHeaderContainer = styled.div`
   display: flex;
@@ -73,15 +73,17 @@ export const TodayButton = styled.div`
   }
 `;
 
-export const ViewSelect = styled.select`
-  width: 64px;
-  height: 32px;
-  padding: 0px 14px;
-  border: 1px solid #e8eaed;
-  border-radius: 6px;
-  color: #202124;
-`;
-
 export const LeftContainer = styled.div`
   display: flex;
+`;
+
+export const ViewSelect = styled(Select<string>)`
+  background: white;
+  color: #202124;
+  border: 1px solid #e8eaed;
+  border-radius: 6px;
+
+  ~ .MuiSelectUnstyled-popper {
+    z-index: 2;
+  }
 `;
