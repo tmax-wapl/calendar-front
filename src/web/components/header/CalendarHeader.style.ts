@@ -29,6 +29,8 @@ export const ButtonWrapper = styled.div`
 
 export const PrevButton = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 32px;
   border: 1px solid #e8eaed;
   border-radius: 6px 0px 0px 6px;
@@ -42,10 +44,9 @@ export const PrevButton = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 5px;
-    height: 5px;
-    margin-top: 12px;
-    margin-left: 14px;
+    width: 6px;
+    height: 6px;
+    margin-left: 3px;
     border-top: 0.1rem solid #202124;
     border-right: 0.1rem solid #202124;
     transform: rotate(-135deg);

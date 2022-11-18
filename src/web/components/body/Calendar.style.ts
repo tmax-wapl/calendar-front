@@ -26,7 +26,6 @@ export const CalendarContainer = styled.div`
   } */
   .fc-theme-standard .fc-daygrid tr {
     // 월 보기모드 header row & week row
-    border: solid 1px #eeeeee;
   }
   .fc-theme-standard th {
     // 모든 보기모드 header cell
@@ -36,9 +35,16 @@ export const CalendarContainer = styled.div`
     // 월 보기모드 week cell
     border: 1px solid #e8eaed;
   }
+  .fc-theme-standard .fc-daygrid td:first-of-type {
+    // 월 보기모드 week cell
+    border-left: none;
+  }
+  .fc-theme-standard .fc-daygrid td:last-of-type {
+    // 월 보기모드 week cell
+    border-right: none;
+  }
 
   .fc-scrollgrid table {
-    border-top: 1px solid;
     border-bottom-style: hidden;
   }
   .fc-col-header-cell-cushion {
@@ -218,8 +224,11 @@ export const CalendarContainer = styled.div`
 `;
 
 export const FullCalendarWrapper = styled.div`
+  display: flex;
   width: 100%;
   height: 100%;
+  padding: 0 16px;
+  border-right: 1px solid #eeeeee;
 `;
 
 export const AllDayWrapper = styled.div`

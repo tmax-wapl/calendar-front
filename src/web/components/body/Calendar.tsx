@@ -8,7 +8,7 @@ import FullCalendar, {
 } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import { AllDayText, AllDayWrapper, ArrowButton, CalendarContainer, FullCalendarWrapper } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@/common/components/Popover/Popover';
@@ -68,28 +68,28 @@ const Calendar: React.FC = () => {
     console.log(eventInfo);
   };
 
-  const handleDateClick = (e: any) => {
-    if (e.target.closest('.fc-col-header-cell-cushion') || e.target.closest('.fc-daygrid-more-link')) return;
-    const {
-      view: { type },
-    } = uiStore.getApi();
-    type === VIEW_MODE.MONTH
-      ? handleMonthViewClick(e?.target?.closest('td.fc-day')?.dataset)
-      : handleWeekViewClick(e?.target?.closest('td.fc-timegrid-slot')?.dataset);
+  const handleDateClick = (dateInfo: DateClickArg) => {
+    const { viewMode } = uiStore;
+    viewMode === VIEW_MODE.MONTH ? handleMonthViewClick(dateInfo) : handleDateTimeSelect(dateInfo);
   };
 
-  const handleMonthViewClick = ({ date }: { date: string }) => {
-    const { setDateDay } = uiStore;
-    setDateDay(DateTime.fromJSDate(new Date(date)));
+  const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
+    setDateDay(dayEl);
     if (!pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`);
   };
 
-  const handleWeekViewClick = ({ time }: { time: string }) => {
+  const handleDateTimeSelect = ({ dayEl, jsEvent }: DateClickArg) => {
+    if (!(jsEvent.target instanceof HTMLElement)) return;
+    const { time } = jsEvent.target.dataset;
+    setDateDay(dayEl);
     console.log(time);
+    console.log(dayEl, jsEvent);
   };
 
-  const handleDateTimeSelect = (selectInfo: any) => {
-    console.log(selectInfo);
+  const setDateDay = (dayEl: HTMLElement) => {
+    const { date } = dayEl.dataset;
+    const { setDateDay } = uiStore;
+    setDateDay(DateTime.fromJSDate(new Date(date)));
   };
 
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
@@ -140,7 +140,7 @@ const Calendar: React.FC = () => {
 
   return (
     <CalendarContainer>
-      <FullCalendarWrapper onClick={handleDateClick}>
+      <FullCalendarWrapper>
         <FullCalendar
           locale="ko"
           ref={calendarRef}
@@ -224,9 +224,10 @@ const Calendar: React.FC = () => {
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
+          dateClick={handleDateClick}
         />
+        <Popover data={moreLinkData} />
       </FullCalendarWrapper>
-      <Popover data={moreLinkData} />
     </CalendarContainer>
   );
 };
