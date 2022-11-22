@@ -15,6 +15,7 @@ import Popover from '@/common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@/common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import ContextMenu from '@common/components/Contextmenu/ContextMenu';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -25,11 +26,12 @@ interface MoreLinkArgCustom extends MoreLinkArg {
   jsEvent: VUIEventWithPosition;
 }
 
-export type MoreLink = {
-  target?: EventTarget;
-  date: string;
+export type ClickArg = {
+  target?: HTMLElement;
+  date?: string;
   position: { top: number; left: number };
-  events: EventSegment[];
+  events?: EventSegment[];
+  color?: string;
 };
 
 const Calendar: React.FC = () => {
@@ -39,11 +41,16 @@ const Calendar: React.FC = () => {
   const [direction, setDirection] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [moreLinkData, setMoreLinkData] = useState<MoreLink>({
+  const [moreLinkData, setMoreLinkData] = useState<ClickArg>({
     target: null,
     date: null,
     position: { top: 0, left: 0 },
     events: null,
+  });
+  const [eventInfo, setEventInfo] = useState<ClickArg>({
+    target: null,
+    position: { top: 0, left: 0 },
+    color: '',
   });
   const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
 
@@ -63,9 +70,14 @@ const Calendar: React.FC = () => {
     setDirection(!direction);
   };
 
-  const handleEventClick = (eventInfo: EventClickArg) => {
-    eventInfo.jsEvent.stopPropagation();
-    console.log(eventInfo);
+  const handleEventClick = ({ event, jsEvent }: EventClickArg) => {
+    jsEvent.stopPropagation();
+    const target = jsEvent?.target as HTMLElement;
+    setEventInfo({
+      target,
+      position: { top: jsEvent.clientY, left: jsEvent.clientX },
+      color: event.backgroundColor,
+    });
   };
 
   const handleDateClick = (dateInfo: DateClickArg) => {
@@ -109,9 +121,10 @@ const Calendar: React.FC = () => {
 
   const renderMoreMonth = (args: MoreLinkArgCustom) => {
     const { jsEvent, allSegs, date } = args;
+    const target = jsEvent.target as HTMLElement;
     setMoreLinkData({
       date: DateTime.fromJSDate(date).toFormat('MM/dd') + ` (${getDay(date.getDay())})`,
-      target: jsEvent?.target,
+      target,
       position: { top: jsEvent.clientY, left: jsEvent.clientX },
       events: allSegs,
     });
@@ -127,6 +140,10 @@ const Calendar: React.FC = () => {
     return ['일', '월', '화', '수', '목', '금', '토'][dayDate];
   };
 
+  const handleRightClick = (e: any) => {
+    console.log(e);
+  };
+
   useEffect(() => {
     if (calendarRef) {
       uiStore.setApi(calendarRef?.current?.getApi());
@@ -140,7 +157,7 @@ const Calendar: React.FC = () => {
 
   return (
     <CalendarContainer>
-      <FullCalendarWrapper>
+      <FullCalendarWrapper onClick={handleRightClick}>
         <FullCalendar
           locale="ko"
           ref={calendarRef}
@@ -155,69 +172,69 @@ const Calendar: React.FC = () => {
               title: 'The Title',
               start: '2022-11-11',
               end: '2022-11-15',
-              color: 'red',
+              color: '#FF5154',
             },
             {
               id: '2',
               title: '다른거',
               start: '2022-11-11',
               end: '2022-11-13',
-              color: '#32a852',
+              color: '#FCBB00',
             },
             {
               id: '3',
               title: '어나더~',
               start: '2022-11-11',
               end: '2022-11-20',
-              color: '#4432a8',
+              color: '#00C1B1',
             },
             {
               title: '1234~',
               start: '2022-11-11',
               end: '2022-11-22',
-              color: '#32a852',
+              color: '#FF8E3D',
             },
             {
               title: '3456~',
               start: '2022-11-11',
               end: '2022-11-24',
-              color: 'orange',
+              color: '#A143FF',
             },
             {
               title: '5678~',
               start: '2022-11-11',
               end: '2022-11-26',
-              color: 'green',
+              color: '#383FCA',
             },
             {
               title: '어나1',
               start: '2022-11-13',
               end: '2022-11-17',
-              color: '#4432a8',
+              color: '#FF46B5',
             },
             {
               title: '어나2',
               start: '2022-11-13',
               end: '2022-11-18',
-              color: 'black',
+              color: '#3384FF',
             },
             {
               title: '어나3',
               start: '2022-11-13',
               end: '2022-11-16',
-              color: '#4432a8',
+              color: '#AECB00',
             },
             {
               title: '어나4',
               start: '2022-11-13',
               end: '2022-11-17',
-              color: '#4432a8',
+              color: '#FCBB00',
             },
             {
               title: 'The Title',
               start: '2022-11-01',
               end: '2022-11-04',
-              color: '#000000',
+              color: '#00C064',
             },
           ]}
           dayMaxEvents={5}
@@ -226,8 +243,9 @@ const Calendar: React.FC = () => {
           moreLinkClick={renderMoreClick}
           dateClick={handleDateClick}
         />
-        <Popover data={moreLinkData} />
+        <Popover {...moreLinkData} />
       </FullCalendarWrapper>
+      <ContextMenu {...eventInfo} />
     </CalendarContainer>
   );
 };
