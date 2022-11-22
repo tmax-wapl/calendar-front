@@ -4,12 +4,13 @@ import moment from 'moment';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { CalendarPickerView } from '@mui/x-date-pickers';
-import { Icon } from '@wapl/ui';
+import { Icon, Mui } from '@wapl/ui';
 import { DatePickerContainer, DatePickerHeader, SwitchViewButton } from './DatePicker.style';
 import PickerBody from './PickerBody';
 
 const DatePicker = () => {
-  const [date, setDate] = useState<DateTime>(DateTime.now());
+  const [selectedDate, setSelectedDate] = useState<DateTime>(DateTime.now());
+  const [tempDate, setTempDate] = useState<DateTime>(DateTime.now());
   const [view, setView] = useState<CalendarPickerView>('day');
   const [isTitleClick, setTitleClick] = useState<boolean>(false);
 
@@ -26,16 +27,40 @@ const DatePicker = () => {
     });
   };
 
+  const handlePrevClick = () => {
+    const newDate = moment(selectedDate.toFormat('yyyy-LL-dd')).subtract(1, 'months');
+    setSelectedDate(DateTime.fromJSDate(new Date(newDate.format('YYYY-MM-DD'))));
+  };
+
+  const handleNextClick = () => {
+    const newDate = moment(selectedDate.toFormat('yyyy-LL-dd')).add(1, 'months');
+    setSelectedDate(DateTime.fromJSDate(new Date(newDate.format('YYYY-MM-DD'))));
+  };
+
   return (
     <DatePickerContainer>
       <DatePickerHeader>
         <SwitchViewButton onClick={handleSwitch}>
-          {date.toFormat('yyyy.LL.')}
+          {selectedDate.toFormat('yyyy.LL.')}
           <SwitchIcon />
         </SwitchViewButton>
+        <Mui.IconButton onClick={handlePrevClick}>
+          <Icon.ArrowBackLine />
+        </Mui.IconButton>
+        <Mui.IconButton onClick={handleNextClick}>
+          <Icon.ArrowFrontLine />
+        </Mui.IconButton>
       </DatePickerHeader>
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('ko')}>
-        <PickerBody viewMode={view} setView={setView} setTitleClick={setTitleClick} date={date} setDate={setDate} />
+        <PickerBody
+          viewMode={view}
+          setView={setView}
+          setTitleClick={setTitleClick}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          tempDate={tempDate}
+          setTempDate={setTempDate}
+        />
       </LocalizationProvider>
     </DatePickerContainer>
   );

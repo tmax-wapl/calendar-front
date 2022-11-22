@@ -7,18 +7,28 @@ interface PickerBodyProps {
   viewMode: CalendarPickerView;
   setView: React.Dispatch<React.SetStateAction<CalendarPickerView>>;
   setTitleClick: React.Dispatch<React.SetStateAction<boolean>>;
-  date: DateTime;
-  setDate: React.Dispatch<React.SetStateAction<DateTime>>;
+  selectedDate: DateTime;
+  setSelectedDate: React.Dispatch<React.SetStateAction<DateTime>>;
+  tempDate: DateTime;
+  setTempDate: React.Dispatch<React.SetStateAction<DateTime>>;
 }
 
-const PickerBody = ({ viewMode, setView, setTitleClick, date, setDate }: PickerBodyProps) => {
+const PickerBody = ({
+  viewMode,
+  setView,
+  setTitleClick,
+  selectedDate,
+  setSelectedDate,
+  tempDate,
+  setTempDate,
+}: PickerBodyProps) => {
   switch (viewMode) {
     case 'year':
       return (
         <YearPicker
-          date={moment(date.toFormat('yyyy-LL-dd'))}
+          date={moment(selectedDate.toFormat('yyyy-LL-dd'))}
           onChange={value => {
-            setDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
+            setTempDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
             setView('month');
           }}
         />
@@ -26,9 +36,9 @@ const PickerBody = ({ viewMode, setView, setTitleClick, date, setDate }: PickerB
     case 'month':
       return (
         <MonthPicker
-          date={moment(date.toFormat('yyyy-LL-dd'))}
+          date={moment(tempDate.toFormat('yyyy-LL-dd'))}
           onChange={value => {
-            setDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
+            setSelectedDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
             setTitleClick(false);
             setView('day');
           }}
@@ -38,9 +48,9 @@ const PickerBody = ({ viewMode, setView, setTitleClick, date, setDate }: PickerB
       return (
         <CalendarPickerWrapper>
           <CalendarPicker
-            date={moment(date.toFormat('yyyy-LL-dd'))}
+            date={moment(selectedDate.toFormat('yyyy-LL-dd'))}
             onChange={value => {
-              setDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
+              setSelectedDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
             }}
             views={['day']}
             showDaysOutsideCurrentMonth
