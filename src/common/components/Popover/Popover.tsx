@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Popover } from '@mui/material';
+import { Mui } from '@wapl/ui';
 import { EventSegment } from '@fullcalendar/react';
 
 import { ClickArg } from '../../../web/components/body/Calendar';
@@ -26,7 +26,7 @@ const PopOver = ({ target, date, position, events }: ClickArg) => {
   }, [target]);
 
   return (
-    <Popover
+    <Mui.Popover
       open={open}
       anchorReference="anchorPosition"
       anchorPosition={{ top: position?.top, left: position?.left }}
@@ -48,7 +48,7 @@ const PopOver = ({ target, date, position, events }: ClickArg) => {
           })}
         </PopoverBody>
       </PopoverContainer>
-    </Popover>
+    </Mui.Popover>
   );
 };
 

@@ -1,5 +1,4 @@
-import { MenuItem } from '@mui/material';
-import { Menu } from '@mui/material';
+import { Mui } from '@wapl/ui';
 import React, { useEffect, useState } from 'react';
 import { ClickArg } from '../../../web/components/body/Calendar';
 import ColorPicker from '../Contextmenu/ColorPicker';
@@ -31,28 +30,28 @@ const ContextMenu = ({ target, position, color }: ClickArg) => {
 
   return (
     <div id="contextWrapper">
-      <Menu
+      <Mui.Menu
         anchorEl={anchorEl}
         open={open}
         anchorReference="anchorPosition"
         anchorPosition={{ top: position?.top, left: position?.left }}
         onClose={handleClose}
       >
-        <MenuItem sx={style} disableRipple>
+        <Mui.MenuItem sx={style} disableRipple>
           <ColorPicker color={color} />
-        </MenuItem>
+        </Mui.MenuItem>
         <div id="contextBody">
-          <MenuItem>
+          <Mui.MenuItem>
             <div id="menuItem">상황별 메뉴 1</div>
-          </MenuItem>
-          <MenuItem>
+          </Mui.MenuItem>
+          <Mui.MenuItem>
             <div id="menuItem">상황별 메뉴 2</div>
-          </MenuItem>
-          <MenuItem>
+          </Mui.MenuItem>
+          <Mui.MenuItem>
             <div id="menuItem">상황별 메뉴 3</div>
-          </MenuItem>
+          </Mui.MenuItem>
         </div>
-      </Menu>
+      </Mui.Menu>
     </div>
   );
 };

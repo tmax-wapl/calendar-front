@@ -2276,7 +2276,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/react@npm:^11.10.5, @emotion/react@npm:^11.7.1":
+"@emotion/react@npm:^11.7.1":
   version: 11.10.5
   resolution: "@emotion/react@npm:11.10.5"
   dependencies:
@@ -2320,7 +2320,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/styled@npm:^11.10.5, @emotion/styled@npm:^11.6.0":
+"@emotion/styled@npm:^11.6.0":
   version: 11.10.5
   resolution: "@emotion/styled@npm:11.10.5"
   dependencies:
@@ -2926,73 +2926,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/base@npm:5.0.0-alpha.105":
-  version: 5.0.0-alpha.105
-  resolution: "@mui/base@npm:5.0.0-alpha.105"
-  dependencies:
-    "@babel/runtime": ^7.19.0
-    "@emotion/is-prop-valid": ^1.2.0
-    "@mui/types": ^7.2.0
-    "@mui/utils": ^5.10.9
-    "@popperjs/core": ^2.11.6
-    clsx: ^1.2.1
-    prop-types: ^15.8.1
-    react-is: ^18.2.0
-  peerDependencies:
-    "@types/react": ^17.0.0 || ^18.0.0
-    react: ^17.0.0 || ^18.0.0
-    react-dom: ^17.0.0 || ^18.0.0
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-  checksum: 1db3dcd6760c814437c679ddf13d9e3c4e7fc6f51ce933445715a56aa65dcaeb38aff35832c524211d62fb3401b436cbcc3e9e4234068a0c3379da727f44cff2
-  languageName: node
-  linkType: hard
-
 "@mui/core-downloads-tracker@npm:^5.10.12":
   version: 5.10.12
   resolution: "@mui/core-downloads-tracker@npm:5.10.12"
   checksum: 894c7ee810851de2ee5de43648822e6f5ea639e4ab494fd54c9a6cb6dbace608b5634699fab05978f2d21efc4378bbce83b8352ef7aa958afd3d387c32373244
-  languageName: node
-  linkType: hard
-
-"@mui/core-downloads-tracker@npm:^5.10.13":
-  version: 5.10.13
-  resolution: "@mui/core-downloads-tracker@npm:5.10.13"
-  checksum: 175d5779e8e4b6130c96d2ce990047ea58571f847a7041ca273564edc5411456296d1e094e350970d1294c4cc4d8459ea237f69e7917926a6530d5195fb41cc6
-  languageName: node
-  linkType: hard
-
-"@mui/material@npm:^5.10.13":
-  version: 5.10.13
-  resolution: "@mui/material@npm:5.10.13"
-  dependencies:
-    "@babel/runtime": ^7.19.0
-    "@mui/base": 5.0.0-alpha.105
-    "@mui/core-downloads-tracker": ^5.10.13
-    "@mui/system": ^5.10.13
-    "@mui/types": ^7.2.0
-    "@mui/utils": ^5.10.9
-    "@types/react-transition-group": ^4.4.5
-    clsx: ^1.2.1
-    csstype: ^3.1.1
-    prop-types: ^15.8.1
-    react-is: ^18.2.0
-    react-transition-group: ^4.4.5
-  peerDependencies:
-    "@emotion/react": ^11.5.0
-    "@emotion/styled": ^11.3.0
-    "@types/react": ^17.0.0 || ^18.0.0
-    react: ^17.0.0 || ^18.0.0
-    react-dom: ^17.0.0 || ^18.0.0
-  peerDependenciesMeta:
-    "@emotion/react":
-      optional: true
-    "@emotion/styled":
-      optional: true
-    "@types/react":
-      optional: true
-  checksum: 817e61e575a47b60cba54f826e8a090399f9332b192e2632efa9f82ae6bc44653fe6ab3606c047c29686a5b4ee3ec7bbd69b89c9a0dd6ca1e382aff23c0e5c96
   languageName: node
   linkType: hard
 
@@ -3092,34 +3029,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 1803a6f54bc1fda304834f362c60697b2ee157df7629b26337cb3d180093cbc244a94df45719da436b2917f98674687a98fea353a9ec8e6de7c5c3b5ba592bc8
-  languageName: node
-  linkType: hard
-
-"@mui/system@npm:^5.10.13":
-  version: 5.10.13
-  resolution: "@mui/system@npm:5.10.13"
-  dependencies:
-    "@babel/runtime": ^7.19.0
-    "@mui/private-theming": ^5.10.9
-    "@mui/styled-engine": ^5.10.8
-    "@mui/types": ^7.2.0
-    "@mui/utils": ^5.10.9
-    clsx: ^1.2.1
-    csstype: ^3.1.1
-    prop-types: ^15.8.1
-  peerDependencies:
-    "@emotion/react": ^11.5.0
-    "@emotion/styled": ^11.3.0
-    "@types/react": ^17.0.0 || ^18.0.0
-    react: ^17.0.0 || ^18.0.0
-  peerDependenciesMeta:
-    "@emotion/react":
-      optional: true
-    "@emotion/styled":
-      optional: true
-    "@types/react":
-      optional: true
-  checksum: afac3f4859b9e137fa62fa4446642909704964209a44f63a472d452ace6428a0b337b48a934cd805e3728a0098ad4f41fedbc06ce14e245a5fa42fabe349d9e8
   languageName: node
   linkType: hard
 
@@ -7643,14 +7552,11 @@ __metadata:
     "@babel/preset-react": ^7.18.6
     "@babel/preset-typescript": ^7.18.6
     "@babel/runtime": ^7.20.1
-    "@emotion/react": ^11.10.5
-    "@emotion/styled": ^11.10.5
     "@fullcalendar/daygrid": ^5.11.3
     "@fullcalendar/interaction": ^5.11.3
     "@fullcalendar/react": ^5.11.2
     "@fullcalendar/timegrid": ^5.11.3
     "@mdx-js/react": ^1.6.22
-    "@mui/material": ^5.10.13
     "@storybook/addon-actions": ^6.5.13
     "@storybook/addon-docs": ^6.5.13
     "@storybook/addon-essentials": ^6.5.13
