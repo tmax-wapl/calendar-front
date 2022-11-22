@@ -38,7 +38,7 @@ const ContextMenu = ({ target, position, color }: ClickArg) => {
         anchorPosition={{ top: position?.top, left: position?.left }}
         onClose={handleClose}
       >
-        <MenuItem sx={style}>
+        <MenuItem sx={style} disableRipple>
           <ColorPicker color={color} />
         </MenuItem>
         <div id="contextBody">
