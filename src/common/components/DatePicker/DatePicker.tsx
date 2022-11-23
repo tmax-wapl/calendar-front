@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import moment from 'moment';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -8,11 +8,20 @@ import { Icon, Mui } from '@wapl/ui';
 import { DatePickerContainer, DatePickerHeader, SwitchViewButton } from './DatePicker.style';
 import PickerBody from './PickerBody';
 
-const DatePicker = () => {
+interface DatePickerProps {
+  onChange?: (selectedDate: DateTime) => void;
+}
+
+const DatePicker = ({ onChange }: DatePickerProps) => {
   const [selectedDate, setSelectedDate] = useState<DateTime>(DateTime.now());
   const [tempDate, setTempDate] = useState<DateTime>(DateTime.now());
   const [view, setView] = useState<CalendarPickerView>('day');
   const [isTitleClick, setTitleClick] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!onChange) return;
+    onChange(selectedDate);
+  }, [selectedDate]);
 
   const SwitchIcon = (): JSX.Element => {
     if (isTitleClick) return <Icon.ArrowTopLine color="#191919" width={18} height={18} />;
