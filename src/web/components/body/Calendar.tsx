@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import FullCalendar, {
   EventClickArg,
+  EventContentArg,
   EventSegment,
   MoreLinkArg,
   MoreLinkContentArg,
@@ -52,6 +53,7 @@ const Calendar: React.FC = () => {
     position: { top: 0, left: 0 },
     color: '',
   });
+
   const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
 
   const renderAllDayContent = ({ text }: { text: string }) =>
@@ -64,47 +66,11 @@ const Calendar: React.FC = () => {
       text
     );
 
-  const handleArrow = () => {
-    const mainApi = uiStore.getApi();
-    direction ? mainApi.setOption('dayMaxEvents', 3) : mainApi.setOption('dayMaxEvents', false);
-    setDirection(!direction);
-  };
-
-  const handleEventClick = ({ event, jsEvent }: EventClickArg) => {
-    jsEvent.stopPropagation();
-    const target = jsEvent?.target as HTMLElement;
-    setEventInfo({
-      target,
-      position: { top: jsEvent.clientY, left: jsEvent.clientX },
-      color: event.backgroundColor,
-    });
-  };
-
-  const handleDateClick = (dateInfo: DateClickArg) => {
-    const { viewMode } = uiStore;
-    viewMode === VIEW_MODE.MONTH ? handleMonthViewClick(dateInfo) : handleDateTimeSelect(dateInfo);
-  };
-
-  const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
-    setDateDay(dayEl);
-    if (!pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`);
-  };
-
-  const handleDateTimeSelect = ({ dayEl, jsEvent }: DateClickArg) => {
-    if (!(jsEvent.target instanceof HTMLElement)) return;
-    const { time } = jsEvent.target.dataset;
-    setDateDay(dayEl);
-    console.log(time);
-    console.log(dayEl, jsEvent);
-  };
-
-  const setDateDay = (dayEl: HTMLElement) => {
-    const { date } = dayEl.dataset;
-    const { setDateDay } = uiStore;
-    setDateDay(DateTime.fromJSDate(new Date(date)));
-  };
-
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
+
+  const renderEventContent = (args: EventContentArg) => (
+    <span data-color={args.backgroundColor}>{args.event.title}</span>
+  );
 
   const renderMoreClick = (args: MoreLinkArgCustom) => {
     switch (uiStore.viewMode) {
@@ -136,13 +102,55 @@ const Calendar: React.FC = () => {
     setDirection(true);
   };
 
-  const getDay = (dayDate: number) => {
-    return ['일', '월', '화', '수', '목', '금', '토'][dayDate];
+  const handleArrow = () => {
+    const mainApi = uiStore.getApi();
+    direction ? mainApi.setOption('dayMaxEvents', 3) : mainApi.setOption('dayMaxEvents', false);
+    setDirection(!direction);
+  };
+
+  const handleEventClick = ({ event, jsEvent }: EventClickArg) => {
+    jsEvent.stopPropagation();
+    console.log(jsEvent, event);
+  };
+
+  const handleDateClick = (dateInfo: DateClickArg) => {
+    const { viewMode } = uiStore;
+    viewMode === VIEW_MODE.MONTH ? handleMonthViewClick(dateInfo) : handleDateTimeSelect(dateInfo);
   };
 
   const handleRightClick = (e: any) => {
-    console.log(e);
+    e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
+    const target = e.target?.closest('.fc-daygrid-event');
+    if (!target) return;
+
+    const { color } = e.target?.querySelector('span')?.dataset;
+    setEventInfo({
+      target,
+      position: { top: e.clientY, left: e.clientX },
+      color,
+    });
   };
+
+  const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
+    setDateDay(dayEl);
+    if (!pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`);
+  };
+
+  const handleDateTimeSelect = ({ dayEl, jsEvent }: DateClickArg) => {
+    if (!(jsEvent.target instanceof HTMLElement)) return;
+    const { time } = jsEvent.target.dataset;
+    setDateDay(dayEl);
+    console.log(time);
+    console.log(dayEl, jsEvent);
+  };
+
+  const setDateDay = (dayEl: HTMLElement) => {
+    const { date } = dayEl.dataset;
+    const { setDateDay } = uiStore;
+    setDateDay(DateTime.fromJSDate(new Date(date)));
+  };
+
+  const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];
 
   useEffect(() => {
     if (calendarRef) {
@@ -157,7 +165,7 @@ const Calendar: React.FC = () => {
 
   return (
     <CalendarContainer>
-      <FullCalendarWrapper onClick={handleRightClick}>
+      <FullCalendarWrapper onContextMenu={handleRightClick}>
         <FullCalendar
           locale="ko"
           ref={calendarRef}
@@ -242,6 +250,7 @@ const Calendar: React.FC = () => {
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
           dateClick={handleDateClick}
+          eventContent={renderEventContent}
         />
         <Popover {...moreLinkData} />
       </FullCalendarWrapper>
