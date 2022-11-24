@@ -7,7 +7,7 @@ const LNB = () => {
   return (
     <LNBContainer id="lnb">
       <LNBHeader>
-        <Icon.CalendarColor width={32} height={32} />
+        <Icon.CalendarColor className="mr-8" width={32} height={32} />
         캘린더
       </LNBHeader>
       <LNBBody>

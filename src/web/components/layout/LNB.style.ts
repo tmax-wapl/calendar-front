@@ -13,11 +13,6 @@ export const LNBHeader = styled.div`
   height: 32px;
   margin: 18px 0 24px 14px;
   font-size: 20px;
-  > svg {
-    :first-of-type {
-      margin-right: 8px;
-    }
-  }
 `;
 
 export const LNBBody = styled.div`

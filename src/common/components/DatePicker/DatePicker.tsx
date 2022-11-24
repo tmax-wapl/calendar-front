@@ -31,19 +31,17 @@ const DatePicker = ({ onChange }: DatePickerProps) => {
   const handleSwitch = () => {
     if (isTitleClick) setView('day');
     else setView('year');
-    setTitleClick(value => {
-      return !value;
-    });
+    setTitleClick(value => !value);
   };
 
   const handlePrevClick = () => {
-    const newDate = moment(selectedDate.toFormat('yyyy-LL-dd')).subtract(1, 'months');
-    setSelectedDate(DateTime.fromJSDate(new Date(newDate.format('YYYY-MM-DD'))));
+    const newDate = selectedDate.plus({ months: -1 });
+    setSelectedDate(newDate);
   };
 
   const handleNextClick = () => {
-    const newDate = moment(selectedDate.toFormat('yyyy-LL-dd')).add(1, 'months');
-    setSelectedDate(DateTime.fromJSDate(new Date(newDate.format('YYYY-MM-DD'))));
+    const newDate = selectedDate.plus({ months: 1 });
+    setSelectedDate(newDate);
   };
 
   return (
