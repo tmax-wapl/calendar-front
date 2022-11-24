@@ -14,6 +14,7 @@ interface DatePickerProps {
 
 const DatePicker = ({ onChange }: DatePickerProps) => {
   const [selectedDate, setSelectedDate] = useState<DateTime>(DateTime.now());
+  const [titleDate, setTitleDate] = useState<DateTime>(selectedDate);
   const [tempDate, setTempDate] = useState<DateTime>(DateTime.now());
   const [view, setView] = useState<CalendarPickerView>('day');
   const [isTitleClick, setTitleClick] = useState<boolean>(false);
@@ -35,20 +36,20 @@ const DatePicker = ({ onChange }: DatePickerProps) => {
   };
 
   const handlePrevClick = () => {
-    const newDate = selectedDate.plus({ months: -1 });
-    setSelectedDate(newDate);
+    const newDate = titleDate.plus({ months: -1 });
+    setTitleDate(newDate);
   };
 
   const handleNextClick = () => {
-    const newDate = selectedDate.plus({ months: 1 });
-    setSelectedDate(newDate);
+    const newDate = titleDate.plus({ months: 1 });
+    setTitleDate(newDate);
   };
 
   return (
     <DatePickerContainer>
       <DatePickerHeader>
         <SwitchViewButton onClick={handleSwitch}>
-          {selectedDate.toFormat('yyyy.LL.')}
+          {titleDate.toFormat('yyyy.LL.')}
           <SwitchIcon />
         </SwitchViewButton>
         <Mui.IconButton onClick={handlePrevClick}>
@@ -65,6 +66,8 @@ const DatePicker = ({ onChange }: DatePickerProps) => {
           setTitleClick={setTitleClick}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          titleDate={titleDate}
+          setTitleDate={setTitleDate}
           tempDate={tempDate}
           setTempDate={setTempDate}
         />

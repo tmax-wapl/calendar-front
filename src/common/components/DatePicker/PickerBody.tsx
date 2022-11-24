@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
-import moment from 'moment';
-import { CalendarPicker, MonthPicker, YearPicker, CalendarPickerView } from '@mui/x-date-pickers';
-import { CalendarPickerWrapper } from './PickerBody.style';
+import moment, { Moment } from 'moment';
+import { PickersDayProps, CalendarPicker, MonthPicker, YearPicker, CalendarPickerView } from '@mui/x-date-pickers';
+import { CalendarPickerWrapper, CustomPickersDay } from './PickerBody.style';
 
 interface PickerBodyProps {
   viewMode: CalendarPickerView;
@@ -9,6 +9,8 @@ interface PickerBodyProps {
   setTitleClick: React.Dispatch<React.SetStateAction<boolean>>;
   selectedDate: DateTime;
   setSelectedDate: React.Dispatch<React.SetStateAction<DateTime>>;
+  titleDate: DateTime;
+  setTitleDate: React.Dispatch<React.SetStateAction<DateTime>>;
   tempDate: DateTime;
   setTempDate: React.Dispatch<React.SetStateAction<DateTime>>;
 }
@@ -19,9 +21,19 @@ const PickerBody = ({
   setTitleClick,
   selectedDate,
   setSelectedDate,
+  titleDate,
+  setTitleDate,
   tempDate,
   setTempDate,
 }: PickerBodyProps) => {
+  const renderPickerDay = (day: Moment, selectedDays: Moment[], pickersDayProps: PickersDayProps<Moment>) => {
+    const pickerDay = DateTime.fromJSDate(new Date(day.format('YYYY-MM-DD')));
+    const isSunday = pickerDay.weekday === 7;
+    const isOutside = pickersDayProps.outsideCurrentMonth;
+    const isSelected = pickerDay.toFormat('yyyy-LL-dd') === selectedDate.toFormat('yyyy-LL-dd');
+    return <CustomPickersDay {...pickersDayProps} isSunday={isSunday} isOutside={isOutside} selected={isSelected} />;
+  };
+
   switch (viewMode) {
     case 'year':
       return (
@@ -38,7 +50,7 @@ const PickerBody = ({
         <MonthPicker
           date={moment(tempDate.toFormat('yyyy-LL-dd'))}
           onChange={value => {
-            setSelectedDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
+            setTitleDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
             setTitleClick(false);
             setView('day');
           }}
@@ -48,11 +60,12 @@ const PickerBody = ({
       return (
         <CalendarPickerWrapper>
           <CalendarPicker
-            date={moment(selectedDate.toFormat('yyyy-LL-dd'))}
+            date={moment(titleDate.toFormat('yyyy-LL-dd'))}
             onChange={value => {
               setSelectedDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
             }}
             views={['day']}
+            renderDay={renderPickerDay}
             showDaysOutsideCurrentMonth
           />
         </CalendarPickerWrapper>
