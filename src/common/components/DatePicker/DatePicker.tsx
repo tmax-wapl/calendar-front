@@ -17,19 +17,20 @@ import PickerBody from './PickerBody';
 interface DatePickerProps {
   size?: number;
   backgroundColor?: string;
-  onChange?: (selectedDate: DateTime) => void;
+  date?: DateTime;
+  onDateClick?: (selectedDate: DateTime) => void;
 }
 
-const DatePicker = ({ size = 1, backgroundColor = '#ffffff', onChange }: DatePickerProps) => {
-  const [selectedDate, setSelectedDate] = useState<DateTime>(DateTime.now());
+const DatePicker = ({ size = 1, backgroundColor = '#ffffff', date = DateTime.now(), onDateClick }: DatePickerProps) => {
+  const [selectedDate, setSelectedDate] = useState<DateTime>(date);
   const [titleDate, setTitleDate] = useState<DateTime>(selectedDate);
-  const [tempDate, setTempDate] = useState<DateTime>(DateTime.now());
+  const [tempDate, setTempDate] = useState<DateTime>(date);
   const [view, setView] = useState<CalendarPickerView>('day');
   const [isTitleClick, setTitleClick] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!onChange) return;
-    onChange(selectedDate);
+    if (!onDateClick) return;
+    onDateClick(selectedDate);
   }, [selectedDate]);
 
   const SwitchIcon = (): JSX.Element => {
