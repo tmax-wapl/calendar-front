@@ -1,9 +1,11 @@
 import { DateTime } from 'luxon';
 import moment, { Moment } from 'moment';
 import { PickersDayProps, CalendarPicker, MonthPicker, YearPicker, CalendarPickerView } from '@mui/x-date-pickers';
-import { CalendarPickerWrapper, CustomPickersDay } from './PickerBody.style';
+import { YearPickerWrapper, MonthPickerWrapper, CalendarPickerWrapper, CustomPickersDay } from './PickerBody.style';
 
 interface PickerBodyProps {
+  size: number;
+  backgroundColor: string;
   viewMode: CalendarPickerView;
   setView: React.Dispatch<React.SetStateAction<CalendarPickerView>>;
   setTitleClick: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +18,8 @@ interface PickerBodyProps {
 }
 
 const PickerBody = ({
+  size,
+  backgroundColor,
   viewMode,
   setView,
   setTitleClick,
@@ -37,28 +41,33 @@ const PickerBody = ({
   switch (viewMode) {
     case 'year':
       return (
-        <YearPicker
-          date={moment(selectedDate.toFormat('yyyy-LL-dd'))}
-          onChange={value => {
-            setTempDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
-            setView('month');
-          }}
-        />
+        <YearPickerWrapper size={size} backgroundColor={backgroundColor}>
+          <YearPicker
+            autoFocus
+            date={moment(selectedDate.toFormat('yyyy-LL-dd'))}
+            onChange={value => {
+              setTempDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
+              setView('month');
+            }}
+          />
+        </YearPickerWrapper>
       );
     case 'month':
       return (
-        <MonthPicker
-          date={moment(tempDate.toFormat('yyyy-LL-dd'))}
-          onChange={value => {
-            setTitleDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
-            setTitleClick(false);
-            setView('day');
-          }}
-        />
+        <MonthPickerWrapper size={size} backgroundColor={backgroundColor}>
+          <MonthPicker
+            date={moment(tempDate.toFormat('yyyy-LL-dd'))}
+            onChange={value => {
+              setTitleDate(DateTime.fromJSDate(new Date(value.format('YYYY-MM-DD'))));
+              setTitleClick(false);
+              setView('day');
+            }}
+          />
+        </MonthPickerWrapper>
       );
     default:
       return (
-        <CalendarPickerWrapper>
+        <CalendarPickerWrapper size={size} backgroundColor={backgroundColor}>
           <CalendarPicker
             date={moment(titleDate.toFormat('yyyy-LL-dd'))}
             onChange={value => {
