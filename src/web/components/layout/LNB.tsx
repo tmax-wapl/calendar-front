@@ -11,7 +11,7 @@ const LNB = () => {
         캘린더
       </LNBHeader>
       <LNBBody>
-        <DatePicker />
+        <DatePicker backgroundColor="#eeeeee" />
       </LNBBody>
     </LNBContainer>
   );
