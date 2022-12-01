@@ -1,7 +1,7 @@
 import { Mui } from '@wapl/ui';
 import React, { useEffect, useState } from 'react';
 import { ClickArg } from '../../../web/components/body/Calendar';
-import ColorPicker from '../Contextmenu/ColorPicker';
+import { ColorPicker, ContextMenuItem } from '../Contextmenu';
 
 const style = [
   {
@@ -16,7 +16,7 @@ const style = [
   },
 ];
 
-const ContextMenu = ({ target, position, color }: ClickArg) => {
+export const ContextMenu = ({ target, position, color }: ClickArg) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -40,20 +40,8 @@ const ContextMenu = ({ target, position, color }: ClickArg) => {
         <Mui.MenuItem sx={style} disableRipple>
           <ColorPicker color={color} />
         </Mui.MenuItem>
-        <div id="contextBody">
-          <Mui.MenuItem>
-            <div id="menuItem">상황별 메뉴 1</div>
-          </Mui.MenuItem>
-          <Mui.MenuItem>
-            <div id="menuItem">상황별 메뉴 2</div>
-          </Mui.MenuItem>
-          <Mui.MenuItem>
-            <div id="menuItem">상황별 메뉴 3</div>
-          </Mui.MenuItem>
-        </div>
+        <ContextMenuItem type="event" />
       </Mui.Menu>
     </div>
   );
 };
-
-export default ContextMenu;

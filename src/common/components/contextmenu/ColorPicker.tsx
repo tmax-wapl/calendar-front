@@ -6,7 +6,7 @@ type ColorItemType = {
   color: string | null;
 }[];
 
-const ColorPicker = ({ color }: { color?: string }) => {
+export const ColorPicker = ({ color = '' }: { color?: string }) => {
   const [selected, setSelected] = useState('');
 
   const colorItem: ColorItemType = [
@@ -28,7 +28,7 @@ const ColorPicker = ({ color }: { color?: string }) => {
   };
 
   useEffect(() => {
-    setSelected(color);
+    setSelected(color!);
   }, [color]);
 
   return (
@@ -45,5 +45,3 @@ const ColorPicker = ({ color }: { color?: string }) => {
     </ColorWrapper>
   );
 };
-
-export default ColorPicker;

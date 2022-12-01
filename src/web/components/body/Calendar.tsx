@@ -16,7 +16,7 @@ import Popover from '@/common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@/common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import ContextMenu from '@common/components/Contextmenu/ContextMenu';
+import { ContextMenu } from '@common/components/Contextmenu';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -178,70 +178,70 @@ const Calendar: React.FC = () => {
             {
               id: '1',
               title: 'The Title',
-              start: '2022-11-11',
-              end: '2022-11-15',
+              start: '2022-11-28',
+              end: '2022-12-01',
               color: '#FF5154',
             },
             {
               id: '2',
               title: '다른거',
-              start: '2022-11-11',
-              end: '2022-11-13',
+              start: '2022-11-30',
+              end: '2022-12-07',
               color: '#FCBB00',
             },
             {
               id: '3',
               title: '어나더~',
-              start: '2022-11-11',
-              end: '2022-11-20',
+              start: '2022-12-11',
+              end: '2022-12-20',
               color: '#00C1B1',
             },
             {
               title: '1234~',
-              start: '2022-11-11',
-              end: '2022-11-22',
+              start: '2022-12-11',
+              end: '2022-12-22',
               color: '#FF8E3D',
             },
             {
               title: '3456~',
-              start: '2022-11-11',
-              end: '2022-11-24',
+              start: '2022-12-11',
+              end: '2022-12-24',
               color: '#A143FF',
             },
             {
               title: '5678~',
-              start: '2022-11-11',
-              end: '2022-11-26',
+              start: '2022-12-11',
+              end: '2022-12-26',
               color: '#383FCA',
             },
             {
               title: '어나1',
-              start: '2022-11-13',
-              end: '2022-11-17',
+              start: '2022-12-13',
+              end: '2022-12-17',
               color: '#FF46B5',
             },
             {
               title: '어나2',
-              start: '2022-11-13',
-              end: '2022-11-18',
+              start: '2022-12-13',
+              end: '2022-12-18',
               color: '#3384FF',
             },
             {
               title: '어나3',
-              start: '2022-11-13',
-              end: '2022-11-16',
+              start: '2022-12-13',
+              end: '2022-12-16',
               color: '#AECB00',
             },
             {
               title: '어나4',
-              start: '2022-11-13',
-              end: '2022-11-17',
+              start: '2022-12-13',
+              end: '2022-12-17',
               color: '#FCBB00',
             },
             {
               title: 'The Title',
-              start: '2022-11-01',
-              end: '2022-11-04',
+              start: '2022-12-01',
+              end: '2022-12-04',
               color: '#00C064',
             },
           ]}
