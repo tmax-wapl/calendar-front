@@ -20,9 +20,11 @@ interface MenuItem {
 
 export const ContextMenuItem = ({ type }: { type: string }) => {
   const menuItem: { [key: string]: MenuItem[] } = {
-    persona: [{ label: '이름 변경', onClick: console.log('이름 변경'), icon: <Icon.EditLine className="mr-8" /> }],
+    persona: [
+      { label: '이름 변경', onClick: () => console.log('이름 변경'), icon: <Icon.EditLine className="mr-8" /> },
+    ],
     subscribe: [
-      { label: '이름 변경', onClick: console.log('이름 변경'), icon: <Icon.EditLine className="mr-8" /> },
+      { label: '이름 변경', onClick: () => console.log('이름 변경'), icon: <Icon.EditLine className="mr-8" /> },
       { label: '캘린더 삭제', onClick: () => console.log('캘린더 삭제'), icon: <Icon.DeleteLine className="mr-8" /> },
     ],
     event: [
