@@ -131,6 +131,12 @@ export const CalendarContainer = styled.div`
     }
   }
 
+  .fc-scrollgrid-section-liquid {
+    .fc-timegrid-event-harness {
+      min-height: 30px;
+    }
+  }
+
   .fc-timegrid.fc-view {
     // 주/일 보기모드
     // 1. 요일영역
@@ -140,6 +146,9 @@ export const CalendarContainer = styled.div`
     // 3. 시간영역
     // 3-1. 시간텍스트영역 (오전1시, 오전2시, etc)
     // 3-2. 시간일정영역
+    .fc-timegrid-slot {
+      height: 30px;
+    }
     .fc-timegrid-slot-label {
       // 시간텍스트영역 cell (오전1시)
       border-top: none;
@@ -278,4 +287,15 @@ export const ArrowButton = styled.div<{ direction: string }>`
     margin-top: ${props => (props.direction === 'true' ? '7px;' : '0px;')};
     transform: ${props => (props.direction === 'true' ? 'rotate(-45deg);' : 'rotate(135deg);')};
   }
+`;
+
+export const EventWrpper = styled.span`
+  display: flex;
+  flex-direction: column;
+  padding: 4px 8px;
+`;
+
+export const EventSpan = styled.span`
+  display: flex;
+  font-size: 13px;
 `;

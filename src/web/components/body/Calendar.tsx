@@ -10,7 +10,15 @@ import FullCalendar, {
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
-import { AllDayText, AllDayWrapper, ArrowButton, CalendarContainer, FullCalendarWrapper } from './Calendar.style';
+import {
+  AllDayText,
+  AllDayWrapper,
+  ArrowButton,
+  CalendarContainer,
+  EventSpan,
+  EventWrpper,
+  FullCalendarWrapper,
+} from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@/common/components/Popover/Popover';
 import { DateTime } from 'luxon';
@@ -68,9 +76,14 @@ const Calendar: React.FC = () => {
 
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
 
-  const renderEventContent = (args: EventContentArg) => (
-    <span data-color={args.backgroundColor}>{args.event.title}</span>
-  );
+  const renderEventContent = (args: EventContentArg) => {
+    return (
+      <EventWrpper data-color={args.backgroundColor}>
+        <EventSpan>{args.event.title}</EventSpan>
+        <EventSpan>{args?.timeText}</EventSpan>
+      </EventWrpper>
+    );
+  };
 
   const renderMoreClick = (args: MoreLinkArgCustom) => {
     switch (uiStore.viewMode) {
@@ -242,6 +255,12 @@ const Calendar: React.FC = () => {
               title: '어나1',
               start: '2022-12-13',
               end: '2022-12-17',
+              color: '#FF46B5',
+            },
+            {
+              title: '테스트 일정',
+              start: '2022-11-27T15:00:00',
+              end: '2022-11-27T15:15:00',
               color: '#FF46B5',
             },
             {
