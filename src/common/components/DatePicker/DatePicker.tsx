@@ -16,11 +16,18 @@ import PickerBody from './PickerBody';
 interface DatePickerProps {
   size?: number;
   backgroundColor?: string;
+  startingDay?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
   date?: DateTime;
   onDateClick?: (selectedDate: DateTime) => void;
 }
 
-const DatePicker = ({ size = 1, backgroundColor = '#ffffff', date = DateTime.now(), onDateClick }: DatePickerProps) => {
+const DatePicker = ({
+  size = 1,
+  backgroundColor = '#ffffff',
+  startingDay = 7,
+  date = DateTime.now(),
+  onDateClick,
+}: DatePickerProps) => {
   const [selectedDate, setSelectedDate] = useState<DateTime>(date);
   const [titleDate, setTitleDate] = useState<DateTime>(selectedDate);
   const [tempDate, setTempDate] = useState<DateTime>(date);
@@ -76,6 +83,7 @@ const DatePicker = ({ size = 1, backgroundColor = '#ffffff', date = DateTime.now
           <PickerBody
             size={size}
             backgroundColor={backgroundColor}
+            startingDay={startingDay}
             viewMode={view}
             setView={setView}
             setTitleClick={setTitleClick}

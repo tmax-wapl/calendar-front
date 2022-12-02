@@ -1,10 +1,12 @@
 import { DateTime } from 'luxon';
 import { MonthPicker, YearPicker, CalendarPickerView } from '@mui/x-date-pickers';
+import CalendarPicker from './CalendarPicker';
 import { YearPickerWrapper, MonthPickerWrapper } from './PickerBody.style';
 
 interface PickerBodyProps {
   size: number;
   backgroundColor: string;
+  startingDay: number;
   viewMode: CalendarPickerView;
   setView: React.Dispatch<React.SetStateAction<CalendarPickerView>>;
   setTitleClick: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +21,7 @@ interface PickerBodyProps {
 const PickerBody = ({
   size,
   backgroundColor,
+  startingDay,
   viewMode,
   setView,
   setTitleClick,
@@ -57,7 +60,7 @@ const PickerBody = ({
         </MonthPickerWrapper>
       );
     default:
-      return <>luxon test</>;
+      return <CalendarPicker date={selectedDate} startingDay={startingDay} />;
   }
 };
 
