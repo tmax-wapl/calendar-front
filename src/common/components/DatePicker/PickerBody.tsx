@@ -66,6 +66,7 @@ const PickerBody = ({
           backgroundColor={backgroundColor}
           date={titleDate}
           startingDay={startingDay}
+          setTitleDate={setTitleDate}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
         />

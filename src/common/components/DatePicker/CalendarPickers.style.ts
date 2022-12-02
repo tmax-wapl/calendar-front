@@ -35,7 +35,7 @@ export const CustomPickersDay = styled(PickersDay<DateTime>, {
     background-color: rgba(0, 0, 0, 0.06) !important;
   }
   &.MuiPickersDay-today {
-    background-color: #ff6258 !important;
+    background-color: ${({ isOutside }) => (isOutside ? 'rgba(255, 98, 88, 0.3)' : '#ff6258')} !important;
     color: white !important;
   }
 `;

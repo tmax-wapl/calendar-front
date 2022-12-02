@@ -6,6 +6,7 @@ interface CalendarPickerProps {
   backgroundColor: string;
   date: DateTime;
   startingDay: number;
+  setTitleDate: React.Dispatch<React.SetStateAction<DateTime>>;
   selectedDate: DateTime;
   setSelectedDate: React.Dispatch<React.SetStateAction<DateTime>>;
 }
@@ -15,6 +16,7 @@ const CalendarPicker = ({
   backgroundColor,
   date,
   startingDay,
+  setTitleDate,
   selectedDate,
   setSelectedDate,
 }: CalendarPickerProps) => {
@@ -37,8 +39,9 @@ const CalendarPicker = ({
           <CustomPickersDay
             key={value.toFormat('yyyy-LL-dd')}
             day={value}
-            onDaySelect={value => {
-              setSelectedDate(value);
+            onDaySelect={selectedValue => {
+              setSelectedDate(selectedValue);
+              if (date.month !== selectedValue.month) setTitleDate(selectedValue);
             }}
             size={size}
             backgroundcolor={backgroundColor}
