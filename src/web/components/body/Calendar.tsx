@@ -53,7 +53,7 @@ const Calendar: React.FC = () => {
     position: { top: 0, left: 0 },
     color: '',
   });
-
+  let timer: number;
   const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
 
   const renderAllDayContent = ({ text }: { text: string }) =>
@@ -113,9 +113,33 @@ const Calendar: React.FC = () => {
     console.log(jsEvent, event);
   };
 
+  const clear = () => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = undefined;
+    }
+  };
+
+  const handleClick = (dateInfo: DateClickArg) => {
+    dateInfo.jsEvent.stopPropagation();
+    clear();
+    if (dateInfo.jsEvent.detail === 1) {
+      timer = setTimeout(() => {
+        handleDateClick(dateInfo);
+      }, 200);
+    }
+    if (dateInfo.jsEvent.detail % 2 === 0) handleDoubleClick(dateInfo);
+  };
+
   const handleDateClick = (dateInfo: DateClickArg) => {
     const { viewMode } = uiStore;
     viewMode === VIEW_MODE.MONTH ? handleMonthViewClick(dateInfo) : handleDateTimeSelect(dateInfo);
+  };
+
+  const handleDoubleClick = (dateInfo: DateClickArg) => {
+    // TODO: 새 일정 화면 띄워주기
+    console.log(dateInfo);
+    console.log('더블클릭');
   };
 
   const handleRightClick = (e: any) => {
@@ -249,7 +273,7 @@ const Calendar: React.FC = () => {
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
-          dateClick={handleDateClick}
+          dateClick={handleClick}
           eventContent={renderEventContent}
         />
         <Popover {...moreLinkData} />
