@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
-import moment from 'moment';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { CalendarPickerView } from '@mui/x-date-pickers';
 import { Icon } from '@wapl/ui';
@@ -73,7 +72,7 @@ const DatePicker = ({ size = 1, backgroundColor = '#ffffff', date = DateTime.now
         )}
       </DatePickerHeader>
       <DatePickerBody>
-        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('ko')}>
+        <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
           <PickerBody
             size={size}
             backgroundColor={backgroundColor}
