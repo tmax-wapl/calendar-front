@@ -60,7 +60,14 @@ const PickerBody = ({
         </MonthPickerWrapper>
       );
     default:
-      return <CalendarPicker date={selectedDate} startingDay={startingDay} />;
+      return (
+        <CalendarPicker
+          date={titleDate}
+          startingDay={startingDay}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        />
+      );
   }
 };
 
