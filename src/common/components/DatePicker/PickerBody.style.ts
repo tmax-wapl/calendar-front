@@ -1,6 +1,4 @@
 import { styled } from '@wapl/ui';
-import { Moment } from 'moment';
-import { PickersDay } from '@mui/x-date-pickers';
 
 export const YearPickerWrapper = styled.div<{ size: number; backgroundColor: string }>`
   // 년도 선택 height 조정
@@ -65,56 +63,4 @@ export const MonthPickerWrapper = styled.div<{ size: number; backgroundColor: st
       }
     }
   }
-`;
-
-export const CalendarPickerWrapper = styled.div<{ size: number; backgroundColor: string }>`
-  .MuiCalendarPicker-root {
-    width: 100%;
-  }
-
-  .MuiPickersCalendarHeader-root {
-    display: none;
-  }
-
-  .PrivatePickersSlideTransition-root {
-    min-height: calc(240px * ${({ size }) => size});
-  }
-
-  // 일~토 label
-  .MuiDayPicker-weekDayLabel {
-    height: calc(16px * ${({ size }) => size});
-    font-size: 11px;
-    color: #202124;
-    :first-of-type {
-      color: #f44336;
-    }
-  }
-
-  // 날짜 칸 조정
-  .MuiDayPicker-weekContainer {
-    margin: 0px;
-  }
-  .MuiPickersDay-root {
-    height: calc(24px * ${({ size }) => size});
-    margin: calc(8px * ${({ size }) => size});
-    font-weight: 700 !important;
-    background-color: ${({ backgroundColor }) => backgroundColor};
-    border: 0px !important;
-    // 년도, 월 선택을 통해 다른 달로 이동 시, selected 컬러 변경
-    &.Mui-selected {
-      background-color: rgba(0, 0, 0, 0.06) !important;
-    }
-    // 오늘 날짜 컬러 변경
-    &.MuiPickersDay-today {
-      background-color: #ff6258 !important;
-      color: white !important;
-    }
-  }
-`;
-
-export const CustomPickersDay = styled(PickersDay<Moment>, {
-  shouldForwardProp: (prop: string) => prop !== 'isOutside' && prop !== 'isSunday',
-})<{ isOutside: boolean; isSunday: boolean }>`
-  color: ${({ isOutside, isSunday }) =>
-    isOutside ? (isSunday ? 'rgba(244, 67, 54, 0.3)' : '#bdc1c6') : isSunday ? '#F44336' : '#202124'} !important;
 `;

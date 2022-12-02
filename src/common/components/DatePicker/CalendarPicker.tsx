@@ -1,14 +1,23 @@
 import { DateTime, Info } from 'luxon';
-import { CalendarHeader, CalendarContent, CustomPickersDay } from './CalendarPickers.style';
+import { CalendarHeaderContainer, CalendarHeader, CalendarContent, CustomPickersDay } from './CalendarPickers.style';
 
 interface CalendarPickerProps {
+  size: number;
+  backgroundColor: string;
   date: DateTime;
   startingDay: number;
   selectedDate: DateTime;
   setSelectedDate: React.Dispatch<React.SetStateAction<DateTime>>;
 }
 
-const CalendarPicker = ({ date, startingDay, selectedDate, setSelectedDate }: CalendarPickerProps) => {
+const CalendarPicker = ({
+  size,
+  backgroundColor,
+  date,
+  startingDay,
+  selectedDate,
+  setSelectedDate,
+}: CalendarPickerProps) => {
   const weekdays = Array.from(Array(7), (_, i) => Info.weekdays('short', { locale: 'ko' })[(i + startingDay - 1) % 7]);
   const startOfMonth = date.startOf('month').set({ weekday: startingDay });
   const firstDay = startOfMonth > date.startOf('month') ? startOfMonth.minus({ weeks: 1 }) : startOfMonth;
@@ -16,12 +25,14 @@ const CalendarPicker = ({ date, startingDay, selectedDate, setSelectedDate }: Ca
 
   return (
     <>
-      {weekdays.map((day, index) => (
-        <CalendarHeader key={day} isRed={(index + startingDay - 1) % 7 === 6}>
-          {day}
-        </CalendarHeader>
-      ))}
-      <CalendarContent>
+      <CalendarHeaderContainer size={size}>
+        {weekdays.map((day, index) => (
+          <CalendarHeader key={day} isRed={(index + startingDay - 1) % 7 === 6}>
+            {day}
+          </CalendarHeader>
+        ))}
+      </CalendarHeaderContainer>
+      <CalendarContent size={size}>
         {dayOfMonth.map(value => (
           <CustomPickersDay
             key={value.toFormat('yyyy-LL-dd')}
@@ -29,8 +40,11 @@ const CalendarPicker = ({ date, startingDay, selectedDate, setSelectedDate }: Ca
             onDaySelect={value => {
               setSelectedDate(value);
             }}
+            size={size}
+            backgroundcolor={backgroundColor}
             isSunday={value.weekday === 7}
             isOutside={date.month !== value.month}
+            today={value.toFormat('yyyy-LL-dd') === DateTime.local().toFormat('yyyy-LL-dd')}
             selected={value.toFormat('yyyy-LL-dd') === selectedDate.toFormat('yyyy-LL-dd')}
             outsideCurrentMonth={false}
           />

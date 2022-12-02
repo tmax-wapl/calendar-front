@@ -61,8 +61,8 @@ const DatePicker = ({
   };
 
   return (
-    <DatePickerContainer size={size} backgroundColor={backgroundColor}>
-      <DatePickerHeader>
+    <DatePickerContainer backgroundColor={backgroundColor}>
+      <DatePickerHeader size={size}>
         <StyledIconButton onClick={handleSwitch}>
           {titleDate.toFormat('yyyy.LL.')}
           <SwitchIcon />
@@ -78,7 +78,7 @@ const DatePicker = ({
           </CalendarPickerButtonWrapper>
         )}
       </DatePickerHeader>
-      <DatePickerBody>
+      <DatePickerBody size={size}>
         <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
           <PickerBody
             size={size}

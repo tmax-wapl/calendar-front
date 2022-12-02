@@ -1,22 +1,22 @@
 import { styled, Mui } from '@wapl/ui';
 const { IconButton } = Mui;
 
-export const DatePickerContainer = styled.div<{ size: number; backgroundColor?: string }>`
-  width: calc(280px * ${({ size }) => size});
-  height: calc(290px * ${({ size }) => size});
+export const DatePickerContainer = styled.div<{ backgroundColor?: string }>`
+  width: max-content;
+  height: max-content;
   background-color: ${({ backgroundColor }) => backgroundColor};
 `;
 
-export const DatePickerHeader = styled.div`
-  width: 100%;
+export const DatePickerHeader = styled.div<{ size: number }>`
+  width: calc(280px * ${({ size }) => size});
   height: 18px;
   line-height: 18px;
   margin-bottom: 16px;
 `;
 
-export const DatePickerBody = styled.div`
-  width: 100%;
-  height: calc(100% - 34px);
+export const DatePickerBody = styled.div<{ size: number }>`
+  width: calc(280px * ${({ size }) => size});
+  height: calc(256px * ${({ size }) => size});
 `;
 
 export const StyledIconButton = styled(IconButton)`
