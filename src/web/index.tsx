@@ -4,6 +4,7 @@ import Calendar from '@wcomponents/CalendarView';
 import Share from '@wcomponents/ShareView';
 import EventList from '@wcomponents/EventListView';
 import Detail from '@wcomponents/EventDetailView';
+import EventHandleView from '@wcomponents/EventHandleView';
 import { ROUTES } from '@constants/routes';
 
 const WebApp: React.FC = () => {
@@ -35,7 +36,7 @@ const WebApp: React.FC = () => {
         <Route element={<CalendarLayout />}>
           <Route path="*" element={<Navigate to={ROUTES.PATH_MAIN} replace />} />
           <Route path={ROUTES.MAIN} element={<Calendar />}>
-            <Route path={ROUTES.CREATE} element={<EventList />} />
+            <Route path={ROUTES.CREATE} element={<EventHandleView action="create" />} />
             <Route path={ROUTES.DETAIL} element={<Detail />} />
           </Route>
           <Route path={ROUTES.SHARE} element={<Share />} />
