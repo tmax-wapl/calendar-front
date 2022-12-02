@@ -89,6 +89,7 @@ export const CalendarContainer = styled.div`
       .fc-daygrid-day-number {
         padding: 4px;
         color: white;
+        margin-left: 5px;
       }
       .MuiBox-root {
         // 날짜 숫자 박스
@@ -168,9 +169,26 @@ export const CalendarContainer = styled.div`
       // 현재 시간대영역 표시 화살표
       display: none;
     }
+    .fc-timegrid-now-indicator-container {
+      overflow: visible;
+    }
     .fc-timegrid-now-indicator-line {
       // 현재 시간일정영역 표시 선
-      border-color: #222222;
+      border-color: #202124;
+      border-width: 1px 0px 0px;
+      height: 1px;
+      &::after {
+        content: '';
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        margin: 0;
+        vertical-align: middle;
+        background: #202124;
+        border-radius: 50%;
+        top: -4px;
+        left: -4px;
+      }
     }
     .fc-day-today .MuiBox-root {
       // 오늘 요일영역 날짜숫자 박스
