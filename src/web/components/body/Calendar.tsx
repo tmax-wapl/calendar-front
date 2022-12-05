@@ -81,9 +81,13 @@ const Calendar: React.FC = () => {
   const renderEventContent = ({ event, timeText, backgroundColor }: EventContentArg) => {
     const { startStr, endStr } = event;
     const { minutes } = diffTime(startStr, endStr);
-    const isHalfLess = minutes === 15 || minutes === 30;
+    const isHalfLess = minutes <= 30;
 
-    return (
+    return uiStore.viewMode === VIEW_MODE.MONTH ? (
+      <EventWrpper data-color={backgroundColor} isHalfLess>
+        {event.title}
+      </EventWrpper>
+    ) : (
       <EventWrpper data-color={backgroundColor} isHalfLess={isHalfLess}>
         <EventSpan>{event.title}</EventSpan>
         {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
@@ -163,7 +167,7 @@ const Calendar: React.FC = () => {
 
   const handleRightClick = (e: any) => {
     e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
-    const target = e.target?.closest('.fc-daygrid-event');
+    const target = e.target?.closest('.fc-daygrid-event') || e.target?.closest('.fc-timegrid-event');
     if (!target) return;
 
     const { color } = e.target?.querySelector('span')?.dataset;
@@ -268,24 +272,28 @@ const Calendar: React.FC = () => {
               start: '2022-12-04T15:00:00',
               end: '2022-12-04T15:15:00',
               color: '#FF46B5',
+              display: 'block',
             },
             {
               title: '2223123',
               start: '2022-12-04T16:00:00',
               end: '2022-12-04T16:30:00',
               color: '#3384FF',
+              display: 'block',
             },
             {
               title: '2223123',
               start: '2022-12-04T17:00:00',
               end: '2022-12-04T17:45:00',
               color: '#AECB00',
+              display: 'block',
             },
             {
               title: '2223123',
               start: '2022-12-04T18:00:00',
               end: '2022-12-04T19:00:00',
               color: '#3384FF',
+              display: 'block',
             },
 
             {
