@@ -133,7 +133,7 @@ export const CalendarContainer = styled.div`
 
   .fc-scrollgrid-section-liquid {
     .fc-timegrid-event-harness {
-      min-height: 30px;
+      min-height: 20px;
     }
   }
 
@@ -284,15 +284,15 @@ export const ArrowButton = styled.div<{ direction: string }>`
     height: 8px;
     border-top: 0.1rem solid #202124;
     border-right: 0.1rem solid #202124;
-    margin-top: ${props => (props.direction === 'true' ? '7px;' : '0px;')};
-    transform: ${props => (props.direction === 'true' ? 'rotate(-45deg);' : 'rotate(135deg);')};
+    margin-top: ${({ direction }) => (direction === 'true' ? '7px;' : '0px;')};
+    transform: ${({ direction }) => (direction === 'true' ? 'rotate(-45deg);' : 'rotate(135deg);')};
   }
 `;
 
-export const EventWrpper = styled.span`
+export const EventWrpper = styled.span<{ isHalfLess: boolean }>`
   display: flex;
   flex-direction: column;
-  padding: 4px 8px;
+  padding: ${({ isHalfLess }) => (isHalfLess ? '0px 8px' : '4px 8px')};
 `;
 
 export const EventSpan = styled.span`

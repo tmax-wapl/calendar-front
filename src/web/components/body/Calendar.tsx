@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import FullCalendar, {
+  diffDayAndTime,
   EventClickArg,
   EventContentArg,
   EventSegment,
@@ -25,6 +26,7 @@ import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@/common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ContextMenu } from '@common/components/Contextmenu';
+import { diffTime } from '@/utils';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -76,11 +78,15 @@ const Calendar: React.FC = () => {
 
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
 
-  const renderEventContent = (args: EventContentArg) => {
+  const renderEventContent = ({ event, timeText, backgroundColor }: EventContentArg) => {
+    const { startStr, endStr } = event;
+    const { minutes } = diffTime(startStr, endStr);
+    const isHalfLess = minutes === 15 || minutes === 30;
+
     return (
-      <EventWrpper data-color={args.backgroundColor}>
-        <EventSpan>{args.event.title}</EventSpan>
-        <EventSpan>{args?.timeText}</EventSpan>
+      <EventWrpper data-color={backgroundColor} isHalfLess={isHalfLess}>
+        <EventSpan>{event.title}</EventSpan>
+        {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
       </EventWrpper>
     );
   };
@@ -259,10 +265,29 @@ const Calendar: React.FC = () => {
             },
             {
               title: '테스트 일정',
-              start: '2022-11-27T15:00:00',
-              end: '2022-11-27T15:15:00',
+              start: '2022-12-04T15:00:00',
+              end: '2022-12-04T15:15:00',
               color: '#FF46B5',
             },
+            {
+              title: '2223123',
+              start: '2022-12-04T16:00:00',
+              end: '2022-12-04T16:30:00',
+              color: '#3384FF',
+            },
+            {
+              title: '2223123',
+              start: '2022-12-04T17:00:00',
+              end: '2022-12-04T17:45:00',
+              color: '#AECB00',
+            },
+            {
+              title: '2223123',
+              start: '2022-12-04T18:00:00',
+              end: '2022-12-04T19:00:00',
+              color: '#3384FF',
+            },
+
             {
               title: '어나2',
               start: '2022-12-13',
