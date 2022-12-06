@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import { useRef, useState, useCallback, useLayoutEffect } from 'react';
 import { InfiniteScrollLoopWrapper, LoopContents } from './InfiniteScrollLoop.style';
 
 interface Props {
@@ -13,12 +13,12 @@ const InfiniteScrollLoop = ({
   scrollTopValue,
   children,
 }: React.PropsWithChildren<Props>) => {
-  const contentRef = React.useRef<HTMLDivElement | null>(null);
-  const scrollRef = React.useRef<HTMLDivElement | null>(null);
-  const [contentHeight, setContentHeight] = React.useState<number>(0);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [contentHeight, setContentHeight] = useState<number>(0);
   const backupHeight = contentHeight * surroundingBackup;
 
-  const handleScroll = React.useCallback(() => {
+  const handleScroll = useCallback(() => {
     if (!scrollRef.current) return;
     const scrollTop = scrollRef.current.scrollTop;
     if (scrollTop < backupHeight || scrollTop >= backupHeight + contentHeight) {

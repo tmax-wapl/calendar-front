@@ -18,7 +18,7 @@ interface Props {
   repeatEndDate?: DateTime;
   defaultEndDate?: DateTime;
   repeatDays?: boolean[];
-  onChange?: ({ value }: { [key: string]: string | DateTime | boolean[] }) => void;
+  onChange: ({ value }: { [key: string]: string | DateTime | boolean[] }) => void;
 }
 
 interface Unit {
@@ -41,7 +41,7 @@ const RepeatInfo = ({ repeatTime, repeatUnit, repeatEndDate, defaultEndDate, rep
     w: '주',
     m: '월',
     y: '년',
-  };
+  }; // TODO: RRULE 형식과 맞추기
 
   const handleSelectChange = (item: string) => {
     if (!onChange) return;
