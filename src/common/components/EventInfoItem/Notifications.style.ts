@@ -26,9 +26,9 @@ export const IconButton = styled(Mui.IconButton)`
   margin-left: auto;
 `;
 
-export const NotificationAddItem = styled.div`
+export const NotificationAddItem = styled.div<{ isEmpty: boolean }>`
   display: flex;
-  height: 32px;
+  height: ${({ isEmpty }) => (isEmpty ? '44px' : '32px')};
   align-items: center;
   color: #9aa0a6;
   cursor: pointer;

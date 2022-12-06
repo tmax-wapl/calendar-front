@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Icon } from '@wapl/ui';
 import {
   Accordion,
@@ -12,28 +11,26 @@ import {
 } from './Attachments.style';
 
 interface Props {
-  attachments: any[];
+  attachments?: any[];
   editable?: boolean;
 }
 
-const Attachments = ({ attachments, editable = false }: Props) => {
-  const [data, setData] = useState<typeof attachments>(attachments);
-
+const Attachments = ({ attachments = [], editable = false }: Props) => {
   const ExpandIcon = (): JSX.Element => {
     if (editable) return <Icon.Add2Line color="#202124" width={20} height={20} />;
     return <Icon.ArrowBottomLine color="#bdbdbd" width={20} height={20} />;
   };
 
   return (
-    <Accordion disableGutters elevation={0} defaultExpanded={!!data?.length} expanded={editable || undefined}>
+    <Accordion disableGutters elevation={0} defaultExpanded={!!attachments?.length} expanded={editable || undefined}>
       <AccordionSummary expandIcon={<ExpandIcon />}>
         <Icon.AttachLine className="mr-8" color="#202124" width={20} height={20} />
         첨부파일
-        {!editable && <AttachmentsCount>&nbsp;{data.length}</AttachmentsCount>}
+        {!editable && <AttachmentsCount>&nbsp;{attachments.length}</AttachmentsCount>}
       </AccordionSummary>
       <AccordionDetails>
-        {data.length ? (
-          data.map(attachment => (
+        {attachments.length ? (
+          attachments.map(attachment => (
             <AttachmentItem key={attachment.id}>
               <Icon.ImageColor className="mr-8" width={20} height={20} />
               <AttachmentName>
