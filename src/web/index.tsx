@@ -5,8 +5,12 @@ import Share from '@wcomponents/ShareView';
 import EventList from '@wcomponents/EventListView';
 import Detail from '@wcomponents/EventDetailView';
 import { ROUTES } from '@constants/routes';
+import { Observer } from 'mobx-react-lite';
+import { Dialog } from '@common/components/Dialog';
+import { useCalendarStores } from '@/stores/StoreProvider';
 
 const WebApp: React.FC = () => {
+  const { uiStore } = useCalendarStores();
   return (
     <Router basename="/">
       <div style={{ display: 'flex', justifyContent: 'space-around' }}>
@@ -42,6 +46,7 @@ const WebApp: React.FC = () => {
           <Route path={ROUTES.SHARE} element={<Share />} />
         </Route>
       </Routes>
+      <Observer>{() => uiStore.dialogInfo && <Dialog />}</Observer>
     </Router>
   );
 };

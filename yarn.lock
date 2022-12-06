@@ -5629,9 +5629,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wapl/ui@npm:^0.2.13":
-  version: 0.2.15
-  resolution: "@wapl/ui@npm:0.2.15"
+"@wapl/ui@npm:^0.2.16":
+  version: 0.2.16
+  resolution: "@wapl/ui@npm:0.2.16"
   dependencies:
     "@emotion/react": ^11.7.1
     "@emotion/styled": ^11.6.0
@@ -5651,7 +5651,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-router-dom: ^6.2.1
-  checksum: d45fe0ac08ed187116e05cc580d51930a029145bb7e3e3dc04a9b073f4b1413b61efc812354cc1d406574fb7e59b3b2fcf021678dc424091bf8d740014ac4bca
+  checksum: ce265fd0d63e8c0986cd42006b3c4c4eab451f46c88d5366b2090a3134bcefe979a05a57378af8c792fda800ec73ca85dc1a9dcaede1ad6dadf6887bb6c48e87
   languageName: node
   linkType: hard
 
@@ -7571,7 +7571,7 @@ __metadata:
     "@types/react-dom": ^17.0.11
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/ui": ^0.2.13
+    "@wapl/ui": ^0.2.16
     axios: ^1.1.3
     babel-loader: ^9.0.1
     clean-webpack-plugin: ^4.0.0
