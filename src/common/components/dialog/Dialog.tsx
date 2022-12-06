@@ -72,7 +72,7 @@ export const Dialog = () => {
   };
 
   return (
-    <DialogCompo open={open} onClose={handleClose}>
+    <DialogCompo open onClose={handleClose}>
       <DialogWrapper>
         <DialogTitle>{title?.main}</DialogTitle>
         <DialogContent sx={{ whiteSpace: 'pre-line' }}>{title?.sub}</DialogContent>
