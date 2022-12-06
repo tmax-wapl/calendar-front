@@ -21,6 +21,7 @@ export const AccordionDetails = styled(Mui.AccordionDetails, {
   height: 32px;
   align-items: center;
   padding: ${({ editable }) => (editable ? 0 : '0 0 0 28px')};
+  margin-bottom: ${({ editable }) => (editable ? '10px' : '8px')};
   background: ${({ editable }) => (editable ? '#f1f3f4' : 'none')};
   border-radius: 8px;
 `;
@@ -32,4 +33,9 @@ export const ParticipantChip = styled(Chip, {
   :not(:last-child) {
     margin-right: 6px;
   }
+`;
+
+export const ParticipantsPlaceholder = styled.span`
+  margin: 0 12px;
+  color: #bdc1c6;
 `;

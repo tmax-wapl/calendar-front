@@ -4,8 +4,16 @@ body {
   margin: 0px;
 }
 
+.ml-8 {
+  margin-left: 8px;
+}
+
 .mr-8 {
   margin-right: 8px;
+}
+
+.selected {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 ::-webkit-scrollbar {

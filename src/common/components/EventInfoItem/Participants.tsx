@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Icon } from '@wapl/ui';
 import {
   Accordion,
@@ -6,16 +5,15 @@ import {
   ParticipantsCount,
   AccordionDetails,
   ParticipantChip,
+  ParticipantsPlaceholder,
 } from './Participants.style';
 
 interface Props {
-  participants: any[];
+  participants?: any[];
   editable?: boolean;
 }
 
-const Participants = ({ participants, editable = false }: Props) => {
-  const [data, setData] = useState<typeof participants>(participants);
-
+const Participants = ({ participants = [], editable = false }: Props) => {
   const ExpandIcon = (): JSX.Element => {
     if (editable) return <Icon.Add2Line color="#202124" width={20} height={20} />;
     return <Icon.ArrowBottomLine color="#bdbdbd" width={20} height={20} />;
@@ -26,16 +24,20 @@ const Participants = ({ participants, editable = false }: Props) => {
   };
 
   return (
-    <Accordion disableGutters elevation={0} defaultExpanded={!!data?.length} expanded={editable || undefined}>
+    <Accordion disableGutters elevation={0} defaultExpanded={!!participants?.length} expanded={editable || undefined}>
       <AccordionSummary expandIcon={<ExpandIcon />} {...(editable && { onClick: handleSummaryClick })}>
         <Icon.UserLine className="mr-8" color="#202124" width={20} height={20} />
         참여 구성원
-        {!editable && <ParticipantsCount>&nbsp;{data?.length}</ParticipantsCount>}
+        {!editable && <ParticipantsCount>&nbsp;{participants?.length}</ParticipantsCount>}
       </AccordionSummary>
       <AccordionDetails editable={editable}>
-        {data?.map(participant => (
-          <ParticipantChip key={participant.id} label={participant.name} editable={editable} />
-        ))}
+        {participants.length ? (
+          participants.map(participant => (
+            <ParticipantChip key={participant.id} label={participant.name} editable={editable} />
+          ))
+        ) : (
+          <ParticipantsPlaceholder>‘참여 구성원’ 혹은 이 곳을 클릭해 주세요.</ParticipantsPlaceholder>
+        )}
       </AccordionDetails>
     </Accordion>
   );
