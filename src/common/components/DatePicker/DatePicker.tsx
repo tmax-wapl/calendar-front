@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
-import moment from 'moment';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { CalendarPickerView } from '@mui/x-date-pickers';
 import { Icon } from '@wapl/ui';
@@ -17,11 +16,18 @@ import PickerBody from './PickerBody';
 interface DatePickerProps {
   size?: number;
   backgroundColor?: string;
+  startingDay?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
   date?: DateTime;
   onDateClick?: (selectedDate: DateTime) => void;
 }
 
-const DatePicker = ({ size = 1, backgroundColor = '#ffffff', date = DateTime.now(), onDateClick }: DatePickerProps) => {
+const DatePicker = ({
+  size = 1,
+  backgroundColor = '#ffffff',
+  startingDay = 7,
+  date = DateTime.now(),
+  onDateClick,
+}: DatePickerProps) => {
   const [selectedDate, setSelectedDate] = useState<DateTime>(date);
   const [titleDate, setTitleDate] = useState<DateTime>(selectedDate);
   const [tempDate, setTempDate] = useState<DateTime>(date);
@@ -55,8 +61,8 @@ const DatePicker = ({ size = 1, backgroundColor = '#ffffff', date = DateTime.now
   };
 
   return (
-    <DatePickerContainer size={size} backgroundColor={backgroundColor}>
-      <DatePickerHeader>
+    <DatePickerContainer backgroundColor={backgroundColor}>
+      <DatePickerHeader size={size}>
         <StyledIconButton onClick={handleSwitch}>
           {titleDate.toFormat('yyyy.LL.')}
           <SwitchIcon />
@@ -72,11 +78,12 @@ const DatePicker = ({ size = 1, backgroundColor = '#ffffff', date = DateTime.now
           </CalendarPickerButtonWrapper>
         )}
       </DatePickerHeader>
-      <DatePickerBody>
-        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('ko')}>
+      <DatePickerBody size={size}>
+        <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
           <PickerBody
             size={size}
             backgroundColor={backgroundColor}
+            startingDay={startingDay}
             viewMode={view}
             setView={setView}
             setTitleClick={setTitleClick}
