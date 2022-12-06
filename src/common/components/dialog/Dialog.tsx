@@ -7,7 +7,7 @@ import {
   DialogContent,
   Button,
 } from '@wapl/ui';
-import { useCalendarStores } from '../../../stores/StoreProvider';
+import { useCalendarStores } from '@/stores/StoreProvider';
 
 interface DialogButton {
   variant: 'primary' | 'secondary' | 'secondary-web' | 'third' | 'negative';

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { ColorItem, ColorWrapper } from './ColorPicker.style';
 
 type ColorItemType = {
-  value: string | null;
-  color: string | null;
+  value: string;
+  color: string;
 }[];
 
-export const ColorPicker = ({ color = '' }: { color?: string }) => {
+export const ColorPicker = ({ color = '' }: { color: string }) => {
   const [selected, setSelected] = useState('');
 
   const colorItem: ColorItemType = [
@@ -28,7 +28,7 @@ export const ColorPicker = ({ color = '' }: { color?: string }) => {
   };
 
   useEffect(() => {
-    setSelected(color!);
+    setSelected(color);
   }, [color]);
 
   return (

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Mui } from '@wapl/ui';
 import { EventSegment } from '@fullcalendar/react';
-
-import { ClickArg } from '../../../web/components/body/Calendar';
+import { ClickArg } from '@/web/components/body/Calendar';
 import {
   EventIcon,
   EventTitle,
@@ -12,7 +11,7 @@ import {
   PopoverHeader,
   PopoverIcon,
   PopoverTitle,
-} from '../Popover/Popover.style';
+} from './Popover.style';
 
 const PopOver = ({ target, date, position, events }: ClickArg) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

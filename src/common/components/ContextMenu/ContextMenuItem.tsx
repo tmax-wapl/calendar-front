@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import React from 'react';
 import { Icon, Mui, styled } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';

@@ -20,7 +20,6 @@ type MoreLink = {
 };
 
 export const PopoverData: MoreLink = {
-  target: 'ddd',
   date: '11/11 (금)',
   position: { top: 0, left: 0 },
   events: [
@@ -68,7 +67,7 @@ export const PopoverData: MoreLink = {
         title: '어나더~',
         start: '2022-11-11',
         end: '2022-11-20',
-        id: '3',
+
         backgroundColor: '#4432a8',
         borderColor: '#4432a8',
       },
@@ -82,7 +81,7 @@ export const PopoverData: MoreLink = {
         title: 'The Title',
         start: '2022-11-11',
         end: '2022-11-15',
-        id: '1',
+
         backgroundColor: 'red',
         borderColor: 'red',
       },
@@ -96,7 +95,7 @@ export const PopoverData: MoreLink = {
         title: '다른거',
         start: '2022-11-11',
         end: '2022-11-13',
-        id: '2',
+
         backgroundColor: '#32a852',
         borderColor: '#32a852',
       },

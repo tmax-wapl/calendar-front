@@ -266,7 +266,7 @@ export const AllDayText = styled.span`
   margin-right: 5px;
 `;
 
-export const ArrowButton = styled.div<{ direction: string }>`
+export const ArrowButton = styled.div<{ direction: boolean }>`
   display: flex;
   width: 8px;
   height: 8px;
@@ -284,12 +284,12 @@ export const ArrowButton = styled.div<{ direction: string }>`
     height: 8px;
     border-top: 0.1rem solid #202124;
     border-right: 0.1rem solid #202124;
-    margin-top: ${({ direction }) => (direction === 'true' ? '7px;' : '0px;')};
-    transform: ${({ direction }) => (direction === 'true' ? 'rotate(-45deg);' : 'rotate(135deg);')};
+    margin-top: ${({ direction }) => (direction ? '7px;' : '0px;')};
+    transform: ${({ direction }) => (direction ? 'rotate(-45deg);' : 'rotate(135deg);')};
   }
 `;
 
-export const EventWrpper = styled.span<{ isHalfLess: boolean }>`
+export const EventWrapper = styled.span<{ isHalfLess: boolean }>`
   display: flex;
   flex-direction: column;
   padding: ${({ isHalfLess }) => (isHalfLess ? '0px 8px' : '4px 8px')};

@@ -40,14 +40,6 @@ export default class UiStore {
     this.dateRange = dateRange;
   };
 
-  setDateDay: (dateDay: DateTime) => void = dateDay => {
-    this.dateDay = dateDay;
-  };
-
-  setViewMode: (view: string) => void = view => (this.viewMode = view);
-
-  setApi: (ref: CalendarApi) => void = ref => (this.mainApi = ref);
-
   getApi(): CalendarApi {
     return this.mainApi;
   }

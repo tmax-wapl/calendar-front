@@ -16,7 +16,7 @@ import {
   ArrowButton,
   CalendarContainer,
   EventSpan,
-  EventWrpper,
+  EventWrapper,
   FullCalendarWrapper,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -24,9 +24,10 @@ import Popover from '@/common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@/common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { ContextMenu } from '@common/components/Contextmenu';
+import { ContextMenu } from '@/common/components/ContextMenu';
 import { diffTime } from '@/utils';
 import { CalendarEventDummy } from './CalendarDummy';
+import { toLuxon } from '@/utils';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -63,14 +64,14 @@ const Calendar: React.FC = () => {
     position: { top: 0, left: 0 },
     color: '',
   });
-  let timer: number;
+  let timer: any;
   const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
 
   const renderAllDayContent = ({ text }: { text: string }) =>
     uiStore.viewMode === VIEW_MODE.WEEK ? (
       <AllDayWrapper>
         <AllDayText>{text}</AllDayText>
-        <ArrowButton direction={direction.toString()} onClick={handleArrow} />
+        <ArrowButton direction={direction} onClick={handleArrow} />
       </AllDayWrapper>
     ) : (
       text
@@ -84,14 +85,14 @@ const Calendar: React.FC = () => {
     const isHalfLess = minutes <= 30;
 
     return uiStore.viewMode === VIEW_MODE.MONTH ? (
-      <EventWrpper data-color={backgroundColor} isHalfLess>
+      <EventWrapper data-color={backgroundColor} isHalfLess>
         {event.title}
-      </EventWrpper>
+      </EventWrapper>
     ) : (
-      <EventWrpper data-color={backgroundColor} isHalfLess={isHalfLess}>
+      <EventWrapper data-color={backgroundColor} isHalfLess={isHalfLess}>
         <EventSpan>{event.title}</EventSpan>
         {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
-      </EventWrpper>
+      </EventWrapper>
     );
   };
 
@@ -193,21 +194,20 @@ const Calendar: React.FC = () => {
 
   const setDateDay = (dayEl: HTMLElement) => {
     const { date } = dayEl.dataset;
-    const { setDateDay } = uiStore;
-    setDateDay(DateTime.fromJSDate(new Date(date)));
+    uiStore.dateDay = toLuxon(date);
   };
 
   const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];
 
   useEffect(() => {
     if (calendarRef) {
-      uiStore.setApi(calendarRef?.current?.getApi());
+      uiStore.mainApi = calendarRef?.current?.getApi();
     }
   }, []);
 
   useEffect(() => {
-    if (viewMode) uiStore.setViewMode(viewMode);
-    else uiStore.setViewMode(VIEW_MODE.MONTH);
+    if (viewMode) uiStore.viewMode = viewMode;
+    else uiStore.viewMode = VIEW_MODE.MONTH;
   }, [viewMode]);
 
   return (
@@ -237,4 +237,4 @@ const Calendar: React.FC = () => {
   );
 };
 
-export default React.memo(Calendar);
+export default Calendar;
