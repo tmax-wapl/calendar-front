@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import FullCalendar, {
-  diffDayAndTime,
   EventClickArg,
   EventContentArg,
   EventSegment,
@@ -27,6 +26,7 @@ import { VIEW_MODE } from '@/common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ContextMenu } from '@common/components/Contextmenu';
 import { diffTime } from '@/utils';
+import { CalendarEventDummy } from './CalendarDummy';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -221,106 +221,7 @@ const Calendar: React.FC = () => {
           dayCellContent={renderDayContent}
           eventClick={handleEventClick}
           allDayText="종일"
-          events={[
-            {
-              id: '1',
-              title: 'The Title',
-              start: '2022-11-28',
-              end: '2022-12-01',
-              color: '#FF5154',
-            },
-            {
-              id: '2',
-              title: '다른거',
-              start: '2022-11-30',
-              end: '2022-12-07',
-              color: '#FCBB00',
-            },
-            {
-              id: '3',
-              title: '어나더~',
-              start: '2022-12-11',
-              end: '2022-12-20',
-              color: '#00C1B1',
-            },
-            {
-              title: '1234~',
-              start: '2022-12-11',
-              end: '2022-12-22',
-              color: '#FF8E3D',
-            },
-            {
-              title: '3456~',
-              start: '2022-12-11',
-              end: '2022-12-24',
-              color: '#A143FF',
-            },
-            {
-              title: '5678~',
-              start: '2022-12-11',
-              end: '2022-12-26',
-              color: '#383FCA',
-            },
-            {
-              title: '어나1',
-              start: '2022-12-13',
-              end: '2022-12-17',
-              color: '#FF46B5',
-            },
-            {
-              title: '테스트 일정',
-              start: '2022-12-04T15:00:00',
-              end: '2022-12-04T15:15:00',
-              color: '#FF46B5',
-              display: 'block',
-            },
-            {
-              title: '2223123',
-              start: '2022-12-04T16:00:00',
-              end: '2022-12-04T16:30:00',
-              color: '#3384FF',
-              display: 'block',
-            },
-            {
-              title: '2223123',
-              start: '2022-12-04T17:00:00',
-              end: '2022-12-04T17:45:00',
-              color: '#AECB00',
-              display: 'block',
-            },
-            {
-              title: '2223123',
-              start: '2022-12-04T18:00:00',
-              end: '2022-12-04T19:00:00',
-              color: '#3384FF',
-              display: 'block',
-            },
-
-            {
-              title: '어나2',
-              start: '2022-12-13',
-              end: '2022-12-18',
-              color: '#3384FF',
-            },
-            {
-              title: '어나3',
-              start: '2022-12-13',
-              end: '2022-12-16',
-              color: '#AECB00',
-            },
-            {
-              title: '어나4',
-              start: '2022-12-13',
-              end: '2022-12-17',
-              color: '#FCBB00',
-            },
-            {
-              title: 'The Title',
-              start: '2022-12-01',
-              end: '2022-12-04',
-              color: '#00C064',
-            },
-          ]}
+          events={CalendarEventDummy}
           dayMaxEvents={5}
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}
