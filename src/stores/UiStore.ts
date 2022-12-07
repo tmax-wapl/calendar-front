@@ -5,6 +5,15 @@ import { makeObservable, observable } from 'mobx';
 
 type DateRange = { start: DateTime; view: DateTime; end: DateTime };
 
+interface DialogInfo {
+  action: string;
+  onClick: (() => void)[] | ((value?: string) => void)[];
+  data?: {
+    title?: string;
+    name?: string;
+    num?: number;
+  };
+}
 export default class UiStore {
   rootStore: RootStore;
 
@@ -14,20 +23,22 @@ export default class UiStore {
 
   viewMode: string;
 
+  dateDay: DateTime = DateTime.now();
+
+  dialogInfo: DialogInfo = null;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
       dateRange: observable,
+      dateDay: observable,
+      dialogInfo: observable,
     });
   }
 
   setDateRange: (dateRange: DateRange) => void = dateRange => {
     this.dateRange = dateRange;
   };
-
-  setViewMode: (view: string) => void = view => (this.viewMode = view);
-
-  setApi: (ref: CalendarApi) => void = ref => (this.mainApi = ref);
 
   getApi(): CalendarApi {
     return this.mainApi;

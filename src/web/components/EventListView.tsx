@@ -2,8 +2,11 @@ import { EventDTO } from '@common/constants/interfaces';
 import { EventListViewContainer, DateInfo, DateDay, Holiday, Lunar } from './EventListView.style';
 import EventItem from './EventItem';
 import NoResult from './NoResult';
+import { useCalendarStores } from '@/stores/StoreProvider';
+import { Observer } from 'mobx-react-lite';
 
 const EventListView = () => {
+  const { uiStore } = useCalendarStores();
   const eventList: EventDTO[] = [
     {
       color: '#FF46B5',
@@ -28,12 +31,25 @@ const EventListView = () => {
     },
   ]; // TODO: store 변수로 대체
 
+  const getDateDay = (): string => {
+    const { dateDay } = uiStore;
+    return dateDay.toFormat('MM월 dd일 ') + ['', '월', '화', '수', '목', '금', '토', '일'][dateDay.weekday] + '요일';
+  };
+
   return (
     <EventListViewContainer>
       <DateInfo>
-        <DateDay>9월 20일 월요일</DateDay>
-        <Holiday>추석 연휴</Holiday>
-        <Lunar>음력 8.14.</Lunar>
+        <Observer>
+          {() => {
+            return (
+              <>
+                <DateDay>{getDateDay()}</DateDay>
+                <Holiday>추석 연휴</Holiday>
+                <Lunar>음력 8.14.</Lunar>
+              </>
+            );
+          }}
+        </Observer>
       </DateInfo>
       {eventList.length > 0 ? eventList.map((event, index) => <EventItem key={index} event={event} />) : <NoResult />}
     </EventListViewContainer>

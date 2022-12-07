@@ -9,6 +9,7 @@ const HeaderContainer = styled.div`
   align-items: center;
   padding: 20px 20px 10px 16px;
   max-height: 62px;
+  border-bottom: 1px solid #eeeeee;
 `;
 
 const Header: React.FC = () => {

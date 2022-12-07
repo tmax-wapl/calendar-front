@@ -26,7 +26,6 @@ export const CalendarContainer = styled.div`
   } */
   .fc-theme-standard .fc-daygrid tr {
     // 월 보기모드 header row & week row
-    border: solid 1px #eeeeee;
   }
   .fc-theme-standard th {
     // 모든 보기모드 header cell
@@ -36,9 +35,16 @@ export const CalendarContainer = styled.div`
     // 월 보기모드 week cell
     border: 1px solid #e8eaed;
   }
+  .fc-theme-standard .fc-daygrid td:first-of-type {
+    // 월 보기모드 week cell
+    border-left: none;
+  }
+  .fc-theme-standard .fc-daygrid td:last-of-type {
+    // 월 보기모드 week cell
+    border-right: none;
+  }
 
   .fc-scrollgrid table {
-    border-top: 1px solid;
     border-bottom-style: hidden;
   }
   .fc-col-header-cell-cushion {
@@ -83,6 +89,7 @@ export const CalendarContainer = styled.div`
       .fc-daygrid-day-number {
         padding: 4px;
         color: white;
+        margin-left: 5px;
       }
       .MuiBox-root {
         // 날짜 숫자 박스
@@ -124,6 +131,12 @@ export const CalendarContainer = styled.div`
     }
   }
 
+  .fc-scrollgrid-section-liquid {
+    .fc-timegrid-event-harness {
+      min-height: 20px;
+    }
+  }
+
   .fc-timegrid.fc-view {
     // 주/일 보기모드
     // 1. 요일영역
@@ -133,6 +146,9 @@ export const CalendarContainer = styled.div`
     // 3. 시간영역
     // 3-1. 시간텍스트영역 (오전1시, 오전2시, etc)
     // 3-2. 시간일정영역
+    .fc-timegrid-slot {
+      height: 30px;
+    }
     .fc-timegrid-slot-label {
       // 시간텍스트영역 cell (오전1시)
       border-top: none;
@@ -162,9 +178,26 @@ export const CalendarContainer = styled.div`
       // 현재 시간대영역 표시 화살표
       display: none;
     }
+    .fc-timegrid-now-indicator-container {
+      overflow: visible;
+    }
     .fc-timegrid-now-indicator-line {
       // 현재 시간일정영역 표시 선
-      border-color: #222222;
+      border-color: #202124;
+      border-width: 1px 0px 0px;
+      height: 1px;
+      &::after {
+        content: '';
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        margin: 0;
+        vertical-align: middle;
+        background: #202124;
+        border-radius: 50%;
+        top: -4px;
+        left: -4px;
+      }
     }
     .fc-day-today .MuiBox-root {
       // 오늘 요일영역 날짜숫자 박스
@@ -218,8 +251,11 @@ export const CalendarContainer = styled.div`
 `;
 
 export const FullCalendarWrapper = styled.div`
+  display: flex;
   width: 100%;
   height: 100%;
+  padding: 0 16px;
+  border-right: 1px solid #eeeeee;
 `;
 
 export const AllDayWrapper = styled.div`
@@ -230,7 +266,7 @@ export const AllDayText = styled.span`
   margin-right: 5px;
 `;
 
-export const ArrowButton = styled.div<{ direction: string }>`
+export const ArrowButton = styled.div<{ direction: boolean }>`
   display: flex;
   width: 8px;
   height: 8px;
@@ -248,7 +284,18 @@ export const ArrowButton = styled.div<{ direction: string }>`
     height: 8px;
     border-top: 0.1rem solid #202124;
     border-right: 0.1rem solid #202124;
-    margin-top: ${props => (props.direction === 'true' ? '7px;' : '0px;')};
-    transform: ${props => (props.direction === 'true' ? 'rotate(-45deg);' : 'rotate(135deg);')};
+    margin-top: ${({ direction }) => (direction ? '7px;' : '0px;')};
+    transform: ${({ direction }) => (direction ? 'rotate(-45deg);' : 'rotate(135deg);')};
   }
+`;
+
+export const EventWrapper = styled.span<{ isHalfLess: boolean }>`
+  display: flex;
+  flex-direction: column;
+  padding: ${({ isHalfLess }) => (isHalfLess ? '0px 8px' : '4px 8px')};
+`;
+
+export const EventSpan = styled.span`
+  display: flex;
+  font-size: 13px;
 `;

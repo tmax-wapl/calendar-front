@@ -14,6 +14,7 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { DateTime } from 'luxon';
 import { observer } from 'mobx-react-lite';
 import { DATE_EVENT, VIEW_MODE } from '@constants/common';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
 
@@ -31,12 +32,15 @@ const DateButton = observer(() => {
 
 const CalendarHeader: React.FC = () => {
   const { uiStore } = useCalendarStores();
+  const navigate = useNavigate();
+  const { viewMode } = useParams();
+  const { pathname } = useLocation();
   const { dateRange, setDateRange } = uiStore;
 
-  const handleViewChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
+  const handleViewChange = (value: string) => {
     const mainApi = uiStore.getApi();
-    uiStore.setViewMode(value);
+    uiStore.viewMode = value;
+    if (pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`, { replace: true });
     mainApi?.changeView(value);
     handleDayMaxEvents();
   };
@@ -77,11 +81,23 @@ const CalendarHeader: React.FC = () => {
         <TodayButton onClick={() => handleDate(DATE_EVENT.TODAY)}>오늘</TodayButton>
       </LeftContainer>
       <RightContainer>
-        <ViewSelect onChange={handleViewChange}>
-          <option value={VIEW_MODE.MONTH}>월</option>
-          <option value={VIEW_MODE.WEEK}>주</option>
-          <option value={VIEW_MODE.DAY}>일</option>
-        </ViewSelect>
+        <ViewSelect
+          name="viewSelect"
+          types="box"
+          defaultValue={viewMode ?? VIEW_MODE.MONTH}
+          items={[
+            {
+              label: '월',
+
+              value: VIEW_MODE.MONTH,
+            },
+            {
+              label: '주',
+              value: VIEW_MODE.WEEK,
+            },
+          ]}
+          onChange={handleViewChange}
+        />
       </RightContainer>
     </CalendarHeaderContainer>
   );

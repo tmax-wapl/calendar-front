@@ -1,4 +1,4 @@
-import { ROUTES } from '@/common/constants/routes';
+import { ROUTES } from '@common/constants/routes';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { EventHeaderContainer, EventCreateButton, SearchBar } from './EventHeader.style';

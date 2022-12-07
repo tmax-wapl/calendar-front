@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import FullCalendar, {
   EventClickArg,
+  EventContentArg,
   EventSegment,
   MoreLinkArg,
   MoreLinkContentArg,
@@ -8,12 +9,25 @@ import FullCalendar, {
 } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import { AllDayText, AllDayWrapper, ArrowButton, CalendarContainer, FullCalendarWrapper } from './Calendar.style';
+import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
+import {
+  AllDayText,
+  AllDayWrapper,
+  ArrowButton,
+  CalendarContainer,
+  EventSpan,
+  EventWrapper,
+  FullCalendarWrapper,
+} from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import Popover from '@/common/components/Popover/Popover';
+import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
-import { VIEW_MODE } from '@/common/constants/common';
+import { VIEW_MODE } from '@common/constants/common';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { ContextMenu } from '@common/components/ContextMenu';
+import { diffTime } from '@/utils';
+import { CalendarEventDummy } from './CalendarDummy';
+import { toLuxon } from '@/utils';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -24,54 +38,63 @@ interface MoreLinkArgCustom extends MoreLinkArg {
   jsEvent: VUIEventWithPosition;
 }
 
-export type MoreLink = {
-  target?: EventTarget;
-  date: string;
+export type ClickArg = {
+  target?: HTMLElement;
+  date?: string;
   position: { top: number; left: number };
-  events: EventSegment[];
+  events?: EventSegment[];
+  color?: string;
 };
 
 const Calendar: React.FC = () => {
   const calendarRef = useRef<FullCalendar>(null);
   const { uiStore } = useCalendarStores();
+  const { viewMode } = useParams();
   const [direction, setDirection] = useState(false);
-  const [moreLinkData, setMoreLinkData] = useState<MoreLink>({
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const [moreLinkData, setMoreLinkData] = useState<ClickArg>({
     target: null,
     date: null,
     position: { top: 0, left: 0 },
     events: null,
   });
+  const [eventInfo, setEventInfo] = useState<ClickArg>({
+    target: null,
+    position: { top: 0, left: 0 },
+    color: '',
+  });
+  let timer: any;
   const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
 
   const renderAllDayContent = ({ text }: { text: string }) =>
     uiStore.viewMode === VIEW_MODE.WEEK ? (
       <AllDayWrapper>
         <AllDayText>{text}</AllDayText>
-        <ArrowButton direction={direction.toString()} onClick={handleArrow} />
+        <ArrowButton direction={direction} onClick={handleArrow} />
       </AllDayWrapper>
     ) : (
       text
     );
 
-  const handleArrow = () => {
-    const mainApi = uiStore.getApi();
-    direction ? mainApi.setOption('dayMaxEvents', 3) : mainApi.setOption('dayMaxEvents', false);
-    setDirection(!direction);
-  };
-
-  const handleEventClick = (eventInfo: EventClickArg) => {
-    eventInfo.jsEvent.stopPropagation();
-    console.log(eventInfo);
-  };
-
-  const handleDateClick = (e: any) => {
-    // event delegation을 위함
-    if (e.target.closest('.fc-col-header-cell-cushion')) return;
-    const { date } = e?.target?.closest('td')?.dataset;
-    console.log(date);
-  };
-
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
+
+  const renderEventContent = ({ event, timeText, backgroundColor }: EventContentArg) => {
+    const { startStr, endStr } = event;
+    const { minutes } = diffTime(startStr, endStr);
+    const isHalfLess = minutes <= 30;
+
+    return uiStore.viewMode === VIEW_MODE.MONTH ? (
+      <EventWrapper data-color={backgroundColor} isHalfLess>
+        {event.title}
+      </EventWrapper>
+    ) : (
+      <EventWrapper data-color={backgroundColor} isHalfLess={isHalfLess}>
+        <EventSpan>{event.title}</EventSpan>
+        {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
+      </EventWrapper>
+    );
+  };
 
   const renderMoreClick = (args: MoreLinkArgCustom) => {
     switch (uiStore.viewMode) {
@@ -88,9 +111,10 @@ const Calendar: React.FC = () => {
 
   const renderMoreMonth = (args: MoreLinkArgCustom) => {
     const { jsEvent, allSegs, date } = args;
+    const target = jsEvent.target as HTMLElement;
     setMoreLinkData({
       date: DateTime.fromJSDate(date).toFormat('MM/dd') + ` (${getDay(date.getDay())})`,
-      target: jsEvent?.target,
+      target,
       position: { top: jsEvent.clientY, left: jsEvent.clientX },
       events: allSegs,
     });
@@ -102,102 +126,113 @@ const Calendar: React.FC = () => {
     setDirection(true);
   };
 
-  const getDay = (dayDate: number) => {
-    return ['일', '월', '화', '수', '목', '금', '토'][dayDate];
+  const handleArrow = () => {
+    const mainApi = uiStore.getApi();
+    direction ? mainApi.setOption('dayMaxEvents', 3) : mainApi.setOption('dayMaxEvents', false);
+    setDirection(!direction);
   };
+
+  const handleEventClick = ({ event, jsEvent }: EventClickArg) => {
+    jsEvent.stopPropagation();
+    console.log(jsEvent, event);
+  };
+
+  const clear = () => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = undefined;
+    }
+  };
+
+  const handleClick = (dateInfo: DateClickArg) => {
+    dateInfo.jsEvent.stopPropagation();
+    clear();
+    if (dateInfo.jsEvent.detail === 1) {
+      timer = setTimeout(() => {
+        handleDateClick(dateInfo);
+      }, 200);
+    }
+    if (dateInfo.jsEvent.detail % 2 === 0) handleDoubleClick(dateInfo);
+  };
+
+  const handleDateClick = (dateInfo: DateClickArg) => {
+    const { viewMode } = uiStore;
+    viewMode === VIEW_MODE.MONTH ? handleMonthViewClick(dateInfo) : handleDateTimeSelect(dateInfo);
+  };
+
+  const handleDoubleClick = (dateInfo: DateClickArg) => {
+    // TODO: 새 일정 화면 띄워주기
+    console.log(dateInfo);
+    console.log('더블클릭');
+  };
+
+  const handleRightClick = (e: any) => {
+    e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
+    const target = e.target?.closest('.fc-daygrid-event') || e.target?.closest('.fc-timegrid-event');
+    if (!target) return;
+
+    const { color } = e.target?.querySelector('span')?.dataset;
+    setEventInfo({
+      target,
+      position: { top: e.clientY, left: e.clientX },
+      color,
+    });
+  };
+
+  const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
+    setDateDay(dayEl);
+    if (!pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`);
+  };
+
+  const handleDateTimeSelect = ({ dayEl, jsEvent }: DateClickArg) => {
+    if (!(jsEvent.target instanceof HTMLElement)) return;
+    const { time } = jsEvent.target.dataset;
+    setDateDay(dayEl);
+    console.log(time);
+    console.log(dayEl, jsEvent);
+  };
+
+  const setDateDay = (dayEl: HTMLElement) => {
+    const { date } = dayEl.dataset;
+    uiStore.dateDay = toLuxon(date);
+  };
+
+  const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];
 
   useEffect(() => {
     if (calendarRef) {
-      uiStore.setApi(calendarRef?.current?.getApi());
+      uiStore.mainApi = calendarRef?.current?.getApi();
     }
   }, []);
 
+  useEffect(() => {
+    if (viewMode) uiStore.viewMode = viewMode;
+    else uiStore.viewMode = VIEW_MODE.MONTH;
+  }, [viewMode]);
+
   return (
     <CalendarContainer>
-      <FullCalendarWrapper onClick={handleDateClick}>
+      <FullCalendarWrapper onContextMenu={handleRightClick}>
         <FullCalendar
           locale="ko"
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView={VIEW_MODE.MONTH}
+          initialView={viewMode}
           dayCellContent={renderDayContent}
           eventClick={handleEventClick}
           allDayText="종일"
-          events={[
-            {
-              title: 'The Title',
-              start: '2022-11-11',
-              end: '2022-11-15',
-              color: 'red',
-            },
-            {
-              title: '다른거',
-              start: '2022-11-11',
-              end: '2022-11-13',
-              color: '#32a852',
-            },
-            {
-              title: '어나더~',
-              start: '2022-11-11',
-              end: '2022-11-20',
-              color: '#4432a8',
-            },
-            {
-              title: '1234~',
-              start: '2022-11-11',
-              end: '2022-11-22',
-              color: '#32a852',
-            },
-            {
-              title: '3456~',
-              start: '2022-11-11',
-              end: '2022-11-24',
-              color: 'orange',
-            },
-            {
-              title: '5678~',
-              start: '2022-11-11',
-              end: '2022-11-26',
-              color: 'green',
-            },
-            {
-              title: '어나1',
-              start: '2022-11-13',
-              end: '2022-11-17',
-              color: '#4432a8',
-            },
-            {
-              title: '어나2',
-              start: '2022-11-13',
-              end: '2022-11-18',
-              color: 'black',
-            },
-            {
-              title: '어나3',
-              start: '2022-11-13',
-              end: '2022-11-16',
-              color: '#4432a8',
-            },
-            {
-              title: '어나4',
-              start: '2022-11-13',
-              end: '2022-11-17',
-              color: '#4432a8',
-            },
-            {
-              title: 'The Title',
-              start: '2022-11-01',
-              end: '2022-11-04',
-              color: '#000000',
-            },
-          ]}
+          events={CalendarEventDummy}
           dayMaxEvents={5}
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
+          dateClick={handleClick}
+          eventContent={renderEventContent}
+          nowIndicator
         />
+        <Popover {...moreLinkData} />
       </FullCalendarWrapper>
-      <Popover data={moreLinkData} />
+      <ContextMenu {...eventInfo} />
     </CalendarContainer>
   );
 };

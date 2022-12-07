@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Popover } from '@mui/material';
+import { Mui } from '@wapl/ui';
 import { EventSegment } from '@fullcalendar/react';
-
+import { ClickArg } from '@wcomponents/body/Calendar';
 import {
   EventIcon,
   EventTitle,
@@ -11,35 +11,33 @@ import {
   PopoverHeader,
   PopoverIcon,
   PopoverTitle,
-} from './PopOver.style';
-import { MoreLink } from '../../../web/components/body/Calendar';
+} from './Popover.style';
 
-const PopOver = ({ data }: { data: MoreLink }) => {
-  const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
+const PopOver = ({ target, date, position, events }: ClickArg) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClose = () => setAnchorEl(null);
 
   useEffect(() => {
-    if (data?.target) setAnchorEl(data?.target);
-
+    if (target) setAnchorEl(target);
     return () => setAnchorEl(null);
-  }, [data?.target]);
+  }, [target]);
 
   return (
-    <Popover
+    <Mui.Popover
       open={open}
       anchorReference="anchorPosition"
-      anchorPosition={{ top: data?.position?.top, left: data?.position?.left }}
+      anchorPosition={{ top: position?.top, left: position?.left }}
       onClose={handleClose}
     >
       <PopoverContainer>
         <PopoverHeader>
-          <PopoverTitle>{data?.date}</PopoverTitle>
+          <PopoverTitle>{date}</PopoverTitle>
           <PopoverIcon className="fc-popover-close fc-icon fc-icon-x" onClick={handleClose}></PopoverIcon>
         </PopoverHeader>
         <PopoverBody>
-          {data?.events?.map(({ event }: EventSegment) => {
+          {events?.map(({ event }: EventSegment) => {
             return (
               <EventWrapper key={event.title}>
                 <EventIcon backgroundColor={event.backgroundColor} />
@@ -49,7 +47,7 @@ const PopOver = ({ data }: { data: MoreLink }) => {
           })}
         </PopoverBody>
       </PopoverContainer>
-    </Popover>
+    </Mui.Popover>
   );
 };
 
