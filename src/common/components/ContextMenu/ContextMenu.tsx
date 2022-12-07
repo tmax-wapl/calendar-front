@@ -1,6 +1,6 @@
 import { Mui } from '@wapl/ui';
 import React, { useEffect, useState } from 'react';
-import { ClickArg } from '../../../web/components/body/Calendar';
+import { ClickArg } from '@wcomponents/body/Calendar';
 import { ColorPicker, ContextMenuItem } from './index';
 
 const style = [

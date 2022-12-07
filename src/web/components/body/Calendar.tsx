@@ -20,11 +20,11 @@ import {
   FullCalendarWrapper,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import Popover from '@/common/components/Popover/Popover';
+import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
-import { VIEW_MODE } from '@/common/constants/common';
+import { VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { ContextMenu } from '@/common/components/ContextMenu';
+import { ContextMenu } from '@common/components/ContextMenu';
 import { diffTime } from '@/utils';
 import { CalendarEventDummy } from './CalendarDummy';
 import { toLuxon } from '@/utils';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Mui } from '@wapl/ui';
 import { EventSegment } from '@fullcalendar/react';
-import { ClickArg } from '@/web/components/body/Calendar';
+import { ClickArg } from '@wcomponents/body/Calendar';
 import {
   EventIcon,
   EventTitle,
