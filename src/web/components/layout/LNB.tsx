@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Icon } from '@wapl/ui';
 import { LNBContainer, LNBHeader, LNBBody } from './LNB.style';
 import DatePicker from '@common/components/DatePicker/DatePicker';
+import FilterList from './FilterList';
 
 const LNB = () => {
   return (
@@ -12,6 +13,7 @@ const LNB = () => {
       </LNBHeader>
       <LNBBody>
         <DatePicker backgroundColor="#eeeeee" />
+        <FilterList />
       </LNBBody>
     </LNBContainer>
   );
