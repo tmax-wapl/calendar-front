@@ -21,8 +21,8 @@ const CalendarPicker = ({
   setSelectedDate,
 }: CalendarPickerProps) => {
   const weekdays = Array.from(Array(7), (_, i) => Info.weekdays('short', { locale: 'ko' })[(i + startingDay - 1) % 7]);
-  const startOfMonth = date.startOf('month').set({ weekday: startingDay });
-  const firstDay = startOfMonth > date.startOf('month') ? startOfMonth.minus({ weeks: 1 }) : startOfMonth;
+  const startOfMonth = date.set({ day: 1 }).set({ weekday: startingDay });
+  const firstDay = startOfMonth > date.set({ day: 1 }) ? startOfMonth.minus({ weeks: 1 }) : startOfMonth;
   const dayOfMonth = Array.from(Array(42), (_, i) => firstDay.plus({ days: i }));
 
   return (
