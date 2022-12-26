@@ -34,4 +34,4 @@ const EventTitle = ({ title = '', importance, onChange }: Props) => {
   );
 };
 
-export default EventTitle;
+export default React.memo(EventTitle, (prev, next) => prev.title === next.title && prev.importance === next.importance);

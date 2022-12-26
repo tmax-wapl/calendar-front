@@ -1,4 +1,3 @@
-import React from 'react';
 import { Icon, Mui } from '@wapl/ui';
 import { NotificationItemContainer, IconButton } from './NotificationItem.style';
 
@@ -41,4 +40,4 @@ const NotificationItem = ({ index, notification, onChange, onDelete }: Props) =>
   );
 };
 
-export default React.memo(NotificationItem);
+export default NotificationItem;
