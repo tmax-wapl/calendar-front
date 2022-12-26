@@ -52,7 +52,11 @@ const EventHandleView = ({ action }: Props) => {
         leftSide={[{ action: 'close', onClick: () => console.log('close') }]}
       />
       <EventHandleContainer>
-        <EventTitle title={event.title} importance={event.importance} />
+        <EventTitle
+          title={event.title}
+          importance={event.importance}
+          onChange={value => setEvent(prev => ({ ...prev, ...value }))}
+        />
         <EventDate
           allDay={event.allDay}
           startDate={event.startDate}
