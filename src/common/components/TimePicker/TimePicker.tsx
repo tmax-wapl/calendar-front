@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { DateTime } from 'luxon';
 import { TimePickerContainer } from './TimePicker.style';
 import PickerItem from './PickerItem';
@@ -7,9 +7,11 @@ interface Props {
   value?: DateTime;
   height?: number;
   onChange?: (time: DateTime) => void;
+  onOutsideClick?: () => void;
 }
 
-const TimePicker = ({ value = DateTime.now(), height = 200, onChange }: Props) => {
+const TimePicker = ({ value = DateTime.now(), height = 200, onChange, onOutsideClick }: Props) => {
+  const pickerRef = useRef<HTMLDivElement | null>(null);
   const [meridiem, setMeridiem] = useState<string>(value.toFormat('a', { locale: 'ko' }));
   const [hour, setHour] = useState<string>(value.toFormat('h'));
   const [minute, setMinute] = useState<string>(value.toFormat('mm'));
@@ -21,11 +23,26 @@ const TimePicker = ({ value = DateTime.now(), height = 200, onChange }: Props) =
   const handleHourClick = useCallback((hour: string) => setHour(hour), []);
   const handleMinuteClick = useCallback((minute: string) => setMinute(minute), []);
 
+  const handleOutsideClick = (e: MouseEvent) => {
+    if (
+      !(e.target instanceof Node) ||
+      pickerRef.current?.parentElement?.parentElement?.contains(e.target) ||
+      !onOutsideClick
+    )
+      return;
+    onOutsideClick();
+  };
+
   useEffect(() => {
     if (!onChange) return;
     const time = DateTime.fromFormat(`${meridiem} ${hour}:${minute}`, 'a h:mm', { locale: 'ko' });
     onChange(value.set({ hour: time.hour, minute: time.minute }));
   }, [meridiem, hour, minute]);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  });
 
   return (
     <TimePickerContainer ref={pickerRef} height={height}>

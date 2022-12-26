@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,6 +19,7 @@ interface DatePickerProps {
   startingDay?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
   date?: DateTime;
   onDateClick?: (selectedDate: DateTime) => void;
+  onOutsideClick?: () => void;
 }
 
 const DatePicker = ({
@@ -27,7 +28,9 @@ const DatePicker = ({
   startingDay = 7,
   date = DateTime.now(),
   onDateClick,
+  onOutsideClick,
 }: DatePickerProps) => {
+  const pickerRef = useRef<HTMLDivElement | null>(null);
   const [selectedDate, setSelectedDate] = useState<DateTime>(date);
   const [titleDate, setTitleDate] = useState<DateTime>(selectedDate);
   const [tempDate, setTempDate] = useState<DateTime>(date);
@@ -60,8 +63,23 @@ const DatePicker = ({
     setTitleDate(newDate);
   };
 
+  const handleOutsideClick = (e: MouseEvent) => {
+    if (
+      !(e.target instanceof Node) ||
+      pickerRef.current?.parentElement?.parentElement?.contains(e.target) ||
+      !onOutsideClick
+    )
+      return;
+    onOutsideClick();
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  });
+
   return (
-    <DatePickerContainer backgroundColor={backgroundColor}>
+    <DatePickerContainer ref={pickerRef} backgroundColor={backgroundColor}>
       <DatePickerHeader size={size}>
         <StyledIconButton onClick={handleSwitch}>
           {titleDate.toFormat('yyyy.LL.')}
