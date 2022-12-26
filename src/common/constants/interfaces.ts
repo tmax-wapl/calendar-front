@@ -24,9 +24,7 @@ export interface EventModel {
   title: string;
   allDay: boolean;
   startDate: DateTime;
-  startTime: DateTime;
   endDate: DateTime;
-  endTime: DateTime;
   repeatTime: string;
   repeatUnit: string;
   repeatEndDate: DateTime;

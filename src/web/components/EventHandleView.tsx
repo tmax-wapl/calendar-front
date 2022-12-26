@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { DateTime } from 'luxon';
 import { EventModel } from '@common/constants/interfaces';
 import { EventHandleViewContainer, EventHandleContainer } from './EventHandleView.style';
 import EventBar from './EventBar';
@@ -25,9 +24,7 @@ const EventHandleView = ({ action }: Props) => {
   //   title: '일정 제목 일정 제목일정 제목일정 제목일정 제목ㅇㄹㄴㄹㄴㅇㄹ',
   //   allDay: false,
   //   startDate: DateTime.fromMillis(1630627200000), // 2021-09-03T09:00:00
-  //   startTime: DateTime.fromMillis(1630627200000),
   //   endDate: DateTime.fromMillis(1630629000000), // 2021-09-03T09:30:00
-  //   endTime: DateTime.fromMillis(1630629000000),
   //   repeatTime: '1',
   //   repeatUnit: 'w',
   //   repeatEndDate: DateTime.fromMillis(1630627200000),
@@ -58,10 +55,8 @@ const EventHandleView = ({ action }: Props) => {
         <EventTitle title={event.title} importance={event.importance} />
         <EventDate
           allDay={event.allDay}
-          startDate={event.startDate || DateTime.now()}
-          startTime={event.startTime || DateTime.now()}
-          endDate={event.endDate || DateTime.now()}
-          endTime={event.endTime || DateTime.now().plus({ minutes: 30 })}
+          startDate={event.startDate}
+          endDate={event.endDate}
           onChange={value => setEvent(prev => ({ ...prev, ...value }))}
         />
         <RepeatInfo
