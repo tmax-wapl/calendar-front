@@ -14,13 +14,16 @@ import {
 import DatePicker from '../DatePicker/DatePicker';
 import TimePicker from '../TimePicker/TimePicker';
 
-interface Props {
+interface ValueProps {
   allDay?: boolean;
   startDate: DateTime;
   startTime?: DateTime;
   endDate: DateTime;
   endTime?: DateTime;
-  onChange?: (value: { [key: string]: boolean | DateTime }) => void;
+}
+
+interface Props extends ValueProps {
+  onChange?: (value: Partial<ValueProps>) => void;
 }
 
 const EventDate = ({ allDay = false, startDate, startTime, endDate, endTime, onChange }: Props) => {
