@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { ColorItem, ColorWrapper } from './ColorPicker.style';
+import { useEffect, useState } from 'react';
+import { Icon } from '@wapl/ui';
+import { ColorWrapper, ColorItemWrapper } from './ColorPicker.style';
 
 type ColorItemType = {
   value: string;
   color: string;
 }[];
 
-export const ColorPicker = ({ color = '' }: { color: string }) => {
+interface Props {
+  color?: string;
+  iterationCount?: number;
+  columnGap?: number;
+}
+
+export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12 }: Props) => {
   const [selected, setSelected] = useState('');
 
   const colorItem: ColorItemType = [
@@ -32,15 +39,11 @@ export const ColorPicker = ({ color = '' }: { color: string }) => {
   }, [color]);
 
   return (
-    <ColorWrapper>
+    <ColorWrapper iterationCount={iterationCount} columnGap={columnGap}>
       {colorItem.map(({ color, value }) => (
-        <ColorItem
-          key={value}
-          bgColor={color}
-          firstEl={!value}
-          selected={color === selected}
-          onClick={() => handleSelect(color)}
-        />
+        <ColorItemWrapper key={value} selected={color === selected} onClick={() => handleSelect(color)}>
+          <Icon.CalendarDotFill color={color} width={20} height={20} />
+        </ColorItemWrapper>
       ))}
     </ColorWrapper>
   );

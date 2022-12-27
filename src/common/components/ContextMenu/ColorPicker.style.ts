@@ -1,38 +1,41 @@
 import { styled } from '@wapl/ui';
 
-type ColorType = {
-  bgColor: string;
-  firstEl: boolean;
-  selected: boolean;
-};
-
-export const ColorItem = styled.div<ColorType>`
-  display: flex;
-  width: 16.67px;
-  height: 16.67px;
-  background-color: ${({ bgColor }) => bgColor};
-  border-radius: 15px;
-  border: ${({ firstEl }) => (firstEl ? '1px dashed #202124' : 'none')};
-  &::after {
-    content: '';
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 7px;
-    height: 3px;
-    margin-left: 5px;
-    margin-top: 5px;
-    border-top: ${({ firstEl, selected }) =>
-      firstEl && selected ? '0.1rem solid #202124' : !firstEl && selected ? '0.1rem solid white' : 'none'};
-    border-right: ${({ firstEl, selected }) =>
-      firstEl && selected ? '0.1rem solid #202124' : !firstEl && selected ? '0.1rem solid white' : 'none'};
-    transform: rotate(131deg);
-  }
+export const ColorWrapper = styled.div<{ iterationCount: number; columnGap: number }>`
+  display: grid;
+  grid-template-columns: repeat(${({ iterationCount }) => iterationCount}, 1fr);
+  row-gap: 8px;
+  column-gap: ${({ columnGap }) => `${columnGap}px`};
 `;
 
-export const ColorWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  row-gap: 11px;
-  column-gap: 15.3px;
+export const ColorItemWrapper = styled.div<{ selected: boolean }>`
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  :first-of-type {
+    path {
+      stroke: #202124;
+      stroke-width: 1;
+      stroke-dasharray: 3, 4;
+      stroke-linecap: round;
+    }
+    &::after {
+      ${({ selected }) =>
+        selected &&
+        `border-top: 0.1rem solid #202124;
+        border-right: 0.1rem solid #202124;`}
+    }
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    left: 30%;
+    top: 35%;
+    width: 7px;
+    height: 3px;
+    ${({ selected }) =>
+      selected &&
+      `border-top: 0.1rem solid #fff;
+      border-right: 0.1rem solid #fff;`}
+    transform: rotate(131deg);
+  }
 `;
