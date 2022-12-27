@@ -16,3 +16,9 @@ export const EventHandleContainer = styled.div`
   padding: 0 20px 20px;
   font-size: 14px;
 `;
+
+export const FromInfo = styled.div`
+  display: flex;
+  height: 44px;
+  align-items: center;
+`;

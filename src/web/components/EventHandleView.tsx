@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Icon } from '@wapl/ui';
 import { EventModel } from '@common/constants/interfaces';
-import { EventHandleViewContainer, EventHandleContainer } from './EventHandleView.style';
+import { EventHandleViewContainer, EventHandleContainer, FromInfo } from './EventHandleView.style';
 import EventBar from './EventBar';
 import {
   EventTitle,
@@ -11,7 +12,8 @@ import {
   Notifications,
   Description,
   Attachments,
-} from '@/common/components/EventInfoItem';
+} from '@common/components/EventInfoItem';
+import { ColorPicker } from '@common/components/ContextMenu';
 
 interface Props {
   action: 'create' | 'edit';
@@ -71,6 +73,10 @@ const EventHandleView = ({ action }: Props) => {
           repeatDays={event.repeatDays}
           onChange={value => setEvent(prev => ({ ...prev, ...value }))}
         />
+        <FromInfo>
+          <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
+          <ColorPicker iterationCount={11} columnGap={8} />
+        </FromInfo>
         <Participants participants={event.participants} editable />
         <Location location={event.location} onChange={value => setEvent(prev => ({ ...prev, ...value }))} editable />
         <Notifications
