@@ -105,6 +105,9 @@ export const CalendarContainer = styled.div`
         color: white;
       }
     }
+    .fc-scroller {
+      overflow: hidden !important;
+    }
   }
   .fc-timegrid-axis-frame {
     justify-content: center;

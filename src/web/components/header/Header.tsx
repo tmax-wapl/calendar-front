@@ -10,6 +10,7 @@ const HeaderContainer = styled.div`
   padding: 20px 20px 10px 16px;
   max-height: 62px;
   border-bottom: 1px solid #eeeeee;
+  box-sizing: border-box;
 `;
 
 const Header: React.FC = () => {
