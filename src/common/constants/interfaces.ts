@@ -36,3 +36,26 @@ export interface EventModel {
   description: string;
   attachments: any[];
 }
+
+export interface CalendarDTO {
+  color: string;
+  eventList?: EventDTO[];
+  id: number;
+  modDate: string;
+  modUserId: number;
+  name: string;
+  regDate: string;
+  regUserId: number;
+  type?: string;
+  url?: string;
+}
+
+// response data 명시 해주기로..
+export interface ResponseData<T = any> {
+  error?: {
+    status: number;
+    message: string;
+  };
+  response: T;
+  success: boolean;
+}
