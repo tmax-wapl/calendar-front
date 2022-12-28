@@ -1,3 +1,4 @@
+import React from 'react';
 import { Icon } from '@wapl/ui';
 import {
   Accordion,
@@ -43,4 +44,4 @@ const Participants = ({ participants = [], editable = false }: Props) => {
   );
 };
 
-export default Participants;
+export default React.memo(Participants, (prev, next) => prev.participants === next.participants);

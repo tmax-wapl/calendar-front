@@ -12,7 +12,7 @@ const CalendarView: React.FC = () => {
           display: 'flex',
           width: '100%',
           flexDirection: 'row',
-          height: 'calc(100vh - 52px)',
+          height: 'calc(100% - 62px)',
         }}
       >
         <Calendar />

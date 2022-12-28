@@ -84,12 +84,12 @@ export const CalendarContainer = styled.div`
         background-color: #ff6258;
         border-radius: 15px;
         transform: translate(11px, 11px);
+        justify-content: center;
       }
 
       .fc-daygrid-day-number {
         padding: 4px;
         color: white;
-        margin-left: 5px;
       }
       .MuiBox-root {
         // 날짜 숫자 박스
@@ -104,6 +104,9 @@ export const CalendarContainer = styled.div`
         //background-color: #ff6258;
         color: white;
       }
+    }
+    .fc-scroller {
+      overflow: hidden !important;
     }
   }
   .fc-timegrid-axis-frame {

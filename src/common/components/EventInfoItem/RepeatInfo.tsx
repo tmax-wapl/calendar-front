@@ -12,13 +12,16 @@ import {
 } from './RepeatInfo.style';
 import DatePicker from '../DatePicker/DatePicker';
 
-interface Props {
+interface ValueProps {
   repeatTime?: string;
   repeatUnit?: string;
   repeatEndDate?: DateTime;
   defaultEndDate?: DateTime;
   repeatDays?: boolean[];
-  onChange: ({ value }: { [key: string]: string | DateTime | boolean[] }) => void;
+}
+
+interface Props extends ValueProps {
+  onChange: (value: ValueProps) => void;
 }
 
 interface Unit {

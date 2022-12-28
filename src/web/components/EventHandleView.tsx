@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { DateTime } from 'luxon';
+import { Icon } from '@wapl/ui';
 import { EventModel } from '@common/constants/interfaces';
-import { EventHandleViewContainer, EventHandleContainer } from './EventHandleView.style';
+import { EventHandleViewContainer, EventHandleContainer, FromInfo } from './EventHandleView.style';
 import EventBar from './EventBar';
 import {
   EventTitle,
@@ -12,7 +12,8 @@ import {
   Notifications,
   Description,
   Attachments,
-} from '@/common/components/EventInfoItem';
+} from '@common/components/EventInfoItem';
+import { ColorPicker } from '@common/components/ContextMenu';
 
 interface Props {
   action: 'create' | 'edit';
@@ -25,9 +26,7 @@ const EventHandleView = ({ action }: Props) => {
   //   title: '일정 제목 일정 제목일정 제목일정 제목일정 제목ㅇㄹㄴㄹㄴㅇㄹ',
   //   allDay: false,
   //   startDate: DateTime.fromMillis(1630627200000), // 2021-09-03T09:00:00
-  //   startTime: DateTime.fromMillis(1630627200000),
   //   endDate: DateTime.fromMillis(1630629000000), // 2021-09-03T09:30:00
-  //   endTime: DateTime.fromMillis(1630629000000),
   //   repeatTime: '1',
   //   repeatUnit: 'w',
   //   repeatEndDate: DateTime.fromMillis(1630627200000),
@@ -55,13 +54,15 @@ const EventHandleView = ({ action }: Props) => {
         leftSide={[{ action: 'close', onClick: () => console.log('close') }]}
       />
       <EventHandleContainer>
-        <EventTitle title={event.title} importance={event.importance} />
+        <EventTitle
+          title={event.title}
+          importance={event.importance}
+          onChange={value => setEvent(prev => ({ ...prev, ...value }))}
+        />
         <EventDate
           allDay={event.allDay}
-          startDate={event.startDate || DateTime.now()}
-          startTime={event.startTime || DateTime.now()}
-          endDate={event.endDate || DateTime.now()}
-          endTime={event.endTime || DateTime.now().plus({ minutes: 30 })}
+          startDate={event.startDate}
+          endDate={event.endDate}
           onChange={value => setEvent(prev => ({ ...prev, ...value }))}
         />
         <RepeatInfo
@@ -72,6 +73,10 @@ const EventHandleView = ({ action }: Props) => {
           repeatDays={event.repeatDays}
           onChange={value => setEvent(prev => ({ ...prev, ...value }))}
         />
+        <FromInfo>
+          <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
+          <ColorPicker iterationCount={11} columnGap={8} />
+        </FromInfo>
         <Participants participants={event.participants} editable />
         <Location location={event.location} onChange={value => setEvent(prev => ({ ...prev, ...value }))} editable />
         <Notifications

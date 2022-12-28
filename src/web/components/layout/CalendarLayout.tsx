@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 
 const CalendarLayout: React.FC = () => {
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+    <div style={{ display: 'flex', width: '100%', height: 'calc(100% - 23px)' }}>
       <LNB />
       <Outlet />
     </div>

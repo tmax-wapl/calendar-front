@@ -1,3 +1,4 @@
+import React from 'react';
 import { Icon } from '@wapl/ui';
 import { NotificationsContainer, ItemContainer, NotificationAddItem, NotificationsTitle } from './Notifications.style';
 import NotificationItem from './NotificationItem';
@@ -73,4 +74,4 @@ const Notifications = ({ notifications = ['0'], onChange, editable = false }: Pr
   );
 };
 
-export default Notifications;
+export default React.memo(Notifications, (prev, next) => prev.notifications === next.notifications);

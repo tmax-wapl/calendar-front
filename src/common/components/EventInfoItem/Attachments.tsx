@@ -1,3 +1,4 @@
+import React from 'react';
 import { Icon } from '@wapl/ui';
 import {
   Accordion,
@@ -48,4 +49,4 @@ const Attachments = ({ attachments = [], editable = false }: Props) => {
   );
 };
 
-export default Attachments;
+export default React.memo(Attachments, (prev, next) => prev.attachments === next.attachments);

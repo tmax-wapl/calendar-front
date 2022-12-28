@@ -1,4 +1,4 @@
-import { styled, Mui, TextField } from '@wapl/ui';
+import { styled } from '@wapl/ui';
 
 export const EventHandleViewContainer = styled.div`
   display: flex;
@@ -15,4 +15,10 @@ export const EventHandleContainer = styled.div`
   height: 100%;
   padding: 0 20px 20px;
   font-size: 14px;
+`;
+
+export const FromInfo = styled.div`
+  display: flex;
+  height: 44px;
+  align-items: center;
 `;
