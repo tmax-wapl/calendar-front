@@ -1,40 +1,57 @@
 import { DateTime } from 'luxon';
 
 export interface EventDTO {
+  id: number;
+  calId: number;
   color: string;
   importance: boolean;
-  title: string;
+  name: string;
   allDay: boolean;
-  start: string;
-  end: string;
-  time: string;
-  repeat?: string;
+  startDate: string;
   endDate?: string;
+  modDate?: string;
+  modUserId?: number;
+  regDate?: string;
+  regUserId?: number;
   calendarName: string;
-  creator?: string;
-  participants?: any[];
+  rrule?: string;
+  alarmList?: AlarmDTO[];
+  exceptionList?: ExceptionDTO[];
   location?: string;
-  notifications?: any[];
   description?: string;
+  repeatEndDate?: string;
+  repeatStartDate?: string;
+  repeatgroupId?: number;
+  participants?: any[];
   attachments?: any[];
+  notifications?: any[];
 }
 
 export interface EventModel {
-  importance: boolean;
-  title: string;
-  allDay: boolean;
-  startDate: DateTime;
-  endDate: DateTime;
-  repeatTime: string;
-  repeatUnit: string;
-  repeatEndDate: DateTime;
-  repeatDays: boolean[];
+  id: number;
+  calId: number;
   color: string;
-  participants: any[];
-  location: string;
-  notifications: any[];
-  description: string;
-  attachments: any[];
+  importance: boolean;
+  name: string;
+  allDay: boolean;
+  startDate: string;
+  endDate?: string;
+  modDate?: string;
+  modUserId?: number;
+  regDate?: string;
+  regUserId?: number;
+  calendarName: string;
+  rrule?: string;
+  alarmList?: AlarmDTO[];
+  exceptionList?: ExceptionDTO[];
+  location?: string;
+  description?: string;
+  repeatEndDate?: string;
+  repeatStartDate?: string;
+  repeatgroupId?: number;
+  participants?: any[];
+  attachments?: any[];
+  notifications?: any[];
 }
 
 export interface CalendarDTO {
@@ -48,6 +65,65 @@ export interface CalendarDTO {
   regUserId: number;
   type?: string;
   url?: string;
+}
+
+export interface CalendarPersonaDTO {
+  userId: number;
+  calId: number;
+  isMain: boolean;
+  nickname: string;
+  color: string;
+  isVisible: boolean;
+  calendarList?: CalendarDTO[];
+}
+
+export interface CalendarPatchDTO {
+  userId: number;
+  name: string;
+  color: string;
+}
+
+export interface EventRangeDTO {
+  allday: string;
+  calId: number;
+  color: string;
+  endDate: string;
+  id: number;
+  importance: string;
+  name: string;
+  repeatEndDate: string;
+  repeatStartDate: string;
+  repeatgroupId: number;
+  rrule: string;
+  startDate: string;
+}
+
+export interface EventSharePersonaDTO {
+  toUserId: number;
+  eventId: number;
+  permission: string;
+  fromUserId: number;
+  type: string;
+  modUserId: string;
+  roomId: string;
+  shareEventList?: EventDTO[];
+}
+
+export interface AlarmDTO {
+  endDate: string;
+  eventId: number;
+  id: number;
+  onGoing: string;
+  startDate: string;
+  time: string;
+  timestamp: string;
+  userTime: string;
+}
+
+export interface ExceptionDTO {
+  eventId: number;
+  exceptionDate: string;
+  isRemove: string;
 }
 
 // response data 명시 해주기로..
