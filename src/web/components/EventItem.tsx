@@ -13,10 +13,10 @@ const EventItem = ({ event, isDetail = false }: Props) => {
       <ItemTitleContainer isDetail={isDetail}>
         <Icon.CalendarDotFill color={event.color} width={20} height={20} />
         {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
-        <EventTitle>{event.title}</EventTitle>
+        <EventTitle>{event.name}</EventTitle>
       </ItemTitleContainer>
-      <EventInfo>{event.time}</EventInfo>
-      <EventInfo>{event.repeat}</EventInfo>
+      <EventInfo>{event.startDate}</EventInfo>
+      <EventInfo>{event.repeatStartDate}</EventInfo>
       {isDetail ? <EventInfo>{event.endDate}</EventInfo> : <CalendarName>{event.calendarName}</CalendarName>}
     </EventItemContainer>
   );

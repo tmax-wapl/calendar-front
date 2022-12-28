@@ -11,17 +11,16 @@ const EventDetailView = () => {
   const { detailId } = useParams();
   const [editable, setEditable] = useState<boolean>(false);
   const event: EventDTO = {
+    id: 0,
+    calId: 0,
     color: '#FF46B5',
     importance: true,
-    title: '일정 제목 일정 제목일정 제목일정 제목일정 제목ㅇㄹㄴㄹㄴㅇㄹ',
+    name: '일정 제목 일정 제목일정 제목일정 제목일정 제목ㅇㄹㄴㄹㄴㅇㄹ',
     allDay: false,
-    start: '2021-09-03T09:00:00',
-    end: '2021-09-03T09:30:00',
-    time: '오전 9:00 ~ 오전 9:30',
-    repeat: '1주 간격, 월 화 수 목 금 토 일 반복',
-    endDate: '2022. 07. 23. 종료',
+    startDate: '2021-09-03T09:00:00',
+    endDate: '2021-09-03T09:30:00',
     calendarName: '캐릭터A의 캘린더',
-    creator: '정성욱',
+    regUserId: 0,
     participants: [
       { id: 1, name: '오써니' },
       { id: 2, name: '김써니' },
@@ -54,7 +53,7 @@ const EventDetailView = () => {
         <FromInfo>
           <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
           {event.calendarName}
-          <Creator>&nbsp;{`(일정 생성: ${event.creator})`}</Creator>
+          <Creator>&nbsp;{`(일정 생성: ${event.regUserId})`}</Creator>
         </FromInfo>
         {event.participants?.length && <Participants participants={event.participants} />}
         {event.location && <Location location={event.location} />}

@@ -14,6 +14,7 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
+import { DateTime } from 'luxon';
 
 interface Props {
   action: 'create' | 'edit';
@@ -61,18 +62,18 @@ const EventHandleView = ({ action }: Props) => {
         />
         <EventDate
           allDay={event.allDay}
-          startDate={event.startDate}
-          endDate={event.endDate}
-          onChange={value => setEvent(prev => ({ ...prev, ...value }))}
+          startDate={DateTime.now()}
+          endDate={DateTime.now().plus({ minutes: 30 })}
+          // onChange={value => setEvent(prev => ({ ...prev, ...value }))}
         />
-        <RepeatInfo
+        {/* <RepeatInfo
           repeatTime={event.repeatTime}
           repeatUnit={event.repeatUnit}
           repeatEndDate={event.repeatEndDate}
           defaultEndDate={event.startDate?.plus({ years: 1 })}
           repeatDays={event.repeatDays}
           onChange={value => setEvent(prev => ({ ...prev, ...value }))}
-        />
+        /> */}
         <FromInfo>
           <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
           <ColorPicker iterationCount={11} columnGap={8} />
