@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useCalendarStores } from '@/stores/StoreProvider';
 import { Checkbox, Icon } from '@wapl/ui';
 import { CharacterContainer, SubscriptionContainer, CheckBoxWrapper, SubscriptionButton } from './CharacterList.style';
 
 const CharacterList = () => {
+  const { uiStore } = useCalendarStores();
   const [categoryCheckList, setCategoryCheckList] = useState<Array<boolean>>([true, false]);
   const [subscriptionCheckList, setSubscriptionCheckList] = useState<Array<boolean>>([true, true, false]);
   const categoryItems = [
@@ -14,6 +16,10 @@ const CharacterList = () => {
     { label: 'G 캘린더', type: 'shared', id: 4, color: '#A143FF' },
     { label: 'PL2-2', type: 'shared', id: 5, color: '#FCBB00' },
   ];
+
+  const closeDialog = () => {
+    uiStore.inputDialogInfo = null;
+  };
 
   return (
     <CharacterContainer>
@@ -33,7 +39,16 @@ const CharacterList = () => {
         />
       ))}
       <SubscriptionContainer>
-        <SubscriptionButton>
+        <SubscriptionButton
+          onClick={() => {
+            uiStore.inputDialogInfo = {
+              action: 'subscribe',
+              onCloseClick: closeDialog,
+              onClick: [closeDialog, closeDialog],
+              data: { placeholder: 'URL 입력' },
+            };
+          }}
+        >
           <Icon.Add2Line width={20} height={20} className="mr-8" color="#80868B" />
           구독 캘린더 추가
         </SubscriptionButton>

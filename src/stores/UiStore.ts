@@ -14,6 +14,17 @@ interface DialogInfo {
     num?: number;
   };
 }
+
+interface InputDialogInfo {
+  action: string;
+  onCloseClick?: () => void;
+  onClick: (() => void)[] | ((value?: string) => void)[];
+  data?: {
+    title?: string;
+    placeholder?: string;
+  };
+}
+
 export default class UiStore {
   rootStore: RootStore;
 
@@ -27,12 +38,15 @@ export default class UiStore {
 
   dialogInfo: DialogInfo = null;
 
+  inputDialogInfo: InputDialogInfo = null;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
       dateRange: observable,
       dateDay: observable,
       dialogInfo: observable,
+      inputDialogInfo: observable,
     });
   }
 
