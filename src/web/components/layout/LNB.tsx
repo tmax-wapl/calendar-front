@@ -3,6 +3,7 @@ import { Icon } from '@wapl/ui';
 import { LNBContainer, LNBHeader, LNBBody } from './LNB.style';
 import DatePicker from '@common/components/DatePicker/DatePicker';
 import FilterList from './FilterList';
+import CharacterList from './CharacterList';
 
 const LNB = () => {
   return (
@@ -12,8 +13,9 @@ const LNB = () => {
         캘린더
       </LNBHeader>
       <LNBBody>
-        <DatePicker backgroundColor="#eeeeee" />
+        <DatePicker backgroundColor="#F8F9FA" />
         <FilterList />
+        <CharacterList />
       </LNBBody>
     </LNBContainer>
   );

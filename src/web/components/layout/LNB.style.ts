@@ -2,8 +2,8 @@ import { styled } from '@wapl/ui';
 
 export const LNBContainer = styled.div`
   width: 320px;
-  height: auto;
-  background-color: #eeeeee;
+  height: 100%;
+  background-color: #f8f9fa;
   flex-shrink: 0;
 `;
 
@@ -16,5 +16,7 @@ export const LNBHeader = styled.div`
 `;
 
 export const LNBBody = styled.div`
-  padding: 0px 20px;
+  height: calc(100% - 74px);
+  padding: 0px 20px 16px 20px;
+  box-sizing: border-box;
 `;

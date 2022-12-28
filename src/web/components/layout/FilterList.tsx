@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { FilterContainer } from './FilterList.style';
 import { Checkbox } from '@wapl/ui';
-import { CheckBoxWrapper } from './FilterList.style';
+import { FilterContainer, CheckBoxWrapper } from './FilterList.style';
 
 const FilterList = () => {
   const [checkList, setCheckList] = useState<Array<boolean>>([false, true, true]);
