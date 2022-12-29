@@ -18,7 +18,6 @@ export const Input = styled(TextField)`
 `;
 
 export const SubTitle = styled.div`
-  height: 15px;
   font-size: 12px;
   color: #80868b;
   margin: 0px 14px 8px 20px;
