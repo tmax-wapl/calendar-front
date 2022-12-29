@@ -1,6 +1,6 @@
 import { styled, Mui } from '@wapl/ui';
 
-export const CheckBoxWrapper = styled(Mui.FormControlLabel)`
+export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: string }>`
   display: flex;
   margin: 0px;
   height: 44px;
@@ -8,5 +8,8 @@ export const CheckBoxWrapper = styled(Mui.FormControlLabel)`
   .MuiFormControlLabel-label {
     font-size: 14px;
     margin-left: 8px;
+  }
+  .Mui-checked {
+    background-color: ${({ calendarcolor }) => calendarcolor} !important;
   }
 `;

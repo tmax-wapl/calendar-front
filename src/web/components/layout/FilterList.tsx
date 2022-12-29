@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Checkbox } from '@wapl/ui';
-import { FilterContainer, CheckBoxWrapper } from './FilterList.style';
+import { CheckBoxWrapper } from './FilterList.style';
 
 const FilterList = () => {
   const [checkList, setCheckList] = useState<Array<boolean>>([false, true, true]);
@@ -11,7 +11,7 @@ const FilterList = () => {
   ];
 
   return (
-    <FilterContainer>
+    <>
       {filterItems.map((filter, index) => (
         <CheckBoxWrapper
           key={filter.type}
@@ -26,7 +26,7 @@ const FilterList = () => {
           label={filter.label}
         />
       ))}
-    </FilterContainer>
+    </>
   );
 };
 
