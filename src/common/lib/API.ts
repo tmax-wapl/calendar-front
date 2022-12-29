@@ -51,7 +51,7 @@ class APIClass {
    * @param  {object} config
    * @return {Promise}
    */
-  async post(url: string, params: any, config?: AxiosRequestConfig) {
+  async post<ReqT, ResT>(url: string, params: ReqT, config?: AxiosRequestConfig): Promise<ResponseData<ResT>> {
     return this.instance.post(url, params || undefined, config || undefined);
   }
   /**
@@ -72,7 +72,7 @@ class APIClass {
    * @param  {object} params
    * @return {Promise}
    */
-  async delete(url: string, params?: AxiosRequestConfig) {
+  async delete<ResT>(url: string, params?: AxiosRequestConfig): Promise<ResponseData<ResT>> {
     const data = params ? { data: params } : undefined;
     return this.instance.delete(url, data);
   }
@@ -84,8 +84,8 @@ class APIClass {
    * @param  {object} params
    * @return {Promise}
    */
-  async patch(url: string, params?: AxiosRequestConfig) {
-    return this.instance.patch(url, params || undefined);
+  async patch<ResT>(url: string, params: any, config?: AxiosRequestConfig): Promise<ResponseData<ResT>> {
+    return this.instance.patch(url, params || undefined, config || undefined);
   }
 }
 
