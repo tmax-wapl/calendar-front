@@ -24,7 +24,6 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { ContextMenu } from '@common/components/ContextMenu';
 import { diffTime } from '@/utils';
 import { CalendarEventDummy } from './CalendarDummy';
 import { toLuxon } from '@/utils';
@@ -58,11 +57,6 @@ const Calendar: React.FC = () => {
     date: null,
     position: { top: 0, left: 0 },
     events: null,
-  });
-  const [eventInfo, setEventInfo] = useState<ClickArg>({
-    target: null,
-    position: { top: 0, left: 0 },
-    color: '',
   });
   let timer: any;
   const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
@@ -172,11 +166,12 @@ const Calendar: React.FC = () => {
     if (!target) return;
 
     const { color } = e.target?.querySelector('span')?.dataset;
-    setEventInfo({
+    uiStore.contextClickArg = {
       target,
       position: { top: e.clientY, left: e.clientX },
       color,
-    });
+      type: 'event',
+    };
   };
 
   const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
@@ -232,7 +227,6 @@ const Calendar: React.FC = () => {
         />
         <Popover {...moreLinkData} />
       </FullCalendarWrapper>
-      <ContextMenu {...eventInfo} />
     </CalendarContainer>
   );
 };

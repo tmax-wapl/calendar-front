@@ -25,6 +25,13 @@ interface InputDialogInfo {
   };
 }
 
+interface ContextClickArg {
+  target?: HTMLElement;
+  position: { top: number; left: number };
+  color?: string;
+  type?: string;
+}
+
 export default class UiStore {
   rootStore: RootStore;
 
@@ -40,6 +47,8 @@ export default class UiStore {
 
   inputDialogInfo: InputDialogInfo = null;
 
+  contextClickArg: ContextClickArg = null;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -47,6 +56,7 @@ export default class UiStore {
       dateDay: observable,
       dialogInfo: observable,
       inputDialogInfo: observable,
+      contextClickArg: observable,
     });
   }
 

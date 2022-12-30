@@ -16,6 +16,19 @@ const SubscriptionList = () => {
     uiStore.inputDialogInfo = null;
   };
 
+  const onContextMenuOpen = (e: any, color: string) => {
+    e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
+    const target = e.target;
+    if (!target) return;
+
+    uiStore.contextClickArg = {
+      target,
+      position: { top: e.clientY, left: e.clientX },
+      color,
+      type: 'subscribe',
+    };
+  };
+
   return (
     <>
       <SubscriptionButton
@@ -32,7 +45,7 @@ const SubscriptionList = () => {
         구독 캘린더 추가
       </SubscriptionButton>
       {subscriptionItems.map((calendar, index) => (
-        <ItemContainer key={calendar.id}>
+        <ItemContainer key={calendar.id} onContextMenu={e => onContextMenuOpen(e, calendar.color)}>
           <CheckBoxWrapper
             calendarcolor={calendar.color}
             control={
@@ -48,7 +61,7 @@ const SubscriptionList = () => {
           <ButtonWarpper>
             <Icon.RenewLine width={20} height={20} color="#80868B" />
           </ButtonWarpper>
-          <ButtonWarpper>
+          <ButtonWarpper onClick={e => onContextMenuOpen(e, calendar.color)}>
             <Icon.MoreLine width={20} height={20} />
           </ButtonWarpper>
         </ItemContainer>
