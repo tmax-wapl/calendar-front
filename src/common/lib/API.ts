@@ -16,10 +16,10 @@ class APIClass {
 
     this.instance.interceptors.response.use(
       response => {
-        // TODO:// 수정 예정
-        // status로 분리하기엔 다양한 분기 존재
         const { data } = response;
-        return data;
+        const { response: res, success, error } = data;
+        if (success) return res;
+        else throw Error(JSON.stringify(error));
       },
       async error => {
         const { response } = error;
@@ -84,7 +84,7 @@ class APIClass {
    * @param  {object} params
    * @return {Promise}
    */
-  async patch<ResT>(url: string, params: any, config?: AxiosRequestConfig): Promise<ResponseData<ResT>> {
+  async patch<ReqT, ResT>(url: string, params: ReqT, config?: AxiosRequestConfig): Promise<ResponseData<ResT>> {
     return this.instance.patch(url, params || undefined, config || undefined);
   }
 }

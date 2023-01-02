@@ -56,7 +56,7 @@ export interface EventModel {
 
 export interface CalendarDTO {
   color: string;
-  eventList?: EventDTO[];
+  eventList?: EventRangeDTO[];
   id: number;
   modDate: string;
   modUserId: number;

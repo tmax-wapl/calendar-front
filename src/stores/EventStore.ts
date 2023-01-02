@@ -11,11 +11,6 @@ export default class EventStore {
     this.repo = new EventRepo();
   }
 
-  async getEventList(appId: string, calendarId: string) {
-    const res = await this.repo.getEventList(appId, calendarId);
-    return res;
-  }
-
   async getEventInfo(eventId: number) {
     const res = await this.repo.getEventInfo(eventId);
     return res;
@@ -23,6 +18,15 @@ export default class EventStore {
 
   async createEvent(dto: EventDTO) {
     const res = await this.repo.createEvent(dto);
+    return res;
+  }
+
+  async updateEvent(eventId: number, dto: EventDTO) {
+    const res = await this.repo.updateEvent(eventId, dto);
+    return res;
+  }
+  async deleteEvent(eventId: number) {
+    const res = await this.repo.deleteEvent(eventId);
     return res;
   }
 }
