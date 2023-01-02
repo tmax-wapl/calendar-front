@@ -7,13 +7,24 @@ type DateRange = { start: DateTime; view: DateTime; end: DateTime };
 
 interface DialogInfo {
   action: string;
+  onCloseClick?: () => void;
   onClick: (() => void)[] | ((value?: string) => void)[];
   data?: {
     title?: string;
     name?: string;
     num?: number;
+    placeholder?: string;
   };
+  type?: string;
 }
+
+interface ContextClickArg {
+  target?: HTMLElement;
+  position: { top: number; left: number };
+  color?: string;
+  type?: string;
+}
+
 export default class UiStore {
   rootStore: RootStore;
 
@@ -27,12 +38,15 @@ export default class UiStore {
 
   dialogInfo: DialogInfo = null;
 
+  contextClickArg: ContextClickArg = null;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
       dateRange: observable,
       dateDay: observable,
       dialogInfo: observable,
+      contextClickArg: observable,
     });
   }
 

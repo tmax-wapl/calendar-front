@@ -2,8 +2,8 @@ import { styled } from '@wapl/ui';
 
 export const LNBContainer = styled.div`
   width: 320px;
-  height: auto;
-  background-color: #eeeeee;
+  height: 100%;
+  background-color: #f8f9fa;
   flex-shrink: 0;
 `;
 
@@ -15,6 +15,30 @@ export const LNBHeader = styled.div`
   font-size: 20px;
 `;
 
-export const LNBBody = styled.div`
+export const DatePickerWrapper = styled.div`
   padding: 0px 20px;
+`;
+
+export const FilterListWrapper = styled.div`
+  padding: 16px 8px 0px 8px;
+`;
+
+export const ScrollListWrapper = styled.div`
+  height: calc(100% - 512px);
+  overflow-y: scroll;
+`;
+
+export const CategoryListWrapper = styled.div`
+  padding: 0px 8px;
+`;
+
+export const SubscriptionListWrapper = styled.div`
+  padding: 0px 8px 0px 28px;
+`;
+
+export const Divider = styled.div`
+  height: 1px;
+  margin: 0px 12px;
+  background: #e8eaed;
+  border-radius: 1px;
 `;

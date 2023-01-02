@@ -75,14 +75,12 @@ export const ContextMenuItem = ({ type }: { type: string }) => {
 
   const RenderItem = (): JSX.Element[] => {
     return menuItem[type]?.map(item => (
-      <>
-        <Mui.MenuItem key={item.label} onClick={item.onClick}>
-          <MenuItemWrapper>
-            {item.icon}
-            {item.label}
-          </MenuItemWrapper>
-        </Mui.MenuItem>
-      </>
+      <Mui.MenuItem key={item.label} onClick={item.onClick}>
+        <MenuItemWrapper>
+          {item.icon}
+          {item.label}
+        </MenuItemWrapper>
+      </Mui.MenuItem>
     ));
   };
 
