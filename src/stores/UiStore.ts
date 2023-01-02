@@ -7,22 +7,15 @@ type DateRange = { start: DateTime; view: DateTime; end: DateTime };
 
 interface DialogInfo {
   action: string;
+  onCloseClick?: () => void;
   onClick: (() => void)[] | ((value?: string) => void)[];
   data?: {
     title?: string;
     name?: string;
     num?: number;
-  };
-}
-
-interface InputDialogInfo {
-  action: string;
-  onCloseClick?: () => void;
-  onClick: (() => void)[] | ((value?: string) => void)[];
-  data?: {
-    title?: string;
     placeholder?: string;
   };
+  type?: string;
 }
 
 interface ContextClickArg {
@@ -45,8 +38,6 @@ export default class UiStore {
 
   dialogInfo: DialogInfo = null;
 
-  inputDialogInfo: InputDialogInfo = null;
-
   contextClickArg: ContextClickArg = null;
 
   constructor(rootStore: RootStore) {
@@ -55,7 +46,6 @@ export default class UiStore {
       dateRange: observable,
       dateDay: observable,
       dialogInfo: observable,
-      inputDialogInfo: observable,
       contextClickArg: observable,
     });
   }

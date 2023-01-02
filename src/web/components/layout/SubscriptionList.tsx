@@ -13,7 +13,7 @@ const SubscriptionList = () => {
   ];
 
   const closeDialog = () => {
-    uiStore.inputDialogInfo = null;
+    uiStore.dialogInfo = null;
   };
 
   const onContextMenuOpen = (e: any, color: string) => {
@@ -33,11 +33,12 @@ const SubscriptionList = () => {
     <>
       <SubscriptionButton
         onClick={() => {
-          uiStore.inputDialogInfo = {
+          uiStore.dialogInfo = {
             action: 'subscribe',
             onCloseClick: closeDialog,
             onClick: [closeDialog, closeDialog],
             data: { placeholder: 'URL 입력' },
+            type: 'input',
           };
         }}
       >

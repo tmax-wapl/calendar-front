@@ -8,7 +8,6 @@ import EventHandleView from '@wcomponents/EventHandleView';
 import { ROUTES } from '@constants/routes';
 import { Observer } from 'mobx-react-lite';
 import { Dialog } from '@common/components/Dialog';
-import { InputDialog } from '@common/components/InputDialog';
 import { ContextMenu } from '@/common/components/ContextMenu';
 import { useCalendarStores } from '@/stores/StoreProvider';
 
@@ -50,7 +49,6 @@ const WebApp: React.FC = () => {
         </Route>
       </Routes>
       <Observer>{() => uiStore.dialogInfo && <Dialog />}</Observer>
-      <Observer>{() => uiStore.inputDialogInfo && <InputDialog />}</Observer>
       <Observer>{() => uiStore.contextClickArg && <ContextMenu />}</Observer>
     </Router>
   );
