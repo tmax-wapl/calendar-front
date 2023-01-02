@@ -3,18 +3,38 @@ import { API } from '@/common/lib/API';
 
 export default class CalendarRepo {
   async calendarCreate(dto: CalendarDTO) {
-    return await API.post('/apis/v1/calendars/create', dto);
+    try {
+      const { response, success } = await API.post('/apis/v1/calendars/create', dto);
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
   }
 
   async getCalendarInfo(calId: number, start: string, end: string) {
-    return await API.get<CalendarDTO>(`/apis/v1/calendars/${calId}?start=${start}&end=${end}`);
+    try {
+      const { response, success } = await API.get<CalendarDTO>(`/apis/v1/calendars/${calId}?start=${start}&end=${end}`);
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
   }
 
   async calendarDelete(calId: number) {
-    return await API.delete(`/apis/v1/calendars/${calId}`);
+    try {
+      const { response, success } = await API.delete(`/apis/v1/calendars/${calId}`);
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
   }
 
   async calendarUpdate(calId: number, dto: CalendarPatchDTO) {
-    return await API.patch<CalendarPatchDTO, CalendarDTO>(`/apis/v1/calendars/${calId}`, dto);
+    try {
+      const { response, success } = await API.patch<CalendarPatchDTO, CalendarDTO>(`/apis/v1/calendars/${calId}`, dto);
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
   }
 }

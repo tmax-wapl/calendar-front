@@ -17,9 +17,7 @@ class APIClass {
     this.instance.interceptors.response.use(
       response => {
         const { data } = response;
-        const { response: res, success, error } = data;
-        if (success) return res;
-        else throw Error(JSON.stringify(error));
+        return data;
       },
       async error => {
         const { response } = error;

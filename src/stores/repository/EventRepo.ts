@@ -3,18 +3,38 @@ import { API } from '../../common/lib/API';
 
 export default class EventRepo {
   async createEvent(dto: EventDTO) {
-    return await API.post<EventDTO, EventDTO>(`/apis/v1/event/create`, dto);
+    try {
+      const { response, success } = await API.post<EventDTO, EventDTO>(`/apis/v1/event/create`, dto);
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
   }
 
   async getEventInfo(eventId: number) {
-    return await API.get<EventDTO>(`/apis/v1/event/${eventId}`);
+    try {
+      const { response, success } = await API.get<EventDTO>(`/apis/v1/event/${eventId}`);
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
   }
 
   async updateEvent(eventId: number, dto: EventDTO) {
-    return await API.patch<EventDTO, EventDTO>(`/apis/v1/event/update/${eventId}`, dto);
+    try {
+      const { response, success } = await API.patch<EventDTO, EventDTO>(`/apis/v1/event/update/${eventId}`, dto);
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
   }
 
   async deleteEvent(eventId: number) {
-    return await API.delete(`/apis/v1/event/delete/${eventId}`);
+    try {
+      const { response, success } = await API.delete(`/apis/v1/event/delete/${eventId}`);
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
   }
 }
