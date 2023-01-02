@@ -23,6 +23,11 @@ export const FilterListWrapper = styled.div`
   padding: 16px 8px 0px 8px;
 `;
 
+export const ScrollListWrapper = styled.div`
+  height: calc(100% - 512px);
+  overflow-y: scroll;
+`;
+
 export const CategoryListWrapper = styled.div`
   padding: 0px 8px;
 `;

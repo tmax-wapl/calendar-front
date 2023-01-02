@@ -5,6 +5,7 @@ import {
   LNBHeader,
   DatePickerWrapper,
   FilterListWrapper,
+  ScrollListWrapper,
   CategoryListWrapper,
   SubscriptionListWrapper,
   Divider,
@@ -27,14 +28,16 @@ const LNB = () => {
       <FilterListWrapper>
         <FilterList />
       </FilterListWrapper>
-      <CategoryListWrapper>
-        <Divider />
-        <CategoryList />
-      </CategoryListWrapper>
-      <SubscriptionListWrapper>
-        <Divider />
-        <SubscriptionList />
-      </SubscriptionListWrapper>
+      <ScrollListWrapper>
+        <CategoryListWrapper>
+          <Divider />
+          <CategoryList />
+        </CategoryListWrapper>
+        <SubscriptionListWrapper>
+          <Divider />
+          <SubscriptionList />
+        </SubscriptionListWrapper>
+      </ScrollListWrapper>
     </LNBContainer>
   );
 };
