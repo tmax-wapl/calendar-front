@@ -1,5 +1,6 @@
 import RootStore from './RootStore';
 import CalendarRepo from './repository/CalendarRepo';
+import { CalendarPatchDTO } from '@/common/constants/interfaces';
 
 export default class CalendarStore {
   rootStore: RootStore;
@@ -15,8 +16,18 @@ export default class CalendarStore {
     return res;
   }
 
-  async getCalendarInfo() {
-    const res = await this.repo.getCalendarInfo(14);
+  async getCalendarInfo(calId: number, start: string, end: string) {
+    const res = await this.repo.getCalendarInfo(calId, start, end);
+    return res;
+  }
+
+  async calendarUpdate(calId: number, dto: CalendarPatchDTO) {
+    const res = await this.repo.calendarUpdate(calId, dto);
+    return res;
+  }
+
+  async calendarDelete(calId: number) {
+    const res = await this.repo.calendarDelete(calId);
     return res;
   }
 }
