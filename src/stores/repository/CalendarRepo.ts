@@ -2,7 +2,7 @@ import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
 import { API } from '@/common/lib/API';
 
 export default class CalendarRepo {
-  async calendarCreate(dto?: CalendarDTO) {
+  async calendarCreate(dto: CalendarDTO) {
     return await API.post('/apis/v1/calendars/create', dto);
   }
 
