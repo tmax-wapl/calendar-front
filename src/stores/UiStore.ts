@@ -2,8 +2,9 @@ import RootStore from './RootStore';
 import { DateTime } from 'luxon';
 import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable } from 'mobx';
+import { toDateString } from '@/utils';
 
-type DateRange = { start: DateTime; view: DateTime; end: DateTime };
+type DateRange = { start: string; view: DateTime; end: string };
 
 interface DialogInfo {
   action: string;
@@ -28,7 +29,11 @@ interface ContextClickArg {
 export default class UiStore {
   rootStore: RootStore;
 
-  dateRange: DateRange = { start: DateTime.now(), view: DateTime.now(), end: DateTime.now() };
+  dateRange: DateRange = {
+    start: toDateString(new Date()),
+    view: DateTime.now(),
+    end: toDateString(this.getLastDayofMonth()),
+  };
 
   mainApi: CalendarApi = null;
 
@@ -48,6 +53,13 @@ export default class UiStore {
       dialogInfo: observable,
       contextClickArg: observable,
     });
+  }
+
+  getLastDayofMonth(): Date {
+    const date = new Date();
+    const year = date.getFullYear();
+    const nextMonth = date.getMonth() + 1;
+    return new Date(year, nextMonth, 0);
   }
 
   setDateRange: (dateRange: DateRange) => void = dateRange => {
