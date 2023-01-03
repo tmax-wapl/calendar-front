@@ -4,38 +4,31 @@ import EventItem from './EventItem';
 import NoResult from './NoResult';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
+import { autorun } from 'mobx';
 
 const EventListView = () => {
-  const { uiStore } = useCalendarStores();
-  const eventList: EventDTO[] = [
-    {
-      id: 0,
-      calId: 0,
-      color: '#FF46B5',
-      importance: true,
-      name: '일정 제목',
-      allDay: false,
-      startDate: '2021-09-03T09:00:00',
-      endDate: '2021-09-03T09:30:00',
-      calendarName: '캐릭터A의 캘린더',
-    },
-    {
-      id: 1,
-      calId: 0,
-      color: '#3384FF',
-      importance: false,
-      name: '일정 제목',
-      allDay: false,
-      startDate: '2021-09-03T09:00:00',
-      endDate: '2021-09-03T09:30:00',
-      calendarName: '캐릭터A의 캘린더',
-    },
-  ]; // TODO: store 변수로 대체
+  const { calendarStore, uiStore } = useCalendarStores();
+  const [eventList, setEventList] = useState([]);
+
+  const fetchData = async (dateDay: DateTime) => {
+    const day = dateDay.toFormat('yyyy-MM-dd');
+    const { eventList } = await calendarStore.getCalendarInfo(14, day, day);
+    setEventList(eventList);
+  };
 
   const getDateDay = (): string => {
     const { dateDay } = uiStore;
     return dateDay.toFormat('MM월 dd일 ') + ['', '월', '화', '수', '목', '금', '토', '일'][dateDay.weekday] + '요일';
   };
+
+  useEffect(() => {
+    autorun(() => {
+      const { dateDay } = uiStore;
+      fetchData(dateDay);
+    });
+  }, []);
 
   return (
     <EventListViewContainer>
