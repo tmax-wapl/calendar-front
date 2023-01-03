@@ -79,8 +79,8 @@ export interface CalendarPersonaDTO {
 
 export interface CalendarPatchDTO {
   userId: number;
-  name: string;
-  color: string;
+  name?: string;
+  color?: string;
 }
 
 export interface EventRangeDTO {
