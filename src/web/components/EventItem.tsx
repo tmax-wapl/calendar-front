@@ -1,9 +1,9 @@
-import { EventDTO } from '@common/constants/interfaces';
+import { EventDTO, EventRangeDTO } from '@common/constants/interfaces';
 import { Icon } from '@wapl/ui';
 import { EventItemContainer, ItemTitleContainer, EventTitle, EventInfo, CalendarName } from './EventItem.style';
 
 interface Props {
-  event: EventDTO;
+  event: EventRangeDTO | EventDTO;
   isDetail?: boolean;
 }
 
@@ -13,11 +13,11 @@ const EventItem = ({ event, isDetail = false }: Props) => {
       <ItemTitleContainer isDetail={isDetail}>
         <Icon.CalendarDotFill color={event.color} width={20} height={20} />
         {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
-        <EventTitle>{event.name}</EventTitle>
+        <EventTitle>{event.title}</EventTitle>
       </ItemTitleContainer>
-      <EventInfo>{event.startDate}</EventInfo>
+      <EventInfo>{event.start}</EventInfo>
       <EventInfo>{event.repeatStartDate}</EventInfo>
-      {isDetail ? <EventInfo>{event.endDate}</EventInfo> : <CalendarName>{event.calendarName}</CalendarName>}
+      {isDetail ? <EventInfo>{event.end}</EventInfo> : <CalendarName>{event.calId}</CalendarName>}
     </EventItemContainer>
   );
 };
