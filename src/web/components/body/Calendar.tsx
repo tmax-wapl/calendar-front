@@ -46,7 +46,7 @@ export type ClickArg = {
 };
 
 const Calendar: React.FC = () => {
-  const { calendarStore } = useCalendarStores();
+  const { calendarStore, eventStore } = useCalendarStores();
   const [eventList, setEventList] = useState([]);
   const calendarRef = useRef<FullCalendar>(null);
   const { uiStore } = useCalendarStores();
@@ -137,7 +137,9 @@ const Calendar: React.FC = () => {
 
   const handleEventClick = ({ event, jsEvent }: EventClickArg) => {
     jsEvent.stopPropagation();
-    console.log(jsEvent, event);
+    const { id } = event;
+    eventStore.eventId = +id;
+    if (!pathname.includes('detail')) navigate(`/main/detail`);
   };
 
   const clear = () => {

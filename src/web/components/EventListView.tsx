@@ -28,6 +28,7 @@ const EventListView = () => {
       const { dateDay } = uiStore;
       fetchData(dateDay);
     });
+    return () => setEventList([]);
   }, []);
 
   return (
