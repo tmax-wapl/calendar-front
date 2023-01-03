@@ -1,9 +1,13 @@
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { DateTime } from 'luxon';
 
 export const toLuxon = (date: string | Moment) => {
   if (typeof date === 'string') return DateTime.fromJSDate(new Date(date));
   return DateTime.fromJSDate(new Date(date.format('YYYY-MM-DD')));
+};
+// for fetch
+export const toDateString = (date: Date) => {
+  return moment(date).format('YYYY-MM-DD');
 };
 
 export const diffTime = (startDate: string, endDate: string) => {
