@@ -1,16 +1,22 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Checkbox, Icon } from '@wapl/ui';
 import { ItemContainer, CheckBoxWrapper, ButtonWarpper } from './Category.style';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 
 const CategoryList = () => {
-  const { uiStore } = useCalendarStores();
+  const { userId } = useContext(CalendarContext);
+  const { uiStore, calendarStore } = useCalendarStores();
   const [checkList, setCheckList] = useState<Array<boolean>>([true, false]);
 
   const categoryItems = [
     { label: '캐릭터A의 캘린더 캐릭터A의 캘린더 캐릭터A의 캘린더', type: 'category', id: 1, color: '#FF46B5' },
     { label: '생일', type: 'category', id: 2, color: '#00C1B1' },
   ];
+
+  const onColorClick = (color: string) => {
+    calendarStore.calendarUpdate(99, { userId, color });
+  };
 
   const onContextMenuOpen = (e: any, color: string) => {
     e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
@@ -22,6 +28,7 @@ const CategoryList = () => {
       position: { top: e.clientY, left: e.clientX },
       color,
       type: 'persona',
+      onColorClick,
     };
   };
 

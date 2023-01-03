@@ -11,10 +11,11 @@ interface Props {
   color?: string;
   iterationCount?: number;
   columnGap?: number;
+  onClick?: (color: string) => void;
 }
 
-export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12 }: Props) => {
-  const [selected, setSelected] = useState('');
+export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12, onClick }: Props) => {
+  const [selected, setSelected] = useState(color);
 
   const colorItem: ColorItemType = [
     { value: '', color: '' },
@@ -32,6 +33,7 @@ export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12 }: 
 
   const handleSelect = (color: string) => {
     setSelected(color);
+    if (onClick) onClick(color);
   };
 
   useEffect(() => {

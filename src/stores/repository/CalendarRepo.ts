@@ -31,7 +31,10 @@ export default class CalendarRepo {
 
   async calendarUpdate(calId: number, dto: CalendarPatchDTO) {
     try {
-      const { response, success } = await API.patch<CalendarPatchDTO, CalendarDTO>(`/apis/v1/calendars/${calId}`, dto);
+      const { response, success } = await API.patch<CalendarPatchDTO, CalendarDTO>(
+        `/apis/v1/calendars/update/${calId}`,
+        dto,
+      );
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));
