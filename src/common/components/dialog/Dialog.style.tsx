@@ -29,7 +29,7 @@ export const SubTitle = styled.div`
   margin: 0px 32px;
 `;
 
-export const Desctription = styled.div`
+export const Description = styled.div`
   display: flex;
   justify-content: center;
   text-align: center;
@@ -39,7 +39,7 @@ export const Desctription = styled.div`
   margin: 16px 32px 32px;
 `;
 
-export const InputDialogDesctription = styled.div`
+export const InputDialogDescription = styled.div`
   font-size: 12px;
   color: #80868b;
   margin: 0px 14px 22px 20px;

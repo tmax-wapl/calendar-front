@@ -1,6 +1,6 @@
 import { Dialog, Button, Icon } from '@wapl/ui';
 import { DialogButton } from './Dialog';
-import { InputDialogTitle, CloseButton, Input, InputDialogDesctription, DialogButtonWrapper } from './Dialog.style';
+import { InputDialogTitle, CloseButton, Input, InputDialogDescription, DialogButtonWrapper } from './Dialog.style';
 
 type InputDialogProps = {
   open: boolean;
@@ -23,7 +23,7 @@ export const InputDialog = ({ open, title, onCloseClick, placeholder, buttons }:
         </CloseButton>
       </InputDialogTitle>
       <Input variant="filled" visibleClear={false} placeholder={placeholder} />
-      <InputDialogDesctription>{title.description}</InputDialogDesctription>
+      <InputDialogDescription>{title.description}</InputDialogDescription>
       <DialogButtonWrapper>
         {buttons?.map((button: DialogButton) => (
           <Button key={button.text} variant={button.variant} onClick={() => button.onClick()}>

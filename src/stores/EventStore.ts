@@ -1,17 +1,21 @@
+import { makeObservable, observable } from 'mobx';
 import RootStore from './RootStore';
 import EventRepo from './repository/EventRepo';
+import { EventModel } from './model/EventModel';
 import { EventDTO } from '@/common/constants/interfaces';
-import { makeObservable, observable } from 'mobx';
 
 export default class EventStore {
   rootStore: RootStore;
   repo: EventRepo;
+  event: EventModel = new EventModel({});
   eventId: number = null;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     this.repo = new EventRepo();
+
     makeObservable(this, {
+      event: observable,
       eventId: observable,
     });
   }

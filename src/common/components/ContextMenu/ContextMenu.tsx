@@ -18,13 +18,18 @@ const style = [
 
 export const ContextMenu = () => {
   const { uiStore } = useCalendarStores();
-  const { target, position, color, type } = uiStore.contextClickArg;
+  const { target, position, color, type, onColorClick } = uiStore.contextClickArg;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
     setAnchorEl(null);
     uiStore.contextClickArg = null;
+  };
+
+  const handleClick = (color: string) => {
+    if (onColorClick) onColorClick(color);
+    handleClose();
   };
 
   useEffect(() => {
@@ -41,7 +46,7 @@ export const ContextMenu = () => {
         onClose={handleClose}
       >
         <Mui.MenuItem sx={style} disableRipple>
-          <ColorPicker color={color} />
+          <ColorPicker color={color} onClick={color => handleClick(color)} />
         </Mui.MenuItem>
         <ContextMenuItem type={type} />
       </Mui.Menu>

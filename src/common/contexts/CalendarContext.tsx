@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 
-export const CalendarContext = createContext({ mode: '' });
+export const CalendarContext = createContext({ mode: '', userId: null });
 
 /**
  * @props mode : app의 모드 'full' | 'module'
@@ -8,12 +8,14 @@ export const CalendarContext = createContext({ mode: '' });
  */
 interface CalendarProviderProps {
   mode: string;
+  userId: number;
   children: React.ReactNode;
 }
 
-const CalendarProvider = ({ mode = 'full', children }: CalendarProviderProps) => {
+const CalendarProvider = ({ mode = 'full', userId, children }: CalendarProviderProps) => {
   const providerValue = {
     mode,
+    userId,
   };
   return <CalendarContext.Provider value={providerValue}>{children}</CalendarContext.Provider>;
 };

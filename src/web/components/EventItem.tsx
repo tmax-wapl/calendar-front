@@ -1,17 +1,18 @@
-import { get12HoursFormat } from '@/utils';
-import { EventDTO, EventRangeDTO } from '@common/constants/interfaces';
 import { Icon } from '@wapl/ui';
+import { EventModel } from '@/stores/model/EventModel';
 import { EventItemContainer, ItemTitleContainer, EventTitle, EventInfo, CalendarName } from './EventItem.style';
+import { getRepeatSummary } from '@/utils';
+import { get12HoursFormat } from '../../utils';
 
 interface Props {
-  event: EventRangeDTO | EventDTO;
+  event: EventModel;
   isDetail?: boolean;
   onClick?: (id: number) => void;
 }
 
 const EventItem = ({ event, isDetail = false, onClick }: Props) => {
   return (
-    <EventItemContainer isDetail={isDetail} onClick={() => onClick(event.id)}>
+    <EventItemContainer isDetail={isDetail} onClick={() => onClick(+event.id)}>
       <ItemTitleContainer isDetail={isDetail}>
         <Icon.CalendarDotFill color={event.color} width={20} height={20} />
         {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}

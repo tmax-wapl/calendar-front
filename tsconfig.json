@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "target": "es5",
     "esModuleInterop": true,
     "module": "esnext",
     "allowSyntheticDefaultImports": true,

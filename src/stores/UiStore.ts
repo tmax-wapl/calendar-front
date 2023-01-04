@@ -23,6 +23,7 @@ interface ContextClickArg {
   position: { top: number; left: number };
   color?: string;
   type?: string;
+  onColorClick?: (color: string) => void;
 }
 
 export default class UiStore {

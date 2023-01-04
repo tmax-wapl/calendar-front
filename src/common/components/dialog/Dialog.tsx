@@ -1,6 +1,6 @@
 import { Dialog as DialogCompo, Button } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { Title, SubTitle, Desctription, DialogButtonWrapper } from './Dialog.style';
+import { Title, SubTitle, Description, DialogButtonWrapper } from './Dialog.style';
 import { InputDialog } from './InputDialog';
 
 export interface DialogButton {
@@ -85,7 +85,7 @@ export const Dialog = () => {
     <DialogCompo open onClose={handleClose}>
       <Title>{title?.title}</Title>
       <SubTitle>{title?.subTitle}</SubTitle>
-      <Desctription>{title?.description}</Desctription>
+      <Description>{title?.description}</Description>
       <DialogButtonWrapper>
         {buttons?.map((button: DialogButton) => (
           <Button key={button.text} variant={button.variant} onClick={() => button.onClick()}>

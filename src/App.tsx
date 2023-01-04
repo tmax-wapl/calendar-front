@@ -9,9 +9,10 @@ import Mobile from './mobile';
 const App: React.FC = () => {
   const isMobile = false;
 
+  // TODO: userId 가져와서 연동하기
   return (
     <WaplUiProvider>
-      <CalendarProvider mode={MODE.FULL}>
+      <CalendarProvider mode={MODE.FULL} userId={6}>
         <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
       </CalendarProvider>
     </WaplUiProvider>
