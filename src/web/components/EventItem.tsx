@@ -12,7 +12,7 @@ interface Props {
 
 const EventItem = ({ event, isDetail = false, onClick }: Props) => {
   return (
-    <EventItemContainer isDetail={isDetail} onClick={() => onClick(+event.id)}>
+    <EventItemContainer isDetail={isDetail} {...(onClick && { onClick: () => onClick(+event.id) })}>
       <ItemTitleContainer isDetail={isDetail}>
         <Icon.CalendarDotFill color={event.color} width={20} height={20} />
         {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
