@@ -21,8 +21,12 @@ const EventItem = ({ event, isDetail = false, onClick }: Props) => {
       <EventInfo>
         {event.allDay ? '종일' : `${get12HoursFormat(event.start)} ~ ${get12HoursFormat(event.end)}`}
       </EventInfo>
-      <EventInfo>{event.repeatStartDate}</EventInfo>
-      {isDetail ? <EventInfo>{event.repeatEndDate}</EventInfo> : <CalendarName>{event.calName}</CalendarName>}
+      {event.rrule && <EventInfo>{getRepeatSummary(event.rrule)}</EventInfo>}
+      {isDetail ? (
+        event.repeatEndDate && <EventInfo>{event.repeatEndDate.toFormat('yyyy. LL. dd. 종료')}</EventInfo>
+      ) : (
+        <CalendarName>{event.calName}</CalendarName>
+      )}
     </EventItemContainer>
   );
 };
