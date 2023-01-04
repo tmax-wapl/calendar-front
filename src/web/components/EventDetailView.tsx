@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { EventDTO } from '@common/constants/interfaces';
 import { Icon } from '@wapl/ui';
 import { useParams } from 'react-router-dom';
+import { EventModel } from '@/stores/model/EventModel';
 import { EventDetailViewContainer, EventDetailContainer, FromInfo, Creator } from './EventDetailView.style';
 import EventBar from './EventBar';
 import EventItem from './EventItem';
@@ -10,17 +10,18 @@ import { Participants, Location, Notifications, Description, Attachments } from 
 const EventDetailView = () => {
   const { detailId } = useParams();
   const [editable, setEditable] = useState<boolean>(false);
-  const event: EventDTO = {
+  const event: EventModel = new EventModel({
     id: 0,
     calId: 0,
+    calName: '캐릭터A의 캘린더',
     color: '#FF46B5',
     importance: true,
-    name: '일정 제목 일정 제목일정 제목일정 제목일정 제목ㅇㄹㄴㄹㄴㅇㄹ',
+    title: '일정 제목 일정 제목일정 제목일정 제목일정 제목ㅇㄹㄴㄹㄴㅇㄹ',
     allDay: false,
-    startDate: '2021-09-03T09:00:00',
-    endDate: '2021-09-03T09:30:00',
-    calendarName: '캐릭터A의 캘린더',
+    start: '2021-09-03T09:00:00',
+    end: '2021-09-03T09:30:00',
     regUserId: 0,
+    rrule: 'DTSTART:20210903T000000 RRULE:FREQ=WEEKLY;UNTIL=20210909T000000;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR,SA,SU',
     participants: [
       { id: 1, name: '오써니' },
       { id: 2, name: '김써니' },
@@ -36,7 +37,7 @@ const EventDetailView = () => {
       { id: 1, name: 'Txt', extension: 'png', size: 80000 },
       { id: 2, name: 'Txt', extension: 'png', size: 80000 },
     ],
-  }; // TODO: store 변수로 대체
+  }); // TODO: store 변수로 대체
 
   return (
     <EventDetailViewContainer>
@@ -52,16 +53,16 @@ const EventDetailView = () => {
         <EventItem event={event} isDetail />
         <FromInfo>
           <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
-          {event.calendarName}
+          {event.calName}
           <Creator>&nbsp;{`(일정 생성: ${event.regUserId})`}</Creator>
         </FromInfo>
-        {event.participants?.length && <Participants participants={event.participants} />}
+        {/* {event.participants?.length && <Participants participants={event.participants} />} */}
         {event.location && <Location location={event.location} />}
-        {event.notifications?.length && (
+        {/* {event.notifications?.length && (
           <Notifications notifications={event.notifications.map(({ time, unit }) => `${time} ${unit}`)} />
-        )}
+        )} */}
         {event.description && <Description description={event.description} />}
-        {event.attachments?.length && <Attachments attachments={event.attachments} />}
+        {/* {event.attachments?.length && <Attachments attachments={event.attachments} />} */}
       </EventDetailContainer>
     </EventDetailViewContainer>
   );

@@ -1,5 +1,6 @@
 import { Moment } from 'moment';
 import { DateTime } from 'luxon';
+import { Options, Weekday } from 'rrule';
 
 export const toLuxon = (date: string | Moment) => {
   if (typeof date === 'string') return DateTime.fromJSDate(new Date(date));
@@ -16,4 +17,16 @@ export const diffTime = (startDate: string, endDate: string) => {
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
   return { days, hours, minutes, seconds, diff };
+};
+
+export const getRepeatSummary = (rrule: Partial<Options>): string => {
+  const units = ['년', '개월', '주', '일'];
+  const dayOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
+  const byweekday = rrule.byweekday as Weekday[];
+
+  const interval = `${rrule.interval}${units[rrule.freq]} 간격`;
+  const weekday = ` ${byweekday?.reduce((acc, day) => (acc ? `${acc} ` : '') + `${dayOfWeek[day.weekday]}`, '')} 반복`;
+  const until = ` / ${rrule.until?.toISOString().split('T')[0].replace(/-/g, '.')}. 종료`;
+
+  return `${interval}${byweekday ? weekday : ''}${rrule.until ? until : ''}`;
 };

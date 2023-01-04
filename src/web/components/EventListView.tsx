@@ -1,4 +1,5 @@
 import { EventDTO } from '@common/constants/interfaces';
+import { EventModel } from '@/stores/model/EventModel';
 import { EventListViewContainer, DateInfo, DateDay, Holiday, Lunar } from './EventListView.style';
 import EventItem from './EventItem';
 import NoResult from './NoResult';
@@ -7,30 +8,30 @@ import { Observer } from 'mobx-react-lite';
 
 const EventListView = () => {
   const { uiStore } = useCalendarStores();
-  const eventList: EventDTO[] = [
+  const eventList: EventModel[] = [
     {
       id: 0,
       calId: 0,
+      calName: '캐릭터A의 캘린더',
       color: '#FF46B5',
       importance: true,
-      name: '일정 제목',
+      title: '일정 제목',
       allDay: false,
-      startDate: '2021-09-03T09:00:00',
-      endDate: '2021-09-03T09:30:00',
-      calendarName: '캐릭터A의 캘린더',
+      start: '2021-09-03T09:00:00',
+      end: '2021-09-03T09:30:00',
     },
     {
       id: 1,
       calId: 0,
+      calName: '캐릭터A의 캘린더',
       color: '#3384FF',
       importance: false,
-      name: '일정 제목',
+      title: '일정 제목',
       allDay: false,
-      startDate: '2021-09-03T09:00:00',
-      endDate: '2021-09-03T09:30:00',
-      calendarName: '캐릭터A의 캘린더',
+      start: '2021-09-03T09:00:00',
+      end: '2021-09-03T09:30:00',
     },
-  ]; // TODO: store 변수로 대체
+  ].map((dto: EventDTO) => new EventModel(dto)); // TODO: store 변수로 대체
 
   const getDateDay = (): string => {
     const { dateDay } = uiStore;
