@@ -49,12 +49,15 @@ const EventDetailView = () => {
   };
 
   useEffect(() => {
-    autorun(() => {
+    const dispose = autorun(() => {
       const { eventId } = eventStore;
       if (eventId) fetchData(eventId);
       else navigate('/main');
     });
-    return () => setData(null);
+    return () => {
+      setData(null);
+      dispose();
+    };
   }, []);
 
   return (

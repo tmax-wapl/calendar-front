@@ -215,10 +215,11 @@ const Calendar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    autorun(() => {
+    const dispose = autorun(() => {
       const { start, end } = uiStore.dateRange;
       fetchData(start, end);
     });
+    return () => dispose();
   }, []);
 
   useEffect(() => {

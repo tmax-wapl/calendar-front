@@ -56,11 +56,14 @@ const EventListView = () => {
   }, []);
 
   useEffect(() => {
-    autorun(() => {
+    const dispose = autorun(() => {
       const { dateDay } = uiStore;
       fetchData(dateDay);
     });
-    return () => setEventList([]);
+    return () => {
+      setEventList([]);
+      dispose();
+    };
   }, []);
 
   return (
