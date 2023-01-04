@@ -1,46 +1,17 @@
-import { DateTime } from 'luxon';
-
 export interface EventDTO {
   id: number;
   calId: number;
+  calName: string;
   color: string;
   importance: boolean;
-  name: string;
+  title: string;
   allDay: boolean;
-  startDate: string;
-  endDate?: string;
+  start: string;
+  end: string;
   modDate?: string;
   modUserId?: number;
   regDate?: string;
   regUserId?: number;
-  calendarName: string;
-  rrule?: string;
-  alarmList?: AlarmDTO[];
-  exceptionList?: ExceptionDTO[];
-  location?: string;
-  description?: string;
-  repeatEndDate?: string;
-  repeatStartDate?: string;
-  repeatgroupId?: number;
-  participants?: any[];
-  attachments?: any[];
-  notifications?: any[];
-}
-
-export interface EventModel {
-  id: number;
-  calId: number;
-  color: string;
-  importance: boolean;
-  name: string;
-  allDay: boolean;
-  startDate: string;
-  endDate?: string;
-  modDate?: string;
-  modUserId?: number;
-  regDate?: string;
-  regUserId?: number;
-  calendarName: string;
   rrule?: string;
   alarmList?: AlarmDTO[];
   exceptionList?: ExceptionDTO[];
@@ -86,6 +57,7 @@ export interface CalendarPatchDTO {
 export interface EventRangeDTO {
   allday: string;
   calId: number;
+  calName: string;
   color: string;
   endDate: string;
   id: number;
