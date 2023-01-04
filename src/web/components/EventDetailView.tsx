@@ -32,7 +32,7 @@ const EventDetailView = () => {
   return (
     <EventDetailViewContainer>
       <EventBar
-        leftSide={[{ action: 'back', onClick: () => console.log('back') }]}
+        leftSide={[{ action: 'back', onClick: () => navigate(-1) }]}
         rightSide={[
           { action: 'share', onClick: () => console.log('share') },
           { action: 'edit', onClick: () => setEditable(true) },
@@ -44,12 +44,12 @@ const EventDetailView = () => {
           <EventItem event={data} isDetail />
           <FromInfo>
             <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
-            {data.calId}
+            {data.calName}
             <Creator>&nbsp;{`(일정 생성: ${data.regUserId})`}</Creator>
           </FromInfo>
           {/* {event.participants.length && <Participants participants={event.participants} />} */}
           {data.location && <Location location={data.location} />}
-          {data.alarmList.length && (
+          {data.alarmList.length > 0 && (
             <Notifications notifications={data.alarmList.map(({ time, timestamp }) => `${time} ${timestamp}`)} />
           )}
           {data.description && <Description description={data.description} />}

@@ -21,3 +21,7 @@ export const diffTime = (startDate: string, endDate: string) => {
   const days = Math.floor(hours / 24);
   return { days, hours, minutes, seconds, diff };
 };
+
+export const get12HoursFormat = (date: string) => {
+  return DateTime.fromJSDate(new Date(date)).toFormat('a h:mm', { locale: 'ko' });
+};

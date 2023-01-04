@@ -4,13 +4,16 @@ import EventItem from './EventItem';
 import NoResult from './NoResult';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import { autorun } from 'mobx';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const EventListView = () => {
-  const { calendarStore, uiStore } = useCalendarStores();
+  const { calendarStore, uiStore, eventStore } = useCalendarStores();
   const [eventList, setEventList] = useState([]);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const fetchData = async (dateDay: DateTime) => {
     const day = dateDay.toFormat('yyyy-MM-dd');
@@ -22,6 +25,11 @@ const EventListView = () => {
     const { dateDay } = uiStore;
     return dateDay.toFormat('MM월 dd일 ') + ['', '월', '화', '수', '목', '금', '토', '일'][dateDay.weekday] + '요일';
   };
+
+  const handleClickEvent = useCallback((id: number) => {
+    eventStore.eventId = id;
+    if (!pathname.includes('detail')) navigate(`/main/detail`);
+  }, []);
 
   useEffect(() => {
     autorun(() => {
@@ -46,7 +54,11 @@ const EventListView = () => {
           }}
         </Observer>
       </DateInfo>
-      {eventList.length > 0 ? eventList.map((event, index) => <EventItem key={index} event={event} />) : <NoResult />}
+      {eventList.length > 0 ? (
+        eventList.map((event, index) => <EventItem key={index} event={event} onClick={handleClickEvent} />)
+      ) : (
+        <NoResult />
+      )}
     </EventListViewContainer>
   );
 };
