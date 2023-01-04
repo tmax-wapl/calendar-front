@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 import { DateTime } from 'luxon';
 import { Options, Weekday } from 'rrule';
 
@@ -8,7 +8,7 @@ export const toLuxon = (date: string | Moment) => {
 };
 // for fetch
 export const toDateString = (date: Date) => {
-  return moment(date).format('YYYY-MM-DD');
+  return DateTime.fromJSDate(date).toFormat('yyyy-LL-dd');
 };
 
 export const diffTime = (startDate: string, endDate: string) => {
