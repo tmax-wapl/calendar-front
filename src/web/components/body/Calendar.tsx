@@ -24,7 +24,7 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { diffTime } from '@/utils';
+import { diffTime, toDateString } from '@/utils';
 import { toLuxon } from '@/utils';
 import { autorun } from 'mobx';
 
@@ -208,6 +208,10 @@ const Calendar: React.FC = () => {
   useEffect(() => {
     if (calendarRef) {
       uiStore.mainApi = calendarRef?.current?.getApi();
+      uiStore.setDateRange({
+        start: toDateString(uiStore.mainApi.view.activeStart),
+        end: toDateString(uiStore.mainApi.view.activeEnd),
+      });
     }
   }, []);
 
