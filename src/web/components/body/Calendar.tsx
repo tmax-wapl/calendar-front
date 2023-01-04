@@ -24,9 +24,8 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { diffTime } from '@/utils';
+import { toLuxon, diffTime } from '@/utils';
 import { CalendarEventDummy } from './CalendarDummy';
-import { toLuxon } from '@/utils';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -155,9 +154,7 @@ const Calendar: React.FC = () => {
   };
 
   const handleDoubleClick = (dateInfo: DateClickArg) => {
-    // TODO: 새 일정 화면 띄워주기
-    console.log(dateInfo);
-    console.log('더블클릭');
+    navigate('create', { state: { dateStr: dateInfo.dateStr } });
   };
 
   const handleRightClick = (e: any) => {

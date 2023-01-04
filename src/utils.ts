@@ -30,3 +30,13 @@ export const getRepeatSummary = (rrule: Partial<Options>): string => {
 
   return `${interval}${byweekday ? weekday : ''}${rrule.until ? until : ''}`;
 };
+
+export const toHalfHourUnit = (date: DateTime) => {
+  return date.minute < 30 ? date.set({ minute: 0 }) : date.set({ minute: 30 });
+};
+
+export const getStartDate = (date: DateTime) => {
+  const now = DateTime.now();
+  const isToday = date.startOf('day').equals(now.startOf('day'));
+  return isToday ? toHalfHourUnit(date.set({ hour: now.hour, minute: now.minute })) : date.set({ hour: 9 });
+};

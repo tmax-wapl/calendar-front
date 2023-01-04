@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useObserver } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { useLocation } from 'react-router-dom';
@@ -16,7 +17,7 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { DateTime } from 'luxon';
+import { getStartDate, toLuxon } from '@/utils';
 
 interface Props {
   action: 'create' | 'edit';
@@ -25,6 +26,18 @@ interface Props {
 const EventHandleView = ({ action }: Props) => {
   const { eventStore, uiStore } = useCalendarStores();
   const { state } = useLocation();
+
+  useEffect(() => {
+    if (action === 'create') {
+      const start = getStartDate(state ? toLuxon(state.dateStr) : uiStore.dateDay);
+      eventStore.event = new EventModel({
+        start: start.toISO({ suppressMilliseconds: true, includeOffset: false }),
+        end: start.plus({ minutes: 30 }).toISO({ suppressMilliseconds: true, includeOffset: false }),
+      });
+      return;
+    }
+    // TODO: data fetch
+  }, [state]);
 
   return useObserver(() => (
     <EventHandleViewContainer>
