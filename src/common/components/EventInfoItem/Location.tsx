@@ -4,7 +4,7 @@ import { LocationContainer, LocationInput } from './Location.style';
 
 interface Props {
   location?: string;
-  onChange?: (value: { location: string }) => void;
+  onChange?: (value: string) => void;
   editable?: boolean;
 }
 
@@ -12,7 +12,7 @@ const Location = ({ location, onChange, editable = false }: Props) => {
   const [value, setValue] = useState<typeof location>('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (onChange) onChange({ location: e.target.value });
+    if (onChange) onChange(e.target.value);
     setValue(e.target.value);
   };
 

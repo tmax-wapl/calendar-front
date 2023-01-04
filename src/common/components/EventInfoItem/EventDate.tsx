@@ -4,32 +4,33 @@ import { Icon, Switch } from '@wapl/ui';
 import { EventDateContainer, ItemTitleContainer } from './EventDate.style';
 import EventDateItem from './EventDateItem';
 
-interface ValueProps {
+interface Props {
   allDay?: boolean;
-  startDate: DateTime;
-  endDate: DateTime;
-}
-
-interface Props extends ValueProps {
-  onChange?: (value: Partial<ValueProps>) => void;
+  start: DateTime;
+  end: DateTime;
+  onAllDayChange?: (value: boolean) => void;
+  onStartChange?: (value: DateTime) => void;
+  onEndChange?: (value: DateTime) => void;
 }
 
 const EventDate = ({
   allDay = false,
-  startDate = DateTime.now(),
-  endDate = DateTime.now().plus({ minutes: 30 }),
-  onChange,
+  start = DateTime.now(),
+  end = DateTime.now().plus({ minutes: 30 }),
+  onAllDayChange,
+  onStartChange,
+  onEndChange,
 }: Props) => {
   const handleSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange({ allDay: e.target.checked });
+    onAllDayChange(e.target.checked);
   };
 
   const handleStartChange = (date: DateTime) => {
-    onChange({ startDate: date });
+    onStartChange(date);
   };
 
   const handleEndChange = (date: DateTime) => {
-    onChange({ endDate: date });
+    onEndChange(date);
   };
 
   return (
@@ -39,8 +40,8 @@ const EventDate = ({
         종일
         <Switch size="small" checked={allDay} onChange={handleSwitch} />
       </ItemTitleContainer>
-      <EventDateItem title="시작일" date={startDate} allDay={allDay} onChange={handleStartChange} />
-      <EventDateItem title="마감일" date={endDate} allDay={allDay} onChange={handleEndChange} />
+      <EventDateItem title="시작일" date={start} allDay={allDay} onChange={handleStartChange} />
+      <EventDateItem title="마감일" date={end} allDay={allDay} onChange={handleEndChange} />
     </EventDateContainer>
   );
 };

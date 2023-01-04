@@ -5,18 +5,19 @@ import { EventTitleContainer, IconButton, EventTitleInput } from './EventTitle.s
 interface Props {
   title?: string;
   importance?: boolean;
-  onChange?: (value: { title?: string; importance?: boolean }) => void;
+  onTitleChange?: (value: string) => void;
+  onImportanceChange?: (value: boolean) => void;
 }
 
-const EventTitle = ({ title = '', importance, onChange }: Props) => {
+const EventTitle = ({ title = '', importance, onTitleChange, onImportanceChange }: Props) => {
   const handleImportanceClick = () => {
-    if (!onChange) return;
-    onChange({ importance: !importance });
+    if (!onImportanceChange) return;
+    onImportanceChange(!importance);
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!onChange) return;
-    onChange({ title: e.target.value });
+    if (!onTitleChange) return;
+    onTitleChange(e.target.value);
   };
 
   return (
