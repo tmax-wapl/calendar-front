@@ -4,7 +4,7 @@ import { DescriptionContainer, ItemTitleContainer, DescriptionTextarea } from '.
 
 interface Props {
   description?: string;
-  onChange?: (value: { description: string }) => void;
+  onChange?: (value: string) => void;
   editable?: boolean;
 }
 
@@ -13,7 +13,7 @@ const Description = ({ description = '', onChange, editable = false }: Props) =>
 
   // TODO: editor로 변경
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (onChange) onChange({ description: e.target.value });
+    if (onChange) onChange(e.target.value);
     setValue(e.target.value);
   };
 

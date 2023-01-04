@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { DateTime } from 'luxon';
+import { Options, Weekday } from 'rrule';
 import { Icon, Select, Checkbox } from '@wapl/ui';
 import {
   RepeatInfoContainer,
@@ -11,67 +12,44 @@ import {
   RepeatDay,
 } from './RepeatInfo.style';
 import DatePicker from '../DatePicker/DatePicker';
+import { getRepeatSummary } from '@/utils';
 
-interface ValueProps {
-  repeatTime?: string;
-  repeatUnit?: string;
-  repeatEndDate?: DateTime;
+interface Props {
+  rrule?: Partial<Options>;
   defaultEndDate?: DateTime;
-  repeatDays?: boolean[];
+  repeatEndDate?: DateTime;
+  onRRuleChange?: (value: Partial<Options>) => void;
 }
 
-interface Props extends ValueProps {
-  onChange: (value: ValueProps) => void;
-}
-
-interface Unit {
-  [key: string]: string;
-}
-
-const RepeatInfo = ({ repeatTime, repeatUnit, repeatEndDate, defaultEndDate, repeatDays, onChange }: Props) => {
+const RepeatInfo = ({ rrule, defaultEndDate, repeatEndDate, onRRuleChange }: Props) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
-  const days = ['월', '화', '수', '목', '금', '토', '일'];
-
+  const dayOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
+  const byweekday = (rrule?.byweekday as Weekday[])?.map(({ weekday }) => weekday);
+  const units = ['년', '개월', '주', '일'];
   const repeatItems = [
-    { label: '반복 안 함', value: '' },
-    { label: '매일', value: 'd' },
-    { label: '매주', value: 'w' },
-    { label: '매월', value: 'm' },
-    { label: '매년', value: 'y' },
+    { label: '반복 안 함', value: -1 },
+    { label: '매일', value: 3 },
+    { label: '매주', value: 2 },
+    { label: '매월', value: 1 },
+    { label: '매년', value: 0 },
   ];
-  const units: Unit = {
-    d: '일',
-    w: '주',
-    m: '월',
-    y: '년',
-  }; // TODO: RRULE 형식과 맞추기
 
-  const handleSelectChange = (item: string) => {
-    if (!onChange) return;
-    onChange({
-      repeatTime: '1',
-      repeatUnit: item,
-      repeatEndDate: undefined,
-      repeatDays: item === 'w' ? [...Array(7)].map((_, index) => index === DateTime.now().weekday - 1) : undefined,
+  const handleSelectChange = (freq: number) => {
+    onRRuleChange({
+      ...(freq > -1 && { interval: 1, freq }),
+      ...(freq === 2 && { byweekday: [DateTime.now().weekday - 1] }),
     });
   };
 
-  const getRepeatSummary = () => {
-    return `${repeatTime || 1}${units[repeatUnit]} 간격 ${
-      repeatUnit === 'w'
-        ? `${repeatDays.reduce((acc, day, index) => acc + (day ? days[index] + ' ' : ''), '')}반복`
-        : ''
-    }${repeatEndDate ? ` / ${repeatEndDate.toFormat('yyyy.LL.dd.')} 종료` : ''}`;
-  };
-
-  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange({ repeatTime: e.target.value });
+  const handleIntervalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isNaN(Number(e.target.value))) return;
+    onRRuleChange({ ...rrule, interval: Number(e.target.value) });
   };
 
   const handleCheckboxChange = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    if (checked) onChange({ repeatEndDate: defaultEndDate || DateTime.now().plus({ years: 1 }) });
+    if (checked) onRRuleChange({ ...rrule, until: defaultEndDate?.toJSDate() || new Date() });
     else {
-      onChange({ repeatEndDate: undefined });
+      onRRuleChange({ ...rrule, until: null });
       setIsDatePickerOpen(false);
     }
   };
@@ -81,11 +59,15 @@ const RepeatInfo = ({ repeatTime, repeatUnit, repeatEndDate, defaultEndDate, rep
   };
 
   const handleDayClick = (index: number) => {
-    if (repeatDays[index] && repeatDays.filter(day => day).length === 1) {
-      onChange({ repeatDays: repeatDays.map((_, index) => index === DateTime.now().weekday - 1) });
+    if (!byweekday.includes(index)) {
+      onRRuleChange({ ...rrule, byweekday: [...byweekday, index].sort() });
       return;
     }
-    onChange({ repeatDays: repeatDays?.map((day, i) => (i === index ? !day : day)) });
+    if (byweekday.length === 1) {
+      onRRuleChange({ ...rrule, byweekday: [DateTime.now().weekday - 1] });
+      return;
+    }
+    onRRuleChange({ ...rrule, byweekday: byweekday.filter(weekday => weekday !== index) });
   };
 
   return (
@@ -94,21 +76,21 @@ const RepeatInfo = ({ repeatTime, repeatUnit, repeatEndDate, defaultEndDate, rep
         <Icon.RepeatLine className="mr-8" color="#202124" width={20} height={20} />
         <Select
           name="repeat"
-          defaultValue={repeatUnit || ''}
+          defaultValue={rrule?.freq || -1}
           types="normal"
           items={repeatItems}
           width="100px"
           onChange={handleSelectChange}
         />
       </ItemContainer>
-      {repeatUnit && (
+      {rrule?.freq > -1 && (
         <>
           <ItemContainer height="32" style={{ fontSize: '13px', color: '#80868b' }}>
-            {getRepeatSummary()}
+            {getRepeatSummary(rrule)}
           </ItemContainer>
           <ItemContainer>
-            <RepeatIntervalInput value={repeatTime} onChange={handleTimeChange} />
-            &nbsp;{units[repeatUnit]} 간격 반복
+            <RepeatIntervalInput value={rrule.interval} onChange={handleIntervalChange} />
+            &nbsp;{units[rrule.freq]} 간격 반복
           </ItemContainer>
           <ItemContainer height="32">
             <Checkbox checked={!!repeatEndDate} checkboxSize={20} onChange={handleCheckboxChange} />
@@ -124,20 +106,20 @@ const RepeatInfo = ({ repeatTime, repeatUnit, repeatEndDate, defaultEndDate, rep
                     <DatePicker
                       size={0.85}
                       date={repeatEndDate}
-                      onDateClick={selectedDate => onChange({ repeatEndDate: selectedDate })}
+                      onDateClick={selectedDate => onRRuleChange({ ...rrule, until: selectedDate.toJSDate() })}
                     />
                   </DatePickerWrapper>
                 )}
               </PickerContainer>
             )}
           </ItemContainer>
-          {repeatUnit === 'w' && (
+          {rrule?.freq === 2 && (
             <ItemContainer>
-              {days.map((day, index) => {
+              {dayOfWeek.map((day, index) => {
                 return (
                   <RepeatDay
                     key={day}
-                    className={`${repeatDays[index] ? 'select' : ''}`}
+                    className={`${byweekday.includes(index) ? 'select' : ''}`}
                     onClick={() => handleDayClick(index)}
                   >
                     {day}
