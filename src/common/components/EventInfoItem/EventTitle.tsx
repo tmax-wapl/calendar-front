@@ -30,6 +30,7 @@ const EventTitle = ({ title = '', importance, onTitleChange, onImportanceChange 
         visibleClear={false}
         value={title}
         onChange={handleTitleChange}
+        autoFocus
       />
     </EventTitleContainer>
   );
