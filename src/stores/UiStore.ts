@@ -1,7 +1,7 @@
 import RootStore from './RootStore';
 import { DateTime } from 'luxon';
 import { CalendarApi } from '@fullcalendar/react';
-import { makeObservable, observable } from 'mobx';
+import { makeObservable, observable, action } from 'mobx';
 
 type DateRange = { start: string; view?: DateTime; end: string };
 
@@ -45,15 +45,21 @@ export default class UiStore {
     this.rootStore = rootStore;
     makeObservable(this, {
       dateRange: observable,
+      setDateRange: action,
       dateDay: observable,
+      setDateDay: action,
       dialogInfo: observable,
       contextClickArg: observable,
     });
   }
 
-  setDateRange: (dateRange: DateRange) => void = dateRange => {
+  setDateRange(dateRange: DateRange) {
     this.dateRange = dateRange;
-  };
+  }
+
+  setDateDay(date: DateTime) {
+    this.dateDay = date;
+  }
 
   getApi(): CalendarApi {
     return this.mainApi;

@@ -1,4 +1,4 @@
-import { makeObservable, observable } from 'mobx';
+import { makeObservable, observable, action } from 'mobx';
 import RootStore from './RootStore';
 import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
@@ -16,8 +16,13 @@ export default class EventStore {
 
     makeObservable(this, {
       event: observable,
+      setEvent: action,
       eventId: observable,
     });
+  }
+
+  setEvent(event: EventModel) {
+    this.event = event;
   }
 
   async getEventInfo(eventId: number) {

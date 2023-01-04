@@ -198,7 +198,7 @@ const Calendar: React.FC = () => {
 
   const setDateDay = (dayEl: HTMLElement) => {
     const { date } = dayEl.dataset;
-    uiStore.dateDay = toLuxon(date);
+    uiStore.setDateDay(toLuxon(date));
   };
 
   const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];

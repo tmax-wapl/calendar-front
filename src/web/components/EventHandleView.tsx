@@ -30,10 +30,12 @@ const EventHandleView = ({ action }: Props) => {
   useEffect(() => {
     if (action === 'create') {
       const start = getStartDate(state ? toLuxon(state.dateStr) : uiStore.dateDay);
-      eventStore.event = new EventModel({
-        start: start.toISO({ suppressMilliseconds: true, includeOffset: false }),
-        end: start.plus({ minutes: 30 }).toISO({ suppressMilliseconds: true, includeOffset: false }),
-      });
+      eventStore.setEvent(
+        new EventModel({
+          start: start.toISO({ suppressMilliseconds: true, includeOffset: false }),
+          end: start.plus({ minutes: 30 }).toISO({ suppressMilliseconds: true, includeOffset: false }),
+        }),
+      );
       return;
     }
     // TODO: data fetch
