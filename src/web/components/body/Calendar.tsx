@@ -210,6 +210,7 @@ const Calendar: React.FC = () => {
       uiStore.mainApi = calendarRef?.current?.getApi();
       uiStore.setDateRange({
         start: toDateString(uiStore.mainApi.view.activeStart),
+        view: DateTime.now(),
         end: toDateString(uiStore.mainApi.view.activeEnd),
       });
     }
