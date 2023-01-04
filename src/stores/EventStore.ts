@@ -8,6 +8,7 @@ export default class EventStore {
   rootStore: RootStore;
   repo: EventRepo;
   event: EventModel = new EventModel({});
+  eventId: number = null;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -15,6 +16,7 @@ export default class EventStore {
 
     makeObservable(this, {
       event: observable,
+      eventId: observable,
     });
   }
 

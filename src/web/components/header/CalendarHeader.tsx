@@ -15,6 +15,7 @@ import { DateTime } from 'luxon';
 import { observer } from 'mobx-react-lite';
 import { DATE_EVENT, VIEW_MODE } from '@constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { toDateString } from '@/utils';
 
 type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
 
@@ -35,7 +36,7 @@ const CalendarHeader: React.FC = () => {
   const navigate = useNavigate();
   const { viewMode } = useParams();
   const { pathname } = useLocation();
-  const { dateRange, setDateRange } = uiStore;
+  const { setDateRange } = uiStore;
 
   const handleViewChange = (value: string) => {
     const mainApi = uiStore.getApi();
@@ -50,6 +51,7 @@ const CalendarHeader: React.FC = () => {
     switch (uiStore.viewMode) {
       case VIEW_MODE.MONTH:
         mainApi?.setOption('dayMaxEvents', 5);
+        changeDateRange();
         break;
       case VIEW_MODE.WEEK:
         mainApi?.setOption('dayMaxEvents', 3);
@@ -63,10 +65,15 @@ const CalendarHeader: React.FC = () => {
   const handleDate = (type: DateHandleType) => {
     const mainApi = uiStore.getApi();
     mainApi?.[type]();
+    changeDateRange();
+  };
+
+  const changeDateRange = () => {
+    const mainApi = uiStore.getApi();
     setDateRange({
-      start: dateRange.start,
+      start: toDateString(mainApi.view.activeStart),
       view: DateTime.fromJSDate(mainApi?.getDate()),
-      end: dateRange.end,
+      end: toDateString(mainApi.view.activeEnd),
     });
   };
 

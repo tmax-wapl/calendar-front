@@ -269,7 +269,7 @@ export const AllDayText = styled.span`
   margin-right: 5px;
 `;
 
-export const ArrowButton = styled.div<{ direction: boolean }>`
+export const ArrowButton = styled.div<{ isTop: boolean }>`
   display: flex;
   width: 8px;
   height: 8px;
@@ -287,8 +287,8 @@ export const ArrowButton = styled.div<{ direction: boolean }>`
     height: 8px;
     border-top: 0.1rem solid #202124;
     border-right: 0.1rem solid #202124;
-    margin-top: ${({ direction }) => (direction ? '7px;' : '0px;')};
-    transform: ${({ direction }) => (direction ? 'rotate(-45deg);' : 'rotate(135deg);')};
+    margin-top: ${({ isTop }) => (isTop ? '7px;' : '0px;')};
+    transform: ${({ isTop }) => (isTop ? 'rotate(-45deg);' : 'rotate(135deg);')};
   }
 `;
 

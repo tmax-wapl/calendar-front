@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon } from '@wapl/ui';
-import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { EventModel } from '@/stores/model/EventModel';
 import { EventDetailViewContainer, EventDetailContainer, FromInfo, Creator } from './EventDetailView.style';
 import EventBar from './EventBar';
 import EventItem from './EventItem';
 import { Participants, Location, Notifications, Description, Attachments } from '@common/components/EventInfoItem';
+import { useCalendarStores } from '@/stores/StoreProvider';
+import { autorun } from 'mobx';
 
 const EventDetailView = () => {
-  const { detailId } = useParams();
+  const { eventStore } = useCalendarStores();
+  const navigate = useNavigate();
+  const [data, setData] = useState<EventModel>();
   const [editable, setEditable] = useState<boolean>(false);
   const event: EventModel = new EventModel({
     id: 0,
@@ -39,31 +43,47 @@ const EventDetailView = () => {
     ],
   }); // TODO: store 변수로 대체
 
+  const fetchData = async (id: number) => {
+    const data = await eventStore.getEventInfo(id);
+    setData(new EventModel(data));
+  };
+
+  useEffect(() => {
+    autorun(() => {
+      const { eventId } = eventStore;
+      if (eventId) fetchData(eventId);
+      else navigate('/main');
+    });
+    return () => setData(null);
+  }, []);
+
   return (
     <EventDetailViewContainer>
       <EventBar
-        leftSide={[{ action: 'back', onClick: () => console.log('back') }]}
+        leftSide={[{ action: 'back', onClick: () => navigate(-1) }]}
         rightSide={[
           { action: 'share', onClick: () => console.log('share') },
           { action: 'edit', onClick: () => setEditable(true) },
           { action: 'delete', onClick: () => console.log('delete') },
         ]}
       />
-      <EventDetailContainer>
-        <EventItem event={event} isDetail />
-        <FromInfo>
-          <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
-          {event.calName}
-          <Creator>&nbsp;{`(일정 생성: ${event.regUserId})`}</Creator>
-        </FromInfo>
-        {/* {event.participants?.length && <Participants participants={event.participants} />} */}
-        {event.location && <Location location={event.location} />}
-        {/* {event.notifications?.length && (
-          <Notifications notifications={event.notifications.map(({ time, unit }) => `${time} ${unit}`)} />
-        )} */}
-        {event.description && <Description description={event.description} />}
-        {/* {event.attachments?.length && <Attachments attachments={event.attachments} />} */}
-      </EventDetailContainer>
+      {data && (
+        <EventDetailContainer>
+          <EventItem event={data} isDetail />
+          <FromInfo>
+            <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
+            {data.calName}
+            <Creator>&nbsp;{`(일정 생성: ${data.regUserId})`}</Creator>
+          </FromInfo>
+          {/* {event.participants.length && <Participants participants={event.participants} />} */}
+          {data.location && <Location location={data.location} />}
+          {/* {data.alarmList.length > 0 && (
+            <Notifications notifications={data.alarmList.map(({ time, timestamp }) => `${time} ${timestamp}`)} />
+          )} */}
+          {data.description && <Description description={data.description} />}
+          {/* {data.attachments?.length && <Attachments attachments={event.attachments} />} */}
+        </EventDetailContainer>
+      )}
     </EventDetailViewContainer>
   );
 };

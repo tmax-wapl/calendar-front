@@ -55,7 +55,7 @@ export interface CalendarPatchDTO {
 }
 
 export interface EventRangeDTO {
-  allday: string;
+  allDay: string;
   calId: number;
   calName: string;
   color: string;
@@ -68,6 +68,7 @@ export interface EventRangeDTO {
   repeatgroupId: number;
   rrule: string;
   startDate: string;
+  display?: string;
 }
 
 export interface EventSharePersonaDTO {

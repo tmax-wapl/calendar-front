@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable } from 'mobx';
 
-type DateRange = { start: DateTime; view: DateTime; end: DateTime };
+type DateRange = { start: string; view?: DateTime; end: string };
 
 interface DialogInfo {
   action: string;
@@ -29,7 +29,7 @@ interface ContextClickArg {
 export default class UiStore {
   rootStore: RootStore;
 
-  dateRange: DateRange = { start: DateTime.now(), view: DateTime.now(), end: DateTime.now() };
+  dateRange: DateRange = { start: '', view: DateTime.now(), end: '' };
 
   mainApi: CalendarApi = null;
 
