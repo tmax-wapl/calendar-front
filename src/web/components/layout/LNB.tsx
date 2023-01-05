@@ -14,8 +14,10 @@ import DatePicker from '@common/components/DatePicker/DatePicker';
 import FilterList from './FilterList';
 import CategoryList from './CategoryList';
 import SubscriptionList from './SubscriptionList';
+import { useCalendarStores } from '@/stores/StoreProvider';
 
 const LNB = () => {
+  const { uiStore } = useCalendarStores();
   return (
     <LNBContainer id="lnb">
       <LNBHeader>
@@ -23,7 +25,7 @@ const LNB = () => {
         캘린더
       </LNBHeader>
       <DatePickerWrapper>
-        <DatePicker backgroundColor="#F8F9FA" />
+        <DatePicker onDateClick={selectedDate => uiStore.handleDateClick(selectedDate)} backgroundColor="#F8F9FA" />
       </DatePickerWrapper>
       <FilterListWrapper>
         <FilterList />

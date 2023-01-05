@@ -48,3 +48,6 @@ export const getStartDate = (date: DateTime) => {
   const isToday = date.startOf('day').equals(now.startOf('day'));
   return isToday ? toHalfHourUnit(date.set({ hour: now.hour, minute: now.minute })) : date.set({ hour: 9 });
 };
+
+export const isEqualMonth = (mainCalDate: Date, selectedDate: Date) =>
+  mainCalDate.getMonth() === selectedDate.getMonth();
