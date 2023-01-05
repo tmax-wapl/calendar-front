@@ -1,3 +1,4 @@
+import { DatePickerWrapper } from '@/common/components/EventInfoItem/EventDateItem.style';
 import { Select, styled } from '@wapl/ui';
 
 export const CalendarHeaderContainer = styled.div`
@@ -76,6 +77,7 @@ export const TodayButton = styled.div`
 
 export const LeftContainer = styled.div`
   display: flex;
+  position: relative;
 `;
 
 export const ViewSelect = styled(Select<string>)`
@@ -87,4 +89,8 @@ export const ViewSelect = styled(Select<string>)`
   ~ .MuiSelectUnstyled-popper {
     z-index: 3;
   }
+`;
+
+export const StyledDatePickerWrapper = styled(DatePickerWrapper)`
+  z-index: 2;
 `;
