@@ -247,7 +247,7 @@ const Calendar: React.FC = () => {
           eventContent={renderEventContent}
           nowIndicator
         />
-        <Popover {...moreLinkData} />
+        <Popover moreLinkData={moreLinkData} setMoreLinkData={setMoreLinkData} />
       </FullCalendarWrapper>
     </CalendarContainer>
   );

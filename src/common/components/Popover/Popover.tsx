@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import { Mui } from '@wapl/ui';
 import { EventSegment } from '@fullcalendar/react';
 import { ClickArg } from '@wcomponents/body/Calendar';
@@ -12,12 +12,33 @@ import {
   PopoverIcon,
   PopoverTitle,
 } from './Popover.style';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useCalendarStores } from '@/stores/StoreProvider';
 
-const PopOver = ({ target, date, position, events }: ClickArg) => {
+export interface PopOverProps {
+  moreLinkData: ClickArg;
+  setMoreLinkData?: Dispatch<React.SetStateAction<ClickArg>>;
+}
+
+const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLinkData }: PopOverProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { eventStore } = useCalendarStores();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const open = Boolean(anchorEl);
 
-  const handleClose = () => setAnchorEl(null);
+  const handleClose = () => {
+    setAnchorEl(null);
+    setMoreLinkData(prev => ({
+      ...prev,
+      target: null,
+    }));
+  };
+
+  const handleEventClick = (id: string) => {
+    eventStore.eventId = +id;
+    if (!pathname.includes('detail')) navigate(`/main/detail`);
+  };
 
   useEffect(() => {
     if (target) setAnchorEl(target);
@@ -39,7 +60,7 @@ const PopOver = ({ target, date, position, events }: ClickArg) => {
         <PopoverBody>
           {events?.map(({ event }: EventSegment) => {
             return (
-              <EventWrapper key={event.title}>
+              <EventWrapper key={event.id} onClick={() => handleEventClick(event.id)}>
                 <EventIcon backgroundColor={event.backgroundColor} />
                 <EventTitle>{event.title}</EventTitle>
               </EventWrapper>
