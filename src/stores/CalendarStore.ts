@@ -7,12 +7,15 @@ import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
 export default class CalendarStore {
   rootStore: RootStore;
   repo: CalendarRepo;
+  renameId: number = null;
   calendarList: Array<CalendarModel> = null;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     this.repo = new CalendarRepo();
     makeObservable(this, {
+      renameId: observable,
+      setRenameId: action,
       calendarList: observable,
       setCalendarList: action,
     });
@@ -43,7 +46,29 @@ export default class CalendarStore {
     return res;
   }
 
+  setRenameId(id: number) {
+    this.renameId = id;
+  }
+
   setCalendarList(list: Array<CalendarModel>) {
     this.calendarList = list;
+  }
+
+  updateCalendarColor(id: number, color: string) {
+    const index = this.calendarList.findIndex(item => item.id === id);
+    // this.calendarList[index].color = color;
+    this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, color });
+  }
+
+  updateCalendarName(id: number, name: string) {
+    const index = this.calendarList.findIndex(item => item.id === id);
+    // this.calendarList[index].name = name;
+    this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, name });
+  }
+
+  updateCalendarChecked(id: number, checkFlag: boolean) {
+    const index = this.calendarList.findIndex(item => item.id === id);
+    // this.calendarList[index].checkFlag = checkFlag;
+    this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, checkFlag });
   }
 }
