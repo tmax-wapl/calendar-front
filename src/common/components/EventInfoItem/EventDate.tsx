@@ -38,7 +38,7 @@ const EventDate = ({
       <ItemTitleContainer>
         <Icon.Add1Line className="mr-8" color="#202124" width={20} height={20} />
         종일
-        <Switch size="small" checked={allDay} onChange={handleSwitch} />
+        <Switch size="small" checked={allDay ?? false} onChange={handleSwitch} />
       </ItemTitleContainer>
       <EventDateItem title="시작일" date={start} allDay={allDay} onChange={handleStartChange} />
       <EventDateItem title="마감일" date={end} allDay={allDay} onChange={handleEndChange} />
