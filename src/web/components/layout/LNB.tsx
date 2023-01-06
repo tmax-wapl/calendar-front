@@ -24,8 +24,7 @@ const LNB = () => {
   const { calendarStore } = useCalendarStores();
 
   const fetchData = async (userId: number) => {
-    const data = await calendarStore.getUserCalendars(userId, '2023-01-04', '2023-01-04');
-    const calendarList = data.map((item: CalendarDTO) => new CalendarModel(item));
+    const calendarList = await calendarStore.getCalendarList(userId, '2023-01-04', '2023-01-04');
     calendarStore.setCalendarList(calendarList);
   };
 

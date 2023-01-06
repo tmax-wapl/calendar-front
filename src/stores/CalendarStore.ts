@@ -26,8 +26,9 @@ export default class CalendarStore {
     return res;
   }
 
-  async getUserCalendars(userId: number, start: string, end: string) {
-    const res = await this.repo.getUserCalendars(userId, start, end);
+  async getCalendarList(userId: number, start: string, end: string) {
+    const data = await this.repo.getCalendarList(userId, start, end);
+    const res = data.map((dto: CalendarDTO) => new CalendarModel(dto));
     return res;
   }
 
