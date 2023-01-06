@@ -23,8 +23,9 @@ export const diffTime = (startDate: string, endDate: string) => {
   return { days, hours, minutes, seconds, diff };
 };
 
-export const get12HoursFormat = (date: string) => {
-  return DateTime.fromJSDate(new Date(date)).toFormat('a h:mm', { locale: 'ko' });
+export const get12HoursFormat = (date: string | DateTime) => {
+  if (typeof date === 'string') return DateTime.fromISO(date).toFormat('a h:mm', { locale: 'ko' });
+  return date.toFormat('a h:mm', { locale: 'ko' });
 };
 
 export const getRepeatSummary = (rrule: Partial<Options>): string => {
@@ -47,6 +48,10 @@ export const getStartDate = (date: DateTime) => {
   const now = DateTime.now();
   const isToday = date.startOf('day').equals(now.startOf('day'));
   return isToday ? toHalfHourUnit(date.set({ hour: now.hour, minute: now.minute })) : date.set({ hour: 9 });
+};
+
+export const toISO = (date: DateTime) => {
+  return date.toISO({ suppressMilliseconds: true, includeOffset: false });
 };
 
 export const isEqualMonth = (mainCalDate: Date, selectedDate: Date) =>

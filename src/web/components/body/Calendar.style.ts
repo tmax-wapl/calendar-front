@@ -226,6 +226,9 @@ export const CalendarContainer = styled.div`
       // 오늘 시간일정영역 cell
       background-color: #fafafa;
     }
+    .fc-timegrid-event .fc-event-main {
+      padding: 0;
+    }
   }
 
   .fc-h-event {
@@ -297,8 +300,19 @@ export const ArrowButton = styled.div<{ isTop: boolean }>`
 
 export const EventWrapper = styled.span<{ isHalfLess: boolean }>`
   display: flex;
-  flex-direction: column;
   padding: ${({ isHalfLess }) => (isHalfLess ? '0px 8px' : '4px 8px')};
+`;
+
+export const WeekEventWrapper = styled(EventWrapper)`
+  flex-direction: column;
+`;
+
+export const CalendarColor = styled.span<{ color: string }>`
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  background: ${({ color }) => color};
+  border-radius: 3px 0 0 3px;
 `;
 
 export const EventSpan = styled.span`

@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { CalendarDTO, EventRangeDTO } from '@constants/interfaces';
+import { CalendarDTO, EventDTO } from '@constants/interfaces';
 
 export class CalendarModel {
   dto: Partial<CalendarDTO>;
@@ -41,7 +41,7 @@ export class CalendarModel {
     return this.dto.mainFlag;
   }
 
-  get eventList(): EventRangeDTO[] {
+  get eventList(): EventDTO[] {
     return this.dto.eventList;
   }
 

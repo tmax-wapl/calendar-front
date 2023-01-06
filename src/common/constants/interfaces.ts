@@ -2,6 +2,7 @@ export interface EventDTO {
   id: number;
   calId: number;
   calName: string;
+  calColor: string;
   color: string;
   importance: boolean;
   title: string;
@@ -31,7 +32,7 @@ export interface CalendarDTO {
   color: string;
   checkFlag: boolean;
   mainFlag: boolean;
-  eventList?: EventRangeDTO[];
+  eventList?: EventDTO[];
   modDate: string;
   modUserId: number;
   regDate: string;
@@ -61,6 +62,7 @@ export interface EventRangeDTO {
   allDay: string;
   calId: number;
   calName: string;
+  calColor: string;
   color: string;
   endDate: string;
   id: number;

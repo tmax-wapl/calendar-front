@@ -1,4 +1,3 @@
-import { EventModel } from '@/stores/model/EventModel';
 import { EventListViewContainer, DateInfo, DateDay, Holiday, Lunar } from './EventListView.style';
 import EventItem from './EventItem';
 import NoResult from './NoResult';
@@ -11,40 +10,16 @@ import { autorun } from 'mobx';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const EventListView = () => {
-  const { calendarStore, uiStore, eventStore } = useCalendarStores();
+  const { uiStore, eventStore } = useCalendarStores();
   const [eventList, setEventList] = useState([]);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const fetchData = async (dateDay: DateTime) => {
-    const day = dateDay.toFormat('yyyy-MM-dd');
-    const { eventList } = await calendarStore.getCalendarInfo(14, day, day);
+    const date = dateDay.toFormat('yyyy-LL-dd');
+    const eventList = await eventStore.getEventList(145, date);
     setEventList(eventList);
   };
-  // const eventList: EventModel[] = [
-  //   {
-  //     id: 0,
-  //     calId: 0,
-  //     calName: '캐릭터A의 캘린더',
-  //     color: '#FF46B5',
-  //     importance: true,
-  //     title: '일정 제목',
-  //     allDay: false,
-  //     start: '2021-09-03T09:00:00',
-  //     end: '2021-09-03T09:30:00',
-  //   },
-  //   {
-  //     id: 1,
-  //     calId: 0,
-  //     calName: '캐릭터A의 캘린더',
-  //     color: '#3384FF',
-  //     importance: false,
-  //     title: '일정 제목',
-  //     allDay: false,
-  //     start: '2021-09-03T09:00:00',
-  //     end: '2021-09-03T09:30:00',
-  //   },
-  // ].map((dto: EventDTO) => new EventModel(dto)); // TODO: store 변수로 대체
 
   const getDateDay = (): string => {
     const { dateDay } = uiStore;

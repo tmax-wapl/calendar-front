@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { useObserver } from 'mobx-react-lite';
-import { Icon } from '@wapl/ui';
-import { useLocation } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { Icon, Button } from '@wapl/ui';
+import { useNavigate } from 'react-router-dom';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EventModel } from '@/stores/model/EventModel';
-import { EventHandleViewContainer, EventHandleContainer, FromInfo } from './EventHandleView.style';
+import { EventHandleViewContainer, EventHandleContainer, FromInfo, ButtonGroup } from './EventHandleView.style';
 import EventBar from './EventBar';
 import {
   EventTitle,
@@ -17,35 +17,56 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { getStartDate, toLuxon } from '@/utils';
+import { getStartDate, toISO } from '@/utils';
 
 interface Props {
   action: 'create' | 'edit';
 }
 
-const EventHandleView = ({ action }: Props) => {
-  const { eventStore, uiStore } = useCalendarStores();
-  const { state } = useLocation();
+const EventHandleView = observer(({ action }: Props) => {
+  const { calendarStore, eventStore, uiStore } = useCalendarStores();
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    navigate(-1);
+  };
+
+  const handleCreate = async () => {
+    const event = await eventStore.createEvent(
+      new EventModel({
+        ...eventStore.event.dto,
+        ...(!eventStore.event.title && { title: 'Untitled' }),
+        ...(eventStore.event.allDay && {
+          start: toISO(eventStore.event.startDate.startOf('day')),
+          end: toISO(eventStore.event.endDate.startOf('day').plus({ days: 1 })),
+        }),
+      }),
+    );
+    calendarStore.appendEventList(event);
+    navigate('/main/detail');
+  };
 
   useEffect(() => {
     if (action === 'create') {
-      const start = getStartDate(state ? toLuxon(state.dateStr) : uiStore.dateDay);
+      const start = getStartDate(uiStore.dateDay);
       eventStore.setEvent(
         new EventModel({
-          start: start.toISO({ suppressMilliseconds: true, includeOffset: false }),
-          end: start.plus({ minutes: 30 }).toISO({ suppressMilliseconds: true, includeOffset: false }),
+          calId: 145,
+          start: toISO(start),
+          end: toISO(start.plus({ minutes: 30 })),
         }),
       );
       return;
     }
     // TODO: data fetch
-  }, [state]);
+    // TODO: 종일인 경우 start/end time 09:00-09:30으로 변경
+  }, [uiStore.dateDay]);
 
-  return useObserver(() => (
+  return (
     <EventHandleViewContainer>
       <EventBar
         title={action === 'create' ? '새 일정' : '일정 수정'}
-        leftSide={[{ action: 'close', onClick: () => console.log('close') }]}
+        leftSide={[{ action: 'close', onClick: handleClose }]}
       />
       <EventHandleContainer>
         <EventTitle
@@ -94,9 +115,17 @@ const EventHandleView = ({ action }: Props) => {
           editable
         />
         {/* <Attachments attachments={eventStore.event.attachments} editable /> */}
+        <ButtonGroup fullWidth>
+          <Button variant="secondary" size="large" onClick={handleClose}>
+            취소
+          </Button>
+          <Button size="large" onClick={handleCreate}>
+            생성
+          </Button>
+        </ButtonGroup>
       </EventHandleContainer>
     </EventHandleViewContainer>
-  ));
-};
+  );
+});
 
 export default EventHandleView;
