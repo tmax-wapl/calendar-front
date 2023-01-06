@@ -1,14 +1,31 @@
+import { makeObservable, observable, action } from 'mobx';
 import RootStore from './RootStore';
 import CalendarRepo from './repository/CalendarRepo';
 import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
+import { EventModel } from './model/EventModel';
 
 export default class CalendarStore {
   rootStore: RootStore;
   repo: CalendarRepo;
+  eventList: EventModel[] = [];
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     this.repo = new CalendarRepo();
+
+    makeObservable(this, {
+      eventList: observable,
+      setEventList: action,
+      appendEventList: action,
+    });
+  }
+
+  setEventList(eventList: EventModel[]) {
+    this.eventList = eventList;
+  }
+
+  appendEventList(event: EventModel) {
+    this.eventList = [...this.eventList, event];
   }
 
   async createCalendar(dto: CalendarDTO) {
