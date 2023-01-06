@@ -27,12 +27,14 @@ export interface EventDTO {
 }
 
 export interface CalendarDTO {
-  color: string;
-  eventList?: EventDTO[];
   id: number;
+  name: string;
+  color: string;
+  checkFlag: boolean;
+  mainFlag: boolean;
+  eventList?: EventDTO[];
   modDate: string;
   modUserId: number;
-  name: string;
   regDate: string;
   regUserId: number;
   type?: string;
@@ -53,6 +55,7 @@ export interface CalendarPatchDTO {
   userId: number;
   name?: string;
   color?: string;
+  checkFlag?: boolean;
 }
 
 export interface EventRangeDTO {

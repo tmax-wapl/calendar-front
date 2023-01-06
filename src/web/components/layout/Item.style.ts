@@ -1,5 +1,29 @@
 import { styled, Mui } from '@wapl/ui';
 
+export const InputItemContainer = styled.div<{ calendarcolor: string }>`
+  display: flex;
+  height: 44px;
+  padding: 0px 12px;
+  border-radius: 8px;
+  align-items: center;
+  .Mui-checked {
+    background-color: ${({ calendarcolor }) => calendarcolor} !important;
+  }
+`;
+
+export const Input = styled(Mui.TextField)`
+  width: 100%;
+  margin-left: 10px;
+  .MuiInputBase-root {
+    height: 30px;
+    border-radius: 8px;
+    .MuiInputBase-input {
+      font-size: 14px;
+      padding: 0px 12px;
+    }
+  }
+`;
+
 export const ItemContainer = styled.div`
   display: flex;
   height: 44px;
@@ -28,7 +52,7 @@ export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: str
     background-color: ${({ calendarcolor }) => calendarcolor} !important;
   }
   .MuiTypography-root {
-    width: calc(100% - 20px);
+    width: calc(100% - 28px);
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;

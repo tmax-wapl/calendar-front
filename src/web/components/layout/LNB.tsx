@@ -1,4 +1,8 @@
-import { memo } from 'react';
+import { memo, useEffect, useContext } from 'react';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
+import { useCalendarStores } from '@/stores/StoreProvider';
+import { CalendarDTO } from '@constants/interfaces';
+import { CalendarModel } from '@/stores/model/CalendarModel';
 import { Icon } from '@wapl/ui';
 import {
   LNBContainer,
@@ -16,6 +20,18 @@ import CategoryList from './CategoryList';
 import SubscriptionList from './SubscriptionList';
 
 const LNB = () => {
+  const { userId } = useContext(CalendarContext);
+  const { calendarStore } = useCalendarStores();
+
+  const fetchData = async (userId: number) => {
+    const calendarList = await calendarStore.getCalendarList(userId, '2023-01-04', '2023-01-04');
+    calendarStore.setCalendarList(calendarList);
+  };
+
+  useEffect(() => {
+    fetchData(userId);
+  }, [userId]);
+
   return (
     <LNBContainer id="lnb">
       <LNBHeader>

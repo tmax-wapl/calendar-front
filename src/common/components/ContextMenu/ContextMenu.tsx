@@ -1,6 +1,7 @@
 import { Mui } from '@wapl/ui';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { ColorPicker, ContextMenuItem } from './index';
 
 const style = [
@@ -17,19 +18,30 @@ const style = [
 ];
 
 export const ContextMenu = () => {
-  const { uiStore } = useCalendarStores();
-  const { target, position, color, type, onColorClick } = uiStore.contextClickArg;
+  const { userId } = useContext(CalendarContext);
+  const { uiStore, calendarStore } = useCalendarStores();
+  const { target, position, id, color, type } = uiStore.contextClickArg;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
     setAnchorEl(null);
-    uiStore.contextClickArg = null;
+    uiStore.setContextClickArg(null);
   };
 
-  const handleClick = (color: string) => {
-    if (onColorClick) onColorClick(color);
-    handleClose();
+  const handleClick = async (color: string) => {
+    switch (type) {
+      case 'persona':
+      case 'subscribe':
+        await calendarStore.calendarUpdate(id, { userId, color });
+        calendarStore.updateCalendarColor(id, color);
+        break;
+      case 'event':
+        // TODO: 일정 색상 변경 서비스 호출
+        break;
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
@@ -48,7 +60,7 @@ export const ContextMenu = () => {
         <Mui.MenuItem sx={style} disableRipple>
           <ColorPicker color={color} onClick={color => handleClick(color)} />
         </Mui.MenuItem>
-        <ContextMenuItem type={type} />
+        <ContextMenuItem id={id} type={type} onClose={handleClose} />
       </Mui.Menu>
     </div>
   );
