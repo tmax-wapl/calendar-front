@@ -1,4 +1,3 @@
-import React from 'react';
 import { Icon, Mui, styled } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 
@@ -18,8 +17,14 @@ interface MenuItem {
   onClick: () => void;
 }
 
-export const ContextMenuItem = ({ type }: { type: string }) => {
-  const { uiStore } = useCalendarStores();
+interface Props {
+  id: number;
+  type?: string;
+  onClose?: () => void;
+}
+
+export const ContextMenuItem = ({ id, type, onClose }: Props) => {
+  const { uiStore, calendarStore } = useCalendarStores();
 
   const deleteCalendar = () => {
     console.log('캘린더 삭제');
@@ -34,7 +39,8 @@ export const ContextMenuItem = ({ type }: { type: string }) => {
   };
 
   const handleNameChange = () => {
-    console.log('이름 변경');
+    calendarStore.setRenameId(id);
+    if (onClose) onClose();
   };
 
   const handleCalendarDelete = () => {
