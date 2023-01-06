@@ -8,7 +8,7 @@ export default class CalendarStore {
   rootStore: RootStore;
   repo: CalendarRepo;
   renameId: number = null;
-  calendarList: Array<CalendarModel> = null;
+  calendarList: CalendarModel[] = null;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -50,7 +50,7 @@ export default class CalendarStore {
     this.renameId = id;
   }
 
-  setCalendarList(list: Array<CalendarModel>) {
+  setCalendarList(list: CalendarModel[]) {
     this.calendarList = list;
   }
 

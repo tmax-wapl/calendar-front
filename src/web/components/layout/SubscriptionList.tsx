@@ -5,7 +5,7 @@ import { ItemContainer, CheckBoxWrapper, SubscriptionButton, ButtonWarpper } fro
 
 const SubscriptionList = () => {
   const { uiStore } = useCalendarStores();
-  const [checkList, setCheckList] = useState<Array<boolean>>([true, true, false]);
+  const [checkList, setCheckList] = useState<boolean[]>([true, true, false]);
   const subscriptionItems = [
     { label: '길동과 친구들 in 괌 길동과 친구들 in 괌', type: 'shared', id: 3, color: '#3384FF' },
     { label: 'G 캘린더', type: 'shared', id: 4, color: '#A143FF' },

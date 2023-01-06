@@ -1,3 +1,4 @@
+import { makeAutoObservable } from 'mobx';
 import { CalendarDTO, EventRangeDTO } from '@constants/interfaces';
 
 export class CalendarModel {
@@ -5,6 +6,7 @@ export class CalendarModel {
 
   constructor(dto: Partial<CalendarDTO>) {
     this.dto = dto;
+    makeAutoObservable(this);
   }
 
   get id(): number {
