@@ -17,6 +17,8 @@ import {
   CalendarContainer,
   EventSpan,
   EventWrapper,
+  WeekEventWrapper,
+  CalendarColor,
   FullCalendarWrapper,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -26,7 +28,7 @@ import { VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toLuxon, diffTime, toDateString } from '@/utils';
 import { autorun } from 'mobx';
-import { CalendarEventDummy } from './CalendarDummy';
+import { observer } from 'mobx-react-lite';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -45,9 +47,8 @@ export type ClickArg = {
   color?: string;
 };
 
-const Calendar: React.FC = () => {
+const Calendar: React.FC = observer(() => {
   const { calendarStore, eventStore } = useCalendarStores();
-  const [eventList, setEventList] = useState([]);
   const calendarRef = useRef<FullCalendar>(null);
   const { uiStore } = useCalendarStores();
   const { viewMode } = useParams();
@@ -63,9 +64,8 @@ const Calendar: React.FC = () => {
   let timer: any;
 
   const fetchData = async (start: string, end: string) => {
-    const { eventList } = await calendarStore.getCalendarInfo(14, start, end);
-    eventList.map(item => (item.display = 'block'));
-    setEventList(eventList);
+    const eventList = await eventStore.getEventList(145, start, end);
+    calendarStore.setEventList(eventList);
   };
 
   const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
@@ -87,15 +87,20 @@ const Calendar: React.FC = () => {
     const { minutes } = diffTime(startStr, endStr);
     const isHalfLess = minutes <= 30;
 
-    return uiStore.viewMode === VIEW_MODE.MONTH ? (
-      <EventWrapper data-color={backgroundColor} isHalfLess>
-        {event.title}
-      </EventWrapper>
-    ) : (
-      <EventWrapper data-color={backgroundColor} isHalfLess={isHalfLess}>
-        <EventSpan>{event.title}</EventSpan>
-        {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
-      </EventWrapper>
+    return (
+      <>
+        <CalendarColor color={event.extendedProps.dto.calColor} />
+        {uiStore.viewMode === VIEW_MODE.MONTH ? (
+          <EventWrapper data-color={backgroundColor} isHalfLess>
+            {event.title}
+          </EventWrapper>
+        ) : (
+          <WeekEventWrapper data-color={backgroundColor} isHalfLess={isHalfLess}>
+            <EventSpan>{event.title}</EventSpan>
+            {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
+          </WeekEventWrapper>
+        )}
+      </>
     );
   };
 
@@ -239,7 +244,7 @@ const Calendar: React.FC = () => {
           dayCellContent={renderDayContent}
           eventClick={handleEventClick}
           allDayText="종일"
-          events={eventList}
+          events={calendarStore.eventList}
           dayMaxEvents={5}
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}
@@ -252,6 +257,6 @@ const Calendar: React.FC = () => {
       </FullCalendarWrapper>
     </CalendarContainer>
   );
-};
+});
 
 export default Calendar;
