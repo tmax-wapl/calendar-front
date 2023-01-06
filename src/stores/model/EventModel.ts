@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { DateTime } from 'luxon';
 import { rrulestr, RRule, Options } from 'rrule';
 import { EventDTO, AlarmDTO, ExceptionDTO } from '@constants/interfaces';
+import { toISO } from '@/utils';
 
 export class EventModel {
   dto: Partial<EventDTO>;
@@ -16,7 +17,7 @@ export class EventModel {
   }
 
   get id(): string {
-    return this.dto.id.toString();
+    return this.dto.id?.toString();
   }
 
   get calId(): number {
@@ -25,6 +26,10 @@ export class EventModel {
 
   get calName(): string {
     return this.dto.calName;
+  }
+
+  get backgroundColor(): string {
+    return this.dto.color || this.dto.calColor;
   }
 
   get color(): string {
@@ -68,7 +73,7 @@ export class EventModel {
   }
 
   set startDate(date: DateTime) {
-    this.dto.start = date.toISO({ suppressMilliseconds: true, includeOffset: false });
+    this.dto.start = toISO(date);
   }
 
   get end(): string {
@@ -80,7 +85,7 @@ export class EventModel {
   }
 
   set endDate(date: DateTime) {
-    this.dto.end = date.toISO({ suppressMilliseconds: true, includeOffset: false });
+    this.dto.end = toISO(date);
   }
 
   get modDate(): DateTime {

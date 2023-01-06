@@ -2,9 +2,9 @@ import { EventDTO } from '@/common/constants/interfaces';
 import { API } from '../../common/lib/API';
 
 export default class EventRepo {
-  async createEvent(dto: EventDTO) {
+  async createEvent(dto: Partial<EventDTO>) {
     try {
-      const { response, success } = await API.post<EventDTO, EventDTO>(`/apis/v1/event/create`, dto);
+      const { response, success } = await API.post<Partial<EventDTO>, EventDTO>(`/apis/v1/event/create`, dto);
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));
