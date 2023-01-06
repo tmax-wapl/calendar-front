@@ -35,7 +35,7 @@ export default class UiStore {
 
   viewMode: string;
 
-  dateDay: DateTime = DateTime.now();
+  dateDay: DateTime = DateTime.now().startOf('day');
 
   dialogInfo: DialogInfo = null;
 
