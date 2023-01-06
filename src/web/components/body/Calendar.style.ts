@@ -86,8 +86,8 @@ export const CalendarContainer = styled.div`
         transform: translate(11px, 11px);
         justify-content: center;
       }
-      .fc-daygrid-event-harness {
-        margin-top: 10px !important;
+      .fc-daygrid-day-events {
+        margin-top: 15px;
       }
 
       .fc-daygrid-day-number {
