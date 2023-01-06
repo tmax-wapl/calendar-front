@@ -27,12 +27,19 @@ export default class EventStore {
 
   async getEventInfo(eventId: number) {
     const res = await this.repo.getEventInfo(eventId);
-    return res;
+    return new EventModel(res);
   }
 
-  async createEvent(dto: EventDTO) {
-    const res = await this.repo.createEvent(dto);
-    return res;
+  async getEventList(calId: number, start: string, end: string = start) {
+    const { eventList } = await this.rootStore.calendarStore.getCalendarInfo(calId, start, end);
+    return eventList.map(event => new EventModel(event));
+  }
+
+  async createEvent(event: EventModel) {
+    const res = await this.repo.createEvent(event.dto);
+    this.event = new EventModel(res);
+    this.eventId = res.id;
+    return this.event;
   }
 
   async updateEvent(eventId: number, dto: EventDTO) {
