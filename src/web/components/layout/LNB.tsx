@@ -19,7 +19,7 @@ import SubscriptionList from './SubscriptionList';
 
 const LNB = () => {
   const { userId } = useContext(CalendarContext);
-  const { calendarStore } = useCalendarStores();
+  const { uiStore, calendarStore } = useCalendarStores();
 
   const fetchData = async (userId: number) => {
     const calendarList = await calendarStore.getCalendarList(userId, '2023-01-04', '2023-01-04');
