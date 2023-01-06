@@ -1,4 +1,4 @@
-import { styled } from '@wapl/ui';
+import { styled, ButtonGroup as WButtonGroup } from '@wapl/ui';
 
 export const EventHandleViewContainer = styled.div`
   display: flex;
@@ -21,4 +21,9 @@ export const FromInfo = styled.div`
   display: flex;
   height: 44px;
   align-items: center;
+`;
+
+export const ButtonGroup = styled(WButtonGroup)`
+  box-sizing: border-box;
+  padding: 8px 10px 0 !important;
 `;

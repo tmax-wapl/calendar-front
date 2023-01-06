@@ -165,8 +165,9 @@ const Calendar: React.FC = () => {
     viewMode === VIEW_MODE.MONTH ? handleMonthViewClick(dateInfo) : handleDateTimeSelect(dateInfo);
   };
 
-  const handleDoubleClick = (dateInfo: DateClickArg) => {
-    navigate('create', { state: { dateStr: dateInfo.dateStr } });
+  const handleDoubleClick = ({ dayEl }: DateClickArg) => {
+    setDateDay(dayEl);
+    if (!pathname.includes('create')) navigate('create');
   };
 
   const handleRightClick = (e: any) => {
