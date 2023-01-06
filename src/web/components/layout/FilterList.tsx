@@ -3,7 +3,7 @@ import { Checkbox } from '@wapl/ui';
 import { CheckBoxWrapper } from './FilterList.style';
 
 const FilterList = () => {
-  const [checkList, setCheckList] = useState<Array<boolean>>([false, true, true]);
+  const [checkList, setCheckList] = useState<boolean[]>([false, true, true]);
   const filterItems = [
     { label: '중요 일정만 표시', type: 'importance' },
     { label: '공휴일 표시', type: 'holiday' },

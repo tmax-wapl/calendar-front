@@ -22,9 +22,9 @@ interface DialogInfo {
 interface ContextClickArg {
   target?: HTMLElement;
   position: { top: number; left: number };
+  id?: number;
   color?: string;
   type?: string;
-  onColorClick?: (color: string) => void;
 }
 
 export default class UiStore {
@@ -51,6 +51,7 @@ export default class UiStore {
       setDateDay: action,
       dialogInfo: observable,
       contextClickArg: observable,
+      setContextClickArg: action,
     });
   }
 
@@ -60,6 +61,10 @@ export default class UiStore {
 
   setDateDay(date: DateTime) {
     this.dateDay = date;
+  }
+
+  setContextClickArg(contextClickArg: ContextClickArg) {
+    this.contextClickArg = contextClickArg;
   }
 
   getApi(): CalendarApi {
