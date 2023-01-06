@@ -1,3 +1,4 @@
+import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { EventDTO } from '@/common/constants/interfaces';
 import { API } from '../../common/lib/API';
 
@@ -20,9 +21,12 @@ export default class EventRepo {
     }
   }
 
-  async updateEvent(eventId: number, dto: EventDTO) {
+  async updateEvent(eventId: number, dto: Partial<EventDTO>, updateOption: EVENT_UPDATE_OPTION) {
     try {
-      const { response, success } = await API.patch<EventDTO, EventDTO>(`/apis/v1/event/update/${eventId}`, dto);
+      const { response, success } = await API.patch<Partial<EventDTO>, EventDTO>(
+        `/apis/v1/event/update/${eventId}/${updateOption}`,
+        dto,
+      );
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));

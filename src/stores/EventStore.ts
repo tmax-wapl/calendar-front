@@ -3,6 +3,7 @@ import RootStore from './RootStore';
 import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
 import { EventDTO } from '@/common/constants/interfaces';
+import { EVENT_UPDATE_OPTION } from '@/common/constants';
 
 export default class EventStore {
   rootStore: RootStore;
@@ -42,8 +43,8 @@ export default class EventStore {
     return this.event;
   }
 
-  async updateEvent(eventId: number, dto: EventDTO) {
-    const res = await this.repo.updateEvent(eventId, dto);
+  async updateEvent(eventId: number, { dto }: EventModel, updateOption: EVENT_UPDATE_OPTION) {
+    const res = await this.repo.updateEvent(eventId, dto, updateOption);
     return res;
   }
   async deleteEvent(eventId: number) {
