@@ -3,7 +3,7 @@ import RootStore from './RootStore';
 import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
 import { EventDTO } from '@/common/constants/interfaces';
-import { EVENT_UPDATE_OPTION } from '@/common/constants';
+import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
 
 export default class EventStore {
   rootStore: RootStore;
@@ -47,8 +47,15 @@ export default class EventStore {
     const res = await this.repo.updateEvent(eventId, dto, updateOption);
     return res;
   }
-  async deleteEvent(eventId: number) {
-    const res = await this.repo.deleteEvent(eventId);
+  async deleteEvent(eventId: number, deleteOption: EVENT_DELETE_OPTION) {
+    const res = await this.repo.deleteEvent(eventId, deleteOption);
     return res;
+  }
+
+  updateEventColor(id: string, color: string) {
+    this.rootStore.calendarStore.eventList = this.rootStore.calendarStore.eventList.map(event => {
+      if (event.id === id) event.color = color;
+      return event;
+    });
   }
 }

@@ -24,3 +24,8 @@ export enum EVENT_UPDATE_OPTION {
   REPEAT_EXCEP_REMOVE = 5, // 반복 예외일정 삭제
   AFTER_REPEAT_ALL_REMOVE = 6, // 향 후 모든일정 삭제
 }
+
+export enum EVENT_DELETE_OPTION {
+  DEFAULT = 0, // 일반 일정 삭제,
+  REPEAT_ALL = 1, // 반복일정 모두 삭제
+}

@@ -1,8 +1,10 @@
 import { Mui } from '@wapl/ui';
-import { useEffect, useState, useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { ColorPicker, ContextMenuItem } from './index';
+import { EVENT_UPDATE_OPTION } from '@/common/constants';
+import { EventModel } from '@/stores/model/EventModel';
 
 const style = [
   {
@@ -19,7 +21,7 @@ const style = [
 
 export const ContextMenu = () => {
   const { userId } = useContext(CalendarContext);
-  const { uiStore, calendarStore } = useCalendarStores();
+  const { uiStore, calendarStore, eventStore } = useCalendarStores();
   const { target, position, id, color, type } = uiStore.contextClickArg;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -38,6 +40,9 @@ export const ContextMenu = () => {
         break;
       case 'event':
         // TODO: 일정 색상 변경 서비스 호출
+        const event = new EventModel({ modUserId: userId, color, calId: 145 });
+        await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.DEFAULT);
+        eventStore.updateEventColor('' + id, color); // 일정 model은 string 타입이군
         break;
       default:
         break;

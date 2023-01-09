@@ -31,7 +31,9 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
   };
 
   const deleteEvent = () => {
-    console.log('일정 삭제');
+    calendarStore.deleteEvent(id);
+    closeDialog();
+    if (onClose) onClose();
   };
 
   const closeDialog = () => {

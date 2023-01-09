@@ -23,6 +23,7 @@ export default class CalendarStore {
       eventList: observable,
       setEventList: action,
       appendEventList: action,
+      deleteEvent: action,
     });
   }
 
@@ -84,5 +85,10 @@ export default class CalendarStore {
     const index = this.calendarList.findIndex(item => item.id === id);
     // this.calendarList[index].checkFlag = checkFlag;
     this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, checkFlag });
+  }
+
+  async deleteEvent(id: number) {
+    await this.rootStore.eventStore.repo.deleteEvent(id, 0);
+    this.eventList = this.eventList.filter(item => item.id !== '' + id);
   }
 }

@@ -1,4 +1,4 @@
-import { EVENT_UPDATE_OPTION } from '@/common/constants';
+import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
 import { EventDTO } from '@/common/constants/interfaces';
 import { API } from '../../common/lib/API';
 
@@ -33,9 +33,9 @@ export default class EventRepo {
     }
   }
 
-  async deleteEvent(eventId: number) {
+  async deleteEvent(eventId: number, deleteOption: EVENT_DELETE_OPTION) {
     try {
-      const { response, success } = await API.delete(`/apis/v1/event/delete/${eventId}`);
+      const { response, success } = await API.delete(`/apis/v1/event/delete/${eventId}/${deleteOption}`);
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));
