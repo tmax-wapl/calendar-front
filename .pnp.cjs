@@ -70,6 +70,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:7.31.11"],\
             ["eslint-plugin-react-hooks", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:4.6.0"],\
             ["fullcalendar", "npm:5.11.3"],\
+            ["holiday-kr", "npm:0.1.5"],\
             ["html-webpack-plugin", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:5.5.0"],\
             ["ignore-loader", "npm:0.1.2"],\
             ["luxon", "npm:3.1.1"],\
@@ -12732,6 +12733,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:7.31.11"],\
             ["eslint-plugin-react-hooks", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:4.6.0"],\
             ["fullcalendar", "npm:5.11.3"],\
+            ["holiday-kr", "npm:0.1.5"],\
             ["html-webpack-plugin", "virtual:0db00ecf58c2c3995cd6c9fa014a987b35bed24ecdea7bd2cdcabf375ee49b97e88e2cf7e62fc86c105b3930090080997a3c91f09d789f95693730f4a04f397b#npm:5.5.0"],\
             ["ignore-loader", "npm:0.1.2"],\
             ["luxon", "npm:3.1.1"],\
@@ -17572,6 +17574,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["hoist-non-react-statics", "npm:3.3.2"],\
             ["react-is", "npm:16.13.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["holiday-kr", [\
+        ["npm:0.1.5", {\
+          "packageLocation": "./.yarn/cache/holiday-kr-npm-0.1.5-3c2902072d-2635f9cc3f.zip/node_modules/holiday-kr/",\
+          "packageDependencies": [\
+            ["holiday-kr", "npm:0.1.5"]\
           ],\
           "linkType": "HARD"\
         }]\

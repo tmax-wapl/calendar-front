@@ -7424,6 +7424,7 @@ __metadata:
     eslint-plugin-react: ^7.31.10
     eslint-plugin-react-hooks: ^4.6.0
     fullcalendar: ^5.11.3
+    holiday-kr: ^0.1.5
     html-webpack-plugin: ^5.5.0
     ignore-loader: ^0.1.2
     luxon: ^3.1.0
@@ -11320,6 +11321,13 @@ __metadata:
   dependencies:
     react-is: ^16.7.0
   checksum: b1538270429b13901ee586aa44f4cc3ecd8831c061d06cb8322e50ea17b3f5ce4d0e2e66394761e6c8e152cd8c34fb3b4b690116c6ce2bd45b18c746516cb9e8
+  languageName: node
+  linkType: hard
+
+"holiday-kr@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "holiday-kr@npm:0.1.5"
+  checksum: 2635f9cc3f0fc5398904fc20518d2fdf5b86352617c58936a09cfc56716b3d1990c1fceceb674ff1d53e8b002c98e631955478e0b6d74991da986eb5804033ad
   languageName: node
   linkType: hard
 

@@ -4,6 +4,7 @@ import CalendarRepo from './repository/CalendarRepo';
 import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
 import { CalendarModel } from './model/CalendarModel';
 import { EventModel } from './model/EventModel';
+import { EVENT_DELETE_OPTION } from '@/common/constants';
 
 export default class CalendarStore {
   rootStore: RootStore;
@@ -23,6 +24,7 @@ export default class CalendarStore {
       eventList: observable,
       setEventList: action,
       appendEventList: action,
+      deleteEvent: action,
     });
   }
 
@@ -84,5 +86,10 @@ export default class CalendarStore {
     const index = this.calendarList.findIndex(item => item.id === id);
     // this.calendarList[index].checkFlag = checkFlag;
     this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, checkFlag });
+  }
+
+  async deleteEvent(id: number) {
+    await this.rootStore.eventStore.repo.deleteEvent(id, EVENT_DELETE_OPTION.DEFAULT);
+    this.eventList = this.eventList.filter(item => item.id !== '' + id);
   }
 }

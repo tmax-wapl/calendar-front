@@ -5,6 +5,7 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { Observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
+import { getLunar } from 'holiday-kr';
 import { autorun } from 'mobx';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -41,6 +42,12 @@ const EventListView = () => {
     };
   }, []);
 
+  const lunar = () => {
+    const { dateDay } = uiStore;
+    const { month, day } = getLunar(dateDay.toJSDate());
+    return `음력 ${month}.${day}`;
+  };
+
   return (
     <EventListViewContainer>
       <DateInfo>
@@ -50,7 +57,7 @@ const EventListView = () => {
               <>
                 <DateDay>{getDateDay()}</DateDay>
                 <Holiday>추석 연휴</Holiday>
-                <Lunar>음력 8.14.</Lunar>
+                <Lunar>{lunar()}</Lunar>
               </>
             );
           }}

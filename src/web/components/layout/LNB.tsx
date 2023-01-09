@@ -1,8 +1,6 @@
 import { memo, useEffect, useContext } from 'react';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { CalendarDTO } from '@constants/interfaces';
-import { CalendarModel } from '@/stores/model/CalendarModel';
 import { Icon } from '@wapl/ui';
 import {
   LNBContainer,
@@ -21,7 +19,7 @@ import SubscriptionList from './SubscriptionList';
 
 const LNB = () => {
   const { userId } = useContext(CalendarContext);
-  const { calendarStore } = useCalendarStores();
+  const { uiStore, calendarStore } = useCalendarStores();
 
   const fetchData = async (userId: number) => {
     const calendarList = await calendarStore.getCalendarList(userId, '2023-01-04', '2023-01-04');
@@ -39,7 +37,7 @@ const LNB = () => {
         캘린더
       </LNBHeader>
       <DatePickerWrapper>
-        <DatePicker backgroundColor="#F8F9FA" />
+        <DatePicker onDateClick={selectedDate => uiStore.handleDateClick(selectedDate)} backgroundColor="#F8F9FA" />
       </DatePickerWrapper>
       <FilterListWrapper>
         <FilterList />

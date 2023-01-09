@@ -7,36 +7,47 @@ import {
   LeftContainer as RightContainer,
   NextButton,
   PrevButton,
+  StyledDatePickerWrapper,
   TodayButton,
   ViewSelect,
 } from './CalendarHeader.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { DateTime } from 'luxon';
-import { observer } from 'mobx-react-lite';
 import { DATE_EVENT, VIEW_MODE } from '@constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toDateString } from '@/utils';
+import { isEqualMonth, toDateString } from '@/utils';
+import DatePicker from '@/common/components/DatePicker/DatePicker';
+import { autorun } from 'mobx';
 
 type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
 
-const DateButton = observer(() => {
+const DateButton = ({ selected = false, togglePicker }: { selected?: boolean; togglePicker?: () => void }) => {
   const [title, setTitle] = useState<string>('');
   const { uiStore } = useCalendarStores();
-  const { dateRange } = uiStore;
-
   useEffect(() => {
-    setTitle(dateRange.view.toFormat('yyyy.MM'));
-  }, [dateRange, title]);
+    const dispose = autorun(() => {
+      const { view } = uiStore.dateRange;
+      setTitle(view.toFormat('yyyy.MM'));
+    });
+    return () => dispose();
+  }, []);
 
-  return <DateButtonComponent>{title}</DateButtonComponent>;
-});
+  return (
+    <DateButtonComponent
+      className={selected ? 'selected' : ''}
+      {...(togglePicker && { onClick: () => togglePicker() })}
+    >
+      {title}
+    </DateButtonComponent>
+  );
+};
 
 const CalendarHeader: React.FC = () => {
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const { uiStore } = useCalendarStores();
   const navigate = useNavigate();
   const { viewMode } = useParams();
   const { pathname } = useLocation();
-  const { setDateRange } = uiStore;
 
   const handleViewChange = (value: string) => {
     const mainApi = uiStore.getApi();
@@ -51,7 +62,7 @@ const CalendarHeader: React.FC = () => {
     switch (uiStore.viewMode) {
       case VIEW_MODE.MONTH:
         mainApi?.setOption('dayMaxEvents', 5);
-        changeDateRange();
+        uiStore.changeDateRange();
         break;
       case VIEW_MODE.WEEK:
         mainApi?.setOption('dayMaxEvents', 3);
@@ -65,22 +76,24 @@ const CalendarHeader: React.FC = () => {
   const handleDate = (type: DateHandleType) => {
     const mainApi = uiStore.getApi();
     mainApi?.[type]();
-    changeDateRange();
+    uiStore.changeDateRange();
   };
 
-  const changeDateRange = () => {
-    const mainApi = uiStore.getApi();
-    setDateRange({
-      start: toDateString(mainApi.view.activeStart),
-      view: DateTime.fromJSDate(mainApi?.getDate()),
-      end: toDateString(mainApi.view.activeEnd),
-    });
-  };
+  const togglePicker = () => setIsDatePickerOpen(!isDatePickerOpen);
 
   return (
     <CalendarHeaderContainer>
       <LeftContainer>
-        <DateButton />
+        <DateButton selected={isDatePickerOpen} togglePicker={togglePicker} />
+        {isDatePickerOpen && (
+          <StyledDatePickerWrapper>
+            <DatePicker
+              date={uiStore.dateRange.view}
+              onDateClick={selectedDate => uiStore.handleDateClick(selectedDate, togglePicker)}
+              onOutsideClick={togglePicker}
+            />
+          </StyledDatePickerWrapper>
+        )}
         <ButtonWrapper>
           <PrevButton onClick={() => handleDate(DATE_EVENT.PREV)} />
           <NextButton onClick={() => handleDate(DATE_EVENT.NEXT)} />

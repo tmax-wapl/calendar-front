@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import FullCalendar, {
   EventClickArg,
   EventContentArg,
@@ -29,6 +29,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toLuxon, diffTime, toDateString } from '@/utils';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -50,6 +51,7 @@ export type ClickArg = {
 const Calendar: React.FC = observer(() => {
   const { calendarStore, eventStore } = useCalendarStores();
   const calendarRef = useRef<FullCalendar>(null);
+  const { userId } = useContext(CalendarContext);
   const { uiStore } = useCalendarStores();
   const { viewMode } = useParams();
   const [direction, setDirection] = useState(false);
@@ -64,7 +66,7 @@ const Calendar: React.FC = observer(() => {
   let timer: any;
 
   const fetchData = async (start: string, end: string) => {
-    const eventList = await eventStore.getEventList(145, start, end);
+    const eventList = await eventStore.getEventList(userId, start, end);
     calendarStore.setEventList(eventList);
   };
 
@@ -91,7 +93,7 @@ const Calendar: React.FC = observer(() => {
       <>
         <CalendarColor color={event.extendedProps.dto.calColor} />
         {uiStore.viewMode === VIEW_MODE.MONTH ? (
-          <EventWrapper data-color={backgroundColor} isHalfLess>
+          <EventWrapper data-color={backgroundColor} data-id={event.id} isHalfLess>
             {event.title}
           </EventWrapper>
         ) : (
@@ -180,12 +182,13 @@ const Calendar: React.FC = observer(() => {
     const target = e.target?.closest('.fc-daygrid-event') || e.target?.closest('.fc-timegrid-event');
     if (!target) return;
 
-    const { color } = e.target?.querySelector('span')?.dataset;
+    const { color, id } = e.target?.querySelector('span[data-color]')?.dataset;
     uiStore.contextClickArg = {
       target,
       position: { top: e.clientY, left: e.clientX },
       color,
       type: 'event',
+      id,
     };
   };
 
@@ -253,7 +256,7 @@ const Calendar: React.FC = observer(() => {
           eventContent={renderEventContent}
           nowIndicator
         />
-        <Popover {...moreLinkData} />
+        <Popover moreLinkData={moreLinkData} setMoreLinkData={setMoreLinkData} />
       </FullCalendarWrapper>
     </CalendarContainer>
   );

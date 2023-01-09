@@ -2,6 +2,7 @@ import RootStore from './RootStore';
 import { DateTime } from 'luxon';
 import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable, action } from 'mobx';
+import { isEqualMonth, toDateString } from '@/utils';
 
 type DateRange = { start: string; view?: DateTime; end: string };
 
@@ -68,5 +69,22 @@ export default class UiStore {
 
   getApi(): CalendarApi {
     return this.mainApi;
+  }
+
+  changeDateRange() {
+    this.setDateRange({
+      start: toDateString(this.mainApi.view.activeStart),
+      view: DateTime.fromJSDate(this.mainApi?.getDate()),
+      end: toDateString(this.mainApi.view.activeEnd),
+    });
+  }
+
+  handleDateClick(date: DateTime, callback?: () => void) {
+    if (!this.mainApi) return;
+    // 같은 달 내에서 선택 할 때 main calendar render 안하도록.
+    if (isEqualMonth(this.mainApi?.getDate(), date?.toJSDate())) return;
+    this.mainApi.changeView(this.mainApi.view.type, date.toJSDate());
+    this.changeDateRange();
+    if (callback) callback();
   }
 }

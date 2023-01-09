@@ -53,3 +53,6 @@ export const getStartDate = (date: DateTime) => {
 export const toISO = (date: DateTime) => {
   return date.toISO({ suppressMilliseconds: true, includeOffset: false });
 };
+
+export const isEqualMonth = (mainCalDate: Date, selectedDate: Date) =>
+  mainCalDate.getMonth() === selectedDate.getMonth();

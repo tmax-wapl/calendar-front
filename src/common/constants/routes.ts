@@ -7,6 +7,7 @@ export enum ROUTES {
   PATH_SHARE = '/share',
   MAIN = 'main',
   CREATE = 'create',
+  UPDATE = 'update',
   DAY = 'view-mode/:viewMode',
   DETAIL = 'detail',
   SHARE = 'share',

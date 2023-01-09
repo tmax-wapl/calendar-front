@@ -1,3 +1,4 @@
+import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
 import { EventDTO } from '@/common/constants/interfaces';
 import { API } from '../../common/lib/API';
 
@@ -20,18 +21,32 @@ export default class EventRepo {
     }
   }
 
-  async updateEvent(eventId: number, dto: EventDTO) {
+  async getEventList(userId: number, start: string, end: string) {
     try {
-      const { response, success } = await API.patch<EventDTO, EventDTO>(`/apis/v1/event/update/${eventId}`, dto);
+      const { response, success } = await API.get<EventDTO[]>(
+        `/apis/v1/user/list/event/${userId}?start=${start}&end=${end}`,
+      );
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
   }
 
-  async deleteEvent(eventId: number) {
+  async updateEvent(eventId: number, dto: Partial<EventDTO>, updateOption: EVENT_UPDATE_OPTION) {
     try {
-      const { response, success } = await API.delete(`/apis/v1/event/delete/${eventId}`);
+      const { response, success } = await API.patch<Partial<EventDTO>, EventDTO>(
+        `/apis/v1/event/update/${eventId}/${updateOption}`,
+        dto,
+      );
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async deleteEvent(eventId: number, deleteOption: EVENT_DELETE_OPTION) {
+    try {
+      const { response, success } = await API.delete(`/apis/v1/event/delete/${eventId}/${deleteOption}`);
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));
