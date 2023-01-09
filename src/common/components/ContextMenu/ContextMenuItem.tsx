@@ -1,5 +1,6 @@
 import { Icon, Mui, styled } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const MenuItemWrapper = styled.div`
   display: flex;
@@ -24,7 +25,9 @@ interface Props {
 }
 
 export const ContextMenuItem = ({ id, type, onClose }: Props) => {
-  const { uiStore, calendarStore } = useCalendarStores();
+  const { uiStore, calendarStore, eventStore } = useCalendarStores();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const deleteCalendar = () => {
     console.log('캘린더 삭제');
@@ -53,7 +56,9 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
   };
 
   const handleEventEdit = () => {
-    console.log('일정 수정');
+    eventStore.eventId = id;
+    if (!pathname.includes('edit')) navigate('/main/edit');
+    if (onClose) onClose();
   };
 
   const handleEventShare = () => {

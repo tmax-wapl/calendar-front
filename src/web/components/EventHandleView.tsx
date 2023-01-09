@@ -18,6 +18,7 @@ import {
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO } from '@/utils';
+import { autorun } from 'mobx';
 
 interface Props {
   action: 'create' | 'edit';
@@ -26,6 +27,11 @@ interface Props {
 const EventHandleView = observer(({ action }: Props) => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
+
+  const fetchData = async () => {
+    const event = await eventStore.getEventInfo(eventStore.eventId);
+    eventStore.setEvent(event);
+  };
 
   const handleClose = () => {
     navigate(-1);
@@ -61,6 +67,15 @@ const EventHandleView = observer(({ action }: Props) => {
     // TODO: data fetch
     // TODO: 종일인 경우 start/end time 09:00-09:30으로 변경
   }, [uiStore.dateDay]);
+
+  useEffect(() => {
+    const dispose = autorun(() => {
+      const { eventId } = eventStore;
+      if (eventId) fetchData();
+      else navigate('/main');
+    });
+    return () => dispose();
+  }, []);
 
   return (
     <EventHandleViewContainer>
