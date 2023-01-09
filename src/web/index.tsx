@@ -43,7 +43,7 @@ const WebApp: React.FC = () => {
           <Route path={ROUTES.MAIN} element={<Calendar />}>
             <Route path={ROUTES.DAY} element={<EventList />} />
             <Route path={ROUTES.CREATE} element={<EventHandleView action={ROUTES.CREATE} />} />
-            <Route path={ROUTES.EDIT} element={<EventHandleView action={ROUTES.EDIT} />} />
+            <Route path={ROUTES.UPDATE} element={<EventHandleView action={ROUTES.UPDATE} />} />
             <Route path={ROUTES.DETAIL} element={<Detail />} />
           </Route>
           <Route path={ROUTES.SHARE} element={<Share />} />

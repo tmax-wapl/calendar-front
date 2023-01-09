@@ -57,7 +57,7 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
 
   const handleEventEdit = () => {
     eventStore.eventId = id;
-    if (!pathname.includes('edit')) navigate('/main/edit');
+    if (!pathname.includes('update')) navigate('/main/update');
     if (onClose) onClose();
   };
 

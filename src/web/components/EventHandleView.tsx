@@ -21,7 +21,7 @@ import { getStartDate, toISO } from '@/utils';
 import { autorun } from 'mobx';
 
 interface Props {
-  action: 'create' | 'edit';
+  action: 'create' | 'update';
 }
 
 const EventHandleView = observer(({ action }: Props) => {
