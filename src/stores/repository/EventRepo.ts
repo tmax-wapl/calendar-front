@@ -21,6 +21,17 @@ export default class EventRepo {
     }
   }
 
+  async getEventList(userId: number, start: string, end: string) {
+    try {
+      const { response, success } = await API.get<EventDTO[]>(
+        `/apis/v1/user/list/event/${userId}?start=${start}&end=${end}`,
+      );
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
   async updateEvent(eventId: number, dto: Partial<EventDTO>, updateOption: EVENT_UPDATE_OPTION) {
     try {
       const { response, success } = await API.patch<Partial<EventDTO>, EventDTO>(

@@ -31,8 +31,8 @@ export default class EventStore {
     return new EventModel(res);
   }
 
-  async getEventList(calId: number, start: string, end: string = start) {
-    const { eventList } = await this.rootStore.calendarStore.getCalendarInfo(calId, start, end);
+  async getEventList(userId: number, start: string, end: string = start) {
+    const eventList = await this.repo.getEventList(userId, start, end);
     return eventList.map(event => new EventModel(event));
   }
 

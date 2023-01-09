@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import FullCalendar, {
   EventClickArg,
   EventContentArg,
@@ -29,6 +29,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toLuxon, diffTime, toDateString } from '@/utils';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -50,6 +51,7 @@ export type ClickArg = {
 const Calendar: React.FC = observer(() => {
   const { calendarStore, eventStore } = useCalendarStores();
   const calendarRef = useRef<FullCalendar>(null);
+  const { userId } = useContext(CalendarContext);
   const { uiStore } = useCalendarStores();
   const { viewMode } = useParams();
   const [direction, setDirection] = useState(false);
@@ -64,7 +66,7 @@ const Calendar: React.FC = observer(() => {
   let timer: any;
 
   const fetchData = async (start: string, end: string) => {
-    const eventList = await eventStore.getEventList(145, start, end);
+    const eventList = await eventStore.getEventList(userId, start, end);
     calendarStore.setEventList(eventList);
   };
 
