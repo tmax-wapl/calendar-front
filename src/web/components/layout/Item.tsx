@@ -65,7 +65,13 @@ const Item = observer(({ category }: Props) => {
             calendarcolor={category.color}
             control={<Checkbox checked={category.checkFlag} onChange={handleCheckedChange} />}
             label={category.name}
+            type={category.type}
           />
+          {category.type === 'url' && (
+            <ButtonWarpper>
+              <Icon.RenewLine width={20} height={20} color="#80868B" />
+            </ButtonWarpper>
+          )}
           <ButtonWarpper onClick={e => onContextMenuOpen(e, category.id, category.color)}>
             <Icon.MoreLine width={20} height={20} />
           </ButtonWarpper>

@@ -1,41 +1,5 @@
 import { styled, Mui } from '@wapl/ui';
 
-export const ItemContainer = styled.div`
-  display: flex;
-  height: 44px;
-  padding: 0px 12px;
-  border-radius: 8px;
-  align-items: center;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-    button {
-      display: flex;
-    }
-  }
-`;
-
-export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: string }>`
-  display: flex;
-  width: calc(100% - 56px);
-  height: 44px;
-  margin: 0px;
-  overflow: hidden;
-  .MuiFormControlLabel-label {
-    font-size: 14px;
-    margin-left: 8px;
-  }
-  .Mui-checked {
-    background-color: ${({ calendarcolor }) => calendarcolor} !important;
-  }
-  .MuiTypography-root {
-    width: calc(100% - 20px);
-    display: block;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-`;
-
 export const SubscriptionButton = styled(Mui.IconButton)`
   width: 100%;
   height: 44px;
@@ -44,11 +8,4 @@ export const SubscriptionButton = styled(Mui.IconButton)`
   border-radius: 8px;
   font-size: 14px;
   color: #80868b;
-`;
-
-export const ButtonWarpper = styled(Mui.IconButton)`
-  display: none;
-  width: 28px;
-  height: 28px;
-  padding: 0px;
 `;

@@ -8,9 +8,11 @@ const CategoryList = observer(() => {
 
   return (
     <>
-      {calendarStore.calendarList?.map((category: CalendarModel) => (
-        <Item key={category.id} category={category} />
-      ))}
+      {calendarStore.calendarList
+        ?.filter((category: CalendarModel) => category.type !== 'url')
+        .map((category: CalendarModel) => (
+          <Item key={category.id} category={category} />
+        ))}
     </>
   );
 });

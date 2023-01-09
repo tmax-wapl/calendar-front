@@ -38,9 +38,9 @@ export const ItemContainer = styled.div`
   }
 `;
 
-export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: string }>`
+export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: string; type: string }>`
   display: flex;
-  width: calc(100% - 28px);
+  width: ${({ type }) => (type === 'url' ? `calc(100% - 56px)` : `calc(100% - 28px)`)};
   height: 44px;
   margin: 0px;
   overflow: hidden;
