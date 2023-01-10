@@ -67,9 +67,9 @@ export default class CalendarStore {
     return res;
   }
 
-  async calendarDelete(calId: number) {
+  async deleteCalendar(calId: number) {
     const res = await this.repo.calendarDelete(calId);
-    return res;
+    this.calendarList = this.calendarList.filter(item => item.id !== res);
   }
 
   setRenameId(id: number) {

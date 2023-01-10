@@ -29,14 +29,13 @@ export const Dialog = () => {
           subTitle: `선택한 ${data?.num}개 일정을 삭제하시겠습니까?`,
           description: `삭제 후, 복구할 수 없습니다.`,
         };
-      case 'shareCalendarDelete':
+      case 'calendarDelete':
         return {
           title: '캘린더 삭제',
           subTitle: `선택한 캘린더를 삭제하시겠습니까?`,
-          description: `삭제 후에는 복구할 수 없으며,
-          공유한 상대방에게도 사라집니다.`,
+          description: `삭제 후에는 복구할 수 없으며, \n공유한 상대방에게도 사라집니다.`,
         };
-      case 'calendarDelete':
+      case 'subscriptionDelete':
         return {
           title: '캘린더 삭제',
           subTitle: `선택한 캘린더를 삭제하시겠습니까?`,
@@ -61,7 +60,7 @@ export const Dialog = () => {
         ];
       case 'shareEventDelete':
       case 'eventDelete':
-      case 'shareCalendarDelete':
+      case 'subscriptionDelete':
       case 'calendarDelete':
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },

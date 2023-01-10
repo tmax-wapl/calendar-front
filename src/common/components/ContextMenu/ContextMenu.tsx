@@ -33,7 +33,8 @@ export const ContextMenu = () => {
 
   const handleClick = async (color: string) => {
     switch (type) {
-      case 'persona':
+      case 'mainCalendar':
+      case 'subCalendar':
       case 'subscribe':
         await calendarStore.calendarUpdate(id, { userId, color });
         calendarStore.updateCalendarColor(id, color);

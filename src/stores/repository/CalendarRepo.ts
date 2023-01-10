@@ -31,7 +31,7 @@ export default class CalendarRepo {
 
   async calendarDelete(calId: number) {
     try {
-      const { response, success } = await API.delete(`/apis/v1/calendars/${calId}`);
+      const { response, success } = await API.delete(`/apis/v1/calendars/delete/${calId}`);
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));

@@ -15,16 +15,17 @@ const Item = observer(({ category }: Props) => {
   const { uiStore, calendarStore } = useCalendarStores();
   const [renameTitle, setRenameTitle] = useState(category.name);
 
-  const onContextMenuOpen = (e: any, id: number, color: string) => {
+  const onContextMenuOpen = (e: any, category: CalendarModel) => {
     e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
     const target = e.target;
     if (!target) return;
+    const type = category.type === 'url' ? 'subscribe' : category.mainFlag ? 'mainCalendar' : 'subCalendar';
     uiStore.setContextClickArg({
       target,
       position: { top: e.clientY, left: e.clientX },
-      id,
-      color,
-      type: 'persona',
+      id: category.id,
+      color: category.color,
+      type,
     });
   };
 
@@ -60,7 +61,7 @@ const Item = observer(({ category }: Props) => {
           />
         </InputItemContainer>
       ) : (
-        <ItemContainer key={category.id} onContextMenu={e => onContextMenuOpen(e, category.id, category.color)}>
+        <ItemContainer key={category.id} onContextMenu={e => onContextMenuOpen(e, category)}>
           <CheckBoxWrapper
             calendarcolor={category.color}
             control={<Checkbox checked={category.checkFlag} onChange={handleCheckedChange} />}
@@ -72,7 +73,7 @@ const Item = observer(({ category }: Props) => {
               <Icon.RenewLine width={20} height={20} color="#80868B" />
             </ButtonWarpper>
           )}
-          <ButtonWarpper onClick={e => onContextMenuOpen(e, category.id, category.color)}>
+          <ButtonWarpper onClick={e => onContextMenuOpen(e, category)}>
             <Icon.MoreLine width={20} height={20} />
           </ButtonWarpper>
         </ItemContainer>
