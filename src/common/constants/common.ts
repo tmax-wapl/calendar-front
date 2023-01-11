@@ -15,14 +15,15 @@ export enum VIEW_MODE {
   DAY = 'timeGridDay',
 }
 
-export enum EVENT_UPDATE_OPTION {
+export enum EVENT_UPDATE_OPTION { // TODO: UPDATE 타입 통합 예정
   DEFAULT = 0, // 일반 일정 수정
   ALL_REPEAT = 1, // 모든 반복일정 수정
   REPEAT_EXCEP = 2, // 반복일정 예외일정 수정
   AFTER_REPEAT_ALL = 3, // 향 후 모든일정 -> (정보 수정)
   AFTER_REPEAT_RRULE = 4, //향 후 모든일정 -> (rrule 수정)
   REPEAT_EXCEP_REMOVE = 5, // 반복 예외일정 삭제
-  AFTER_REPEAT_ALL_REMOVE = 6, // 향 후 모든일정 삭제
+  AFTER_REPEAT_ALL_REMOVE = 6, // 향 후 모든일정 삭제 (for sion)
+  REPEAT_EVENT_REMOVE = 8, // 이 일정만 삭제 (for sion)
 }
 
 export enum EVENT_DELETE_OPTION {
