@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { useNavigate } from 'react-router-dom';
@@ -14,19 +13,8 @@ const EventDetailView = observer(() => {
   const navigate = useNavigate();
   const [editable, setEditable] = useState<boolean>(false);
 
-  const fetchData = async (id: number) => {
-    const event = await eventStore.getEventInfo(id);
-    eventStore.setEvent(event);
-  };
-
   useEffect(() => {
-    const dispose = autorun(() => {
-      const { eventId } = eventStore;
-      if (eventId === +eventStore.event.id) return;
-      if (eventId) fetchData(eventId);
-      else navigate('/main');
-    });
-    return () => dispose();
+    if (!eventStore.event.id) navigate('/main');
   }, []);
 
   return (
