@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
 import { DateTime } from 'luxon';
-import { Options, Weekday } from 'rrule';
+import { Options, RRule, RRuleSet, Weekday } from 'rrule';
 
 export const toLuxon = (date: string | Moment) => {
   if (typeof date === 'string') return DateTime.fromJSDate(new Date(date));
@@ -56,3 +56,18 @@ export const toISO = (date: DateTime) => {
 
 export const isEqualMonth = (mainCalDate: Date, selectedDate: Date) =>
   mainCalDate.getMonth() === selectedDate.getMonth();
+
+export const rrulString = (rrule: Partial<Options>) => {
+  const rruleSet = new RRuleSet();
+  rruleSet.rrule(new RRule(rrule));
+  const [dtstart, freq] = rruleSet.valueOf();
+  return dtstart + ' ' + freq;
+};
+
+export const isSameDate = (date1: Date, date2: Date) => {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+};
