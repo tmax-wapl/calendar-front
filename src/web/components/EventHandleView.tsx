@@ -37,7 +37,8 @@ const EventHandleView = observer(({ action }: Props) => {
   const preprocessEvent = (event: EventModel): EventModel => {
     return new EventModel({
       ...event.dto,
-      regUserId: userId,
+      modUserId: userId,
+      ...(action === 'create' && { regUserId: userId }),
       ...(!event.title && { title: 'Untitled' }),
       ...(event.allDay && {
         start: toISO(event.startDate.startOf('day')),
