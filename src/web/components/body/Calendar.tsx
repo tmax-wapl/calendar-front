@@ -142,10 +142,10 @@ const Calendar: React.FC = observer(() => {
     setDirection(!direction);
   };
 
-  const handleEventClick = ({ event, jsEvent }: EventClickArg) => {
+  const handleEventClick = async ({ event, jsEvent }: EventClickArg) => {
     jsEvent.stopPropagation();
-    const { id } = event;
-    eventStore.eventId = +id;
+    const eventInfo = await eventStore.getEventInfo(+event.id);
+    eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/detail`);
   };
 

@@ -15,31 +15,27 @@ const EventListView = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const fetchData = async (dateDay: DateTime) => {
-    const date = dateDay.toFormat('yyyy-LL-dd');
-    const eventList = await eventStore.getEventList(145, date);
-    setEventList(eventList);
-  };
-
   const getDateDay = (): string => {
     const { dateDay } = uiStore;
     return dateDay.toFormat('MM월 dd일 ') + ['', '월', '화', '수', '목', '금', '토', '일'][dateDay.weekday] + '요일';
   };
 
-  const handleClickEvent = useCallback((id: number) => {
-    eventStore.eventId = id;
+  const handleClickEvent = useCallback(async (id: number) => {
+    const eventInfo = await eventStore.getEventInfo(id);
+    eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/detail`);
   }, []);
 
   useEffect(() => {
-    const dispose = autorun(() => {
-      const { dateDay } = uiStore;
-      fetchData(dateDay);
-    });
-    return () => {
-      setEventList([]);
-      dispose();
+    const fetchData = async (dateDay: DateTime) => {
+      const date = dateDay.toFormat('yyyy-LL-dd');
+      const eventList = await eventStore.getEventList(11, date);
+      setEventList(eventList);
     };
+    const dispose = autorun(() => {
+      fetchData(uiStore.dateDay);
+    });
+    return () => dispose();
   }, []);
 
   const lunar = () => {
