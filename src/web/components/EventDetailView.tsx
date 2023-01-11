@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { useNavigate } from 'react-router-dom';
@@ -7,11 +7,30 @@ import EventBar from './EventBar';
 import EventItem from './EventItem';
 import { Participants, Location, Notifications, Description, Attachments } from '@common/components/EventInfoItem';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { EVENT_DELETE_OPTION } from '@common/constants';
 
 const EventDetailView = observer(() => {
-  const { eventStore } = useCalendarStores();
+  const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
-  const [editable, setEditable] = useState<boolean>(false);
+
+  const closeDialog = () => {
+    uiStore.setDialogInfo(null);
+  };
+
+  const handleDelete = async () => {
+    await eventStore.deleteEvent(+eventStore.event.id, EVENT_DELETE_OPTION.DEFAULT);
+    calendarStore.filterEventList(eventStore.event.id);
+    navigate(-1);
+    closeDialog();
+  };
+
+  const handleDeleteClick = () => {
+    uiStore.setDialogInfo({
+      action: 'eventDelete',
+      onClick: [closeDialog, handleDelete],
+      data: { num: 1 },
+    });
+  };
 
   useEffect(() => {
     if (!eventStore.event.id) navigate('/main');
@@ -24,7 +43,7 @@ const EventDetailView = observer(() => {
         rightSide={[
           { action: 'share', onClick: () => console.log('share') },
           { action: 'edit', onClick: () => navigate('/main/update') },
-          { action: 'delete', onClick: () => console.log('delete') },
+          { action: 'delete', onClick: handleDeleteClick },
         ]}
       />
       {eventStore.event && (

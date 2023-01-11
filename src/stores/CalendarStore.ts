@@ -25,6 +25,7 @@ export default class CalendarStore {
       setEventList: action,
       appendEventList: action,
       updateEventList: action,
+      filterEventList: action,
       deleteEvent: action,
     });
   }
@@ -39,6 +40,10 @@ export default class CalendarStore {
 
   updateEventList(updatedEvent: EventModel) {
     this.eventList = this.eventList.map(event => (event.id === updatedEvent.id ? updatedEvent : event));
+  }
+
+  filterEventList(id: string) {
+    this.eventList = this.eventList.filter(event => event.id !== id);
   }
 
   async createCalendar(dto: CalendarDTO) {
