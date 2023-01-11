@@ -1,6 +1,9 @@
 import { Icon, Mui, styled } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toISO, toLuxon } from '@/utils';
+import { EventModel } from '@/stores/model/EventModel';
+import { EVENT_UPDATE_OPTION } from '@/common/constants';
 
 const MenuItemWrapper = styled.div`
   display: flex;
@@ -21,10 +24,11 @@ interface MenuItem {
 interface Props {
   id: number;
   type?: string;
+  date?: string;
   onClose?: () => void;
 }
 
-export const ContextMenuItem = ({ id, type, onClose }: Props) => {
+export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -37,6 +41,38 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
     calendarStore.deleteEvent(id);
     closeDialog();
     if (onClose) onClose();
+  };
+
+  const deleteRepeatEvent = async (value: string) => {
+    const model = uiStore.dialogInfo.data.model;
+    switch (value) {
+      case 'one': // 이 일정만 삭제
+        await eventStore.updateEvent(
+          id,
+          new EventModel({
+            ...model.dto,
+            exceptDate: toISO(toLuxon(date)),
+          }),
+          EVENT_UPDATE_OPTION.REPEAT_EVENT_REMOVE,
+        );
+        break;
+      case 'after': // 이 일정 및 향후 일정 삭제
+        await eventStore.updateEvent(
+          id,
+          new EventModel({
+            ...model.dto,
+            repeatEndDate: toISO(toLuxon(date)),
+          }),
+          EVENT_UPDATE_OPTION.AFTER_REPEAT_ALL_REMOVE,
+        );
+        break;
+      case 'all': // 모든 일정 삭제
+        deleteEvent();
+        break;
+      default:
+        break;
+    }
+    uiStore.dialogInfo = null;
   };
 
   const closeDialog = () => {
@@ -65,12 +101,22 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
     console.log('일정 공유');
   };
 
-  const handleEventDelete = () => {
-    uiStore.dialogInfo = {
-      action: 'eventDelete',
-      onClick: [closeDialog, deleteEvent],
-      data: { num: 1 },
-    };
+  const handleEventDelete = async () => {
+    const model = await eventStore.getEventInfo(id);
+    if (!model.rrule) {
+      uiStore.dialogInfo = {
+        action: 'eventDelete',
+        onClick: [closeDialog, deleteEvent],
+        data: { num: 1 },
+      };
+    } else {
+      uiStore.dialogInfo = {
+        action: 'repeatEventDelete',
+        onClick: [closeDialog, deleteRepeatEvent],
+        type: 'select',
+        data: { model },
+      };
+    }
   };
 
   const menuItem: { [key: string]: MenuItem[] } = {
