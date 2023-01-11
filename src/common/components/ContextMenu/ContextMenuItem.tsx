@@ -91,8 +91,9 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     };
   };
 
-  const handleEventEdit = () => {
-    eventStore.eventId = id;
+  const handleEventEdit = async () => {
+    const event = await eventStore.getEventInfo(id);
+    eventStore.setEvent(event);
     if (!pathname.includes('update')) navigate('/main/update');
     if (onClose) onClose();
   };

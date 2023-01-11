@@ -78,17 +78,18 @@ export default class EventStore {
     });
   }
 
-  async createEvent(event: EventModel) {
-    const res = await this.repo.createEvent(event.dto);
+  async createEvent({ dto }: EventModel) {
+    const res = await this.repo.createEvent(dto);
     this.event = new EventModel(res);
-    this.eventId = res.id;
     return this.event;
   }
 
   async updateEvent(eventId: number, { dto }: EventModel, updateOption: EVENT_UPDATE_OPTION) {
     const res = await this.repo.updateEvent(eventId, dto, updateOption);
-    return res;
+    this.event = new EventModel(res);
+    return this.event;
   }
+
   async deleteEvent(eventId: number, deleteOption: EVENT_DELETE_OPTION) {
     const res = await this.repo.deleteEvent(eventId, deleteOption);
     return res;
