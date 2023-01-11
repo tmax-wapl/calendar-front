@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { CalendarModel } from '@/stores/model/CalendarModel';
 import { observer } from 'mobx-react-lite';
 import Item from './Item';
@@ -6,10 +8,17 @@ import { Icon } from '@wapl/ui';
 import { SubscriptionButton } from './SubscriptionList.style';
 
 const SubscriptionList = observer(() => {
+  const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore } = useCalendarStores();
 
   const closeDialog = () => {
     uiStore.dialogInfo = null;
+  };
+
+  const handleSubscribe = async (url: string) => {
+    // TODO: 구독 실패 시, dialog 띄우기
+    await calendarStore.createCalendar({ regUserId: userId, url, type: 'url' });
+    closeDialog();
   };
 
   return (
@@ -19,7 +28,7 @@ const SubscriptionList = observer(() => {
           uiStore.dialogInfo = {
             action: 'subscribe',
             onCloseClick: closeDialog,
-            onClick: [closeDialog, closeDialog],
+            onClick: [closeDialog, handleSubscribe],
             data: { placeholder: 'URL 입력' },
             type: 'input',
           };

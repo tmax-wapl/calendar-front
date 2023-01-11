@@ -46,8 +46,10 @@ export default class CalendarStore {
     this.eventList = this.eventList.filter(event => event.id !== id);
   }
 
-  async createCalendar(dto: CalendarDTO) {
+  async createCalendar(dto: Partial<CalendarDTO>) {
     const res = await this.repo.calendarCreate(dto);
+    const calendar = new CalendarModel({ ...res, checkFlag: true });
+    this.calendarList.unshift(calendar);
     return res;
   }
 

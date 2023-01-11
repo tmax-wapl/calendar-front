@@ -46,6 +46,17 @@ export const Dialog = () => {
           title: '구독 캘린더 추가',
           description: `URL을 통해 공유 받은 캘린더에 외부 캘린더를 추가할 수 있습니다.`,
         };
+      case 'subscribeFail':
+        return {
+          title: '구독 캘린더 추가 실패',
+          description: `입력하신 URL을 다시 확인해 주세요.`,
+        };
+      case 'subscribeDuplication':
+        return {
+          title: '구독 캘린더 추가 실패',
+          description: `이미 구독 중입니다.`,
+        };
+
       default:
         return {};
     }
@@ -71,6 +82,10 @@ export const Dialog = () => {
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
           { variant: 'negative', text: '추가', onClick: onClick[1] },
         ];
+      case 'subscribeFail':
+      case 'subscribeDuplication':
+        return [{ variant: 'secondary', text: '확인', onClick: onClick[0] }];
+
       default:
         return [];
     }

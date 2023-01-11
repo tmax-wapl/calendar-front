@@ -4,7 +4,14 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { CalendarModel } from '@/stores/model/CalendarModel';
 import { Checkbox, Icon } from '@wapl/ui';
-import { InputItemContainer, Input, ItemContainer, CheckBoxWrapper, ButtonWarpper } from './Item.style';
+import {
+  ItemContainer,
+  InputItemContainer,
+  Input,
+  CheckItemContainer,
+  CheckBoxWrapper,
+  ButtonWarpper,
+} from './Item.style';
 
 interface Props {
   category: CalendarModel;
@@ -46,7 +53,7 @@ const Item = observer(({ category }: Props) => {
   };
 
   return (
-    <>
+    <ItemContainer main={category.mainFlag}>
       {calendarStore.renameId === category.id ? (
         <InputItemContainer calendarcolor={category.color}>
           <Checkbox checked={category.checkFlag} />
@@ -61,7 +68,7 @@ const Item = observer(({ category }: Props) => {
           />
         </InputItemContainer>
       ) : (
-        <ItemContainer key={category.id} onContextMenu={e => onContextMenuOpen(e, category)}>
+        <CheckItemContainer key={category.id} onContextMenu={e => onContextMenuOpen(e, category)}>
           <CheckBoxWrapper
             calendarcolor={category.color}
             control={<Checkbox checked={category.checkFlag} onChange={handleCheckedChange} />}
@@ -76,9 +83,9 @@ const Item = observer(({ category }: Props) => {
           <ButtonWarpper onClick={e => onContextMenuOpen(e, category)}>
             <Icon.MoreLine width={20} height={20} />
           </ButtonWarpper>
-        </ItemContainer>
+        </CheckItemContainer>
       )}
-    </>
+    </ItemContainer>
   );
 });
 

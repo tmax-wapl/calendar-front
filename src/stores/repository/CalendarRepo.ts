@@ -2,9 +2,9 @@ import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
 import { API } from '@/common/lib/API';
 
 export default class CalendarRepo {
-  async calendarCreate(dto: CalendarDTO) {
+  async calendarCreate(dto: Partial<CalendarDTO>) {
     try {
-      const { response, success } = await API.post('/apis/v1/calendars/create', dto);
+      const { response, success } = await API.post<Partial<CalendarDTO>, CalendarDTO>('/apis/v1/calendars/create', dto);
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));
