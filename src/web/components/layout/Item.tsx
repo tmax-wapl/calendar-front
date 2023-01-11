@@ -52,6 +52,11 @@ const Item = observer(({ category }: Props) => {
     calendarStore.setRenameId(null);
   };
 
+  const handleSyncClick = async () => {
+    const eventList = await calendarStore.syncCalendar(category.id);
+    calendarStore.setEventList([...calendarStore.eventList, ...eventList]);
+  };
+
   return (
     <ItemContainer main={category.mainFlag}>
       {calendarStore.renameId === category.id ? (
@@ -76,7 +81,7 @@ const Item = observer(({ category }: Props) => {
             type={category.type}
           />
           {category.type === 'url' && (
-            <ButtonWarpper>
+            <ButtonWarpper onClick={handleSyncClick}>
               <Icon.RenewLine width={20} height={20} color="#80868B" />
             </ButtonWarpper>
           )}

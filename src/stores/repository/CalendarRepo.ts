@@ -20,6 +20,15 @@ export default class CalendarRepo {
     }
   }
 
+  async getICalendar(calId: number) {
+    try {
+      const { response, success } = await API.get<CalendarDTO>(`/apis/v1/calendars/icalendar/${calId}`);
+      if (success) return response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
   async getCalendarInfo(calId: number, start: string, end: string) {
     try {
       const { response, success } = await API.get<CalendarDTO>(`/apis/v1/calendars/${calId}?start=${start}&end=${end}`);
