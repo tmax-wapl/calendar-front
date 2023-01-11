@@ -2,6 +2,7 @@ import { Dialog as DialogCompo, Button } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Title, SubTitle, Description, DialogButtonWrapper } from './Dialog.style';
 import { InputDialog } from './InputDialog';
+import { SelectDialog } from './SelectDialog';
 
 export interface DialogButton {
   variant: 'primary' | 'secondary' | 'secondary-web' | 'third' | 'negative';
@@ -28,6 +29,12 @@ export const Dialog = () => {
           title: '일정 삭제',
           subTitle: `선택한 ${data?.num}개 일정을 삭제하시겠습니까?`,
           description: `삭제 후, 복구할 수 없습니다.`,
+        };
+      case 'repeatEventDelete':
+        return {
+          title: '일정 삭제',
+          subTitle: `이 일정은 반복 설정된 일정입니다. \n 선택한 일정을 삭제하시겠습니까?`,
+          description: `공유한 상대방에게도 삭제되며, \n 삭제 후 복구할 수 없습니다.`,
         };
       case 'shareCalendarDelete':
         return {
@@ -61,6 +68,7 @@ export const Dialog = () => {
         ];
       case 'shareEventDelete':
       case 'eventDelete':
+      case 'repeatEventDelete':
       case 'shareCalendarDelete':
       case 'calendarDelete':
         return [
