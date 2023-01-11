@@ -67,17 +67,23 @@ const EventHandleView = observer(({ action }: Props) => {
       const start = getStartDate(uiStore.dateDay);
       eventStore.setEvent(
         new EventModel({
-          calId: 145,
+          calId: 171,
           start: toISO(start),
           end: toISO(start.plus({ minutes: 30 })),
         }),
       );
       return;
     }
-    // TODO: data fetch
-    // TODO: 종일인 경우 start/end time 09:00-09:30으로 변경
-  }, [uiStore.dateDay]);
-
+    if (!eventStore.event.id) {
+      navigate('/main');
+      return;
+    }
+    if (eventStore.event.allDay) {
+      eventStore.event.startDate = eventStore.event.startDate.set({ hour: 9, minute: 0 });
+      eventStore.event.endDate = eventStore.event.endDate.set({ hour: 9, minute: 30 });
+      return;
+    }
+  }, [action]);
 
   return (
     <EventHandleViewContainer>
