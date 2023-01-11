@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable, action } from 'mobx';
 import { isEqualMonth, toDateString } from '@/utils';
+import { EventModel } from './model/EventModel';
 
 type DateRange = { start: string; view?: DateTime; end: string };
 
@@ -15,6 +16,7 @@ interface DialogInfo {
     name?: string;
     num?: number;
     placeholder?: string;
+    model?: EventModel;
   };
   type?: string;
 }
@@ -25,6 +27,7 @@ interface ContextClickArg {
   id?: number;
   color?: string;
   type?: string;
+  date?: string;
 }
 
 export default class UiStore {

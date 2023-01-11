@@ -159,4 +159,12 @@ export class EventModel {
   set notifications(notifications: AlarmDTO[]) {
     this.dto.alarmList = notifications;
   }
+
+  get exceptDate(): DateTime {
+    return DateTime.fromISO(this.dto.exceptDate);
+  }
+
+  set exceptDate(date: DateTime) {
+    this.dto.exceptDate = toISO(date);
+  }
 }
