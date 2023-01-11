@@ -50,6 +50,7 @@ export default class UiStore {
       dateDay: observable,
       setDateDay: action,
       dialogInfo: observable,
+      setDialogInfo: action,
       contextClickArg: observable,
       setContextClickArg: action,
     });
@@ -61,6 +62,10 @@ export default class UiStore {
 
   setDateDay(date: DateTime) {
     this.dateDay = date;
+  }
+
+  setDialogInfo(dialogInfo: DialogInfo) {
+    this.dialogInfo = dialogInfo;
   }
 
   setContextClickArg(contextClickArg: ContextClickArg) {

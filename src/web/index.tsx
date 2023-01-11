@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Link, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import CalendarLayout from '@wcomponents/layout/CalendarLayout';
 import Calendar from '@wcomponents/CalendarView';
 import Share from '@wcomponents/ShareView';
@@ -15,28 +15,6 @@ const WebApp: React.FC = () => {
   const { uiStore } = useCalendarStores();
   return (
     <Router basename="/">
-      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-        <div style={{ display: 'flex' }}>
-          <Link to={ROUTES.PATH_MAIN} className="link">
-            Main
-          </Link>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <Link to={ROUTES.PATH_CREATE} className="link">
-            Main/Create
-          </Link>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <Link to={ROUTES.PATH_DETAIL} className="link">
-            Main/Detail/:id
-          </Link>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <Link to={ROUTES.PATH_SHARE} className="link">
-            Share
-          </Link>
-        </div>
-      </div>
       <Routes>
         <Route element={<CalendarLayout />}>
           <Route path="*" element={<Navigate to={ROUTES.PATH_MAIN} replace />} />
