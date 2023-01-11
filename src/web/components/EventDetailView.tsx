@@ -23,7 +23,7 @@ const EventDetailView = observer(() => {
         leftSide={[{ action: 'back', onClick: () => navigate(-1) }]}
         rightSide={[
           { action: 'share', onClick: () => console.log('share') },
-          { action: 'edit', onClick: () => setEditable(true) },
+          { action: 'edit', onClick: () => navigate('/main/update') },
           { action: 'delete', onClick: () => console.log('delete') },
         ]}
       />

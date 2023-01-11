@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Button } from '@wapl/ui';
 import { useNavigate } from 'react-router-dom';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { CalendarContext } from '@common/contexts/CalendarContext';
 import { EventModel } from '@/stores/model/EventModel';
 import { EventHandleViewContainer, EventHandleContainer, FromInfo, ButtonGroup } from './EventHandleView.style';
 import EventBar from './EventBar';
@@ -18,6 +19,7 @@ import {
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO } from '@/utils';
+import { EVENT_UPDATE_OPTION } from '@common/constants';
 
 interface Props {
   action: 'create' | 'update';
@@ -25,24 +27,38 @@ interface Props {
 
 const EventHandleView = observer(({ action }: Props) => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
+  const { userId } = useContext(CalendarContext);
   const navigate = useNavigate();
 
   const handleClose = () => {
     navigate(-1);
   };
 
-  const handleCreate = async () => {
-    const event = await eventStore.createEvent(
-      new EventModel({
-        ...eventStore.event.dto,
-        ...(!eventStore.event.title && { title: 'Untitled' }),
-        ...(eventStore.event.allDay && {
-          start: toISO(eventStore.event.startDate.startOf('day')),
-          end: toISO(eventStore.event.endDate.startOf('day').plus({ days: 1 })),
-        }),
+  const preprocessEvent = (event: EventModel): EventModel => {
+    return new EventModel({
+      ...event.dto,
+      regUserId: userId,
+      ...(!event.title && { title: 'Untitled' }),
+      ...(event.allDay && {
+        start: toISO(event.startDate.startOf('day')),
+        end: toISO(event.endDate.startOf('day').plus({ days: 1 })),
       }),
-    );
+    });
+  };
+
+  const handleCreate = async () => {
+    const event = await eventStore.createEvent(preprocessEvent(eventStore.event));
     calendarStore.appendEventList(event);
+    navigate('/main/detail');
+  };
+
+  const handleUpdate = async () => {
+    const event = await eventStore.updateEvent(
+      +eventStore.event.id,
+      preprocessEvent(eventStore.event),
+      EVENT_UPDATE_OPTION.DEFAULT,
+    );
+    calendarStore.updateEventList(event);
     navigate('/main/detail');
   };
 
@@ -120,9 +136,15 @@ const EventHandleView = observer(({ action }: Props) => {
           <Button variant="secondary" size="large" onClick={handleClose}>
             취소
           </Button>
-          <Button size="large" onClick={handleCreate}>
-            생성
-          </Button>
+          {action === 'create' ? (
+            <Button size="large" onClick={handleCreate}>
+              생성
+            </Button>
+          ) : (
+            <Button size="large" onClick={handleUpdate}>
+              수정
+            </Button>
+          )}
         </ButtonGroup>
       </EventHandleContainer>
     </EventHandleViewContainer>

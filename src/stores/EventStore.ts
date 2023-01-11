@@ -45,8 +45,10 @@ export default class EventStore {
 
   async updateEvent(eventId: number, { dto }: EventModel, updateOption: EVENT_UPDATE_OPTION) {
     const res = await this.repo.updateEvent(eventId, dto, updateOption);
-    return res;
+    this.event = new EventModel(res);
+    return this.event;
   }
+
   async deleteEvent(eventId: number, deleteOption: EVENT_DELETE_OPTION) {
     const res = await this.repo.deleteEvent(eventId, deleteOption);
     return res;
