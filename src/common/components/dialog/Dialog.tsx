@@ -30,6 +30,11 @@ export const Dialog = () => {
           subTitle: `선택한 ${data?.num}개 일정을 삭제하시겠습니까?`,
           description: `삭제 후, 복구할 수 없습니다.`,
         };
+      case 'repeatEventUpdate':
+        return {
+          title: '일정 수정',
+          subTitle: `이 일정은 반복 설정된 일정입니다. \n 선택한 일정을 수정하시겠습니까?`,
+        };
       case 'repeatEventDelete':
         return {
           title: '일정 삭제',
@@ -79,6 +84,11 @@ export const Dialog = () => {
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
           { variant: 'negative', text: '추가', onClick: onClick[1] },
+        ];
+      case 'repeatEventUpdate':
+        return [
+          { variant: 'secondary', text: '취소', onClick: onClick[0] },
+          { variant: 'primary', text: '수정', onClick: onClick[1] },
         ];
       default:
         return [];

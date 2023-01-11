@@ -71,7 +71,7 @@ export const SelectDialog = ({ open, title, buttons }: InputDialogProps) => {
             key={button.text}
             variant={button.variant}
             onClick={() => {
-              if (selectItem) button.onClick(selectItem);
+              if (selectItem || button.text === '취소') button.onClick(selectItem);
             }}
           >
             {button.text}
