@@ -36,10 +36,9 @@ export default class EventStore {
     return eventList.map(event => new EventModel(event));
   }
 
-  async createEvent(event: EventModel) {
-    const res = await this.repo.createEvent(event.dto);
+  async createEvent({ dto }: EventModel) {
+    const res = await this.repo.createEvent(dto);
     this.event = new EventModel(res);
-    this.eventId = res.id;
     return this.event;
   }
 
