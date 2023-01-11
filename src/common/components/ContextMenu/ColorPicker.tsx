@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12, onClick }: Props) => {
-  const [selected, setSelected] = useState(color);
+  const [selected, setSelected] = useState(color ?? '');
 
   const colorItem: ColorItemType = [
     { value: '', color: '' },

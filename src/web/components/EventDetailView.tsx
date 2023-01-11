@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { autorun } from 'mobx';
+import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { useNavigate } from 'react-router-dom';
@@ -8,25 +7,33 @@ import EventBar from './EventBar';
 import EventItem from './EventItem';
 import { Participants, Location, Notifications, Description, Attachments } from '@common/components/EventInfoItem';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { EVENT_DELETE_OPTION } from '@common/constants';
 
 const EventDetailView = observer(() => {
-  const { eventStore } = useCalendarStores();
+  const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
-  const [editable, setEditable] = useState<boolean>(false);
 
-  const fetchData = async (id: number) => {
-    const event = await eventStore.getEventInfo(id);
-    eventStore.setEvent(event);
+  const closeDialog = () => {
+    uiStore.setDialogInfo(null);
+  };
+
+  const handleDelete = async () => {
+    await eventStore.deleteEvent(+eventStore.event.id, EVENT_DELETE_OPTION.DEFAULT);
+    calendarStore.filterEventList(eventStore.event.id);
+    navigate(-1);
+    closeDialog();
+  };
+
+  const handleDeleteClick = () => {
+    uiStore.setDialogInfo({
+      action: 'eventDelete',
+      onClick: [closeDialog, handleDelete],
+      data: { num: 1 },
+    });
   };
 
   useEffect(() => {
-    const dispose = autorun(() => {
-      const { eventId } = eventStore;
-      if (eventId === +eventStore.event.id) return;
-      if (eventId) fetchData(eventId);
-      else navigate('/main');
-    });
-    return () => dispose();
+    if (!eventStore.event.id) navigate('/main');
   }, []);
 
   return (
@@ -35,8 +42,8 @@ const EventDetailView = observer(() => {
         leftSide={[{ action: 'back', onClick: () => navigate(-1) }]}
         rightSide={[
           { action: 'share', onClick: () => console.log('share') },
-          { action: 'edit', onClick: () => setEditable(true) },
-          { action: 'delete', onClick: () => console.log('delete') },
+          { action: 'edit', onClick: () => navigate('/main/update') },
+          { action: 'delete', onClick: handleDeleteClick },
         ]}
       />
       {eventStore.event && (
