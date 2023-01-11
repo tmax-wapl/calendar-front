@@ -33,17 +33,17 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const deleteCalendar = () => {
+  const calendarDelete = () => {
     console.log('캘린더 삭제');
   };
 
-  const deleteEvent = () => {
+  const eventDelete = () => {
     calendarStore.deleteEvent(id);
     closeDialog();
     if (onClose) onClose();
   };
 
-  const deleteRepeatEvent = async (value: string) => {
+  const repeatEventDelete = async (value: string) => {
     const model = uiStore.dialogInfo.data.model;
     switch (value) {
       case 'one': // 이 일정만 삭제
@@ -67,7 +67,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         );
         break;
       case 'all': // 모든 일정 삭제
-        deleteEvent();
+        eventDelete();
         break;
       default:
         break;
@@ -87,7 +87,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const handleCalendarDelete = () => {
     uiStore.dialogInfo = {
       action: 'shareCalendarDelete',
-      onClick: [closeDialog, deleteCalendar],
+      onClick: [closeDialog, calendarDelete],
     };
   };
 
@@ -106,13 +106,13 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     if (!model.rrule) {
       uiStore.dialogInfo = {
         action: 'eventDelete',
-        onClick: [closeDialog, deleteEvent],
+        onClick: [closeDialog, eventDelete],
         data: { num: 1 },
       };
     } else {
       uiStore.dialogInfo = {
         action: 'repeatEventDelete',
-        onClick: [closeDialog, deleteRepeatEvent],
+        onClick: [closeDialog, repeatEventDelete],
         type: 'select',
         data: { model },
       };
