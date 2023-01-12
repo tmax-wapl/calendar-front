@@ -99,20 +99,37 @@ export const Dialog = () => {
     console.log('close');
   };
 
-  return type !== 'input' ? (
-    <DialogCompo open onClose={handleClose}>
-      <Title>{title?.title}</Title>
-      <SubTitle>{title?.subTitle}</SubTitle>
-      <Description>{title?.description}</Description>
-      <DialogButtonWrapper>
-        {buttons?.map((button: DialogButton) => (
-          <Button key={button.text} variant={button.variant} onClick={() => button.onClick()}>
-            {button.text}
-          </Button>
-        ))}
-      </DialogButtonWrapper>
-    </DialogCompo>
-  ) : (
-    <InputDialog open title={title} onCloseClick={onCloseClick} placeholder={data?.placeholder} buttons={buttons} />
-  );
+  const DialogType = () => {
+    switch (type) {
+      case 'input':
+        return (
+          <InputDialog
+            open
+            title={title}
+            onCloseClick={onCloseClick}
+            placeholder={data?.placeholder}
+            buttons={buttons}
+          />
+        );
+      case 'select':
+        return <SelectDialog open title={title} buttons={buttons} />;
+      default:
+        return (
+          <DialogCompo open onClose={handleClose}>
+            <Title>{title?.title}</Title>
+            <SubTitle>{title?.subTitle}</SubTitle>
+            <Description>{title?.description}</Description>
+            <DialogButtonWrapper>
+              {buttons?.map((button: DialogButton) => (
+                <Button key={button.text} variant={button.variant} onClick={() => button.onClick()}>
+                  {button.text}
+                </Button>
+              ))}
+            </DialogButtonWrapper>
+          </DialogCompo>
+        );
+    }
+  };
+
+  return <>{DialogType()}</>;
 };
