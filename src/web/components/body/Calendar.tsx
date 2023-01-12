@@ -97,7 +97,7 @@ const Calendar: React.FC = observer(() => {
             data-color={backgroundColor}
             data-id={event.id}
             data-startdate={startStr}
-            data-enddate={endStr}
+            data-enddate={endStr ? endStr : event.extendedProps.dto.end}
             isHalfLess
           >
             {event.title}
