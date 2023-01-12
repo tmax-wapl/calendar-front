@@ -160,11 +160,11 @@ export class EventModel {
     this.dto.alarmList = notifications;
   }
 
-  get exceptDate(): DateTime {
-    return DateTime.fromISO(this.dto.exceptDate);
+  get exDate(): DateTime {
+    return DateTime.fromISO(this.dto.exDate);
   }
 
-  set exceptDate(date: DateTime) {
-    this.dto.exceptDate = toISO(date);
+  set exDate(date: DateTime) {
+    this.dto.exDate = toISO(date);
   }
 }

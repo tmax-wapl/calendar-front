@@ -27,7 +27,10 @@ interface ContextClickArg {
   id?: number;
   color?: string;
   type?: string;
-  date?: string;
+  date?: {
+    startdate?: string;
+    enddate?: string;
+  };
 }
 
 export default class UiStore {

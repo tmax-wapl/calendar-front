@@ -93,7 +93,13 @@ const Calendar: React.FC = observer(() => {
       <>
         <CalendarColor color={event.extendedProps.dto.calColor} />
         {uiStore.viewMode === VIEW_MODE.MONTH ? (
-          <EventWrapper data-color={backgroundColor} data-id={event.id} data-date={endStr} isHalfLess>
+          <EventWrapper
+            data-color={backgroundColor}
+            data-id={event.id}
+            data-startdate={startStr}
+            data-enddate={endStr}
+            isHalfLess
+          >
             {event.title}
           </EventWrapper>
         ) : (
@@ -182,14 +188,17 @@ const Calendar: React.FC = observer(() => {
     const target = e.target?.closest('.fc-daygrid-event') || e.target?.closest('.fc-timegrid-event');
     if (!target) return;
 
-    const { color, id, date } = e.target?.querySelector('span[data-color]')?.dataset;
+    const { color, id, startdate, enddate } = e.target?.querySelector('span[data-color]')?.dataset;
     uiStore.contextClickArg = {
       target,
       position: { top: e.clientY, left: e.clientX },
       color,
       type: 'event',
       id,
-      date,
+      date: {
+        startdate,
+        enddate,
+      },
     };
   };
 

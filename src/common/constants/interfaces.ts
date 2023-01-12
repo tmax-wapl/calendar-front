@@ -24,7 +24,7 @@ export interface EventDTO {
   participants?: any[];
   attachments?: any[];
   notifications?: any[];
-  exceptDate?: string;
+  exDate?: string;
 }
 
 export interface CalendarDTO {

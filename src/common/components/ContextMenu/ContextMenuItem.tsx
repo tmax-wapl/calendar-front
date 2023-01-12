@@ -24,7 +24,10 @@ interface MenuItem {
 interface Props {
   id: number;
   type?: string;
-  date?: string;
+  date?: {
+    startdate?: string;
+    enddate?: string;
+  };
   onClose?: () => void;
 }
 
@@ -51,7 +54,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
           id,
           new EventModel({
             ...model.dto,
-            exceptDate: toISO(toLuxon(date)),
+            exDate: toISO(toLuxon(date.startdate)),
           }),
           EVENT_UPDATE_OPTION.REPEAT_EVENT_REMOVE,
         );
@@ -61,7 +64,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
           id,
           new EventModel({
             ...model.dto,
-            repeatEndDate: toISO(toLuxon(date)),
+            repeatEndDate: toISO(toLuxon(date.enddate)),
           }),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_ALL_REMOVE,
         );
@@ -96,6 +99,12 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     eventStore.setEvent(event);
     if (!pathname.includes('update')) navigate('/main/update');
     if (onClose) onClose();
+    handleDateRange();
+  };
+
+  const handleDateRange = () => {
+    eventStore.event.startDate = toLuxon(date.startdate);
+    eventStore.event.endDate = toLuxon(date.enddate);
   };
 
   const handleEventShare = () => {
