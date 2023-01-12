@@ -73,7 +73,7 @@ export default class EventStore {
       return new EventModel({
         ...event,
         start: toISO(DateTime.fromJSDate(day)),
-        end: toISO(DateTime.fromJSDate(day).plus({ day: 1 })),
+        end: toISO(DateTime.fromJSDate(day)),
       });
     });
   }

@@ -23,6 +23,7 @@ export enum EVENT_UPDATE_OPTION { // TODO: UPDATE 타입 통합 예정
   AFTER_REPEAT_RRULE = 4, //향 후 모든일정 -> (rrule 수정)
   REPEAT_EXCEP_REMOVE = 5, // 반복 예외일정 삭제
   AFTER_REPEAT_ALL_REMOVE = 6, // 향 후 모든일정 삭제 (for sion)
+  ONCE_EVENT_UPDATE = 7, // 이 일정만 수정 (for sion)
   REPEAT_EVENT_REMOVE = 8, // 이 일정만 삭제 (for sion)
 }
 

@@ -18,8 +18,10 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { getStartDate, toISO } from '@/utils';
-import { EVENT_UPDATE_OPTION } from '@common/constants';
+import { getStartDate, toISO, rrulString, toLuxon } from '@/utils';
+import { autorun } from 'mobx';
+import { EVENT_UPDATE_OPTION } from '@/common/constants';
+import { DateTime } from 'luxon';
 
 interface Props {
   action: 'create' | 'update';
@@ -44,6 +46,10 @@ const EventHandleView = observer(({ action }: Props) => {
         start: toISO(event.startDate.startOf('day')),
         end: toISO(event.endDate.startOf('day').plus({ days: 1 })),
       }),
+      ...(event.rrule && {
+        repeatStartDate: toISO(event.startDate.startOf('day')),
+        repeatEndDate: event.rrule.until ? toISO(DateTime.fromJSDate(event.rrule.until)) : '9999-01-01T00:00:00',
+      }),
     });
   };
 
@@ -54,6 +60,94 @@ const EventHandleView = observer(({ action }: Props) => {
   };
 
   const handleUpdate = async () => {
+    // 1. 일반 일정인지? 반복 일정인지 여부
+    // 2. 팝업에서 선택한 옵션에 따라 서비스 콜 분기.
+    if (!eventStore.event.rrule) eventUpdate();
+    else {
+      // 팝업 열고.. 선택해야겠지..?
+      // 선택하는데 옵션이 아마 세개가 올거야 contextMenuItem 처럼
+      uiStore.dialogInfo = {
+        action: 'repeatEventUpdate',
+        onClick: [(): void => (uiStore.dialogInfo = null), repeatEventUpdate],
+        type: 'select',
+      };
+    }
+    // 1번 테스트
+    // const event = await eventStore.updateEvent(
+    //   eventStore.eventId,
+    //   new EventModel({
+    //     ...eventStore.event.dto,
+    //     rrule: rrulString(eventStore.event.rrule),
+    //   }),
+    //   1,
+    // );
+    //  3번 테스트
+    // const event = await eventStore.updateEvent(
+    //   eventStore.eventId,
+    //   new EventModel({
+    //     ...eventStore.event.dto,
+    //     id: null,
+    //     repeatStartDate: toISO(toLuxon('2023-02-23')),
+    //     repeatEndDate: toISO(eventStore.event.repeatEndDate),
+    //     rrule: rrulString(eventStore.event.rrule),
+    //   }),
+    //   3,
+    // );
+    // 4번 테스트
+    // const event = await eventStore.updateEvent(
+    //   eventStore.eventId,
+    //   new EventModel({
+    //     ...eventStore.event.dto,
+    //     id: null,
+    //     color: '#000000',
+    //     repeatStartDate: toISO(toLuxon('2023-03-09')),
+    //     repeatEndDate: toISO(eventStore.event.repeatEndDate),
+    //     rrule: rrulString(eventStore.event.rrule),
+    //   }),
+    //   4,
+    // );
+    // 6번 테스트
+    // const event = await eventStore.updateEvent(
+    //   eventStore.eventId,
+    //   new EventModel({
+    //     ...eventStore.event.dto,
+    //     repeatEndDate: toISO(toLuxon('2023-03-24')),
+    //     rrule: rrulString(eventStore.event.rrule),
+    //   }),
+    //   6,
+    // );
+    //  7번 테스트
+    // const event = await eventStore.updateEvent(
+    //   eventStore.eventId,
+    //   new EventModel({
+    //     ...eventStore.event.dto,
+    //     start: toISO(toLuxon('2023-02-17')),
+    //     end: toISO(toLuxon('2023-02-17')),
+    //     exceptDate: toISO(toLuxon('2023-02-17')),
+    //   }),
+    //   7,
+    // );
+    // const closeDialog = (): any => (uiStore.dialogInfo = null);
+    // const getSelectType = async (value: string) => {
+    //   uiStore.dialogInfo = null;
+    //   if (value === 'after') {
+    //     //  3번 테스트
+    //     const event = await eventStore.updateEvent(
+    //       eventStore.eventId,
+    //       new EventModel({
+    //         ...eventStore.event.dto,
+    //         id: null,
+    //         repeatStartDate: toISO(toLuxon('2023-03-03')),
+    //         repeatEndDate: toISO(eventStore.event.repeatEndDate),
+    //         rrule: rrulString(eventStore.event.rrule),
+    //       }),
+    //       3,
+    //     );
+    //   }
+    // };
+  };
+
+  const eventUpdate = async () => {
     const event = await eventStore.updateEvent(
       +eventStore.event.id,
       preprocessEvent(eventStore.event),
@@ -61,6 +155,60 @@ const EventHandleView = observer(({ action }: Props) => {
     );
     calendarStore.updateEventList(event);
     navigate('/main/detail');
+  };
+
+  const repeatEventUpdate = async (value: string) => {
+    const { startDate, endDate } = eventStore.event;
+    switch (value) {
+      case 'one': // 이 일정만 수정
+        const event = await eventStore.updateEvent(
+          +eventStore.event.id,
+          new EventModel({
+            ...eventStore.event.dto,
+            id: null,
+            start: toISO(startDate),
+            end: toISO(endDate),
+            exDate: toISO(startDate),
+          }),
+          EVENT_UPDATE_OPTION.ONCE_EVENT_UPDATE,
+        );
+        navigate('/main/detail');
+        break;
+      case 'after': // 이 일정 및 향후 일정 수정
+        // 3번 테스트
+        console.log(eventStore.event.repeatEndDate);
+        await eventStore.updateEvent(
+          +eventStore.event.id,
+          new EventModel({
+            ...eventStore.event.dto,
+            id: null,
+            repeatStartDate: toISO(startDate),
+            repeatEndDate: toISO(eventStore.event.repeatEndDate),
+            rrule: rrulString(eventStore.event.rrule),
+          }),
+          3,
+        );
+        break;
+      case 'all': // 모든 일정 수정
+        // eventUpdate(); // 얘 아닌듯..?
+        break;
+      default:
+        break;
+    }
+    if (value === 'after') {
+      //  7번 테스트
+      // const event = await eventStore.updateEvent(
+      //   +eventStore.event.id,
+      //   new EventModel({
+      //     ...eventStore.event.dto,
+      //     start: toISO(toLuxon('2023-02-13')),
+      //     end: toISO(toLuxon('2023-02-13')),
+      //     exceptDate: toISO(toLuxon('2023-02-13')),
+      //   }),
+      //   7,
+      // );
+    }
+    uiStore.dialogInfo = null;
   };
 
   useEffect(() => {
