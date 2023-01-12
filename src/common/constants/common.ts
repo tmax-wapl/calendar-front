@@ -17,17 +17,13 @@ export enum VIEW_MODE {
 
 export enum EVENT_UPDATE_OPTION { // TODO: UPDATE 타입 통합 예정
   DEFAULT = 0, // 일반 일정 수정
-  ALL_REPEAT = 1, // 모든 반복일정 수정
-  REPEAT_EXCEP = 2, // 반복일정 예외일정 수정
-  AFTER_REPEAT_ALL = 3, // 향 후 모든일정 -> (정보 수정)
-  AFTER_REPEAT_RRULE = 4, //향 후 모든일정 -> (rrule 수정)
-  REPEAT_EXCEP_REMOVE = 5, // 반복 예외일정 삭제
-  AFTER_REPEAT_ALL_REMOVE = 6, // 향 후 모든일정 삭제 (for sion)
-  ONCE_EVENT_UPDATE = 7, // 이 일정만 수정 (for sion)
-  REPEAT_EVENT_REMOVE = 8, // 이 일정만 삭제 (for sion)
+  ONCE_REPEAT_EVENT = 1, // 이 일정만 수정
+  AFTER_REPEAT_EVENT = 2, // 이 일정 및 향 후 모든일정
+  ALL_REPEAT_EVENT = 3, // 모든 일정
+  ONCE_REPEAT_EVENT_EXCEPT = 4, // 반복 예외 일정
+  AFTER_REPEAT_EVENT_EXCEPT = 5, // 이 일정 및 향 후 모든 일정 예외
 }
 
 export enum EVENT_DELETE_OPTION {
-  DEFAULT = 0, // 일반 일정 삭제,
-  REPEAT_ALL = 1, // 반복일정 모두 삭제
+  DEFAULT = 0, // 일반 일정 및 모든 일정 삭제,
 }

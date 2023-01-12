@@ -170,12 +170,11 @@ const EventHandleView = observer(({ action }: Props) => {
             end: toISO(endDate),
             exDate: toISO(startDate),
           }),
-          EVENT_UPDATE_OPTION.ONCE_EVENT_UPDATE,
+          EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
         );
         navigate('/main/detail');
         break;
       case 'after': // 이 일정 및 향후 일정 수정
-        // 3번 테스트
         await eventStore.updateEvent(
           +eventStore.event.id,
           new EventModel({
@@ -185,7 +184,7 @@ const EventHandleView = observer(({ action }: Props) => {
             repeatEndDate: toISO(eventStore.event.repeatEndDate),
             rrule: rrulString(eventStore.event.rrule),
           }),
-          3,
+          EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
         );
         navigate('/main/detail');
         break;

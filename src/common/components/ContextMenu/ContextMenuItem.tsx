@@ -56,7 +56,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
             ...model.dto,
             exDate: toISO(toLuxon(date.startdate)),
           }),
-          EVENT_UPDATE_OPTION.REPEAT_EVENT_REMOVE,
+          EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT_EXCEPT,
         );
         break;
       case 'after': // 이 일정 및 향후 일정 삭제
@@ -66,7 +66,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
             ...model.dto,
             repeatEndDate: toISO(toLuxon(date.enddate)),
           }),
-          EVENT_UPDATE_OPTION.AFTER_REPEAT_ALL_REMOVE,
+          EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT_EXCEPT,
         );
         break;
       case 'all': // 모든 일정 삭제
