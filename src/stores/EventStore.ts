@@ -47,31 +47,12 @@ export default class EventStore {
   }
 
   makeRRuleObject(event: EventDTO) {
-    const { rrule, exceptionList } = new EventModel(event);
-    const rruleSet = new RRuleSet();
-    rruleSet.rrule(new RRule(rrule));
+    const { rruleObj } = new EventModel(event);
 
     const start = this.rootStore.uiStore.mainApi.view.activeStart;
     const end = this.rootStore.uiStore.mainApi.view.activeEnd;
-    if (exceptionList && exceptionList.length > 0) {
-      exceptionList.forEach(value => {
-        const [year, month, day, time, minute] = value.exceptionDate; // month 0 ~ 11
-        rruleSet.exdate(new Date(year, month - 1, day, time, minute));
-      });
-    }
 
-    let repeatList = rruleSet.between(start, end);
-
-    if (rruleSet._exdate.length > 0) {
-      repeatList = repeatList.filter(date => {
-        const arr = rruleSet._exdate.map(exdate => {
-          if (!isSameDate(date, exdate)) return date;
-        })[0];
-        if (arr) return arr;
-      });
-    }
-
-    return repeatList.map(day => {
+    return rruleObj.between(start, end).map(day => {
       return new EventModel({
         ...event,
         start: toISO(DateTime.fromJSDate(day)),
