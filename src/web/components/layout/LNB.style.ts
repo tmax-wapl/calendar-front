@@ -29,6 +29,8 @@ export const ScrollListWrapper = styled.div`
 `;
 
 export const CategoryListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: 0px 8px;
 `;
 

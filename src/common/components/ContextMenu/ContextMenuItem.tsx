@@ -29,8 +29,9 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const deleteCalendar = () => {
-    console.log('캘린더 삭제');
+  const deleteCalendar = async () => {
+    await calendarStore.deleteCalendar(id);
+    closeDialog();
   };
 
   const deleteEvent = () => {
@@ -48,11 +49,16 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
     if (onClose) onClose();
   };
 
-  const handleCalendarDelete = () => {
+  const handleCalendarSync = () => {
+    console.log('캘린더 동기화');
+  };
+
+  const handleCalendarDelete = (type: string) => {
     uiStore.dialogInfo = {
-      action: 'shareCalendarDelete',
+      action: type === 'subCalendar' ? 'calendarDelete' : 'subscriptionDelete',
       onClick: [closeDialog, deleteCalendar],
     };
+    if (onClose) onClose();
   };
 
   const handleEventEdit = async () => {
@@ -75,10 +81,41 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
   };
 
   const menuItem: { [key: string]: MenuItem[] } = {
-    persona: [{ label: '이름 변경', onClick: handleNameChange, icon: <Icon.EditLine className="mr-8" /> }],
+    mainCalendar: [
+      {
+        label: '이름 변경',
+        onClick: handleNameChange,
+        icon: <Icon.EditLine width={16} height={16} className="mr-8" />,
+      },
+    ],
+    subCalendar: [
+      {
+        label: '이름 변경',
+        onClick: handleNameChange,
+        icon: <Icon.EditLine width={16} height={16} className="mr-8" />,
+      },
+      {
+        label: '캘린더 삭제',
+        onClick: () => handleCalendarDelete('subCalendar'),
+        icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
+      },
+    ],
     subscribe: [
-      { label: '이름 변경', onClick: handleNameChange, icon: <Icon.EditLine className="mr-8" /> },
-      { label: '캘린더 삭제', onClick: handleCalendarDelete, icon: <Icon.DeleteLine className="mr-8" /> },
+      {
+        label: '이름 변경',
+        onClick: handleNameChange,
+        icon: <Icon.EditLine width={16} height={16} className="mr-8" />,
+      },
+      {
+        label: '캘린더 동기화',
+        onClick: handleCalendarSync,
+        icon: <Icon.RenewLine width={16} height={16} className="mr-8" />,
+      },
+      {
+        label: '캘린더 삭제',
+        onClick: () => handleCalendarDelete('subscribe'),
+        icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
+      },
     ],
     event: [
       { label: '일정 수정', onClick: handleEventEdit, icon: <Icon.EditLine className="mr-8" /> },

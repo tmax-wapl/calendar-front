@@ -33,10 +33,15 @@ export const ContextMenu = () => {
 
   const handleClick = async (color: string) => {
     switch (type) {
-      case 'persona':
+      case 'mainCalendar':
+      case 'subCalendar':
       case 'subscribe':
-        await calendarStore.calendarUpdate(id, { userId, color });
+        await calendarStore.updateCalendar(id, { userId, color });
         calendarStore.updateCalendarColor(id, color);
+        const eventList = calendarStore.eventList.map(event =>
+          event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
+        );
+        calendarStore.setEventList(eventList);
         break;
       case 'event':
         // TODO: 일정 색상 변경 서비스 호출

@@ -4,7 +4,14 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { CalendarModel } from '@/stores/model/CalendarModel';
 import { Checkbox, Icon } from '@wapl/ui';
-import { InputItemContainer, Input, ItemContainer, CheckBoxWrapper, ButtonWarpper } from './Item.style';
+import {
+  ItemContainer,
+  InputItemContainer,
+  Input,
+  CheckItemContainer,
+  CheckBoxWrapper,
+  ButtonWarpper,
+} from './Item.style';
 
 interface Props {
   category: CalendarModel;
@@ -15,22 +22,23 @@ const Item = observer(({ category }: Props) => {
   const { uiStore, calendarStore } = useCalendarStores();
   const [renameTitle, setRenameTitle] = useState(category.name);
 
-  const onContextMenuOpen = (e: any, id: number, color: string) => {
+  const onContextMenuOpen = (e: any, category: CalendarModel) => {
     e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
     const target = e.target;
     if (!target) return;
+    const type = category.type === 'url' ? 'subscribe' : category.mainFlag ? 'mainCalendar' : 'subCalendar';
     uiStore.setContextClickArg({
       target,
       position: { top: e.clientY, left: e.clientX },
-      id,
-      color,
-      type: 'persona',
+      id: category.id,
+      color: category.color,
+      type,
     });
   };
 
   const handleCheckedChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
-    await calendarStore.calendarUpdate(category.id, { userId, checkFlag: checked });
+    await calendarStore.updateCalendar(category.id, { userId, checkFlag: checked });
     calendarStore.updateCalendarChecked(category.id, checked);
   };
 
@@ -39,13 +47,18 @@ const Item = observer(({ category }: Props) => {
   };
 
   const handleRename = async () => {
-    await calendarStore.calendarUpdate(category.id, { userId, name: renameTitle });
+    await calendarStore.updateCalendar(category.id, { userId, name: renameTitle });
     calendarStore.updateCalendarName(category.id, renameTitle);
     calendarStore.setRenameId(null);
   };
 
+  const handleSyncClick = async () => {
+    const eventList = await calendarStore.syncCalendar(category.id);
+    calendarStore.setEventList([...calendarStore.eventList, ...eventList]);
+  };
+
   return (
-    <>
+    <ItemContainer main={category.mainFlag}>
       {calendarStore.renameId === category.id ? (
         <InputItemContainer calendarcolor={category.color}>
           <Checkbox checked={category.checkFlag} />
@@ -60,18 +73,24 @@ const Item = observer(({ category }: Props) => {
           />
         </InputItemContainer>
       ) : (
-        <ItemContainer key={category.id} onContextMenu={e => onContextMenuOpen(e, category.id, category.color)}>
+        <CheckItemContainer key={category.id} onContextMenu={e => onContextMenuOpen(e, category)}>
           <CheckBoxWrapper
             calendarcolor={category.color}
             control={<Checkbox checked={category.checkFlag} onChange={handleCheckedChange} />}
             label={category.name}
+            type={category.type}
           />
-          <ButtonWarpper onClick={e => onContextMenuOpen(e, category.id, category.color)}>
+          {category.type === 'url' && (
+            <ButtonWarpper onClick={handleSyncClick}>
+              <Icon.RenewLine width={20} height={20} color="#80868B" />
+            </ButtonWarpper>
+          )}
+          <ButtonWarpper onClick={e => onContextMenuOpen(e, category)}>
             <Icon.MoreLine width={20} height={20} />
           </ButtonWarpper>
-        </ItemContainer>
+        </CheckItemContainer>
       )}
-    </>
+    </ItemContainer>
   );
 });
 

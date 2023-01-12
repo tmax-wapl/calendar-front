@@ -22,7 +22,7 @@ const LNB = () => {
   const { uiStore, calendarStore } = useCalendarStores();
 
   const fetchData = async (userId: number) => {
-    const calendarList = await calendarStore.getCalendarList(userId, '2023-01-04', '2023-01-04');
+    const calendarList = await calendarStore.getCalendarList(userId);
     calendarStore.setCalendarList(calendarList);
   };
 
