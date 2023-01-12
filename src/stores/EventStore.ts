@@ -39,7 +39,7 @@ export default class EventStore {
     const arr: EventModel[] = [];
     eventList.map(event => {
       if (event.rrule) arr.push(...this.makeRRuleObject(event));
-      arr.push(new EventModel(event));
+      else arr.push(new EventModel(event));
     });
     return arr;
   }
