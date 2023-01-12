@@ -33,7 +33,7 @@ export const InputDialog = ({ open, title, onCloseClick, placeholder, buttons }:
       <InputDialogDescription>{title.description}</InputDialogDescription>
       <DialogButtonWrapper>
         {buttons?.map((button: DialogButton) => (
-          <Button key={button.text} variant={button.variant} onClick={() => button.onClick(input)}>
+          <Button key={button.text} variant={button.variant} onClick={() => button.onClick(input.trim())}>
             {button.text}
           </Button>
         ))}

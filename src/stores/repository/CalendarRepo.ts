@@ -2,7 +2,7 @@ import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
 import { API } from '@/common/lib/API';
 
 export default class CalendarRepo {
-  async calendarCreate(dto: Partial<CalendarDTO>) {
+  async createCalendar(dto: Partial<CalendarDTO>) {
     try {
       const { response, success } = await API.post<Partial<CalendarDTO>, CalendarDTO>('/apis/v1/calendars/create', dto);
       if (success) return response;
@@ -38,7 +38,7 @@ export default class CalendarRepo {
     }
   }
 
-  async calendarDelete(calId: number) {
+  async deleteCalendar(calId: number) {
     try {
       const { response, success } = await API.delete(`/apis/v1/calendars/delete/${calId}`);
       if (success) return response;
@@ -47,7 +47,7 @@ export default class CalendarRepo {
     }
   }
 
-  async calendarUpdate(calId: number, dto: CalendarPatchDTO) {
+  async updateCalendar(calId: number, dto: CalendarPatchDTO) {
     try {
       const { response, success } = await API.patch<CalendarPatchDTO, CalendarDTO>(
         `/apis/v1/calendars/update/${calId}`,

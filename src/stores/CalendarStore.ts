@@ -47,7 +47,7 @@ export default class CalendarStore {
   }
 
   async createCalendar(dto: Partial<CalendarDTO>) {
-    const res = await this.repo.calendarCreate(dto);
+    const res = await this.repo.createCalendar(dto);
     const calendar = new CalendarModel({ ...res, checkFlag: true });
     this.calendarList.unshift(calendar);
     return res;
@@ -55,8 +55,7 @@ export default class CalendarStore {
 
   async getCalendarList(userId: number) {
     const data = await this.repo.getCalendarList(userId);
-    const res = data.map((dto: CalendarDTO) => new CalendarModel(dto));
-    return res;
+    return data.map((dto: CalendarDTO) => new CalendarModel(dto));
   }
 
   async syncCalendar(calId: number) {
@@ -69,13 +68,13 @@ export default class CalendarStore {
     return res;
   }
 
-  async calendarUpdate(calId: number, dto: CalendarPatchDTO) {
-    const res = await this.repo.calendarUpdate(calId, dto);
+  async updateCalendar(calId: number, dto: CalendarPatchDTO) {
+    const res = await this.repo.updateCalendar(calId, dto);
     return res;
   }
 
   async deleteCalendar(calId: number) {
-    const res = await this.repo.calendarDelete(calId);
+    const res = await this.repo.deleteCalendar(calId);
     this.calendarList = this.calendarList.filter(item => item.id !== res);
   }
 

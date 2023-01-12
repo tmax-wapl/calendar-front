@@ -38,7 +38,7 @@ const Item = observer(({ category }: Props) => {
 
   const handleCheckedChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
-    await calendarStore.calendarUpdate(category.id, { userId, checkFlag: checked });
+    await calendarStore.updateCalendar(category.id, { userId, checkFlag: checked });
     calendarStore.updateCalendarChecked(category.id, checked);
   };
 
@@ -47,7 +47,7 @@ const Item = observer(({ category }: Props) => {
   };
 
   const handleRename = async () => {
-    await calendarStore.calendarUpdate(category.id, { userId, name: renameTitle });
+    await calendarStore.updateCalendar(category.id, { userId, name: renameTitle });
     calendarStore.updateCalendarName(category.id, renameTitle);
     calendarStore.setRenameId(null);
   };
