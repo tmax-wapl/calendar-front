@@ -147,13 +147,13 @@ const EventHandleView = observer(({ action }: Props) => {
     // };
   };
 
-  const eventUpdate = async () => {
+  const eventUpdate = async (isRepeat = false) => {
     const event = await eventStore.updateEvent(
       +eventStore.event.id,
       preprocessEvent(eventStore.event),
       EVENT_UPDATE_OPTION.DEFAULT,
     );
-    calendarStore.updateEventList(event);
+    if (!isRepeat) calendarStore.updateEventList(event);
     navigate('/main/detail');
   };
 
@@ -161,7 +161,7 @@ const EventHandleView = observer(({ action }: Props) => {
     const { startDate, endDate } = eventStore.event;
     switch (value) {
       case 'one': // 이 일정만 수정
-        const event = await eventStore.updateEvent(
+        await eventStore.updateEvent(
           +eventStore.event.id,
           new EventModel({
             ...eventStore.event.dto,
@@ -176,7 +176,6 @@ const EventHandleView = observer(({ action }: Props) => {
         break;
       case 'after': // 이 일정 및 향후 일정 수정
         // 3번 테스트
-        console.log(eventStore.event.repeatEndDate);
         await eventStore.updateEvent(
           +eventStore.event.id,
           new EventModel({
@@ -188,27 +187,16 @@ const EventHandleView = observer(({ action }: Props) => {
           }),
           3,
         );
+        navigate('/main/detail');
         break;
       case 'all': // 모든 일정 수정
-        // eventUpdate(); // 얘 아닌듯..?
+        eventUpdate(true);
         break;
       default:
         break;
     }
-    if (value === 'after') {
-      //  7번 테스트
-      // const event = await eventStore.updateEvent(
-      //   +eventStore.event.id,
-      //   new EventModel({
-      //     ...eventStore.event.dto,
-      //     start: toISO(toLuxon('2023-02-13')),
-      //     end: toISO(toLuxon('2023-02-13')),
-      //     exceptDate: toISO(toLuxon('2023-02-13')),
-      //   }),
-      //   7,
-      // );
-    }
     uiStore.dialogInfo = null;
+    uiStore.changeDateRange();
   };
 
   useEffect(() => {

@@ -76,6 +76,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         break;
     }
     uiStore.dialogInfo = null;
+    uiStore.changeDateRange();
+    if (onClose) onClose();
   };
 
   const closeDialog = () => {
