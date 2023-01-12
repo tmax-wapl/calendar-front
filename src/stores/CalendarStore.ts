@@ -46,15 +46,21 @@ export default class CalendarStore {
     this.eventList = this.eventList.filter(event => event.id !== id);
   }
 
-  async createCalendar(dto: CalendarDTO) {
-    const res = await this.repo.calendarCreate(dto);
+  async createCalendar(dto: Partial<CalendarDTO>) {
+    const res = await this.repo.createCalendar(dto);
+    const calendar = new CalendarModel({ ...res, checkFlag: true });
+    this.calendarList.unshift(calendar);
     return res;
   }
 
-  async getCalendarList(userId: number, start: string, end: string) {
-    const data = await this.repo.getCalendarList(userId, start, end);
-    const res = data.map((dto: CalendarDTO) => new CalendarModel(dto));
-    return res;
+  async getCalendarList(userId: number) {
+    const data = await this.repo.getCalendarList(userId);
+    return data.map((dto: CalendarDTO) => new CalendarModel(dto));
+  }
+
+  async syncCalendar(calId: number) {
+    const iCalendar = await this.repo.getICalendar(calId);
+    return iCalendar.eventList?.map(event => new EventModel({ ...event, calId, calColor: iCalendar.color }));
   }
 
   async getCalendarInfo(calId: number, start: string, end: string) {
@@ -62,14 +68,14 @@ export default class CalendarStore {
     return res;
   }
 
-  async calendarUpdate(calId: number, dto: CalendarPatchDTO) {
-    const res = await this.repo.calendarUpdate(calId, dto);
+  async updateCalendar(calId: number, dto: CalendarPatchDTO) {
+    const res = await this.repo.updateCalendar(calId, dto);
     return res;
   }
 
-  async calendarDelete(calId: number) {
-    const res = await this.repo.calendarDelete(calId);
-    return res;
+  async deleteCalendar(calId: number) {
+    const res = await this.repo.deleteCalendar(calId);
+    this.calendarList = this.calendarList.filter(item => item.id !== res);
   }
 
   setRenameId(id: number) {

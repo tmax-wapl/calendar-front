@@ -1,7 +1,13 @@
 import { styled, Mui } from '@wapl/ui';
 
+export const ItemContainer = styled.div<{ main: boolean }>`
+  display: flex;
+  order: ${({ main }) => (main ? 1 : 2)};
+`;
+
 export const InputItemContainer = styled.div<{ calendarcolor: string }>`
   display: flex;
+  width: 100%;
   height: 44px;
   padding: 0px 12px;
   border-radius: 8px;
@@ -24,8 +30,9 @@ export const Input = styled(Mui.TextField)`
   }
 `;
 
-export const ItemContainer = styled.div`
+export const CheckItemContainer = styled.div`
   display: flex;
+  width: 100%;
   height: 44px;
   padding: 0px 12px;
   border-radius: 8px;
@@ -38,9 +45,9 @@ export const ItemContainer = styled.div`
   }
 `;
 
-export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: string }>`
+export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: string; type: string }>`
   display: flex;
-  width: calc(100% - 28px);
+  width: ${({ type }) => (type === 'url' ? `calc(100% - 56px)` : `calc(100% - 28px)`)};
   height: 44px;
   margin: 0px;
   overflow: hidden;

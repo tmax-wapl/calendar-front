@@ -41,14 +41,13 @@ export const Dialog = () => {
           subTitle: `이 일정은 반복 설정된 일정입니다. \n 선택한 일정을 삭제하시겠습니까?`,
           description: `공유한 상대방에게도 삭제되며, \n 삭제 후 복구할 수 없습니다.`,
         };
-      case 'shareCalendarDelete':
+      case 'calendarDelete':
         return {
           title: '캘린더 삭제',
           subTitle: `선택한 캘린더를 삭제하시겠습니까?`,
-          description: `삭제 후에는 복구할 수 없으며,
-          공유한 상대방에게도 사라집니다.`,
+          description: `삭제 후에는 복구할 수 없으며, \n공유한 상대방에게도 사라집니다.`,
         };
-      case 'calendarDelete':
+      case 'subscriptionDelete':
         return {
           title: '캘린더 삭제',
           subTitle: `선택한 캘린더를 삭제하시겠습니까?`,
@@ -59,6 +58,17 @@ export const Dialog = () => {
           title: '구독 캘린더 추가',
           description: `URL을 통해 공유 받은 캘린더에 외부 캘린더를 추가할 수 있습니다.`,
         };
+      case 'subscribeFail':
+        return {
+          title: '구독 캘린더 추가 실패',
+          description: `입력하신 URL을 다시 확인해 주세요.`,
+        };
+      case 'subscribeDuplication':
+        return {
+          title: '구독 캘린더 추가 실패',
+          description: `이미 구독 중입니다.`,
+        };
+
       default:
         return {};
     }
@@ -74,7 +84,7 @@ export const Dialog = () => {
       case 'shareEventDelete':
       case 'eventDelete':
       case 'repeatEventDelete':
-      case 'shareCalendarDelete':
+      case 'subscriptionDelete':
       case 'calendarDelete':
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
@@ -85,11 +95,15 @@ export const Dialog = () => {
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
           { variant: 'negative', text: '추가', onClick: onClick[1] },
         ];
+      case 'subscribeFail':
+      case 'subscribeDuplication':
+        return [{ variant: 'secondary', text: '확인', onClick: onClick[0] }];
       case 'repeatEventUpdate':
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
           { variant: 'primary', text: '수정', onClick: onClick[1] },
         ];
+
       default:
         return [];
     }

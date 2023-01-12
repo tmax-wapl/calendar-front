@@ -1,32 +1,24 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { Checkbox, Icon } from '@wapl/ui';
-import { ItemContainer, CheckBoxWrapper, SubscriptionButton, ButtonWarpper } from './SubscriptionList.style';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
+import { CalendarModel } from '@/stores/model/CalendarModel';
+import { observer } from 'mobx-react-lite';
+import Item from './Item';
+import { Icon } from '@wapl/ui';
+import { SubscriptionButton } from './SubscriptionList.style';
 
-const SubscriptionList = () => {
-  const { uiStore } = useCalendarStores();
-  const [checkList, setCheckList] = useState<boolean[]>([true, true, false]);
-  const subscriptionItems = [
-    { label: '길동과 친구들 in 괌 길동과 친구들 in 괌', type: 'shared', id: 3, color: '#3384FF' },
-    { label: 'G 캘린더', type: 'shared', id: 4, color: '#A143FF' },
-    { label: 'PL2-2', type: 'shared', id: 5, color: '#FCBB00' },
-  ];
+const SubscriptionList = observer(() => {
+  const { userId } = useContext(CalendarContext);
+  const { uiStore, calendarStore } = useCalendarStores();
 
   const closeDialog = () => {
     uiStore.dialogInfo = null;
   };
 
-  const onContextMenuOpen = (e: any, color: string) => {
-    e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
-    const target = e.target;
-    if (!target) return;
-
-    uiStore.contextClickArg = {
-      target,
-      position: { top: e.clientY, left: e.clientX },
-      color,
-      type: 'subscribe',
-    };
+  const handleSubscribe = async (url: string) => {
+    // TODO: 구독 실패 시, dialog 띄우기
+    await calendarStore.createCalendar({ regUserId: userId, url, type: 'url' });
+    closeDialog();
   };
 
   return (
@@ -36,7 +28,7 @@ const SubscriptionList = () => {
           uiStore.dialogInfo = {
             action: 'subscribe',
             onCloseClick: closeDialog,
-            onClick: [closeDialog, closeDialog],
+            onClick: [closeDialog, handleSubscribe],
             data: { placeholder: 'URL 입력' },
             type: 'input',
           };
@@ -45,30 +37,13 @@ const SubscriptionList = () => {
         <Icon.Add2Line width={20} height={20} className="mr-8" color="#80868B" />
         구독 캘린더 추가
       </SubscriptionButton>
-      {subscriptionItems.map((calendar, index) => (
-        <ItemContainer key={calendar.id} onContextMenu={e => onContextMenuOpen(e, calendar.color)}>
-          <CheckBoxWrapper
-            calendarcolor={calendar.color}
-            control={
-              <Checkbox
-                checked={checkList[index]}
-                onChange={e =>
-                  setCheckList(prevlist => prevlist.map((item, idx) => (idx === index ? e.target.checked : item)))
-                }
-              />
-            }
-            label={calendar.label}
-          />
-          <ButtonWarpper>
-            <Icon.RenewLine width={20} height={20} color="#80868B" />
-          </ButtonWarpper>
-          <ButtonWarpper onClick={e => onContextMenuOpen(e, calendar.color)}>
-            <Icon.MoreLine width={20} height={20} />
-          </ButtonWarpper>
-        </ItemContainer>
-      ))}
+      {calendarStore.calendarList
+        ?.filter((category: CalendarModel) => category.type === 'url')
+        .map((category: CalendarModel) => (
+          <Item key={category.id} category={category} />
+        ))}
     </>
   );
-};
+});
 
 export default SubscriptionList;
