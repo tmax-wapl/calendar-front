@@ -18,7 +18,7 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { getStartDate, toISO, rrulString, toLuxon } from '@/utils';
+import { getStartDate, toISO, rruleString, toLuxon } from '@/utils';
 import { autorun } from 'mobx';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { DateTime } from 'luxon';
@@ -48,7 +48,7 @@ const EventHandleView = observer(({ action }: Props) => {
       }),
       ...(event.rrule && {
         repeatStartDate: toISO(event.startDate.startOf('day')),
-        repeatEndDate: event.rrule.until ? toISO(DateTime.fromJSDate(event.rrule.until)) : '9999-01-01T00:00:00',
+        repeatEndDate: event.repeatEndDate ? toISO(event.repeatEndDate) : '9999-01-01T00:00:00',
       }),
     });
   };
@@ -77,7 +77,7 @@ const EventHandleView = observer(({ action }: Props) => {
     //   eventStore.eventId,
     //   new EventModel({
     //     ...eventStore.event.dto,
-    //     rrule: rrulString(eventStore.event.rrule),
+    //     rrule: rruleString(eventStore.event.rrule),
     //   }),
     //   1,
     // );
@@ -89,7 +89,7 @@ const EventHandleView = observer(({ action }: Props) => {
     //     id: null,
     //     repeatStartDate: toISO(toLuxon('2023-02-23')),
     //     repeatEndDate: toISO(eventStore.event.repeatEndDate),
-    //     rrule: rrulString(eventStore.event.rrule),
+    //     rrule: rruleString(eventStore.event.rrule),
     //   }),
     //   3,
     // );
@@ -102,7 +102,7 @@ const EventHandleView = observer(({ action }: Props) => {
     //     color: '#000000',
     //     repeatStartDate: toISO(toLuxon('2023-03-09')),
     //     repeatEndDate: toISO(eventStore.event.repeatEndDate),
-    //     rrule: rrulString(eventStore.event.rrule),
+    //     rrule: rruleString(eventStore.event.rrule),
     //   }),
     //   4,
     // );
@@ -112,7 +112,7 @@ const EventHandleView = observer(({ action }: Props) => {
     //   new EventModel({
     //     ...eventStore.event.dto,
     //     repeatEndDate: toISO(toLuxon('2023-03-24')),
-    //     rrule: rrulString(eventStore.event.rrule),
+    //     rrule: rruleString(eventStore.event.rrule),
     //   }),
     //   6,
     // );
@@ -139,7 +139,7 @@ const EventHandleView = observer(({ action }: Props) => {
     //         id: null,
     //         repeatStartDate: toISO(toLuxon('2023-03-03')),
     //         repeatEndDate: toISO(eventStore.event.repeatEndDate),
-    //         rrule: rrulString(eventStore.event.rrule),
+    //         rrule: rruleString(eventStore.event.rrule),
     //       }),
     //       3,
     //     );
@@ -182,7 +182,7 @@ const EventHandleView = observer(({ action }: Props) => {
             id: null,
             repeatStartDate: toISO(startDate),
             repeatEndDate: toISO(eventStore.event.repeatEndDate),
-            rrule: rrulString(eventStore.event.rrule),
+            rrule: rruleString(eventStore.event.rrule),
           }),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
         );

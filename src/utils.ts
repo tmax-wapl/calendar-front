@@ -57,7 +57,7 @@ export const toISO = (date: DateTime) => {
 export const isEqualMonth = (mainCalDate: Date, selectedDate: Date) =>
   mainCalDate.getMonth() === selectedDate.getMonth();
 
-export const rrulString = (rrule: Partial<Options>) => {
+export const rruleString = (rrule: Partial<Options>) => {
   const rruleSet = new RRuleSet();
   rruleSet.rrule(new RRule(rrule));
   const [dtstart, freq] = rruleSet.valueOf();

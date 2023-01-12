@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { DialogButton } from './Dialog';
 import { DialogButtonWrapper, SubTitle, Description, Title } from './Dialog.style';
 
-type InputDialogProps = {
+interface SelectDialogProps {
   open: boolean;
   title: {
     title?: string;
@@ -12,14 +12,14 @@ type InputDialogProps = {
     description?: string;
   };
   buttons: DialogButton[];
-};
+}
 
 interface RadioItem {
   label: string;
   value: string;
 }
 
-export const SelectDialog = ({ open, title, buttons }: InputDialogProps) => {
+export const SelectDialog = ({ open, title, buttons }: SelectDialogProps) => {
   const [selectItem, setSelectItem] = useState('');
 
   const handleChange = (value: string) => setSelectItem(value);
@@ -71,7 +71,8 @@ export const SelectDialog = ({ open, title, buttons }: InputDialogProps) => {
             key={button.text}
             variant={button.variant}
             onClick={() => {
-              if (selectItem || button.text === '취소') button.onClick(selectItem);
+              if (button.text === '취소') button.onClick();
+              else if (selectItem) button.onClick(selectItem);
             }}
           >
             {button.text}

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { DialogButton } from './Dialog';
 import { InputDialogTitle, CloseButton, Input, InputDialogDescription, DialogButtonWrapper } from './Dialog.style';
 
-type InputDialogProps = {
+interface InputDialogProps {
   open: boolean;
   title: {
     title?: string;
@@ -12,7 +12,7 @@ type InputDialogProps = {
   onCloseClick: () => void;
   placeholder?: string;
   buttons: DialogButton[];
-};
+}
 
 export const InputDialog = ({ open, title, onCloseClick, placeholder, buttons }: InputDialogProps) => {
   const [input, setInput] = useState<string>('');
