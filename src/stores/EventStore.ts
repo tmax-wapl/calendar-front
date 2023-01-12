@@ -34,8 +34,10 @@ export default class EventStore {
     return new EventModel(res);
   }
 
-  async getEventList(userId: number, start: string, end: string = start) {
+  async getEventList(userId: number, start: string, end: string = start, isListView = false) {
     const eventList = await this.repo.getEventList(userId, start, end);
+    if (isListView) return eventList.map(event => new EventModel(event));
+
     const arr: EventModel[] = [];
     eventList.map(event => {
       if (event.rrule) arr.push(...this.makeRRuleObject(event));
