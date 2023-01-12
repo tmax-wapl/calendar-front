@@ -22,7 +22,7 @@ const style = [
 export const ContextMenu = () => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
-  const { target, position, id, color, type } = uiStore.contextClickArg;
+  const { target, position, id, color, type, date } = uiStore.contextClickArg;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -45,7 +45,7 @@ export const ContextMenu = () => {
         break;
       case 'event':
         // TODO: 일정 색상 변경 서비스 호출
-        const event = new EventModel({ modUserId: userId, color, calId: 145 });
+        const event = new EventModel({ modUserId: userId, color, calId: 16 });
         await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.DEFAULT);
         eventStore.updateEventColor('' + id, color); // 일정 model은 string 타입이군
         break;
@@ -70,7 +70,7 @@ export const ContextMenu = () => {
         <Mui.MenuItem sx={style} disableRipple>
           <ColorPicker color={color} onClick={color => handleClick(color)} />
         </Mui.MenuItem>
-        <ContextMenuItem id={id} type={type} onClose={handleClose} />
+        <ContextMenuItem id={id} type={type} date={date} onClose={handleClose} />
       </Mui.Menu>
     </div>
   );

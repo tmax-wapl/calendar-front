@@ -29,7 +29,7 @@ const EventListView = () => {
   useEffect(() => {
     const fetchData = async (dateDay: DateTime) => {
       const date = dateDay.toFormat('yyyy-LL-dd');
-      const eventList = await eventStore.getEventList(11, date);
+      const eventList = await eventStore.getEventList(2, date, date, true);
       setEventList(eventList);
     };
     const dispose = autorun(() => {

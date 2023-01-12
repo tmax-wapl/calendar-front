@@ -1,6 +1,9 @@
 import { Icon, Mui, styled } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toISO, toLuxon } from '@/utils';
+import { EventModel } from '@/stores/model/EventModel';
+import { EVENT_UPDATE_OPTION } from '@/common/constants';
 
 const MenuItemWrapper = styled.div`
   display: flex;
@@ -21,10 +24,14 @@ interface MenuItem {
 interface Props {
   id: number;
   type?: string;
+  date?: {
+    startdate?: string;
+    enddate?: string;
+  };
   onClose?: () => void;
 }
 
-export const ContextMenuItem = ({ id, type, onClose }: Props) => {
+export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -34,9 +41,43 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
     closeDialog();
   };
 
-  const deleteEvent = () => {
+  const eventDelete = () => {
     calendarStore.deleteEvent(id);
     closeDialog();
+    if (onClose) onClose();
+  };
+
+  const repeatEventDelete = async (value: string) => {
+    const model = uiStore.dialogInfo.data.model;
+    switch (value) {
+      case 'one': // 이 일정만 삭제
+        await eventStore.updateEvent(
+          id,
+          new EventModel({
+            ...model.dto,
+            exDate: toISO(toLuxon(date.startdate)),
+          }),
+          EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT_EXCEPT,
+        );
+        break;
+      case 'after': // 이 일정 및 향후 일정 삭제
+        await eventStore.updateEvent(
+          id,
+          new EventModel({
+            ...model.dto,
+            repeatEndDate: toISO(toLuxon(date.enddate)),
+          }),
+          EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT_EXCEPT,
+        );
+        break;
+      case 'all': // 모든 일정 삭제
+        eventDelete();
+        break;
+      default:
+        break;
+    }
+    uiStore.dialogInfo = null;
+    uiStore.changeDateRange();
     if (onClose) onClose();
   };
 
@@ -66,18 +107,34 @@ export const ContextMenuItem = ({ id, type, onClose }: Props) => {
     eventStore.setEvent(event);
     if (!pathname.includes('update')) navigate('/main/update');
     if (onClose) onClose();
+    handleDateRange();
+  };
+
+  const handleDateRange = () => {
+    eventStore.event.startDate = toLuxon(date.startdate);
+    eventStore.event.endDate = toLuxon(date.enddate);
   };
 
   const handleEventShare = () => {
     console.log('일정 공유');
   };
 
-  const handleEventDelete = () => {
-    uiStore.dialogInfo = {
-      action: 'eventDelete',
-      onClick: [closeDialog, deleteEvent],
-      data: { num: 1 },
-    };
+  const handleEventDelete = async () => {
+    const model = await eventStore.getEventInfo(id);
+    if (!model.rrule) {
+      uiStore.dialogInfo = {
+        action: 'eventDelete',
+        onClick: [closeDialog, eventDelete],
+        data: { num: 1 },
+      };
+    } else {
+      uiStore.dialogInfo = {
+        action: 'repeatEventDelete',
+        onClick: [closeDialog, repeatEventDelete],
+        type: 'select',
+        data: { model },
+      };
+    }
   };
 
   const menuItem: { [key: string]: MenuItem[] } = {

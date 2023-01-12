@@ -24,6 +24,7 @@ export interface EventDTO {
   participants?: any[];
   attachments?: any[];
   notifications?: any[];
+  exDate?: string;
 }
 
 export interface CalendarDTO {
@@ -100,7 +101,7 @@ export interface AlarmDTO {
 
 export interface ExceptionDTO {
   eventId: number;
-  exceptionDate: string;
+  exceptionDate: number[];
   isRemove: string;
 }
 

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { DateTime } from 'luxon';
-import { rrulestr, RRule, Options } from 'rrule';
+import { rrulestr, RRule, Options, RRuleSet } from 'rrule';
 import { EventDTO, AlarmDTO, ExceptionDTO } from '@constants/interfaces';
 import { toISO } from '@/utils';
 
@@ -105,11 +105,19 @@ export class EventModel {
   }
 
   get rrule(): Partial<Options> {
-    return this.dto.rrule ? rrulestr(this.dto.rrule).origOptions : undefined;
+    return this.dto.rrule
+      ? Object.keys(rrulestr(this.dto.rrule).origOptions).length !== 0
+        ? rrulestr(this.dto.rrule).origOptions
+        : (rrulestr(this.dto.rrule) as RRuleSet)._rrule[0].origOptions
+      : undefined;
   }
 
   set rrule(rrule: Partial<Options>) {
     this.dto.rrule = new RRule(rrule).toString();
+  }
+
+  get rruleObj(): RRule | RRuleSet {
+    return this.dto.rrule ? rrulestr(this.dto.rrule) : undefined;
   }
 
   get exceptionList(): ExceptionDTO[] {
@@ -158,5 +166,13 @@ export class EventModel {
 
   set notifications(notifications: AlarmDTO[]) {
     this.dto.alarmList = notifications;
+  }
+
+  get exDate(): DateTime {
+    return DateTime.fromISO(this.dto.exDate);
+  }
+
+  set exDate(date: DateTime) {
+    this.dto.exDate = toISO(date);
   }
 }

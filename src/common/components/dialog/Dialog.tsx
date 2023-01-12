@@ -2,6 +2,7 @@ import { Dialog as DialogCompo, Button } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Title, SubTitle, Description, DialogButtonWrapper } from './Dialog.style';
 import { InputDialog } from './InputDialog';
+import { SelectDialog } from './SelectDialog';
 
 export interface DialogButton {
   variant: 'primary' | 'secondary' | 'secondary-web' | 'third' | 'negative';
@@ -28,6 +29,17 @@ export const Dialog = () => {
           title: '일정 삭제',
           subTitle: `선택한 ${data?.num}개 일정을 삭제하시겠습니까?`,
           description: `삭제 후, 복구할 수 없습니다.`,
+        };
+      case 'repeatEventUpdate':
+        return {
+          title: '일정 수정',
+          subTitle: `이 일정은 반복 설정된 일정입니다. \n 선택한 일정을 수정하시겠습니까?`,
+        };
+      case 'repeatEventDelete':
+        return {
+          title: '일정 삭제',
+          subTitle: `이 일정은 반복 설정된 일정입니다. \n 선택한 일정을 삭제하시겠습니까?`,
+          description: `공유한 상대방에게도 삭제되며, \n 삭제 후 복구할 수 없습니다.`,
         };
       case 'calendarDelete':
         return {
@@ -71,6 +83,7 @@ export const Dialog = () => {
         ];
       case 'shareEventDelete':
       case 'eventDelete':
+      case 'repeatEventDelete':
       case 'subscriptionDelete':
       case 'calendarDelete':
         return [
@@ -85,6 +98,11 @@ export const Dialog = () => {
       case 'subscribeFail':
       case 'subscribeDuplication':
         return [{ variant: 'secondary', text: '확인', onClick: onClick[0] }];
+      case 'repeatEventUpdate':
+        return [
+          { variant: 'secondary', text: '취소', onClick: onClick[0] },
+          { variant: 'primary', text: '수정', onClick: onClick[1] },
+        ];
 
       default:
         return [];
@@ -95,20 +113,37 @@ export const Dialog = () => {
     console.log('close');
   };
 
-  return type !== 'input' ? (
-    <DialogCompo open onClose={handleClose}>
-      <Title>{title?.title}</Title>
-      <SubTitle>{title?.subTitle}</SubTitle>
-      <Description>{title?.description}</Description>
-      <DialogButtonWrapper>
-        {buttons?.map((button: DialogButton) => (
-          <Button key={button.text} variant={button.variant} onClick={() => button.onClick()}>
-            {button.text}
-          </Button>
-        ))}
-      </DialogButtonWrapper>
-    </DialogCompo>
-  ) : (
-    <InputDialog open title={title} onCloseClick={onCloseClick} placeholder={data?.placeholder} buttons={buttons} />
-  );
+  const DialogType = () => {
+    switch (type) {
+      case 'input':
+        return (
+          <InputDialog
+            open
+            title={title}
+            onCloseClick={onCloseClick}
+            placeholder={data?.placeholder}
+            buttons={buttons}
+          />
+        );
+      case 'select':
+        return <SelectDialog open title={title} buttons={buttons} />;
+      default:
+        return (
+          <DialogCompo open onClose={handleClose}>
+            <Title>{title?.title}</Title>
+            <SubTitle>{title?.subTitle}</SubTitle>
+            <Description>{title?.description}</Description>
+            <DialogButtonWrapper>
+              {buttons?.map((button: DialogButton) => (
+                <Button key={button.text} variant={button.variant} onClick={() => button.onClick()}>
+                  {button.text}
+                </Button>
+              ))}
+            </DialogButtonWrapper>
+          </DialogCompo>
+        );
+    }
+  };
+
+  return <>{DialogType()}</>;
 };

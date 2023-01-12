@@ -4,6 +4,9 @@ import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
 import { EventDTO } from '@/common/constants/interfaces';
 import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
+import { RRule, RRuleSet } from 'rrule';
+import { isSameDate, toISO } from '@/utils';
+import { DateTime } from 'luxon';
 
 export default class EventStore {
   rootStore: RootStore;
@@ -31,9 +34,31 @@ export default class EventStore {
     return new EventModel(res);
   }
 
-  async getEventList(userId: number, start: string, end: string = start) {
+  async getEventList(userId: number, start: string, end: string = start, isListView = false) {
     const eventList = await this.repo.getEventList(userId, start, end);
-    return eventList.map(event => new EventModel(event));
+    if (isListView) return eventList.map(event => new EventModel(event));
+
+    const arr: EventModel[] = [];
+    eventList.map(event => {
+      if (event.rrule) arr.push(...this.makeRRuleObject(event));
+      else arr.push(new EventModel(event));
+    });
+    return arr;
+  }
+
+  makeRRuleObject(event: EventDTO) {
+    const { rruleObj } = new EventModel(event);
+
+    const start = this.rootStore.uiStore.mainApi.view.activeStart;
+    const end = this.rootStore.uiStore.mainApi.view.activeEnd;
+
+    return rruleObj.between(start, end).map(day => {
+      return new EventModel({
+        ...event,
+        start: toISO(DateTime.fromJSDate(day)),
+        end: toISO(DateTime.fromJSDate(day)),
+      });
+    });
   }
 
   async createEvent({ dto }: EventModel) {

@@ -27,6 +27,7 @@ export const SubTitle = styled.div`
   justify-content: center;
   font-size: 14px;
   margin: 0px 32px;
+  white-space: pre-line;
 `;
 
 export const Description = styled.div`
