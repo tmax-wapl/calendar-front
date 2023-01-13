@@ -17,7 +17,7 @@ const EventDetailView = observer(() => {
     uiStore.setDialogInfo(null);
   };
 
-  const handleDelete = async () => {
+  const deleteEvent = async () => {
     await eventStore.deleteEvent(+eventStore.event.id, EVENT_DELETE_OPTION.DEFAULT);
     calendarStore.filterEventList(eventStore.event.id);
     navigate(-1);
@@ -27,8 +27,7 @@ const EventDetailView = observer(() => {
   const handleDeleteClick = () => {
     uiStore.setDialogInfo({
       action: 'eventDelete',
-      onClick: [closeDialog, handleDelete],
-      data: { num: 1 },
+      onClick: [closeDialog, deleteEvent],
     });
   };
 

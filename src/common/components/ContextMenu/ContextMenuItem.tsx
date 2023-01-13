@@ -125,7 +125,6 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       uiStore.dialogInfo = {
         action: 'eventDelete',
         onClick: [closeDialog, eventDelete],
-        data: { num: 1 },
       };
     } else {
       uiStore.dialogInfo = {
