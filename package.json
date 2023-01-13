@@ -2,6 +2,7 @@
   "name": "calendar-front",
   "version": "1.0.0",
   "main": "index.js",
+  "homepage": ".",
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --open --hot",
@@ -16,6 +17,7 @@
     "@fullcalendar/timegrid": "^5.11.3",
     "@mui/system": "^5.10.14",
     "@mui/x-date-pickers": "^5.0.8",
+    "@wapl/core": "^0.2.7",
     "@wapl/ui": "^0.2.16",
     "axios": "^1.1.3",
     "fullcalendar": "^5.11.3",
@@ -64,6 +66,7 @@
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0",
     "holiday-kr": "^0.1.5",
+    "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.0",
     "ignore-loader": "^0.1.2",
     "prettier": "^2.7.1",

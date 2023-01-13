@@ -21,13 +21,13 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    static: path.join(__dirname, './public/index.html'),
+    static: path.join(__dirname, './public/'),
   },
   devtool: 'eval-cheap-source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
-    publicPath: '/',
+    publicPath: '.',
   },
   module: {
     rules: [
@@ -40,6 +40,21 @@ module.exports = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+        options: {
+          sources: {
+            list: [
+              {
+                tag: 'link',
+                attribute: 'href',
+                type: 'src',
+              },
+            ],
+          },
+        },
+      },
     ],
   },
   plugins: [
@@ -47,6 +62,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       //index.html 자동 생성되도록 template 옵션 설정
       template: './public/index.html',
+      favicon: './public/calendar.ico',
       templateParameters: {
         env: process.env.NODE_ENV === 'production' ? '' : '[DEV]',
       },
