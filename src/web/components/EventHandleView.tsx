@@ -203,7 +203,7 @@ const EventHandleView = observer(({ action }: Props) => {
       const start = getStartDate(uiStore.dateDay).toUTC();
       eventStore.setEvent(
         new EventModel({
-          calId: 171,
+          calId: 251,
           start: toISO(start),
           end: toISO(start.plus({ minutes: 30 })),
         }),
