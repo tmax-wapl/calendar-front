@@ -17,7 +17,7 @@ const EventListView = () => {
 
   const getDateDay = (): string => {
     const { dateDay } = uiStore;
-    return dateDay.toFormat('MM월 dd일 ') + ['', '월', '화', '수', '목', '금', '토', '일'][dateDay.weekday] + '요일';
+    return dateDay.toFormat('LL월 dd일 cccc', { locale: 'ko' });
   };
 
   const handleClickEvent = useCallback(async (id: number) => {

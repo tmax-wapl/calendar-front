@@ -7,18 +7,17 @@ export const EventListViewContainer = styled.div`
   width: 380px;
   box-sizing: border-box;
   padding: 12px;
+  overflow-y: auto;
 `;
 
 export const DateInfo = styled.div`
   display: flex;
+  flex-shrink: 0;
   width: 100%;
-  height: fit-content;
+  height: 50px;
   align-items: center;
   box-sizing: border-box;
   padding: 0 8px;
-  :not(:last-child) {
-    margin-bottom: 20px;
-  }
   > :not(:last-child) {
     margin-right: 8px;
   }
