@@ -10,6 +10,7 @@ import FullCalendar, {
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
+import { Icon } from '@wapl/ui';
 import {
   AllDayText,
   AllDayWrapper,
@@ -100,11 +101,19 @@ const Calendar: React.FC = observer(() => {
             data-enddate={endStr ? endStr : event.extendedProps.dto.end}
             isHalfLess
           >
+            {event.extendedProps.dto.importance && (
+              <Icon.BookmarkFill className="mr-2" width={12} height={12} color="#FCBB00" />
+            )}
             {event.title}
           </EventWrapper>
         ) : (
           <WeekEventWrapper data-color={backgroundColor} isHalfLess={isHalfLess}>
-            <EventSpan>{event.title}</EventSpan>
+            <EventSpan>
+              {event.extendedProps.dto.importance && (
+                <Icon.BookmarkFill className="mr-2" width={12} height={12} color="#FCBB00" />
+              )}
+              {event.title}
+            </EventSpan>
             {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
           </WeekEventWrapper>
         )}

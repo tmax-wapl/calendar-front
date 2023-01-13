@@ -45,9 +45,9 @@ export const EventIcon = styled.div<{ backgroundColor: string }>`
   height: 16px;
   border-radius: 25px;
   background-color: ${props => props.backgroundColor};
+  margin-right: 10px;
 `;
 export const EventTitle = styled.div`
   font-weight: 400;
   font-size: 14px;
-  margin: 0px 12px;
 `;
