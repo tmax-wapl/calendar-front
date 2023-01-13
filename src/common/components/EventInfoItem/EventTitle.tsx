@@ -29,6 +29,7 @@ const EventTitle = ({ title = '', importance, onTitleChange, onImportanceChange 
         placeholder="일정 제목을 입력해주세요."
         visibleClear={false}
         value={title}
+        limit={50}
         onChange={handleTitleChange}
         autoFocus
       />
