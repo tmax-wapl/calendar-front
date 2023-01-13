@@ -1,7 +1,7 @@
-import { ROUTES } from '@common/constants/routes';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { EventHeaderContainer, EventCreateButton, SearchBar } from './EventHeader.style';
+import { ROUTES } from '@common/constants/routes';
+import { EventHeaderContainer, EventCreateButton, SearchField } from './EventHeader.style';
 
 const EventHeader: React.FC = () => {
   return (
@@ -9,7 +9,8 @@ const EventHeader: React.FC = () => {
       <Link to={ROUTES.PATH_CREATE}>
         <EventCreateButton>새 일정</EventCreateButton>
       </Link>
-      <SearchBar type="search" placeholder="캘린더 일정 검색" />
+      {/* <SearchBar type="search" placeholder="캘린더 일정 검색" /> */}
+      <SearchField placeholder="캘린더 일정 검색" variant="filled" width={360} />
     </EventHeaderContainer>
   );
 };
