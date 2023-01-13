@@ -51,7 +51,7 @@ export const getStartDate = (date: DateTime) => {
 };
 
 export const toISO = (date: DateTime) => {
-  return date.toISO({ suppressMilliseconds: true, includeOffset: false });
+  return date.toISO({ suppressMilliseconds: true });
 };
 
 export const isEqualMonth = (mainCalDate: Date, selectedDate: Date) =>

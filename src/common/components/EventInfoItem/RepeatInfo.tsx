@@ -16,12 +16,13 @@ import { getRepeatSummary } from '@/utils';
 
 interface Props {
   rrule?: Partial<Options>;
+  startDate?: DateTime;
   defaultEndDate?: DateTime;
   repeatEndDate?: DateTime;
   onRRuleChange?: (value: Partial<Options>) => void;
 }
 
-const RepeatInfo = ({ rrule, defaultEndDate, repeatEndDate, onRRuleChange }: Props) => {
+const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleChange }: Props) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const dayOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
   const byweekday = (rrule?.byweekday as Weekday[])?.map(({ weekday }) => weekday);
@@ -36,8 +37,9 @@ const RepeatInfo = ({ rrule, defaultEndDate, repeatEndDate, onRRuleChange }: Pro
 
   const handleSelectChange = (freq: number) => {
     onRRuleChange({
+      // ...(freq > -1 && { dtstart: startDate.toJSDate(), interval: 1, freq }),
       ...(freq > -1 && { interval: 1, freq }),
-      ...(freq === 2 && { byweekday: [DateTime.now().weekday - 1] }),
+      ...(freq === 2 && { byweekday: [startDate.weekday - 1] }),
     });
   };
 
@@ -58,17 +60,26 @@ const RepeatInfo = ({ rrule, defaultEndDate, repeatEndDate, onRRuleChange }: Pro
     setIsDatePickerOpen(prev => !prev);
   };
 
+  const handleEndDateChange = (selectedDate: DateTime) => {
+    onRRuleChange({ ...rrule, until: selectedDate.toJSDate() });
+  };
+
   const handleDayClick = (index: number) => {
     if (!byweekday.includes(index)) {
       onRRuleChange({ ...rrule, byweekday: [...byweekday, index].sort() });
       return;
     }
     if (byweekday.length === 1) {
-      onRRuleChange({ ...rrule, byweekday: [DateTime.now().weekday - 1] });
+      onRRuleChange({ ...rrule, byweekday: [startDate.weekday - 1] });
       return;
     }
     onRRuleChange({ ...rrule, byweekday: byweekday.filter(weekday => weekday !== index) });
   };
+
+  // useEffect(() => {
+  //   if (!rrule) return;
+  //   onRRuleChange({ ...rrule, dtstart: startDate.toJSDate() });
+  // }, [startDate]);
 
   return (
     <RepeatInfoContainer>
@@ -103,11 +114,7 @@ const RepeatInfo = ({ rrule, defaultEndDate, repeatEndDate, onRRuleChange }: Pro
                 </DateWrapper>
                 {isDatePickerOpen && (
                   <DatePickerWrapper>
-                    <DatePicker
-                      size={0.85}
-                      date={repeatEndDate}
-                      onDateClick={selectedDate => onRRuleChange({ ...rrule, until: selectedDate.toJSDate() })}
-                    />
+                    <DatePicker size={0.85} date={repeatEndDate} onDateClick={handleEndDateChange} />
                   </DatePickerWrapper>
                 )}
               </PickerContainer>
