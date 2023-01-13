@@ -40,6 +40,7 @@ const Item = observer(({ category }: Props) => {
     const checked = e.target.checked;
     await calendarStore.updateCalendar(category.id, { userId, checkFlag: checked });
     calendarStore.updateCalendarChecked(category.id, checked);
+    uiStore.changeDateRange();
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +49,7 @@ const Item = observer(({ category }: Props) => {
 
   const handleRename = async () => {
     await calendarStore.updateCalendar(category.id, { userId, name: renameTitle });
-    calendarStore.updateCalendarName(category.id, renameTitle);
+    calendarStore.updateCalendarDTO(category.id, 'name', renameTitle);
     calendarStore.setRenameId(null);
   };
 

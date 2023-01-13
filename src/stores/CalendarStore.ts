@@ -70,8 +70,7 @@ export default class CalendarStore {
   }
 
   async updateCalendar(calId: number, dto: CalendarPatchDTO) {
-    const res = await this.repo.updateCalendar(calId, dto);
-    return res;
+    await this.repo.updateCalendar(calId, dto);
   }
 
   async deleteCalendar(calId: number) {
@@ -88,21 +87,13 @@ export default class CalendarStore {
     this.calendarList = list;
   }
 
-  updateCalendarColor(id: number, color: string) {
+  updateCalendarDTO(id: number, type: 'color' | 'name', value: string) {
     const index = this.calendarList.findIndex(item => item.id === id);
-    // this.calendarList[index].color = color;
-    this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, color });
-  }
-
-  updateCalendarName(id: number, name: string) {
-    const index = this.calendarList.findIndex(item => item.id === id);
-    // this.calendarList[index].name = name;
-    this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, name });
+    this.calendarList[index][type] = value;
   }
 
   updateCalendarChecked(id: number, checkFlag: boolean) {
     const index = this.calendarList.findIndex(item => item.id === id);
-    // this.calendarList[index].checkFlag = checkFlag;
     this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, checkFlag });
   }
 

@@ -37,7 +37,7 @@ export const ContextMenu = () => {
       case 'subCalendar':
       case 'subscribe':
         await calendarStore.updateCalendar(id, { userId, color });
-        calendarStore.updateCalendarColor(id, color);
+        calendarStore.updateCalendarDTO(id, 'color', color);
         const eventList = calendarStore.eventList.map(event =>
           event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
         );
