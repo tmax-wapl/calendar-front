@@ -60,7 +60,8 @@ export default class CalendarStore {
 
   async syncCalendar(calId: number, start: string, end: string) {
     const iCalendar = await this.repo.getICalendar(calId, start, end);
-    return iCalendar.eventList?.map(event => new EventModel(event));
+    this.eventList = this.eventList.filter(item => item.calId !== calId);
+    this.setEventList([...this.eventList, ...iCalendar.eventList?.map(event => new EventModel(event))]);
   }
 
   async getCalendarInfo(calId: number, start: string, end: string) {
