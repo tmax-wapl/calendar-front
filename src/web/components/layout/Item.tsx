@@ -53,7 +53,8 @@ const Item = observer(({ category }: Props) => {
   };
 
   const handleSyncClick = async () => {
-    const eventList = await calendarStore.syncCalendar(category.id);
+    const { start, end } = uiStore.dateRange;
+    const eventList = await calendarStore.syncCalendar(category.id, start, end);
     calendarStore.setEventList([...calendarStore.eventList, ...eventList]);
   };
 

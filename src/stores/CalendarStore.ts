@@ -58,9 +58,9 @@ export default class CalendarStore {
     return data.map((dto: CalendarDTO) => new CalendarModel(dto));
   }
 
-  async syncCalendar(calId: number) {
-    const iCalendar = await this.repo.getICalendar(calId);
-    return iCalendar.eventList?.map(event => new EventModel({ ...event, calId, calColor: iCalendar.color }));
+  async syncCalendar(calId: number, start: string, end: string) {
+    const iCalendar = await this.repo.getICalendar(calId, start, end);
+    return iCalendar.eventList?.map(event => new EventModel(event));
   }
 
   async getCalendarInfo(calId: number, start: string, end: string) {
