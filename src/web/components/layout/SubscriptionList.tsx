@@ -16,9 +16,22 @@ const SubscriptionList = observer(() => {
   };
 
   const handleSubscribe = async (url: string) => {
-    // TODO: 구독 실패 시, dialog 띄우기
-    await calendarStore.createCalendar({ regUserId: userId, url, type: 'url' });
-    closeDialog();
+    try {
+      await calendarStore.createCalendar({ regUserId: userId, url, type: 'url' });
+      closeDialog();
+    } catch (status) {
+      if (status === 400) {
+        uiStore.dialogInfo = {
+          action: 'subscribeDuplication',
+          onClick: [closeDialog],
+        };
+      } else {
+        uiStore.dialogInfo = {
+          action: 'subscribeFail',
+          onClick: [closeDialog],
+        };
+      }
+    }
   };
 
   return (

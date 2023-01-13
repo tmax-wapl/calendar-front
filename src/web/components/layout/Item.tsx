@@ -78,7 +78,7 @@ const Item = observer(({ category }: Props) => {
           <CheckBoxWrapper
             calendarcolor={category.color}
             control={<Checkbox checked={category.checkFlag} onChange={handleCheckedChange} />}
-            label={category.name}
+            label={category.name || ''}
             type={category.type}
           />
           {category.type === 'url' && (

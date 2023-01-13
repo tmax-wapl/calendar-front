@@ -50,7 +50,7 @@ export default class CalendarStore {
     const res = await this.repo.createCalendar(dto);
     const calendar = new CalendarModel({ ...res, checkFlag: true });
     this.calendarList.unshift(calendar);
-    return res;
+    this.eventList = [...this.eventList, ...res.eventList.map(event => new EventModel(event))];
   }
 
   async getCalendarList(userId: number) {
