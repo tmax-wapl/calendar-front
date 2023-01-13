@@ -27,6 +27,14 @@ const EventDate = ({
 
   const handleStartChange = (date: DateTime) => {
     onStartChange(date);
+    if (date < end) return;
+    if (date.startOf('day').equals(end.startOf('day'))) {
+      onEndChange(date.plus({ minutes: 30 }));
+      return;
+    }
+    const candidate = date.set({ hour: end.hour, minute: end.minute });
+    if (date > candidate) onEndChange(date.plus({ minutes: 30 }));
+    else onEndChange(candidate);
   };
 
   const handleEndChange = (date: DateTime) => {

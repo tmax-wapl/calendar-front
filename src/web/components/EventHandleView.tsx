@@ -279,11 +279,25 @@ const EventHandleView = observer(({ action }: Props) => {
             취소
           </Button>
           {action === 'create' ? (
-            <Button size="large" onClick={handleCreate}>
+            <Button
+              size="large"
+              onClick={handleCreate}
+              disabled={
+                eventStore.event.startDate > eventStore.event.endDate ||
+                eventStore.event.startDate > eventStore.event.repeatEndDate
+              }
+            >
               생성
             </Button>
           ) : (
-            <Button size="large" onClick={handleUpdate}>
+            <Button
+              size="large"
+              onClick={handleUpdate}
+              disabled={
+                eventStore.event.startDate > eventStore.event.endDate ||
+                eventStore.event.startDate > eventStore.event.repeatEndDate
+              }
+            >
               수정
             </Button>
           )}
