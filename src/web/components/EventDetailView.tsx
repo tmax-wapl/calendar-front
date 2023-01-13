@@ -13,6 +13,10 @@ const EventDetailView = observer(() => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
 
+  const handleBack = () => {
+    navigate(`/main/view-mode/${uiStore.viewMode}`);
+  };
+
   const closeDialog = () => {
     uiStore.setDialogInfo(null);
   };
@@ -38,9 +42,9 @@ const EventDetailView = observer(() => {
   return (
     <EventDetailViewContainer>
       <EventBar
-        leftSide={[{ action: 'back', onClick: () => navigate(-1) }]}
+        leftSide={[{ action: 'back', onClick: handleBack }]}
         rightSide={[
-          { action: 'share', onClick: () => console.log('share') },
+          // { action: 'share', onClick: () => console.log('share') },
           { action: 'edit', onClick: () => navigate('/main/update') },
           { action: 'delete', onClick: handleDeleteClick },
         ]}

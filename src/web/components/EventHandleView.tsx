@@ -33,7 +33,7 @@ const EventHandleView = observer(({ action }: Props) => {
   const navigate = useNavigate();
 
   const handleClose = () => {
-    navigate(-1);
+    navigate(`/main/view-mode/${uiStore.viewMode}`);
   };
 
   const preprocessEvent = (event: EventModel): EventModel => {
