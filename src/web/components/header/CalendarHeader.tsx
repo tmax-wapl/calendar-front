@@ -103,6 +103,7 @@ const CalendarHeader: React.FC = () => {
       </LeftContainer>
       <RightContainer>
         <ViewSelect
+          width={64}
           name="viewSelect"
           types="box"
           defaultValue={viewMode ?? VIEW_MODE.MONTH}

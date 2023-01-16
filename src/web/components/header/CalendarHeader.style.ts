@@ -81,13 +81,18 @@ export const LeftContainer = styled.div`
 `;
 
 export const ViewSelect = styled(Select<string>)`
+  height: 32px;
   background: white;
   color: #202124;
   border: 1px solid #e8eaed;
   border-radius: 6px;
+  font-size: 13px;
 
   ~ .MuiSelectUnstyled-popper {
     z-index: 3;
+    ul {
+      min-width: 64px;
+    }
   }
 `;
 
