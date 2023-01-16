@@ -3,16 +3,15 @@ import EventItem from './EventItem';
 import NoResult from './NoResult';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Observer } from 'mobx-react-lite';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import { getLunar } from 'holiday-kr';
 import { autorun } from 'mobx';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CalendarContext } from '@/common/contexts/CalendarContext';
+import { toLuxon } from '@/utils';
 
 const EventListView = () => {
-  const { uiStore, eventStore } = useCalendarStores();
-  const { userId } = useContext(CalendarContext);
+  const { uiStore, eventStore, calendarStore } = useCalendarStores();
   const [eventList, setEventList] = useState([]);
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -30,8 +29,10 @@ const EventListView = () => {
 
   useEffect(() => {
     const fetchData = async (dateDay: DateTime) => {
-      const date = dateDay.toFormat('yyyy-LL-dd');
-      const eventList = await eventStore.getEventList(userId, date, date, true);
+      const date = dateDay.startOf('day');
+      const eventList = calendarStore.eventList.filter(
+        event => date < toLuxon(event.end) && toLuxon(event.start) < date.plus({ days: 1 }),
+      );
       setEventList(eventList);
     };
     const dispose = autorun(() => {
