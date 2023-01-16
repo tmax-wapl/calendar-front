@@ -4,10 +4,10 @@ import { API } from '@/common/lib/API';
 export default class CalendarRepo {
   async createCalendar(dto: Partial<CalendarDTO>) {
     try {
-      const { response, success } = await API.post<Partial<CalendarDTO>, CalendarDTO>('/apis/v1/calendars/create', dto);
-      if (success) return response;
-    } catch (e) {
-      throw Error(JSON.stringify(e));
+      const { response } = await API.post<Partial<CalendarDTO>, CalendarDTO>('/apis/v1/calendars/create', dto);
+      return response;
+    } catch (e: any) {
+      throw e.status;
     }
   }
 
@@ -20,9 +20,11 @@ export default class CalendarRepo {
     }
   }
 
-  async getICalendar(calId: number) {
+  async getICalendar(calId: number, start: string, end: string) {
     try {
-      const { response, success } = await API.get<CalendarDTO>(`/apis/v1/calendars/icalendar/${calId}`);
+      const { response, success } = await API.get<CalendarDTO>(
+        `/apis/v1/calendars/icalendar/${calId}?start=${start}&end=${end}`,
+      );
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));

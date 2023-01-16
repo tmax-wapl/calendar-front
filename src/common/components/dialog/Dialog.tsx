@@ -21,14 +21,14 @@ export const Dialog = () => {
       case 'shareEventDelete':
         return {
           title: '일정 삭제',
-          subTitle: `선택한 ${data?.num}개 일정을 삭제하시겠습니까?`,
-          description: `삭제 후에는 복구할 수 없으며, \n 공유한 상대방에게도 사라집니다.`,
+          subTitle: `선택한 공유 일정을 삭제하시겠습니까?`,
+          description: `이 후, 이 일정에 접근할 수 없습니다.`,
         };
       case 'eventDelete':
         return {
           title: '일정 삭제',
-          subTitle: `선택한 ${data?.num}개 일정을 삭제하시겠습니까?`,
-          description: `삭제 후, 복구할 수 없습니다.`,
+          subTitle: `선택한 일정을 삭제하시겠습니까?`,
+          description: `공유한 상대방에게도 삭제되며,\n삭제 후 복구할 수 없습니다.`,
         };
       case 'repeatEventUpdate':
         return {

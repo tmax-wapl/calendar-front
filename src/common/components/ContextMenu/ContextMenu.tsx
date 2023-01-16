@@ -37,7 +37,7 @@ export const ContextMenu = () => {
       case 'subCalendar':
       case 'subscribe':
         await calendarStore.updateCalendar(id, { userId, color });
-        calendarStore.updateCalendarColor(id, color);
+        calendarStore.updateCalendarDTO(id, 'color', color);
         const eventList = calendarStore.eventList.map(event =>
           event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
         );
@@ -45,7 +45,7 @@ export const ContextMenu = () => {
         break;
       case 'event':
         // TODO: 일정 색상 변경 서비스 호출
-        const event = new EventModel({ modUserId: userId, color, calId: 16 });
+        const event = new EventModel({ modUserId: userId, color, calId: 251 });
         await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.DEFAULT);
         eventStore.updateEventColor('' + id, color); // 일정 model은 string 타입이군
         break;

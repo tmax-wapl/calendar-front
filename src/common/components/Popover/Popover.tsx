@@ -1,5 +1,5 @@
 import React, { Dispatch, useEffect, useState } from 'react';
-import { Mui } from '@wapl/ui';
+import { Mui, Icon } from '@wapl/ui';
 import { EventSegment } from '@fullcalendar/react';
 import { ClickArg } from '@wcomponents/body/Calendar';
 import {
@@ -62,6 +62,9 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
             return (
               <EventWrapper key={event.id} onClick={() => handleEventClick(event.id)}>
                 <EventIcon backgroundColor={event.backgroundColor} />
+                {event.extendedProps.dto.importance && (
+                  <Icon.BookmarkFill className="mr-8" width={16} height={16} color="#FCBB00" />
+                )}
                 <EventTitle>{event.title}</EventTitle>
               </EventWrapper>
             );

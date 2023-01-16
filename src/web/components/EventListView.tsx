@@ -17,7 +17,7 @@ const EventListView = () => {
 
   const getDateDay = (): string => {
     const { dateDay } = uiStore;
-    return dateDay.toFormat('MM월 dd일 ') + ['', '월', '화', '수', '목', '금', '토', '일'][dateDay.weekday] + '요일';
+    return dateDay.toFormat('LL월 dd일 cccc', { locale: 'ko' });
   };
 
   const handleClickEvent = useCallback(async (id: number) => {
@@ -29,7 +29,7 @@ const EventListView = () => {
   useEffect(() => {
     const fetchData = async (dateDay: DateTime) => {
       const date = dateDay.toFormat('yyyy-LL-dd');
-      const eventList = await eventStore.getEventList(2, date, date, true);
+      const eventList = await eventStore.getEventList(14, date, date, true);
       setEventList(eventList);
     };
     const dispose = autorun(() => {
@@ -52,7 +52,7 @@ const EventListView = () => {
             return (
               <>
                 <DateDay>{getDateDay()}</DateDay>
-                <Holiday>추석 연휴</Holiday>
+                {/* <Holiday>추석 연휴</Holiday> */}
                 <Lunar>{lunar()}</Lunar>
               </>
             );

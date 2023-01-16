@@ -1,4 +1,4 @@
-import { styled } from '@wapl/ui';
+import { styled, SearchField as WSearchField } from '@wapl/ui';
 
 export const EventHeaderContainer = styled.div`
   display: flex;
@@ -22,10 +22,11 @@ export const EventCreateButton = styled.div`
   }
 `;
 
-// TODO: wapl/ui
-export const SearchBar = styled.input`
-  min-width: 360px;
-  background: #f1f3f4;
-  border: none;
-  border-radius: 8px;
+export const SearchField = styled(WSearchField)`
+  .MuiInputBase-input {
+    font-size: 14px;
+    ::placeholder {
+      font-size: 14px;
+    }
+  }
 `;

@@ -13,11 +13,15 @@ const EventDetailView = observer(() => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
 
+  const handleBack = () => {
+    navigate(`/main/view-mode/${uiStore.viewMode}`);
+  };
+
   const closeDialog = () => {
     uiStore.setDialogInfo(null);
   };
 
-  const handleDelete = async () => {
+  const deleteEvent = async () => {
     await eventStore.deleteEvent(+eventStore.event.id, EVENT_DELETE_OPTION.DEFAULT);
     calendarStore.filterEventList(eventStore.event.id);
     navigate(-1);
@@ -27,8 +31,7 @@ const EventDetailView = observer(() => {
   const handleDeleteClick = () => {
     uiStore.setDialogInfo({
       action: 'eventDelete',
-      onClick: [closeDialog, handleDelete],
-      data: { num: 1 },
+      onClick: [closeDialog, deleteEvent],
     });
   };
 
@@ -39,9 +42,9 @@ const EventDetailView = observer(() => {
   return (
     <EventDetailViewContainer>
       <EventBar
-        leftSide={[{ action: 'back', onClick: () => navigate(-1) }]}
+        leftSide={[{ action: 'back', onClick: handleBack }]}
         rightSide={[
-          { action: 'share', onClick: () => console.log('share') },
+          // { action: 'share', onClick: () => console.log('share') },
           { action: 'edit', onClick: () => navigate('/main/update') },
           { action: 'delete', onClick: handleDeleteClick },
         ]}

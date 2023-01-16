@@ -40,6 +40,7 @@ const Item = observer(({ category }: Props) => {
     const checked = e.target.checked;
     await calendarStore.updateCalendar(category.id, { userId, checkFlag: checked });
     calendarStore.updateCalendarChecked(category.id, checked);
+    uiStore.changeDateRange();
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,13 +49,13 @@ const Item = observer(({ category }: Props) => {
 
   const handleRename = async () => {
     await calendarStore.updateCalendar(category.id, { userId, name: renameTitle });
-    calendarStore.updateCalendarName(category.id, renameTitle);
+    calendarStore.updateCalendarDTO(category.id, 'name', renameTitle);
     calendarStore.setRenameId(null);
   };
 
-  const handleSyncClick = async () => {
-    const eventList = await calendarStore.syncCalendar(category.id);
-    calendarStore.setEventList([...calendarStore.eventList, ...eventList]);
+  const handleSyncClick = () => {
+    const { start, end } = uiStore.dateRange;
+    calendarStore.syncCalendar(category.id, start, end);
   };
 
   return (
@@ -77,7 +78,7 @@ const Item = observer(({ category }: Props) => {
           <CheckBoxWrapper
             calendarcolor={category.color}
             control={<Checkbox checked={category.checkFlag} onChange={handleCheckedChange} />}
-            label={category.name}
+            label={category.name || ''}
             type={category.type}
           />
           {category.type === 'url' && (

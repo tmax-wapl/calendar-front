@@ -73,7 +73,7 @@ export class EventModel {
   }
 
   set startDate(date: DateTime) {
-    this.dto.start = toISO(date);
+    this.dto.start = toISO(date.toUTC());
   }
 
   get end(): string {
@@ -85,7 +85,7 @@ export class EventModel {
   }
 
   set endDate(date: DateTime) {
-    this.dto.end = toISO(date);
+    this.dto.end = toISO(date.toUTC());
   }
 
   get modDate(): DateTime {

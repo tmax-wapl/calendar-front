@@ -300,11 +300,13 @@ export const ArrowButton = styled.div<{ isTop: boolean }>`
 
 export const EventWrapper = styled.span<{ isHalfLess: boolean }>`
   display: flex;
+  align-items: center;
   padding: ${({ isHalfLess }) => (isHalfLess ? '0px 8px' : '4px 8px')};
 `;
 
 export const WeekEventWrapper = styled(EventWrapper)`
   flex-direction: column;
+  align-items: normal;
 `;
 
 export const CalendarColor = styled.span<{ color: string }>`
@@ -317,5 +319,6 @@ export const CalendarColor = styled.span<{ color: string }>`
 
 export const EventSpan = styled.span`
   display: flex;
+  align-items: center;
   font-size: 13px;
 `;

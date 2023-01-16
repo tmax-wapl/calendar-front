@@ -50,7 +50,7 @@ export default class CalendarStore {
     const res = await this.repo.createCalendar(dto);
     const calendar = new CalendarModel({ ...res, checkFlag: true });
     this.calendarList.unshift(calendar);
-    return res;
+    this.eventList = [...this.eventList, ...res.eventList.map(event => new EventModel(event))];
   }
 
   async getCalendarList(userId: number) {
@@ -58,9 +58,10 @@ export default class CalendarStore {
     return data.map((dto: CalendarDTO) => new CalendarModel(dto));
   }
 
-  async syncCalendar(calId: number) {
-    const iCalendar = await this.repo.getICalendar(calId);
-    return iCalendar.eventList?.map(event => new EventModel({ ...event, calId, calColor: iCalendar.color }));
+  async syncCalendar(calId: number, start: string, end: string) {
+    const iCalendar = await this.repo.getICalendar(calId, start, end);
+    this.eventList = this.eventList.filter(item => item.calId !== calId);
+    this.setEventList([...this.eventList, ...iCalendar.eventList?.map(event => new EventModel(event))]);
   }
 
   async getCalendarInfo(calId: number, start: string, end: string) {
@@ -69,13 +70,13 @@ export default class CalendarStore {
   }
 
   async updateCalendar(calId: number, dto: CalendarPatchDTO) {
-    const res = await this.repo.updateCalendar(calId, dto);
-    return res;
+    await this.repo.updateCalendar(calId, dto);
   }
 
   async deleteCalendar(calId: number) {
     const res = await this.repo.deleteCalendar(calId);
     this.calendarList = this.calendarList.filter(item => item.id !== res);
+    this.eventList = this.eventList.filter(item => item.calId !== res);
   }
 
   setRenameId(id: number) {
@@ -86,21 +87,13 @@ export default class CalendarStore {
     this.calendarList = list;
   }
 
-  updateCalendarColor(id: number, color: string) {
+  updateCalendarDTO(id: number, type: 'color' | 'name', value: string) {
     const index = this.calendarList.findIndex(item => item.id === id);
-    // this.calendarList[index].color = color;
-    this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, color });
-  }
-
-  updateCalendarName(id: number, name: string) {
-    const index = this.calendarList.findIndex(item => item.id === id);
-    // this.calendarList[index].name = name;
-    this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, name });
+    this.calendarList[index][type] = value;
   }
 
   updateCalendarChecked(id: number, checkFlag: boolean) {
     const index = this.calendarList.findIndex(item => item.id === id);
-    // this.calendarList[index].checkFlag = checkFlag;
     this.calendarList[index] = new CalendarModel({ ...this.calendarList[index].dto, checkFlag });
   }
 

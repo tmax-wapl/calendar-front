@@ -55,8 +55,8 @@ export default class EventStore {
     return rruleObj.between(start, end).map(day => {
       return new EventModel({
         ...event,
-        start: toISO(DateTime.fromJSDate(day)),
-        end: toISO(DateTime.fromJSDate(day)),
+        start: toISO(DateTime.fromJSDate(day).toUTC()),
+        end: toISO(DateTime.fromJSDate(day).toUTC()),
       });
     });
   }
