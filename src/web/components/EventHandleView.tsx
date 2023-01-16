@@ -221,10 +221,6 @@ const EventHandleView = observer(({ action }: Props) => {
     }
   }, [action]);
 
-  useEffect(() => {
-    return () => eventStore.setEvent(new EventModel({}));
-  }, []);
-
   return (
     <EventHandleViewContainer>
       <EventBar
