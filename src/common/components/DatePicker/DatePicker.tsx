@@ -42,6 +42,10 @@ const DatePicker = ({
     onDateClick(selectedDate);
   }, [selectedDate]);
 
+  useEffect(() => {
+    setTitleDate(date);
+  }, [date]);
+
   const SwitchIcon = (): JSX.Element => {
     if (isTitleClick) return <Icon.ArrowTopLine color="#191919" width={18} height={18} />;
     return <Icon.ArrowBottomLine color="#191919" width={18} height={18} />;

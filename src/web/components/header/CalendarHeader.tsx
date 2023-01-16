@@ -77,6 +77,7 @@ const CalendarHeader: React.FC = () => {
     const mainApi = uiStore.getApi();
     mainApi?.[type]();
     uiStore.changeDateRange();
+    uiStore.setDateDay(uiStore.dateRange.view);
   };
 
   const togglePicker = () => setIsDatePickerOpen(!isDatePickerOpen);
