@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { DateTime } from 'luxon';
+import { useDidMountEffect } from '@common/hooks';
 import { TimePickerContainer } from './TimePicker.style';
 import PickerItem from './PickerItem';
 
@@ -33,7 +34,7 @@ const TimePicker = ({ value = DateTime.now(), height = 200, onChange, onOutsideC
     onOutsideClick();
   };
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (!onChange) return;
     const time = DateTime.fromFormat(`${meridiem} ${hour}:${minute}`, 'a h:mm', { locale: 'ko' });
     onChange(value.set({ hour: time.hour, minute: time.minute }));
