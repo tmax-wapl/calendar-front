@@ -48,6 +48,10 @@ export default class UiStore {
 
   contextClickArg: ContextClickArg = null;
 
+  isImportanceChecked = false;
+  isHolidayChecked = true;
+  isLunarChecked = true;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -59,6 +63,12 @@ export default class UiStore {
       setDialogInfo: action,
       contextClickArg: observable,
       setContextClickArg: action,
+      isImportanceChecked: observable,
+      setImportanceChecked: action,
+      isHolidayChecked: observable,
+      setHolidayChecked: action,
+      isLunarChecked: observable,
+      setLunarChecked: action,
     });
   }
 
@@ -76,6 +86,18 @@ export default class UiStore {
 
   setContextClickArg(contextClickArg: ContextClickArg) {
     this.contextClickArg = contextClickArg;
+  }
+
+  setImportanceChecked(checked: boolean) {
+    this.isImportanceChecked = checked;
+  }
+
+  setHolidayChecked(checked: boolean) {
+    this.isHolidayChecked = checked;
+  }
+
+  setLunarChecked(checked: boolean) {
+    this.isLunarChecked = checked;
   }
 
   getApi(): CalendarApi {

@@ -267,7 +267,7 @@ const Calendar: React.FC = observer(() => {
           dayCellContent={renderDayContent}
           eventClick={handleEventClick}
           allDayText="종일"
-          events={calendarStore.eventList}
+          events={calendarStore.eventList.filter(event => event.importance || !uiStore.isImportanceChecked)}
           dayMaxEvents={5}
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}

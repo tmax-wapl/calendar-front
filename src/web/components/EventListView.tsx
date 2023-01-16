@@ -53,7 +53,7 @@ const EventListView = () => {
               <>
                 <DateDay>{getDateDay()}</DateDay>
                 {/* <Holiday>추석 연휴</Holiday> */}
-                <Lunar>{lunar()}</Lunar>
+                {uiStore.isLunarChecked && <Lunar>{lunar()}</Lunar>}
               </>
             );
           }}
