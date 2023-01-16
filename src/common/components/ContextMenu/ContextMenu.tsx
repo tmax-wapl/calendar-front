@@ -45,7 +45,7 @@ export const ContextMenu = () => {
         break;
       case 'event':
         // TODO: 일정 색상 변경 서비스 호출
-        const event = new EventModel({ modUserId: userId, color, calId: 251 });
+        const event = new EventModel({ modUserId: userId, color });
         await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.DEFAULT);
         eventStore.updateEventColor('' + id, color); // 일정 model은 string 타입이군
         break;
