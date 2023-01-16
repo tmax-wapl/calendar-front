@@ -211,7 +211,7 @@ const EventHandleView = observer(({ action }: Props) => {
       return;
     }
     if (!eventStore.event.id) {
-      navigate('/main');
+      navigate(`/main/view-mode/${uiStore.viewMode}`);
       return;
     }
     if (eventStore.event.allDay) {
