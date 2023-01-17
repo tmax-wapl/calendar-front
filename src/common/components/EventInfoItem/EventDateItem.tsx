@@ -7,6 +7,7 @@ import {
   DateWrapper,
   DatePickerWrapper,
   TimeWrapper,
+  TimeValue,
   TimePickerWrapper,
 } from './EventDateItem.style';
 import DatePicker from '../DatePicker/DatePicker';
@@ -48,7 +49,8 @@ const EventDateItem = ({ title, date, allDay, onChange }: Props) => {
       {!allDay && (
         <PickerContainer>
           <TimeWrapper className={`${isTimePickerOpen ? 'selected' : ''}`} onClick={handleTimeClick}>
-            {date.toFormat('a h:mm', { locale: 'ko' })}
+            <TimeValue>{date.toFormat('a', { locale: 'ko' })}</TimeValue>
+            <TimeValue>{date.toFormat('h:mm')}</TimeValue>
           </TimeWrapper>
           {isTimePickerOpen && (
             <TimePickerWrapper>

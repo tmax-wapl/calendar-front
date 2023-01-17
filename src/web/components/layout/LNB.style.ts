@@ -5,7 +5,7 @@ export const LNBContainer = styled.div`
   height: 100%;
   background-color: #f8f9fa;
   flex-shrink: 0;
-  border: 1px solid #e8eaed;
+  border-right: 1px solid #e8eaed;
 `;
 
 export const LNBHeader = styled.div`

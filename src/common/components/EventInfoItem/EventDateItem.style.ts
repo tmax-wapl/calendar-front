@@ -39,6 +39,8 @@ export const DatePickerWrapper = styled.div`
 
 export const TimeWrapper = styled.div`
   display: flex;
+  width: 74px;
+  box-sizing: border-box;
   padding: 6px;
   border-radius: 6px;
   cursor: pointer;
@@ -46,6 +48,13 @@ export const TimeWrapper = styled.div`
   :hover {
     background: rgba(0, 0, 0, 0.04);
   }
+  > :last-child {
+    margin-left: auto;
+  }
+`;
+
+export const TimeValue = styled.span`
+  display: flex;
 `;
 
 export const TimePickerWrapper = styled.div`
