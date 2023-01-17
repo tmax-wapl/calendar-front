@@ -64,7 +64,6 @@ const Calendar: React.FC = observer(() => {
     position: { top: 0, left: 0 },
     events: null,
   });
-  let timer: any;
 
   const fetchData = async (start: string, end: string) => {
     const eventList = await eventStore.getEventList(userId, start, end);
@@ -165,21 +164,9 @@ const Calendar: React.FC = observer(() => {
     if (!pathname.includes('detail')) navigate(`/main/detail`);
   };
 
-  const clear = () => {
-    if (timer) {
-      clearTimeout(timer);
-      timer = undefined;
-    }
-  };
-
   const handleClick = (dateInfo: DateClickArg) => {
     dateInfo.jsEvent.stopPropagation();
-    clear();
-    if (dateInfo.jsEvent.detail === 1) {
-      timer = setTimeout(() => {
-        handleDateClick(dateInfo);
-      }, 200);
-    }
+    if (dateInfo.jsEvent.detail === 1) handleDateClick(dateInfo);
     if (dateInfo.jsEvent.detail % 2 === 0) handleDoubleClick(dateInfo);
   };
 
