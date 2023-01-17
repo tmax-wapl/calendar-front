@@ -5,8 +5,8 @@
   "homepage": ".",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --open --hot",
-    "build": "webpack --mode production",
+    "dev": "webpack-dev-server --open --hot --env dev=true",
+    "build": "webpack --env dev=false",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -61,6 +61,7 @@
     "babel-loader": "^9.0.1",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
+    "dotenv-webpack": "^8.0.1",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
