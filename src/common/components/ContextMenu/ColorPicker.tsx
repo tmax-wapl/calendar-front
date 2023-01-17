@@ -32,9 +32,12 @@ export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12, on
   ];
 
   const handleSelect = (color: string) => {
-    setSelected(color);
     if (onClick) onClick(color);
   };
+
+  useEffect(() => {
+    setSelected(color ?? '');
+  }, [color]);
 
   return (
     <ColorWrapper iterationCount={iterationCount} columnGap={columnGap}>
