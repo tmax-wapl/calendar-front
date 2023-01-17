@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DateTime } from 'luxon';
 import { Icon, Switch } from '@wapl/ui';
 import { EventDateContainer, ItemTitleContainer } from './EventDate.style';
@@ -21,23 +21,21 @@ const EventDate = ({
   onStartChange,
   onEndChange,
 }: Props) => {
+  const [isEndChanged, setIsEndChanged] = useState(false);
+
   const handleSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
     onAllDayChange(e.target.checked);
   };
 
   const handleStartChange = (date: DateTime) => {
     onStartChange(date);
-    if (date < end) return;
-    if (date.startOf('day').equals(end.startOf('day'))) {
-      onEndChange(date.plus({ minutes: 30 }));
-      return;
-    }
-    const candidate = date.set({ hour: end.hour, minute: end.minute });
-    if (date > candidate) onEndChange(date.plus({ minutes: 30 }));
-    else onEndChange(candidate);
+    if (date < end || isEndChanged) return;
+    const endDate = date.set({ hour: end.hour, minute: end.minute });
+    onEndChange(date < endDate ? endDate : date.plus({ minutes: 30 }));
   };
 
   const handleEndChange = (date: DateTime) => {
+    setIsEndChanged(true);
     onEndChange(date);
   };
 

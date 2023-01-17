@@ -8,9 +8,10 @@ import { DateTime } from 'luxon';
 import { getLunar } from 'holiday-kr';
 import { autorun } from 'mobx';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toLuxon } from '@/utils';
 
 const EventListView = () => {
-  const { uiStore, eventStore } = useCalendarStores();
+  const { uiStore, eventStore, calendarStore } = useCalendarStores();
   const [eventList, setEventList] = useState([]);
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -28,8 +29,10 @@ const EventListView = () => {
 
   useEffect(() => {
     const fetchData = async (dateDay: DateTime) => {
-      const date = dateDay.toFormat('yyyy-LL-dd');
-      const eventList = await eventStore.getEventList(14, date, date, true);
+      const date = dateDay.startOf('day');
+      const eventList = calendarStore.eventList.filter(
+        event => date < toLuxon(event.end) && toLuxon(event.start) < date.plus({ days: 1 }),
+      );
       setEventList(eventList);
     };
     const dispose = autorun(() => {
@@ -53,7 +56,7 @@ const EventListView = () => {
               <>
                 <DateDay>{getDateDay()}</DateDay>
                 {/* <Holiday>추석 연휴</Holiday> */}
-                <Lunar>{lunar()}</Lunar>
+                {uiStore.isLunarChecked && <Lunar>{lunar()}</Lunar>}
               </>
             );
           }}

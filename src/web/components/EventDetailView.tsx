@@ -36,7 +36,7 @@ const EventDetailView = observer(() => {
   };
 
   useEffect(() => {
-    if (!eventStore.event.id) navigate('/main');
+    if (!eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}`);
   }, []);
 
   return (

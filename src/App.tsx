@@ -1,26 +1,26 @@
 import React from 'react';
-import { StoreProvider } from './stores/StoreProvider';
+import { StoreProvider, WaplShellProvider } from './stores/StoreProvider';
 import { WaplUiProvider } from '@wapl/ui';
 import CalendarProvider from '@contexts/CalendarContext';
 import { MODE } from './common/constants/common';
-import { AccountLoader, PrivateRoute, useAccountStore } from '@wapl/core';
+import { useAccountStore } from '@wapl/core';
 import Web from './web';
 import Mobile from './mobile';
 
 const App: React.FC = () => {
   const isMobile = false;
   const { selectedUser } = useAccountStore();
-  // TODO: selectedUser 연동;
+
+  console.log(selectedUser);
+
   return (
-    <AccountLoader>
-      <PrivateRoute>
-        <WaplUiProvider>
-          <CalendarProvider mode={MODE.FULL} userId={14}>
-            <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
-          </CalendarProvider>
-        </WaplUiProvider>
-      </PrivateRoute>
-    </AccountLoader>
+    <WaplShellProvider>
+      <WaplUiProvider>
+        <CalendarProvider mode={MODE.FULL} userId={14}>
+          <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
+        </CalendarProvider>
+      </WaplUiProvider>
+    </WaplShellProvider>
   );
 };
 

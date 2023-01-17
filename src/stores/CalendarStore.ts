@@ -101,4 +101,8 @@ export default class CalendarStore {
     await this.rootStore.eventStore.repo.deleteEvent(id, EVENT_DELETE_OPTION.DEFAULT);
     this.eventList = this.eventList.filter(item => item.id !== '' + id);
   }
+
+  getCalendarId() {
+    return this.calendarList?.find(item => item.mainFlag)?.id;
+  }
 }

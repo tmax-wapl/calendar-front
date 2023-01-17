@@ -77,6 +77,7 @@ const CalendarHeader: React.FC = () => {
     const mainApi = uiStore.getApi();
     mainApi?.[type]();
     uiStore.changeDateRange();
+    uiStore.setDateDay(uiStore.dateRange.view);
   };
 
   const togglePicker = () => setIsDatePickerOpen(!isDatePickerOpen);
@@ -102,6 +103,7 @@ const CalendarHeader: React.FC = () => {
       </LeftContainer>
       <RightContainer>
         <ViewSelect
+          width={64}
           name="viewSelect"
           types="box"
           defaultValue={viewMode ?? VIEW_MODE.MONTH}

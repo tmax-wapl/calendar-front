@@ -4,6 +4,7 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { CalendarPickerView } from '@mui/x-date-pickers';
 import { Icon } from '@wapl/ui';
+import { useDidMountEffect } from '@common/hooks';
 import {
   DatePickerContainer,
   DatePickerHeader,
@@ -37,10 +38,14 @@ const DatePicker = ({
   const [view, setView] = useState<CalendarPickerView>('day');
   const [isTitleClick, setTitleClick] = useState<boolean>(false);
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (!onDateClick) return;
     onDateClick(selectedDate);
   }, [selectedDate]);
+
+  useEffect(() => {
+    setTitleDate(date);
+  }, [date]);
 
   const SwitchIcon = (): JSX.Element => {
     if (isTitleClick) return <Icon.ArrowTopLine color="#191919" width={18} height={18} />;

@@ -16,6 +16,7 @@ import DatePicker from '@common/components/DatePicker/DatePicker';
 import FilterList from './FilterList';
 import CategoryList from './CategoryList';
 import SubscriptionList from './SubscriptionList';
+import { Observer } from 'mobx-react-lite';
 
 const LNB = () => {
   const { userId } = useContext(CalendarContext);
@@ -37,7 +38,20 @@ const LNB = () => {
         캘린더
       </LNBHeader>
       <DatePickerWrapper>
-        <DatePicker onDateClick={selectedDate => uiStore.handleDateClick(selectedDate)} backgroundColor="#F8F9FA" />
+        <Observer>
+          {() => {
+            return (
+              <DatePicker
+                date={uiStore.dateRange.view}
+                onDateClick={selectedDate => {
+                  uiStore.handleDateClick(selectedDate);
+                  uiStore.setDateDay(selectedDate);
+                }}
+                backgroundColor="#F8F9FA"
+              />
+            );
+          }}
+        </Observer>
       </DatePickerWrapper>
       <FilterListWrapper>
         <FilterList />

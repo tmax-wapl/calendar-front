@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { ResponseData } from '../constants/interfaces';
 
-const baseUrl = 'http://192.168.151.23:8080';
+const baseUrl = process.env.REACT_APP_SERVICE_URL;
 class APIClass {
   instance;
 

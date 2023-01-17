@@ -41,7 +41,7 @@ export const getRepeatSummary = (rrule: Partial<Options>): string => {
 };
 
 export const toHalfHourUnit = (date: DateTime) => {
-  return date.minute < 30 ? date.set({ minute: 0 }) : date.set({ minute: 30 });
+  return date.minute < 30 ? date.set({ minute: 0, millisecond: 0 }) : date.set({ minute: 30, millisecond: 0 });
 };
 
 export const getStartDate = (date: DateTime) => {

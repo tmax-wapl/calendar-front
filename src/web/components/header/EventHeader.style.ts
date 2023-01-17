@@ -23,6 +23,9 @@ export const EventCreateButton = styled.div`
 `;
 
 export const SearchField = styled(WSearchField)`
+  .MuiFilledInput-root {
+    height: 32px;
+  }
   .MuiInputBase-input {
     font-size: 14px;
     ::placeholder {

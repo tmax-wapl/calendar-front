@@ -55,7 +55,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
           id,
           new EventModel({
             ...model.dto,
-            exDate: toISO(toLuxon(date.startdate)),
+            exDate: toISO(toLuxon(date.startdate).toUTC()),
           }),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT_EXCEPT,
         );
@@ -65,7 +65,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
           id,
           new EventModel({
             ...model.dto,
-            repeatEndDate: toISO(toLuxon(date.enddate)),
+            repeatEndDate: toISO(toLuxon(date.enddate).toUTC()),
           }),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT_EXCEPT,
         );
@@ -175,7 +175,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     ],
     event: [
       { label: '일정 수정', onClick: handleEventEdit, icon: <Icon.EditLine className="mr-8" /> },
-      { label: '일정 공유', onClick: handleEventShare, icon: <Icon.ShareLine className="mr-8" /> },
+      // { label: '일정 공유', onClick: handleEventShare, icon: <Icon.ShareLine className="mr-8" /> },
       { label: '일정 삭제', onClick: handleEventDelete, icon: <Icon.DeleteLine className="mr-8" /> },
     ],
   };

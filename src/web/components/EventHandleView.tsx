@@ -55,7 +55,9 @@ const EventHandleView = observer(({ action }: Props) => {
 
   const handleCreate = async () => {
     const event = await eventStore.createEvent(preprocessEvent(eventStore.event));
-    calendarStore.appendEventList(event);
+    if (!eventStore.event.rrule) {
+      calendarStore.appendEventList(event);
+    } else uiStore.changeDateRange();
     navigate('/main/detail');
   };
 
@@ -123,87 +125,15 @@ const EventHandleView = observer(({ action }: Props) => {
         type: 'select',
       };
     }
-    // 1번 테스트
-    // const event = await eventStore.updateEvent(
-    //   eventStore.eventId,
-    //   new EventModel({
-    //     ...eventStore.event.dto,
-    //     rrule: rruleString(eventStore.event.rrule),
-    //   }),
-    //   1,
-    // );
-    //  3번 테스트
-    // const event = await eventStore.updateEvent(
-    //   eventStore.eventId,
-    //   new EventModel({
-    //     ...eventStore.event.dto,
-    //     id: null,
-    //     repeatStartDate: toISO(toLuxon('2023-02-23')),
-    //     repeatEndDate: toISO(eventStore.event.repeatEndDate),
-    //     rrule: rruleString(eventStore.event.rrule),
-    //   }),
-    //   3,
-    // );
-    // 4번 테스트
-    // const event = await eventStore.updateEvent(
-    //   eventStore.eventId,
-    //   new EventModel({
-    //     ...eventStore.event.dto,
-    //     id: null,
-    //     color: '#000000',
-    //     repeatStartDate: toISO(toLuxon('2023-03-09')),
-    //     repeatEndDate: toISO(eventStore.event.repeatEndDate),
-    //     rrule: rruleString(eventStore.event.rrule),
-    //   }),
-    //   4,
-    // );
-    // 6번 테스트
-    // const event = await eventStore.updateEvent(
-    //   eventStore.eventId,
-    //   new EventModel({
-    //     ...eventStore.event.dto,
-    //     repeatEndDate: toISO(toLuxon('2023-03-24')),
-    //     rrule: rruleString(eventStore.event.rrule),
-    //   }),
-    //   6,
-    // );
-    //  7번 테스트
-    // const event = await eventStore.updateEvent(
-    //   eventStore.eventId,
-    //   new EventModel({
-    //     ...eventStore.event.dto,
-    //     start: toISO(toLuxon('2023-02-17')),
-    //     end: toISO(toLuxon('2023-02-17')),
-    //     exceptDate: toISO(toLuxon('2023-02-17')),
-    //   }),
-    //   7,
-    // );
-    // const closeDialog = (): any => (uiStore.dialogInfo = null);
-    // const getSelectType = async (value: string) => {
-    //   uiStore.dialogInfo = null;
-    //   if (value === 'after') {
-    //     //  3번 테스트
-    //     const event = await eventStore.updateEvent(
-    //       eventStore.eventId,
-    //       new EventModel({
-    //         ...eventStore.event.dto,
-    //         id: null,
-    //         repeatStartDate: toISO(toLuxon('2023-03-03')),
-    //         repeatEndDate: toISO(eventStore.event.repeatEndDate),
-    //         rrule: rruleString(eventStore.event.rrule),
-    //       }),
-    //       3,
-    //     );
-    //   }
-    // };
   };
 
   useEffect(() => {
     if (action === 'create') {
       const start = getStartDate(uiStore.dateDay).toUTC();
+      const calId = calendarStore.getCalendarId();
       eventStore.setEvent(
         new EventModel({
-          calId: 251,
+          calId: calId,
           start: toISO(start),
           end: toISO(start.plus({ minutes: 30 })),
         }),
@@ -220,10 +150,6 @@ const EventHandleView = observer(({ action }: Props) => {
       return;
     }
   }, [action]);
-
-  useEffect(() => {
-    return () => eventStore.setEvent(new EventModel({}));
-  }, []);
 
   return (
     <EventHandleViewContainer>

@@ -1,12 +1,27 @@
 import { NoResultContainer, NoResultTitle } from './NoResult.style';
-// import noResult from '@common/assets/C_Illust.svg';
+import NotiIllust1 from '@common/assets/noti-blue.svg';
+import NotiIllust2 from '@common/assets/noti-red.svg';
 
-const NoResult = () => {
+interface Props {
+  type?: 'event' | 'search';
+  subtitle?: string;
+}
+
+const NoResult = ({ type = 'event', subtitle }: Props) => {
   return (
     <NoResultContainer>
-      {/* <img src={noResult} /> */}
-      <div style={{ width: 100, height: 100, background: 'blue' }} />
-      <NoResultTitle>일정이 없습니다.</NoResultTitle>
+      {type === 'event' ? (
+        <>
+          <NotiIllust1 />
+          <NoResultTitle>일정이 없습니다.</NoResultTitle>
+        </>
+      ) : (
+        <>
+          <NotiIllust2 />
+          <NoResultTitle>‘{subtitle}’</NoResultTitle>
+          <NoResultTitle>검색 결과가 없습니다.</NoResultTitle>
+        </>
+      )}
     </NoResultContainer>
   );
 };
