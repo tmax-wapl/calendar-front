@@ -31,7 +31,10 @@ const EventListView = () => {
     const fetchData = async (dateDay: DateTime) => {
       const date = dateDay.startOf('day');
       const eventList = calendarStore.eventList.filter(
-        event => date < toLuxon(event.end) && toLuxon(event.start) < date.plus({ days: 1 }),
+        event =>
+          date < toLuxon(event.end) &&
+          toLuxon(event.start) < date.plus({ days: 1 }) &&
+          (event.importance || !uiStore.isImportanceChecked),
       );
       setEventList(eventList);
     };
