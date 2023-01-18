@@ -4,8 +4,7 @@ import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
 import { EventDTO } from '@/common/constants/interfaces';
 import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
-import { RRule, RRuleSet } from 'rrule';
-import { isSameDate, toISO } from '@/utils';
+import { toISO, toLuxon } from '@/utils';
 import { DateTime } from 'luxon';
 
 export default class EventStore {
@@ -47,16 +46,17 @@ export default class EventStore {
   }
 
   makeRRuleObject(event: EventDTO) {
-    const { rruleObj } = new EventModel(event);
+    const { rruleObj, start, end } = new EventModel(event);
 
-    const start = this.rootStore.uiStore.mainApi.view.activeStart;
-    const end = this.rootStore.uiStore.mainApi.view.activeEnd;
+    const activeStart = this.rootStore.uiStore.mainApi.view.activeStart;
+    const activeEnd = this.rootStore.uiStore.mainApi.view.activeEnd;
+    const duration = toLuxon(end).diff(toLuxon(start));
 
-    return rruleObj.between(start, end).map(day => {
+    return rruleObj.between(activeStart, activeEnd).map(day => {
       return new EventModel({
         ...event,
         start: toISO(DateTime.fromJSDate(day).toUTC()),
-        end: toISO(DateTime.fromJSDate(day).toUTC()),
+        end: toISO(DateTime.fromJSDate(day).plus(duration).toUTC()),
       });
     });
   }
