@@ -22,7 +22,7 @@ export interface PopOverProps {
 
 const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLinkData }: PopOverProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { eventStore } = useCalendarStores();
+  const { eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const open = Boolean(anchorEl);
@@ -35,9 +35,12 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
     }));
   };
 
-  const handleEventClick = (id: string) => {
-    eventStore.eventId = +id;
+  const handleEventClick = async (id: string) => {
+    const eventInfo = await eventStore.getEventInfo(+id);
+    uiStore.setDateDay(eventInfo.startDate.startOf('day'));
+    eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/detail`);
+    setAnchorEl(null);
   };
 
   useEffect(() => {
