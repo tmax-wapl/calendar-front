@@ -66,8 +66,9 @@ const Calendar: React.FC = observer(() => {
   });
 
   const fetchData = async (start: string, end: string) => {
-    const eventList = await eventStore.getEventList(userId, start, end);
+    const { eventList, holidayList } = await eventStore.getEventList(userId, start, end);
     calendarStore.setEventList(eventList);
+    calendarStore.holidayList = holidayList;
   };
 
   const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;

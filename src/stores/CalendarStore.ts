@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import RootStore from './RootStore';
 import CalendarRepo from './repository/CalendarRepo';
-import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
+import { CalendarDTO, CalendarPatchDTO, HolidayDTO } from '@/common/constants/interfaces';
 import { CalendarModel } from './model/CalendarModel';
 import { EventModel } from './model/EventModel';
 import { EVENT_DELETE_OPTION } from '@/common/constants';
@@ -12,6 +12,7 @@ export default class CalendarStore {
   renameId: number = null;
   calendarList: CalendarModel[] = null;
   eventList: EventModel[] = [];
+  holidayList: HolidayDTO[] = [];
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;

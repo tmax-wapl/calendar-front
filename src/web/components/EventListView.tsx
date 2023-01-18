@@ -47,6 +47,21 @@ const EventListView = () => {
     return `음력 ${month}.${day}`;
   };
 
+  const holiday = () => {
+    const { dateDay } = uiStore;
+    const holidayList = calendarStore.holidayList.filter(holiday => holiday.dateDay === dateDay.toFormat('yyyy-LL-dd'));
+
+    return (
+      <>
+        {holidayList.map((holiday, index) => (
+          <Holiday key={index} isRed={holiday.isRed}>
+            {holiday.name}
+          </Holiday>
+        ))}
+      </>
+    );
+  };
+
   return (
     <EventListViewContainer>
       <DateInfo>
@@ -55,7 +70,7 @@ const EventListView = () => {
             return (
               <>
                 <DateDay>{getDateDay()}</DateDay>
-                {/* <Holiday>추석 연휴</Holiday> */}
+                {uiStore.isHolidayChecked && holiday()}
                 {uiStore.isLunarChecked && <Lunar>{lunar()}</Lunar>}
               </>
             );
