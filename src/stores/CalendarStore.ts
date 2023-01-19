@@ -24,6 +24,7 @@ export default class CalendarStore {
       setCalendarList: action,
       eventList: observable,
       setEventList: action,
+      holidayList: observable,
       appendEventList: action,
       updateEventList: action,
       filterEventList: action,
