@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import FullCalendar, {
+  DayCellContentArg,
   EventClickArg,
   EventContentArg,
   EventSegment,
@@ -28,7 +29,7 @@ import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toLuxon, diffTime, toDateString } from '@/utils';
-import { autorun } from 'mobx';
+import { autorun, transaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 
@@ -67,11 +68,27 @@ const Calendar: React.FC = observer(() => {
 
   const fetchData = async (start: string, end: string) => {
     const { eventList, holidayList } = await eventStore.getEventList(userId, start, end);
-    calendarStore.setEventList(eventList);
-    calendarStore.holidayList = holidayList;
+
+    transaction(() => {
+      calendarStore.setEventList(eventList);
+      calendarStore.setHolidayList(holidayList);
+    });
   };
 
-  const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
+  const isHoliday = (date: string) => {
+    return !!calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
+  };
+
+  const DateColor = (content: DayCellContentArg) => {
+    const date = toDateString(content.date);
+    if (content.dow === 0 || isHoliday(date)) return 'red'; // 공휴일
+    else if (date === DateTime.local().toFormat('yyyy-LL-dd')) return 'white'; // today
+    return 'black'; // 일반 date
+  };
+
+  const renderDayContent = (content: DayCellContentArg) => (
+    <span style={{ color: DateColor(content) }}>{content.dayNumberText.slice(0, -1)}</span>
+  );
 
   const renderAllDayContent = ({ text }: { text: string }) =>
     uiStore.viewMode === VIEW_MODE.WEEK ? (
