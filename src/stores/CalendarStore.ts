@@ -29,6 +29,7 @@ export default class CalendarStore {
       updateEventList: action,
       filterEventList: action,
       deleteEvent: action,
+      setHolidayList: action,
     });
   }
 
@@ -46,6 +47,9 @@ export default class CalendarStore {
 
   filterEventList(id: string) {
     this.eventList = this.eventList.filter(event => event.id !== id);
+  }
+  setHolidayList(holidayList: HolidayDTO[]) {
+    this.holidayList = holidayList;
   }
 
   async createCalendar(dto: Partial<CalendarDTO>) {

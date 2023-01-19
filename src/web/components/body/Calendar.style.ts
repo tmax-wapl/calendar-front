@@ -302,6 +302,9 @@ export const EventWrapper = styled.span<{ isHalfLess: boolean }>`
   display: flex;
   align-items: center;
   padding: ${({ isHalfLess }) => (isHalfLess ? '0px 8px' : '4px 8px')};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const WeekEventWrapper = styled(EventWrapper)`
