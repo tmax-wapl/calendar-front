@@ -1,11 +1,12 @@
 import React, { Dispatch, useEffect, useState } from 'react';
-import { Mui, Icon } from '@wapl/ui';
+import { Icon } from '@wapl/ui';
 import { EventSegment } from '@fullcalendar/react';
 import { ClickArg } from '@wcomponents/body/Calendar';
 import {
   EventIcon,
   EventTitle,
   EventWrapper,
+  Popover,
   PopoverBody,
   PopoverContainer,
   PopoverHeader,
@@ -49,7 +50,7 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
   }, [target]);
 
   return (
-    <Mui.Popover
+    <Popover
       open={open}
       anchorReference="anchorPosition"
       anchorPosition={{ top: position?.top, left: position?.left }}
@@ -74,7 +75,7 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
           })}
         </PopoverBody>
       </PopoverContainer>
-    </Mui.Popover>
+    </Popover>
   );
 };
 
