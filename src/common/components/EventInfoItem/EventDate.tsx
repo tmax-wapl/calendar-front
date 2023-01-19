@@ -47,7 +47,14 @@ const EventDate = ({
         <Switch size="small" checked={allDay ?? false} onChange={handleSwitch} />
       </ItemTitleContainer>
       <EventDateItem title="시작일" date={start} allDay={allDay} onChange={handleStartChange} />
-      <EventDateItem title="마감일" date={end} allDay={allDay} onChange={handleEndChange} />
+      <EventDateItem
+        title="마감일"
+        date={end}
+        allDay={allDay}
+        onChange={handleEndChange}
+        isDateInvalid={start.startOf('day') > end.startOf('day')}
+        isTimeInvalid={start > end}
+      />
     </EventDateContainer>
   );
 };

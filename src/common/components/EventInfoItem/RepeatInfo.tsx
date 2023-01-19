@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DateTime } from 'luxon';
 import { Options, Weekday } from 'rrule';
-import { Icon, Select, Checkbox } from '@wapl/ui';
+import { Icon, Select, Tooltip, Checkbox } from '@wapl/ui';
 import {
   RepeatInfoContainer,
   ItemContainer,
@@ -108,10 +108,22 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
             &nbsp;&nbsp;종료 날짜 선택
             {repeatEndDate && (
               <PickerContainer>
-                <DateWrapper className={`${isDatePickerOpen ? 'selected' : ''}`} onClick={handleEndDateClick}>
-                  {repeatEndDate.toFormat('yyyy.LL.dd')}
-                  <Icon.CalendarLine className="ml-8" color="#202124" width={16} height={16} />
-                </DateWrapper>
+                <Tooltip
+                  disableHoverListener={startDate <= repeatEndDate}
+                  placement="top"
+                  title="시작일과 같거나 이후로 설정해 주세요."
+                  sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
+                >
+                  <DateWrapper
+                    className={`${isDatePickerOpen ? 'selected' : ''}`}
+                    isInvalid={startDate > repeatEndDate}
+                    onClick={handleEndDateClick}
+                  >
+                    {repeatEndDate.toFormat('yyyy.LL.dd')}
+                    <Icon.CalendarLine className="ml-8" color="#202124" width={16} height={16} />
+                  </DateWrapper>
+                </Tooltip>
+
                 {isDatePickerOpen && (
                   <DatePickerWrapper>
                     <DatePicker size={0.85} date={repeatEndDate} onDateClick={handleEndDateChange} />
