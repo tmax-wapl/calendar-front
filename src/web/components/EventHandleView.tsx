@@ -146,7 +146,7 @@ const EventHandleView = observer(({ action }: Props) => {
     }
     if (eventStore.event.allDay) {
       eventStore.event.startDate = eventStore.event.startDate.set({ hour: 9, minute: 0 });
-      eventStore.event.endDate = eventStore.event.endDate.set({ hour: 9, minute: 30 });
+      eventStore.event.endDate = eventStore.event.endDate.plus({ days: -1 }).set({ hour: 9, minute: 30 });
       return;
     }
   }, [action]);
