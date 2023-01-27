@@ -157,7 +157,13 @@ const Calendar: React.FC = observer(() => {
             {event.title}
           </EventWrapper>
         ) : (
-          <WeekEventWrapper data-color={backgroundColor} isHalfLess={isHalfLess}>
+          <WeekEventWrapper
+            data-color={backgroundColor}
+            data-id={event.id}
+            data-startdate={startStr}
+            data-enddate={endStr ? endStr : event.extendedProps.dto.end}
+            isHalfLess={isHalfLess}
+          >
             <EventSpan>
               {event.extendedProps.dto.importance && (
                 <Icon.BookmarkFill className="mr-2" width={12} height={12} color="#FCBB00" />
