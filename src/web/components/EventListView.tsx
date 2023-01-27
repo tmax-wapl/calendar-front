@@ -74,7 +74,7 @@ const EventListView = () => {
               <>
                 <DateDay>{getDateDay()}</DateDay>
                 {uiStore.isHolidayChecked && holiday()}
-                {uiStore.isLunarChecked && <Lunar>{lunar()}</Lunar>}
+                {uiStore.isLunarChecked && <Lunar isRed={false}>{lunar()}</Lunar>}
               </>
             );
           }}

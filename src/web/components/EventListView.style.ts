@@ -36,9 +36,9 @@ export const Holiday = styled.span<{ isRed: boolean }>`
   color: ${({ isRed }) => (isRed ? '#f44336' : '#9AA0A6')};
 `;
 
-export const Lunar = styled.span`
+export const Lunar = styled.span<{ isRed: boolean }>`
   display: flex;
   font-weight: 400;
   font-size: 13px;
-  color: #9aa0a6;
+  color: ${({ isRed }) => (isRed ? '#f44336' : '#9AA0A6')};
 `;

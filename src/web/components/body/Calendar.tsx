@@ -122,7 +122,9 @@ const Calendar: React.FC = observer(() => {
           <WeekDayHeader color={DateColor(content, true)}>
             {content.date.getDate()} {getDay(content.dow)}
             {uiStore.isHolidayChecked && holiday(content)}
-            {uiStore.isLunarChecked && <Lunar>{lunar(content.date)}</Lunar>}
+            {uiStore.isLunarChecked && (
+              <Lunar isRed={isHoliday(toDateString(content.date))}>{lunar(content.date)}</Lunar>
+            )}
           </WeekDayHeader>
         )}
       </Observer>
