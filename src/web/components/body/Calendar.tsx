@@ -212,7 +212,7 @@ const Calendar: React.FC = observer(() => {
     const eventInfo = await eventStore.getEventInfo(+event.id);
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
-    if (!pathname.includes('detail')) navigate(`/main/detail`);
+    if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
   const handleClick = (dateInfo: DateClickArg) => {

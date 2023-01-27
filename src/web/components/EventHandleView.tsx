@@ -58,7 +58,7 @@ const EventHandleView = observer(({ action }: Props) => {
     if (!eventStore.event.rrule) {
       calendarStore.appendEventList(event);
     } else uiStore.changeDateRange();
-    navigate('/main/detail');
+    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
   const updateEvent = async (isRepeat = false) => {
@@ -68,7 +68,7 @@ const EventHandleView = observer(({ action }: Props) => {
       EVENT_UPDATE_OPTION.DEFAULT,
     );
     if (!isRepeat) calendarStore.updateEventList(event);
-    navigate('/main/detail');
+    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
   const updateRepeatEvent = async (value: string) => {
@@ -86,7 +86,7 @@ const EventHandleView = observer(({ action }: Props) => {
           }),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
         );
-        navigate('/main/detail');
+        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         break;
       case 'after': // 이 일정 및 향후 일정 수정
         await eventStore.updateEvent(
@@ -100,7 +100,7 @@ const EventHandleView = observer(({ action }: Props) => {
           }),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
         );
-        navigate('/main/detail');
+        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         break;
       case 'all': // 모든 일정 수정
         updateEvent(true);

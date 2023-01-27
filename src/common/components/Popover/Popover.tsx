@@ -40,7 +40,7 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
     const eventInfo = await eventStore.getEventInfo(+id);
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
-    if (!pathname.includes('detail')) navigate(`/main/detail`);
+    if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
     setAnchorEl(null);
   };
 

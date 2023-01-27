@@ -45,7 +45,7 @@ const EventDetailView = observer(() => {
         leftSide={[{ action: 'back', onClick: handleBack }]}
         rightSide={[
           // { action: 'share', onClick: () => console.log('share') },
-          { action: 'edit', onClick: () => navigate('/main/update') },
+          { action: 'edit', onClick: () => navigate(`/main/view-mode/${uiStore.viewMode}/update`) },
           { action: 'delete', onClick: handleDeleteClick },
         ]}
       />
