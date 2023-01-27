@@ -258,13 +258,14 @@ const Calendar: React.FC = observer(() => {
 
   const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
     setDateDay(dayEl);
-    if (!pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`);
+    if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
   };
 
   const handleDateTimeSelect = ({ dayEl, jsEvent }: DateClickArg) => {
     if (!(jsEvent.target instanceof HTMLElement)) return;
     const { time } = jsEvent.target.dataset;
     setDateDay(dayEl);
+    if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
     console.log(time);
     console.log(dayEl, jsEvent);
   };

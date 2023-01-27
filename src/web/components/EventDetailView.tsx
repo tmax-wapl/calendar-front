@@ -14,7 +14,7 @@ const EventDetailView = observer(() => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate(`/main/view-mode/${uiStore.viewMode}`);
+    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
   const closeDialog = () => {
@@ -36,7 +36,7 @@ const EventDetailView = observer(() => {
   };
 
   useEffect(() => {
-    if (!eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}`);
+    if (!eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   }, []);
 
   return (

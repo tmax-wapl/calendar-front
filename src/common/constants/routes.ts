@@ -8,7 +8,7 @@ export enum ROUTES {
   MAIN = 'main',
   CREATE = 'view-mode/:viewMode/create',
   UPDATE = 'view-mode/:viewMode/update',
-  DAY = 'view-mode/:viewMode',
+  DAY = 'view-mode/:viewMode/date',
   DETAIL = 'view-mode/:viewMode/detail',
   SHARE = 'share',
 }

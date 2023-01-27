@@ -11,7 +11,7 @@ const CalendarView: React.FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (pathname === ROUTES.PATH_MAIN) navigate(`view-mode/${uiStore.viewMode}`);
+    if (pathname === ROUTES.PATH_MAIN) navigate(`view-mode/${uiStore.viewMode}/date`);
   }, []);
 
   return (

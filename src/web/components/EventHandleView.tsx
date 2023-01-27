@@ -33,7 +33,7 @@ const EventHandleView = observer(({ action }: Props) => {
   const navigate = useNavigate();
 
   const handleClose = () => {
-    navigate(`/main/view-mode/${uiStore.viewMode}`);
+    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
   const preprocessEvent = (event: EventModel): EventModel => {
@@ -141,7 +141,7 @@ const EventHandleView = observer(({ action }: Props) => {
       return;
     }
     if (!eventStore.event.id) {
-      navigate(`/main/view-mode/${uiStore.viewMode}`);
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
       return;
     }
     if (eventStore.event.allDay) {
