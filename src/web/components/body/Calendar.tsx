@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import FullCalendar, {
   DayCellContentArg,
+  DayHeaderContentArg,
   EventClickArg,
   EventContentArg,
   EventSegment,
@@ -22,6 +23,7 @@ import {
   WeekEventWrapper,
   CalendarColor,
   FullCalendarWrapper,
+  WeekDayHeader,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
@@ -30,8 +32,10 @@ import { VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toLuxon, diffTime, toDateString } from '@/utils';
 import { autorun, transaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
+import { Holiday, Lunar } from '../EventListView.style';
+import { getLunar } from 'holiday-kr';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -79,10 +83,10 @@ const Calendar: React.FC = observer(() => {
     return !!calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
   };
 
-  const DateColor = (content: DayCellContentArg) => {
+  const DateColor = (content: DayCellContentArg | DayHeaderContentArg, isWeekDay = false) => {
     const date = toDateString(content.date);
     if (content.dow === 0 || isHoliday(date)) return 'red'; // 공휴일
-    else if (date === DateTime.local().toFormat('yyyy-LL-dd')) return 'white'; // today
+    else if (date === DateTime.local().toFormat('yyyy-LL-dd') && !isWeekDay) return 'white'; // today
     return 'black'; // 일반 date
   };
 
@@ -99,6 +103,33 @@ const Calendar: React.FC = observer(() => {
     ) : (
       text
     );
+
+  const lunar = (date: Date) => {
+    const { month, day } = getLunar(date);
+    return `음 ${month}.${day}.`;
+  };
+
+  const holiday = (content: DayHeaderContentArg) => {
+    const date = toDateString(content.date);
+    const holiday = calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
+    return holiday && <Holiday isRed={holiday.isRed}>{holiday.name}</Holiday>;
+  };
+
+  const renderHeaderContent = (content: DayHeaderContentArg) => {
+    return uiStore.viewMode === VIEW_MODE.WEEK ? (
+      <Observer>
+        {() => (
+          <WeekDayHeader color={DateColor(content, true)}>
+            {content.date.getDate()} {getDay(content.dow)}
+            {uiStore.isHolidayChecked && holiday(content)}
+            {uiStore.isLunarChecked && <Lunar>{lunar(content.date)}</Lunar>}
+          </WeekDayHeader>
+        )}
+      </Observer>
+    ) : (
+      content.text
+    );
+  };
 
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
 
@@ -277,6 +308,7 @@ const Calendar: React.FC = observer(() => {
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
+          dayHeaderContent={renderHeaderContent}
           dateClick={handleClick}
           eventContent={renderEventContent}
           nowIndicator
