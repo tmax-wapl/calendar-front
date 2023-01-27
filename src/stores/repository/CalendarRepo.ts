@@ -22,12 +22,12 @@ export default class CalendarRepo {
 
   async getICalendar(calId: number, start: string, end: string) {
     try {
-      const { response, success } = await API.get<CalendarDTO>(
+      const { response } = await API.get<CalendarDTO>(
         `/apis/v1/calendars/icalendar/${calId}?start=${start}&end=${end}`,
       );
-      if (success) return response;
-    } catch (e) {
-      throw Error(JSON.stringify(e));
+      return response;
+    } catch (e: any) {
+      throw e.status;
     }
   }
 

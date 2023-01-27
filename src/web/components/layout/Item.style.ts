@@ -1,4 +1,4 @@
-import { styled, Mui } from '@wapl/ui';
+import { styled, Mui, Icon } from '@wapl/ui';
 
 export const ItemContainer = styled.div<{ main: boolean }>`
   display: flex;
@@ -39,6 +39,7 @@ export const CheckItemContainer = styled.div`
   align-items: center;
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
+    svg,
     button {
       display: flex;
     }
@@ -65,6 +66,12 @@ export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: str
     text-overflow: ellipsis;
     overflow: hidden;
   }
+`;
+
+export const ErrorIcon = styled(Icon.ErrorLine)`
+  display: none;
+  flex-shrink: 0;
+  margin-right: 6px;
 `;
 
 export const ButtonWarpper = styled(Mui.IconButton)`

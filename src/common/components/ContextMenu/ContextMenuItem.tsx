@@ -1,4 +1,4 @@
-import { Icon, Mui, styled } from '@wapl/ui';
+import { Icon, Mui, styled, useWaplUiStore } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toISO, toLuxon } from '@/utils';
@@ -35,6 +35,10 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const {
+    toast: { notify },
+  } = useWaplUiStore();
 
   const closeDialog = () => {
     uiStore.setDialogInfo(null);
@@ -90,8 +94,15 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     if (onClose) onClose();
   };
 
-  const handleCalendarSync = () => {
-    console.log('캘린더 동기화');
+  const handleCalendarSync = async () => {
+    if (onClose) onClose();
+    try {
+      const { start, end } = uiStore.dateRange;
+      const iCalendar = await calendarStore.syncCalendar(id, start, end);
+      if (iCalendar.subscribeStatus === 'success') notify(`${iCalendar.name} 캘린더 동기화가 성공하였습니다.`);
+    } catch (status: any) {
+      if (status === 500) calendarStore.updateCalendarDTO(id, 'subscribeStatus', 'wait');
+    }
   };
 
   const handleCalendarDelete = (type: string) => {

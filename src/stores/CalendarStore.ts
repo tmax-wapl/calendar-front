@@ -68,6 +68,12 @@ export default class CalendarStore {
     const iCalendar = await this.repo.getICalendar(calId, start, end);
     this.eventList = this.eventList.filter(item => item.calId !== calId);
     this.setEventList([...this.eventList, ...iCalendar.eventList?.map(event => new EventModel(event))]);
+    const index = this.calendarList.findIndex(item => item.id === calId);
+    this.calendarList[index] = new CalendarModel({
+      ...this.calendarList[index].dto,
+      subscribeStatus: iCalendar.subscribeStatus,
+    });
+    return iCalendar;
   }
 
   async getCalendarInfo(calId: number, start: string, end: string) {
@@ -93,7 +99,7 @@ export default class CalendarStore {
     this.calendarList = list;
   }
 
-  updateCalendarDTO(id: number, type: 'color' | 'name', value: string) {
+  updateCalendarDTO(id: number, type: 'color' | 'name' | 'subscribeStatus', value: string) {
     const index = this.calendarList.findIndex(item => item.id === id);
     this.calendarList[index][type] = value;
   }

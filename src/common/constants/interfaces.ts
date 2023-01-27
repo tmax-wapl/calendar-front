@@ -46,6 +46,7 @@ export interface CalendarDTO {
   regUserId: number;
   type?: string;
   url?: string;
+  subscribeStatus?: string;
 }
 
 export interface CalendarPersonaDTO {

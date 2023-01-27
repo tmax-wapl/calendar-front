@@ -68,4 +68,12 @@ export class CalendarModel {
   get url(): string {
     return this.dto.url;
   }
+
+  get subscribeStatus(): string {
+    return this.dto.subscribeStatus;
+  }
+
+  set subscribeStatus(value: string) {
+    this.dto.subscribeStatus = value;
+  }
 }

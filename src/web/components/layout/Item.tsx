@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { CalendarModel } from '@/stores/model/CalendarModel';
-import { Checkbox, Icon } from '@wapl/ui';
+import { Checkbox, Icon, Tooltip, useWaplUiStore } from '@wapl/ui';
 import {
   ItemContainer,
   InputItemContainer,
@@ -11,6 +11,7 @@ import {
   CheckItemContainer,
   CheckBoxWrapper,
   ButtonWarpper,
+  ErrorIcon,
 } from './Item.style';
 
 interface Props {
@@ -21,6 +22,9 @@ const Item = observer(({ category }: Props) => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore } = useCalendarStores();
   const [renameTitle, setRenameTitle] = useState(category.name);
+  const {
+    toast: { notify },
+  } = useWaplUiStore();
 
   const onContextMenuOpen = (e: any, category: CalendarModel) => {
     e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
@@ -53,9 +57,14 @@ const Item = observer(({ category }: Props) => {
     calendarStore.setRenameId(null);
   };
 
-  const handleSyncClick = () => {
-    const { start, end } = uiStore.dateRange;
-    calendarStore.syncCalendar(category.id, start, end);
+  const handleSyncClick = async () => {
+    try {
+      const { start, end } = uiStore.dateRange;
+      const iCalendar = await calendarStore.syncCalendar(category.id, start, end);
+      if (iCalendar.subscribeStatus === 'success') notify(`${iCalendar.name} 캘린더 동기화가 성공하였습니다.`);
+    } catch (status: any) {
+      if (status === 500) calendarStore.updateCalendarDTO(category.id, 'subscribeStatus', 'wait');
+    }
   };
 
   return (
@@ -82,9 +91,18 @@ const Item = observer(({ category }: Props) => {
             type={category.type}
           />
           {category.type === 'url' && (
-            <ButtonWarpper onClick={handleSyncClick}>
-              <Icon.RenewLine width={20} height={20} color="#80868B" />
-            </ButtonWarpper>
+            <>
+              {category.subscribeStatus !== 'success' && (
+                <Tooltip
+                  title={category.subscribeStatus === 'fail' ? '원본이 삭제된 캘린더입니다.' : '잠시 후 시도해 주세요.'}
+                >
+                  <ErrorIcon width={20} height={20} color=" #F44336" />
+                </Tooltip>
+              )}
+              <ButtonWarpper onClick={handleSyncClick}>
+                <Icon.RenewLine width={20} height={20} color="#80868B" />
+              </ButtonWarpper>
+            </>
           )}
           <ButtonWarpper onClick={e => onContextMenuOpen(e, category)}>
             <Icon.MoreLine width={20} height={20} />
