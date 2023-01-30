@@ -321,6 +321,7 @@ const Calendar: React.FC = observer(() => {
           dateClick={handleClick}
           eventContent={renderEventContent}
           nowIndicator
+          eventOrder="-allDay,start,-duration,-regDate"
         />
         <Popover moreLinkData={moreLinkData} setMoreLinkData={setMoreLinkData} />
       </FullCalendarWrapper>

@@ -6,9 +6,11 @@ import { toISO } from '@/utils';
 
 export class EventModel {
   dto: Partial<EventDTO>;
+  regDate: string;
 
   constructor(dto: Partial<EventDTO>) {
     this.dto = dto;
+    this.regDate = dto.regDate;
     makeAutoObservable(this);
   }
 
@@ -96,9 +98,9 @@ export class EventModel {
     return this.dto.modUserId;
   }
 
-  get regDate(): DateTime {
-    return DateTime.fromISO(this.dto.regDate);
-  }
+  // get regDate(): DateTime {
+  //   return DateTime.fromISO(this.dto.regDate);
+  // }
 
   get regUserId(): number {
     return this.dto.regUserId;
