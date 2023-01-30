@@ -27,6 +27,12 @@ export interface EventDTO {
   exDate?: string;
 }
 
+export interface HolidayDTO {
+  dateDay: string;
+  name: string;
+  isRed: boolean;
+}
+
 export interface CalendarDTO {
   id: number;
   name: string;
@@ -40,6 +46,7 @@ export interface CalendarDTO {
   regUserId: number;
   type?: string;
   url?: string;
+  subscribeStatus?: string;
 }
 
 export interface CalendarPersonaDTO {

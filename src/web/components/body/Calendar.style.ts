@@ -54,6 +54,12 @@ export const CalendarContainer = styled.div`
     padding: 12px 0px 7px 13px;
   }
 
+  .fc-timegrid .fc-col-header-cell-cushion {
+    display: flex;
+    font-size: 14px;
+    padding: 12px 6px 7px 8px;
+  }
+
   .fc-daygrid-day-number {
     padding: 14px 0px 0px 16px;
     font-family: 'Spoqa Han Sans Neo';
@@ -302,6 +308,9 @@ export const EventWrapper = styled.span<{ isHalfLess: boolean }>`
   display: flex;
   align-items: center;
   padding: ${({ isHalfLess }) => (isHalfLess ? '0px 8px' : '4px 8px')};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const WeekEventWrapper = styled(EventWrapper)`
@@ -321,4 +330,11 @@ export const EventSpan = styled.span`
   display: flex;
   align-items: center;
   font-size: 13px;
+`;
+
+export const WeekDayHeader = styled.span<{ color: string }>`
+  color: ${({ color }) => color};
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;

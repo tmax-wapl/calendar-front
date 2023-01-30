@@ -24,14 +24,17 @@ const EventListView = () => {
   const handleClickEvent = useCallback(async (id: number) => {
     const eventInfo = await eventStore.getEventInfo(id);
     eventStore.setEvent(eventInfo);
-    if (!pathname.includes('detail')) navigate(`/main/detail`);
+    if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   }, []);
 
   useEffect(() => {
     const fetchData = async (dateDay: DateTime) => {
       const date = dateDay.startOf('day');
       const eventList = calendarStore.eventList.filter(
-        event => date < toLuxon(event.end) && toLuxon(event.start) < date.plus({ days: 1 }),
+        event =>
+          date < toLuxon(event.end) &&
+          toLuxon(event.start) < date.plus({ days: 1 }) &&
+          (event.importance || !uiStore.isImportanceChecked),
       );
       setEventList(eventList);
     };
@@ -47,6 +50,21 @@ const EventListView = () => {
     return `음력 ${month}.${day}`;
   };
 
+  const holiday = () => {
+    const { dateDay } = uiStore;
+    const holidayList = calendarStore.holidayList.filter(holiday => holiday.dateDay === dateDay.toFormat('yyyy-LL-dd'));
+
+    return (
+      <>
+        {holidayList.map((holiday, index) => (
+          <Holiday key={index} isRed={holiday.isRed}>
+            {holiday.name}
+          </Holiday>
+        ))}
+      </>
+    );
+  };
+
   return (
     <EventListViewContainer>
       <DateInfo>
@@ -55,8 +73,8 @@ const EventListView = () => {
             return (
               <>
                 <DateDay>{getDateDay()}</DateDay>
-                {/* <Holiday>추석 연휴</Holiday> */}
-                {uiStore.isLunarChecked && <Lunar>{lunar()}</Lunar>}
+                {uiStore.isHolidayChecked && holiday()}
+                {uiStore.isLunarChecked && <Lunar isRed={false}>{lunar()}</Lunar>}
               </>
             );
           }}

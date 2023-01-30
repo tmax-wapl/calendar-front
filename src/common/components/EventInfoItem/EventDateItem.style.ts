@@ -14,11 +14,15 @@ export const PickerContainer = styled.div`
   }
 `;
 
-export const DateWrapper = styled.div`
+export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   display: flex;
+  width: 122px;
+  height: 28px;
   align-items: center;
-  padding: 5px 12px;
+  justify-content: center;
+  box-sizing: border-box;
   border-radius: 6px;
+  ${({ isInvalid }) => isInvalid && 'border: 1px solid #F44336'};
   cursor: pointer;
   :hover {
     background: rgba(0, 0, 0, 0.04);
@@ -37,14 +41,16 @@ export const DatePickerWrapper = styled.div`
   border-radius: 12px;
 `;
 
-export const TimeWrapper = styled.div`
+export const TimeWrapper = styled.div<{ isInvalid?: boolean }>`
   display: flex;
-  width: 74px;
+  width: 86px;
+  height: 28px;
   box-sizing: border-box;
-  padding: 6px;
+  padding: 5px 11px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
+  border: 1px solid ${({ isInvalid }) => (isInvalid ? '#F44336' : 'transparent')};
   :hover {
     background: rgba(0, 0, 0, 0.04);
   }

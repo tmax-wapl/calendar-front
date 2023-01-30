@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import FullCalendar, {
+  DayCellContentArg,
+  DayHeaderContentArg,
   EventClickArg,
   EventContentArg,
   EventSegment,
@@ -21,6 +23,7 @@ import {
   WeekEventWrapper,
   CalendarColor,
   FullCalendarWrapper,
+  WeekDayHeader,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
@@ -28,9 +31,11 @@ import { DateTime } from 'luxon';
 import { VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toLuxon, diffTime, toDateString } from '@/utils';
-import { autorun } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import { autorun, transaction } from 'mobx';
+import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
+import { Holiday, Lunar } from '../EventListView.style';
+import { getLunar } from 'holiday-kr';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -66,11 +71,28 @@ const Calendar: React.FC = observer(() => {
   });
 
   const fetchData = async (start: string, end: string) => {
-    const eventList = await eventStore.getEventList(userId, start, end);
-    calendarStore.setEventList(eventList);
+    const { eventList, holidayList } = await eventStore.getEventList(userId, start, end);
+
+    transaction(() => {
+      calendarStore.setEventList(eventList);
+      calendarStore.setHolidayList(holidayList);
+    });
   };
 
-  const renderDayContent = (content: any) => <span>{content.dayNumberText.slice(0, -1)}</span>;
+  const isHoliday = (date: string) => {
+    return !!calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
+  };
+
+  const DateColor = (content: DayCellContentArg | DayHeaderContentArg, isWeekDay = false) => {
+    const date = toDateString(content.date);
+    if (content.dow === 0 || isHoliday(date)) return 'red'; // 공휴일
+    else if (date === DateTime.local().toFormat('yyyy-LL-dd') && !isWeekDay) return 'white'; // today
+    return 'black'; // 일반 date
+  };
+
+  const renderDayContent = (content: DayCellContentArg) => (
+    <span style={{ color: DateColor(content) }}>{content.dayNumberText.slice(0, -1)}</span>
+  );
 
   const renderAllDayContent = ({ text }: { text: string }) =>
     uiStore.viewMode === VIEW_MODE.WEEK ? (
@@ -81,6 +103,35 @@ const Calendar: React.FC = observer(() => {
     ) : (
       text
     );
+
+  const lunar = (date: Date) => {
+    const { month, day } = getLunar(date);
+    return `음 ${month}.${day}.`;
+  };
+
+  const holiday = (content: DayHeaderContentArg) => {
+    const date = toDateString(content.date);
+    const holiday = calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
+    return holiday && <Holiday isRed={holiday.isRed}>{holiday.name}</Holiday>;
+  };
+
+  const renderHeaderContent = (content: DayHeaderContentArg) => {
+    return uiStore.viewMode === VIEW_MODE.WEEK ? (
+      <Observer>
+        {() => (
+          <WeekDayHeader color={DateColor(content, true)}>
+            {content.date.getDate()} {getDay(content.dow)}
+            {uiStore.isHolidayChecked && holiday(content)}
+            {uiStore.isLunarChecked && (
+              <Lunar isRed={isHoliday(toDateString(content.date))}>{lunar(content.date)}</Lunar>
+            )}
+          </WeekDayHeader>
+        )}
+      </Observer>
+    ) : (
+      content.text
+    );
+  };
 
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
 
@@ -106,7 +157,13 @@ const Calendar: React.FC = observer(() => {
             {event.title}
           </EventWrapper>
         ) : (
-          <WeekEventWrapper data-color={backgroundColor} isHalfLess={isHalfLess}>
+          <WeekEventWrapper
+            data-color={backgroundColor}
+            data-id={event.id}
+            data-startdate={startStr}
+            data-enddate={endStr ? endStr : event.extendedProps.dto.end}
+            isHalfLess={isHalfLess}
+          >
             <EventSpan>
               {event.extendedProps.dto.importance && (
                 <Icon.BookmarkFill className="mr-2" width={12} height={12} color="#FCBB00" />
@@ -161,7 +218,7 @@ const Calendar: React.FC = observer(() => {
     const eventInfo = await eventStore.getEventInfo(+event.id);
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
-    if (!pathname.includes('detail')) navigate(`/main/detail`);
+    if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
   const handleClick = (dateInfo: DateClickArg) => {
@@ -201,13 +258,14 @@ const Calendar: React.FC = observer(() => {
 
   const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
     setDateDay(dayEl);
-    if (!pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`);
+    if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
   };
 
   const handleDateTimeSelect = ({ dayEl, jsEvent }: DateClickArg) => {
     if (!(jsEvent.target instanceof HTMLElement)) return;
     const { time } = jsEvent.target.dataset;
     setDateDay(dayEl);
+    if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
     console.log(time);
     console.log(dayEl, jsEvent);
   };
@@ -259,9 +317,11 @@ const Calendar: React.FC = observer(() => {
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
+          dayHeaderContent={renderHeaderContent}
           dateClick={handleClick}
           eventContent={renderEventContent}
           nowIndicator
+          eventOrder="-allDay,start,-duration,-regDate"
         />
         <Popover moreLinkData={moreLinkData} setMoreLinkData={setMoreLinkData} />
       </FullCalendarWrapper>

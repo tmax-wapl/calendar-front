@@ -52,7 +52,7 @@ const CalendarHeader: React.FC = () => {
   const handleViewChange = (value: string) => {
     const mainApi = uiStore.getApi();
     uiStore.viewMode = value;
-    if (pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}`, { replace: true });
+    if (pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}/date`, { replace: true });
     mainApi?.changeView(value);
     handleDayMaxEvents();
   };

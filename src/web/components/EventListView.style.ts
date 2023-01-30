@@ -29,16 +29,16 @@ export const DateDay = styled.span`
   font-size: 16px;
 `;
 
-export const Holiday = styled.span`
+export const Holiday = styled.span<{ isRed: boolean }>`
   display: flex;
   font-weight: 400;
   font-size: 13px;
-  color: #f44336;
+  color: ${({ isRed }) => (isRed ? '#f44336' : '#9AA0A6')};
 `;
 
-export const Lunar = styled.span`
+export const Lunar = styled.span<{ isRed: boolean }>`
   display: flex;
   font-weight: 400;
   font-size: 13px;
-  color: #9aa0a6;
+  color: ${({ isRed }) => (isRed ? '#f44336' : '#9AA0A6')};
 `;

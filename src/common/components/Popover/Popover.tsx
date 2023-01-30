@@ -1,11 +1,12 @@
 import React, { Dispatch, useEffect, useState } from 'react';
-import { Mui, Icon } from '@wapl/ui';
+import { Icon } from '@wapl/ui';
 import { EventSegment } from '@fullcalendar/react';
 import { ClickArg } from '@wcomponents/body/Calendar';
 import {
   EventIcon,
   EventTitle,
   EventWrapper,
+  Popover,
   PopoverBody,
   PopoverContainer,
   PopoverHeader,
@@ -22,7 +23,7 @@ export interface PopOverProps {
 
 const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLinkData }: PopOverProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { eventStore } = useCalendarStores();
+  const { eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const open = Boolean(anchorEl);
@@ -35,9 +36,12 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
     }));
   };
 
-  const handleEventClick = (id: string) => {
-    eventStore.eventId = +id;
-    if (!pathname.includes('detail')) navigate(`/main/detail`);
+  const handleEventClick = async (id: string) => {
+    const eventInfo = await eventStore.getEventInfo(+id);
+    uiStore.setDateDay(eventInfo.startDate.startOf('day'));
+    eventStore.setEvent(eventInfo);
+    if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+    setAnchorEl(null);
   };
 
   useEffect(() => {
@@ -46,7 +50,7 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
   }, [target]);
 
   return (
-    <Mui.Popover
+    <Popover
       open={open}
       anchorReference="anchorPosition"
       anchorPosition={{ top: position?.top, left: position?.left }}
@@ -71,7 +75,7 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
           })}
         </PopoverBody>
       </PopoverContainer>
-    </Mui.Popover>
+    </Popover>
   );
 };
 

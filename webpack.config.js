@@ -70,7 +70,7 @@ module.exports = env => {
       new HtmlWebpackPlugin({
         //index.html 자동 생성되도록 template 옵션 설정
         template: './public/index.html',
-        favicon: './public/calendar.ico',
+        favicon: './public/calendar.svg',
         templateParameters: {
           env: !dev ? '' : '[DEV]',
         },

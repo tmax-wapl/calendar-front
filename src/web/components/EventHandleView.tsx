@@ -33,22 +33,25 @@ const EventHandleView = observer(({ action }: Props) => {
   const navigate = useNavigate();
 
   const handleClose = () => {
-    navigate(`/main/view-mode/${uiStore.viewMode}`);
+    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
   const preprocessEvent = (event: EventModel): EventModel => {
+    const startDate = event.allDay ? event.startDate.startOf('day') : event.startDate;
     return new EventModel({
       ...event.dto,
       modUserId: userId,
       ...(action === 'create' && { regUserId: userId }),
       ...(!event.title && { title: 'Untitled' }),
       ...(event.allDay && {
-        start: toISO(event.startDate.startOf('day').toUTC()),
+        start: toISO(startDate.toUTC()),
         end: toISO(event.endDate.startOf('day').plus({ days: 1 }).toUTC()),
       }),
       ...(event.rrule && {
-        repeatStartDate: toISO(event.startDate.toUTC()),
-        repeatEndDate: event.repeatEndDate ? toISO(event.repeatEndDate.toUTC()) : '9999-01-01T00:00:00Z',
+        repeatStartDate: toISO(startDate.toUTC()),
+        ...(event.repeatEndDate && {
+          repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
+        }),
       }),
     });
   };
@@ -58,7 +61,7 @@ const EventHandleView = observer(({ action }: Props) => {
     if (!eventStore.event.rrule) {
       calendarStore.appendEventList(event);
     } else uiStore.changeDateRange();
-    navigate('/main/detail');
+    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
   const updateEvent = async (isRepeat = false) => {
@@ -68,7 +71,7 @@ const EventHandleView = observer(({ action }: Props) => {
       EVENT_UPDATE_OPTION.DEFAULT,
     );
     if (!isRepeat) calendarStore.updateEventList(event);
-    navigate('/main/detail');
+    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
   const updateRepeatEvent = async (value: string) => {
@@ -86,7 +89,7 @@ const EventHandleView = observer(({ action }: Props) => {
           }),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
         );
-        navigate('/main/detail');
+        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         break;
       case 'after': // 이 일정 및 향후 일정 수정
         await eventStore.updateEvent(
@@ -100,7 +103,7 @@ const EventHandleView = observer(({ action }: Props) => {
           }),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
         );
-        navigate('/main/detail');
+        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         break;
       case 'all': // 모든 일정 수정
         updateEvent(true);
@@ -141,15 +144,15 @@ const EventHandleView = observer(({ action }: Props) => {
       return;
     }
     if (!eventStore.event.id) {
-      navigate(`/main/view-mode/${uiStore.viewMode}`);
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
       return;
     }
     if (eventStore.event.allDay) {
       eventStore.event.startDate = eventStore.event.startDate.set({ hour: 9, minute: 0 });
-      eventStore.event.endDate = eventStore.event.endDate.set({ hour: 9, minute: 30 });
+      eventStore.event.endDate = eventStore.event.endDate.plus({ days: -1 }).set({ hour: 9, minute: 30 });
       return;
     }
-  }, [action]);
+  }, [action, calendarStore.getCalendarId()]);
 
   return (
     <EventHandleViewContainer>

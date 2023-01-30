@@ -2,7 +2,7 @@ import { Icon } from '@wapl/ui';
 import { EventModel } from '@/stores/model/EventModel';
 import { EventItemContainer, ItemTitleContainer, EventTitle, EventInfo, CalendarName } from './EventItem.style';
 import { getRepeatSummary } from '@/utils';
-import { get12HoursFormat } from '../../utils';
+import { getEventDuration } from '../../utils';
 
 interface Props {
   event: EventModel;
@@ -18,9 +18,7 @@ const EventItem = ({ event, isDetail = false, onClick }: Props) => {
         {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
         <EventTitle>{event.title}</EventTitle>
       </ItemTitleContainer>
-      <EventInfo>
-        {event.allDay ? '종일' : `${get12HoursFormat(event.startDate)} ~ ${get12HoursFormat(event.endDate)}`}
-      </EventInfo>
+      <EventInfo>{getEventDuration(event.startDate, event.endDate, event.allDay)}</EventInfo>
       {event.rrule && <EventInfo>{getRepeatSummary(event.rrule)}</EventInfo>}
       {isDetail ? (
         event.repeatEndDate && <EventInfo>{event.repeatEndDate.toFormat('yyyy. LL. dd. 종료')}</EventInfo>

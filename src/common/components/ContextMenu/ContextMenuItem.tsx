@@ -1,4 +1,4 @@
-import { Icon, Mui, styled } from '@wapl/ui';
+import { Icon, Mui, styled, useWaplUiStore } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toISO, toLuxon } from '@/utils';
@@ -36,13 +36,21 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const {
+    toast: { notify },
+  } = useWaplUiStore();
+
+  const closeDialog = () => {
+    uiStore.setDialogInfo(null);
+  };
+
   const deleteCalendar = async () => {
     await calendarStore.deleteCalendar(id);
     closeDialog();
   };
 
-  const eventDelete = () => {
-    calendarStore.deleteEvent(id);
+  const deleteEvent = async () => {
+    await calendarStore.deleteEvent(id);
     closeDialog();
     if (onClose) onClose();
   };
@@ -71,18 +79,14 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         );
         break;
       case 'all': // 모든 일정 삭제
-        eventDelete();
+        await calendarStore.deleteEvent(id);
         break;
       default:
         break;
     }
-    uiStore.dialogInfo = null;
+    closeDialog();
     uiStore.changeDateRange();
     if (onClose) onClose();
-  };
-
-  const closeDialog = () => {
-    uiStore.dialogInfo = null;
   };
 
   const handleNameChange = () => {
@@ -90,8 +94,15 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     if (onClose) onClose();
   };
 
-  const handleCalendarSync = () => {
-    console.log('캘린더 동기화');
+  const handleCalendarSync = async () => {
+    if (onClose) onClose();
+    try {
+      const { start, end } = uiStore.dateRange;
+      const iCalendar = await calendarStore.syncCalendar(id, start, end);
+      if (iCalendar.subscribeStatus === 'success') notify(`${iCalendar.name} 캘린더 동기화가 성공하였습니다.`);
+    } catch (status: any) {
+      if (status === 500) calendarStore.updateCalendarDTO(id, 'subscribeStatus', 'wait');
+    }
   };
 
   const handleCalendarDelete = (type: string) => {
@@ -105,7 +116,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const handleEventEdit = async () => {
     const event = await eventStore.getEventInfo(id);
     eventStore.setEvent(event);
-    if (!pathname.includes('update')) navigate('/main/update');
+    if (!pathname.includes('update')) navigate(`/main/view-mode/${uiStore.viewMode}/update`);
     if (onClose) onClose();
     handleDateRange();
   };
@@ -124,7 +135,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     if (!model.rrule) {
       uiStore.dialogInfo = {
         action: 'eventDelete',
-        onClick: [closeDialog, eventDelete],
+        onClick: [closeDialog, deleteEvent],
       };
     } else {
       uiStore.dialogInfo = {

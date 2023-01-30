@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DateTime } from 'luxon';
-import { Icon } from '@wapl/ui';
+import { Icon, Tooltip } from '@wapl/ui';
 import {
   EventDateItemContainer,
   PickerContainer,
@@ -17,10 +17,12 @@ interface Props {
   title?: string;
   date: DateTime;
   allDay?: boolean;
+  isDateInvalid?: boolean;
+  isTimeInvalid?: boolean;
   onChange?: (date: DateTime) => void;
 }
 
-const EventDateItem = ({ title, date, allDay, onChange }: Props) => {
+const EventDateItem = ({ title, date, allDay, isDateInvalid, isTimeInvalid, onChange }: Props) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const [isTimePickerOpen, setIsTimePickerOpen] = useState<boolean>(false);
 
@@ -36,10 +38,21 @@ const EventDateItem = ({ title, date, allDay, onChange }: Props) => {
     <EventDateItemContainer>
       {title}
       <PickerContainer>
-        <DateWrapper className={`${isDatePickerOpen ? 'selected' : ''}`} onClick={handleDateClick}>
-          {date.toFormat('yyyy.LL.dd')}
-          <Icon.CalendarLine className="ml-8" color="#202124" width={16} height={16} />
-        </DateWrapper>
+        <Tooltip
+          disableHoverListener={!isDateInvalid}
+          placement="top"
+          title="시작일과 같거나 이후로 설정해 주세요."
+          sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
+        >
+          <DateWrapper
+            className={`${isDatePickerOpen ? 'selected' : ''}`}
+            isInvalid={isDateInvalid}
+            onClick={handleDateClick}
+          >
+            {date.toFormat('yyyy.LL.dd')}
+            <Icon.CalendarLine className="ml-8" color="#202124" width={16} height={16} />
+          </DateWrapper>
+        </Tooltip>
         {isDatePickerOpen && (
           <DatePickerWrapper>
             <DatePicker size={0.85} date={date} onDateClick={onChange} onOutsideClick={handleDateClick} />
@@ -48,10 +61,21 @@ const EventDateItem = ({ title, date, allDay, onChange }: Props) => {
       </PickerContainer>
       {!allDay && (
         <PickerContainer>
-          <TimeWrapper className={`${isTimePickerOpen ? 'selected' : ''}`} onClick={handleTimeClick}>
-            <TimeValue>{date.toFormat('a', { locale: 'ko' })}</TimeValue>
-            <TimeValue>{date.toFormat('h:mm')}</TimeValue>
-          </TimeWrapper>
+          <Tooltip
+            disableHoverListener={isDateInvalid || !isTimeInvalid}
+            placement="top-end"
+            title="시작일과 같거나 이후로 설정해 주세요."
+            sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
+          >
+            <TimeWrapper
+              className={`${isTimePickerOpen ? 'selected' : ''}`}
+              isInvalid={!isDateInvalid && isTimeInvalid}
+              onClick={handleTimeClick}
+            >
+              <TimeValue>{date.toFormat('a', { locale: 'ko' })}</TimeValue>
+              <TimeValue>{date.toFormat('h:mm')}</TimeValue>
+            </TimeWrapper>
+          </Tooltip>
           {isTimePickerOpen && (
             <TimePickerWrapper>
               <TimePicker value={date} onChange={onChange} onOutsideClick={handleTimeClick} />

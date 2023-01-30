@@ -4,15 +4,13 @@ import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
 import { EventDTO } from '@/common/constants/interfaces';
 import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
-import { RRule, RRuleSet } from 'rrule';
-import { isSameDate, toISO } from '@/utils';
+import { toISO, toLuxon } from '@/utils';
 import { DateTime } from 'luxon';
 
 export default class EventStore {
   rootStore: RootStore;
   repo: EventRepo;
   event: EventModel = new EventModel({});
-  eventId: number = null;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -21,7 +19,6 @@ export default class EventStore {
     makeObservable(this, {
       event: observable,
       setEvent: action,
-      eventId: observable,
     });
   }
 
@@ -35,28 +32,29 @@ export default class EventStore {
   }
 
   async getEventList(userId: number, start: string, end: string = start, isListView = false) {
-    const eventList = await this.repo.getEventList(userId, start, end);
-    if (isListView) return eventList.map(event => new EventModel(event));
+    const { eventList, holidayList } = await this.repo.getEventList(userId, start, end);
+    if (isListView) return { eventList: eventList.map(event => new EventModel(event)), holidayList };
 
     const arr: EventModel[] = [];
     eventList.map(event => {
       if (event.rrule) arr.push(...this.makeRRuleObject(event));
       else arr.push(new EventModel(event));
     });
-    return arr;
+    return { eventList: arr, holidayList };
   }
 
   makeRRuleObject(event: EventDTO) {
-    const { rruleObj } = new EventModel(event);
+    const { rruleObj, start, end } = new EventModel(event);
 
-    const start = this.rootStore.uiStore.mainApi.view.activeStart;
-    const end = this.rootStore.uiStore.mainApi.view.activeEnd;
+    const activeStart = this.rootStore.uiStore.mainApi.view.activeStart;
+    const activeEnd = this.rootStore.uiStore.mainApi.view.activeEnd;
+    const duration = toLuxon(end).diff(toLuxon(start));
 
-    return rruleObj.between(start, end).map(day => {
+    return rruleObj.between(activeStart, activeEnd).map(day => {
       return new EventModel({
         ...event,
         start: toISO(DateTime.fromJSDate(day).toUTC()),
-        end: toISO(DateTime.fromJSDate(day).toUTC()),
+        end: toISO(DateTime.fromJSDate(day).plus(duration).toUTC()),
       });
     });
   }

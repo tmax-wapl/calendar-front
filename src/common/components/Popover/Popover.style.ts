@@ -1,4 +1,10 @@
-import { styled } from '@wapl/ui';
+import { styled, Mui } from '@wapl/ui';
+
+export const Popover = styled(Mui.Popover)`
+  .MuiPopover-paper {
+    border-radius: 12px;
+  }
+`;
 
 export const PopoverContainer = styled.div`
   position: absoulte;
@@ -16,7 +22,7 @@ export const PopoverHeader = styled.div`
   padding: 20px;
 `;
 export const PopoverBody = styled.div`
-  padding: 0 20px;
+  padding: 0 8px 8px;
   max-height: 180px;
   overflow: auto;
 `;
@@ -35,9 +41,11 @@ export const EventWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   height: 44px;
+  padding: 0 12px;
   &:hover {
     cursor: pointer;
     background: #ededed;
+    border-radius: 8px;
   }
 `;
 export const EventIcon = styled.div<{ backgroundColor: string }>`

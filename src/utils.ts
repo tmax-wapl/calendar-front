@@ -28,6 +28,20 @@ export const get12HoursFormat = (date: string | DateTime) => {
   return date.toFormat('a h:mm', { locale: 'ko' });
 };
 
+export const getEventDuration = (start: DateTime, end: DateTime, isAllDay = false) => {
+  if (start.hasSame(end, 'day')) return `${get12HoursFormat(start)} ~ ${get12HoursFormat(end)}`;
+  const now = DateTime.now();
+  const isThisYear = now.hasSame(start, 'year') && now.hasSame(end, 'year');
+  const dateFormat = `${isThisYear ? '' : 'yyyy.'}LL.dd.`;
+  if (isAllDay) {
+    if (end.diff(start, 'days').toObject().days === 1) return start.toFormat(dateFormat);
+    return `${start.toFormat(dateFormat)} ~ ${end.plus({ days: -1 }).toFormat(dateFormat)}`;
+  }
+  return `${start.toFormat(`${dateFormat} a h:mm`, { locale: 'ko' })} ~ ${end.toFormat(`${dateFormat} a h:mm`, {
+    locale: 'ko',
+  })}`;
+};
+
 export const getRepeatSummary = (rrule: Partial<Options>): string => {
   const units = ['년', '개월', '주', '일'];
   const dayOfWeek = ['월', '화', '수', '목', '금', '토', '일'];

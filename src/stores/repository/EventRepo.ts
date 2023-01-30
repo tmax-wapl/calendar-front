@@ -1,5 +1,5 @@
 import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
-import { EventDTO } from '@/common/constants/interfaces';
+import { EventDTO, HolidayDTO } from '@/common/constants/interfaces';
 import { API } from '../../common/lib/API';
 
 export default class EventRepo {
@@ -23,8 +23,8 @@ export default class EventRepo {
 
   async getEventList(userId: number, start: string, end: string) {
     try {
-      const { response, success } = await API.get<EventDTO[]>(
-        `/apis/v1/user/list/event/${userId}?start=${start}&end=${end}`,
+      const { response, success } = await API.get<{ eventList: EventDTO[]; holidayList: HolidayDTO[] }>(
+        `/apis/v1/user/list/event/holiday/${userId}?start=${start}&end=${end}`,
       );
       if (success) return response;
     } catch (e) {

@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import RootStore from './RootStore';
 import CalendarRepo from './repository/CalendarRepo';
-import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
+import { CalendarDTO, CalendarPatchDTO, HolidayDTO } from '@/common/constants/interfaces';
 import { CalendarModel } from './model/CalendarModel';
 import { EventModel } from './model/EventModel';
 import { EVENT_DELETE_OPTION } from '@/common/constants';
@@ -12,6 +12,7 @@ export default class CalendarStore {
   renameId: number = null;
   calendarList: CalendarModel[] = null;
   eventList: EventModel[] = [];
+  holidayList: HolidayDTO[] = [];
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -23,10 +24,12 @@ export default class CalendarStore {
       setCalendarList: action,
       eventList: observable,
       setEventList: action,
+      holidayList: observable,
       appendEventList: action,
       updateEventList: action,
       filterEventList: action,
       deleteEvent: action,
+      setHolidayList: action,
     });
   }
 
@@ -45,6 +48,9 @@ export default class CalendarStore {
   filterEventList(id: string) {
     this.eventList = this.eventList.filter(event => event.id !== id);
   }
+  setHolidayList(holidayList: HolidayDTO[]) {
+    this.holidayList = holidayList;
+  }
 
   async createCalendar(dto: Partial<CalendarDTO>) {
     const res = await this.repo.createCalendar(dto);
@@ -62,6 +68,12 @@ export default class CalendarStore {
     const iCalendar = await this.repo.getICalendar(calId, start, end);
     this.eventList = this.eventList.filter(item => item.calId !== calId);
     this.setEventList([...this.eventList, ...iCalendar.eventList?.map(event => new EventModel(event))]);
+    const index = this.calendarList.findIndex(item => item.id === calId);
+    this.calendarList[index] = new CalendarModel({
+      ...this.calendarList[index].dto,
+      subscribeStatus: iCalendar.subscribeStatus,
+    });
+    return iCalendar;
   }
 
   async getCalendarInfo(calId: number, start: string, end: string) {
@@ -87,7 +99,7 @@ export default class CalendarStore {
     this.calendarList = list;
   }
 
-  updateCalendarDTO(id: number, type: 'color' | 'name', value: string) {
+  updateCalendarDTO(id: number, type: 'color' | 'name' | 'subscribeStatus', value: string) {
     const index = this.calendarList.findIndex(item => item.id === id);
     this.calendarList[index][type] = value;
   }

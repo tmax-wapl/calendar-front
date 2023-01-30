@@ -32,11 +32,15 @@ export const PickerContainer = styled.div`
   margin-left: 8px;
 `;
 
-export const DateWrapper = styled.div`
+export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   display: flex;
+  width: 122px;
+  height: 28px;
   align-items: center;
-  padding: 5px 12px;
+  justify-content: center;
+  box-sizing: border-box;
   border-radius: 6px;
+  ${({ isInvalid }) => isInvalid && 'border: 1px solid #F44336'};
   cursor: pointer;
   :hover {
     background: rgba(0, 0, 0, 0.04);
