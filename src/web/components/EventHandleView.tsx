@@ -149,7 +149,7 @@ const EventHandleView = observer(({ action }: Props) => {
       eventStore.event.endDate = eventStore.event.endDate.plus({ days: -1 }).set({ hour: 9, minute: 30 });
       return;
     }
-  }, [action]);
+  }, [action, calendarStore.getCalendarId()]);
 
   return (
     <EventHandleViewContainer>
