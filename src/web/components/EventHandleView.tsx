@@ -37,18 +37,21 @@ const EventHandleView = observer(({ action }: Props) => {
   };
 
   const preprocessEvent = (event: EventModel): EventModel => {
+    const startDate = event.allDay ? event.startDate.startOf('day') : event.startDate;
     return new EventModel({
       ...event.dto,
       modUserId: userId,
       ...(action === 'create' && { regUserId: userId }),
       ...(!event.title && { title: 'Untitled' }),
       ...(event.allDay && {
-        start: toISO(event.startDate.startOf('day').toUTC()),
+        start: toISO(startDate.toUTC()),
         end: toISO(event.endDate.startOf('day').plus({ days: 1 }).toUTC()),
       }),
       ...(event.rrule && {
-        repeatStartDate: toISO(event.startDate.toUTC()),
-        repeatEndDate: event.repeatEndDate ? toISO(event.repeatEndDate.toUTC()) : '9999-01-01T00:00:00Z',
+        repeatStartDate: toISO(startDate.toUTC()),
+        ...(event.repeatEndDate && {
+          repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
+        }),
       }),
     });
   };
