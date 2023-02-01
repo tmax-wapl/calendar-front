@@ -12,9 +12,9 @@ export default class EventRepo {
     }
   }
 
-  async getEventInfo(eventId: number) {
+  async getEventInfo(eventId: number, date?: string) {
     try {
-      const { response, success } = await API.get<EventDTO>(`/apis/v1/event/${eventId}`);
+      const { response, success } = await API.get<EventDTO>(`/apis/v1/event/${eventId}${date ? `?date=${date}` : ''}`);
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));

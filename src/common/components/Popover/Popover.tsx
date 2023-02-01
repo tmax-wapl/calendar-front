@@ -1,6 +1,6 @@
 import React, { Dispatch, useEffect, useState } from 'react';
 import { Icon } from '@wapl/ui';
-import { EventSegment } from '@fullcalendar/react';
+import { EventApi, EventSegment } from '@fullcalendar/react';
 import { ClickArg } from '@wcomponents/body/Calendar';
 import {
   EventIcon,
@@ -36,8 +36,8 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
     }));
   };
 
-  const handleEventClick = async (id: string) => {
-    const eventInfo = await eventStore.getEventInfo(+id);
+  const handleEventClick = async (event: EventApi) => {
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.extendedProps.dto.rrule ? event.startStr : '');
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
@@ -64,7 +64,7 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
         <PopoverBody>
           {events?.map(({ event }: EventSegment) => {
             return (
-              <EventWrapper key={event.id} onClick={() => handleEventClick(event.id)}>
+              <EventWrapper key={event.id} onClick={() => handleEventClick(event)}>
                 <EventIcon backgroundColor={event.backgroundColor} />
                 {event.extendedProps.dto.importance && (
                   <Icon.BookmarkFill className="mr-8" width={16} height={16} color="#FCBB00" />

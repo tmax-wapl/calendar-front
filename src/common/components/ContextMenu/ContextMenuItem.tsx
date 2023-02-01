@@ -114,7 +114,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   };
 
   const handleEventEdit = async () => {
-    const event = await eventStore.getEventInfo(id);
+    const event = await eventStore.getEventInfo(id, type === 'repeatEvent' ? date.startdate : '');
     eventStore.setEvent(event);
     if (!pathname.includes('update')) navigate(`/main/view-mode/${uiStore.viewMode}/update`);
     if (onClose) onClose();
@@ -131,7 +131,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   };
 
   const handleEventDelete = async () => {
-    const model = await eventStore.getEventInfo(id);
+    const model = await eventStore.getEventInfo(id, type === 'repeatEvent' ? date.startdate : '');
     if (!model.rrule) {
       uiStore.dialogInfo = {
         action: 'eventDelete',
@@ -184,7 +184,13 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
       },
     ],
+    // TODO: event와 repeatEvent 분리
     event: [
+      { label: '일정 수정', onClick: handleEventEdit, icon: <Icon.EditLine className="mr-8" /> },
+      // { label: '일정 공유', onClick: handleEventShare, icon: <Icon.ShareLine className="mr-8" /> },
+      { label: '일정 삭제', onClick: handleEventDelete, icon: <Icon.DeleteLine className="mr-8" /> },
+    ],
+    repeatEvent: [
       { label: '일정 수정', onClick: handleEventEdit, icon: <Icon.EditLine className="mr-8" /> },
       // { label: '일정 공유', onClick: handleEventShare, icon: <Icon.ShareLine className="mr-8" /> },
       { label: '일정 삭제', onClick: handleEventDelete, icon: <Icon.DeleteLine className="mr-8" /> },

@@ -9,6 +9,7 @@ import { getLunar } from 'holiday-kr';
 import { autorun } from 'mobx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toLuxon } from '@/utils';
+import { EventModel } from '@/stores/model/EventModel';
 
 const EventListView = () => {
   const { uiStore, eventStore, calendarStore } = useCalendarStores();
@@ -21,8 +22,8 @@ const EventListView = () => {
     return dateDay.toFormat('LL월 dd일 cccc', { locale: 'ko' });
   };
 
-  const handleClickEvent = useCallback(async (id: number) => {
-    const eventInfo = await eventStore.getEventInfo(id);
+  const handleClickEvent = useCallback(async (event: EventModel) => {
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.rrule ? event.start : '');
     eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   }, []);
