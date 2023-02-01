@@ -67,7 +67,7 @@ const EventHandleView = observer(({ action }: Props) => {
     const event = await eventStore.updateEvent(
       +eventStore.event.id,
       preprocessEvent(eventStore.event),
-      EVENT_UPDATE_OPTION.DEFAULT,
+      isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
     );
     if (!isRepeat) calendarStore.updateEventList(event);
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
