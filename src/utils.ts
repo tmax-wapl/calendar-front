@@ -85,3 +85,7 @@ export const isSameDate = (date1: Date, date2: Date) => {
     date1.getDate() === date2.getDate()
   );
 };
+
+export const isRRule = (rruleStr: RRule): rruleStr is RRule => {
+  return !('_exdate' in rruleStr);
+};
