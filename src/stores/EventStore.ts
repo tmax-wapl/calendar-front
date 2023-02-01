@@ -4,7 +4,7 @@ import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
 import { EventDTO } from '@/common/constants/interfaces';
 import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
-import { toISO, toLuxon } from '@/utils';
+import { toISO, toLocalWeekday } from '@/utils';
 import { DateTime } from 'luxon';
 
 export default class EventStore {
@@ -26,10 +26,18 @@ export default class EventStore {
     this.event = event;
   }
 
+  preprocessEvent(event: EventModel) {
+    const { dto, rrule, startDate } = event;
+    return new EventModel({
+      ...dto,
+      ...(rrule?.freq === 2 && { rrule: toLocalWeekday(rrule, startDate).toString() }),
+    });
+  }
+
   async getEventInfo(eventId: number, start?: string) {
     const utcStart = DateTime.fromISO(start).toUTC().toISODate();
     const res = await this.repo.getEventInfo(eventId, utcStart);
-    return new EventModel(res);
+    return this.preprocessEvent(new EventModel(res));
   }
 
   async getEventList(userId: number, start: string, end: string = start, isListView = false) {
@@ -45,30 +53,31 @@ export default class EventStore {
   }
 
   makeRRuleObject(event: EventDTO) {
-    const { rruleObj, start, end } = new EventModel(event);
+    const { rruleObj, startDate, endDate, rrule } = new EventModel(event);
 
     const activeStart = this.rootStore.uiStore.mainApi.view.activeStart;
     const activeEnd = this.rootStore.uiStore.mainApi.view.activeEnd;
-    const duration = toLuxon(end).diff(toLuxon(start));
+    const duration = endDate.diff(startDate);
 
     return rruleObj.between(activeStart, activeEnd).map(day => {
       return new EventModel({
         ...event,
         start: toISO(DateTime.fromJSDate(day).toUTC()),
         end: toISO(DateTime.fromJSDate(day).plus(duration).toUTC()),
+        ...(rrule.freq === 2 && { rrule: toLocalWeekday(rrule, startDate).toString() }),
       });
     });
   }
 
   async createEvent({ dto }: EventModel) {
     const res = await this.repo.createEvent(dto);
-    this.event = new EventModel(res);
+    this.event = this.preprocessEvent(new EventModel(res));
     return this.event;
   }
 
   async updateEvent(eventId: number, { dto }: EventModel, updateOption: EVENT_UPDATE_OPTION) {
     const res = await this.repo.updateEvent(eventId, dto, updateOption);
-    this.event = new EventModel(res);
+    this.event = this.preprocessEvent(new EventModel(res));
     return this.event;
   }
 

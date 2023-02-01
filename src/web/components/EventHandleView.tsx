@@ -18,10 +18,8 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { getStartDate, toISO, rruleString, toLuxon } from '@/utils';
-import { autorun } from 'mobx';
+import { getStartDate, toISO, rruleString, toUTCWeekday } from '@/utils';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
-import { DateTime } from 'luxon';
 
 interface Props {
   action: 'create' | 'update';
@@ -48,6 +46,7 @@ const EventHandleView = observer(({ action }: Props) => {
         end: toISO(event.endDate.startOf('day').plus({ days: 1 }).toUTC()),
       }),
       ...(event.rrule && {
+        ...(event.rrule.freq === 2 && { rrule: toUTCWeekday(event.rrule, startDate).toString().replace(/\n/, ' ') }),
         repeatStartDate: toISO(startDate.toUTC()),
         ...(event.repeatEndDate && {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
