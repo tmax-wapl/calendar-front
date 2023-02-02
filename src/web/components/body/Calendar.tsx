@@ -328,9 +328,7 @@ const Calendar: React.FC = observer(() => {
               ? calendarStore.eventList.filter(event => event.importance || !uiStore.isImportanceChecked)
               : calendarStore.eventList
                   .filter(event => event.importance || !uiStore.isImportanceChecked)
-                  .map(event => {
-                    return createAllDayEvent(event);
-                  })
+                  .map(event => createAllDayEvent(event))
           }
           dayMaxEvents={5}
           moreLinkContent={renderMoreLinkContent}
