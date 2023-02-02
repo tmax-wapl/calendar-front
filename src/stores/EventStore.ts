@@ -4,7 +4,7 @@ import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
 import { EventDTO } from '@/common/constants/interfaces';
 import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
-import { toISO, toLocalWeekday } from '@/utils';
+import { toISO, applyWeekdayOffset } from '@/utils';
 import { DateTime } from 'luxon';
 
 export default class EventStore {
@@ -30,7 +30,7 @@ export default class EventStore {
     const { dto, rrule, startDate } = event;
     return new EventModel({
       ...dto,
-      ...(rrule?.freq === 2 && { rrule: toLocalWeekday(rrule, startDate).toString() }),
+      ...(rrule?.freq === 2 && { rrule: applyWeekdayOffset(rrule, startDate, 'local').toString() }),
     });
   }
 
@@ -64,7 +64,7 @@ export default class EventStore {
         ...event,
         start: toISO(DateTime.fromJSDate(day).toUTC()),
         end: toISO(DateTime.fromJSDate(day).plus(duration).toUTC()),
-        ...(rrule.freq === 2 && { rrule: toLocalWeekday(rrule, startDate).toString() }),
+        ...(rrule.freq === 2 && { rrule: applyWeekdayOffset(rrule, startDate, 'local').toString() }),
       });
     });
   }

@@ -90,15 +90,8 @@ export const isRRule = (rruleStr: RRule | RRuleSet): rruleStr is RRule => {
   return !('_exdate' in rruleStr);
 };
 
-export const toUTCWeekday = (rrule: Partial<Options>, start: DateTime): RRule => {
-  const weekdayOffset = start.toUTC().weekday - start.weekday;
-  if (!weekdayOffset) return new RRule(rrule);
-  const byweekday = (rrule.byweekday as Weekday[]).map(({ weekday }) => (weekday + weekdayOffset + 7) % 7);
-  return new RRule({ ...rrule, byweekday });
-};
-
-export const toLocalWeekday = (rrule: Partial<Options>, start: DateTime): RRule => {
-  const weekdayOffset = start.weekday - start.toUTC().weekday;
+export const applyWeekdayOffset = (rrule: Partial<Options>, start: DateTime, to: 'UTC' | 'local'): RRule => {
+  const weekdayOffset = to === 'UTC' ? start.toUTC().weekday - start.weekday : start.weekday - start.toUTC().weekday;
   if (!weekdayOffset) return new RRule(rrule);
   const byweekday = (rrule.byweekday as Weekday[]).map(({ weekday }) => (weekday + weekdayOffset + 7) % 7);
   return new RRule({ ...rrule, byweekday });

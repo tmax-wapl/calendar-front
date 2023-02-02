@@ -20,7 +20,7 @@ interface Props {
   defaultEndDate?: DateTime;
   repeatEndDate?: DateTime;
   onRRuleChange?: (value: Partial<Options>) => void;
-  onEndChange?: (value: DateTime) => void;
+  onEndChange?: (value?: DateTime) => void;
 }
 
 const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleChange, onEndChange }: Props) => {
@@ -51,7 +51,7 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
   const handleCheckboxChange = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     if (checked) onEndChange(defaultEndDate || DateTime.now());
     else {
-      onEndChange(undefined);
+      onEndChange();
       setIsDatePickerOpen(false);
     }
   };
