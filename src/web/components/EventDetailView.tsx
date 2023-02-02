@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import { Observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { useNavigate } from 'react-router-dom';
 import { EventDetailViewContainer, EventDetailContainer, FromInfo, Creator } from './EventDetailView.style';
@@ -9,7 +9,7 @@ import { Participants, Location, Notifications, Description, Attachments } from 
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EVENT_DELETE_OPTION } from '@common/constants';
 
-const EventDetailView = observer(() => {
+const EventDetailView = () => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
 
@@ -51,23 +51,29 @@ const EventDetailView = observer(() => {
       />
       {eventStore.event && (
         <EventDetailContainer>
-          <EventItem event={eventStore.event} isDetail />
-          <FromInfo>
-            <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
-            {eventStore.event.calName}
-            <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
-          </FromInfo>
+          <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
+          <Observer>
+            {() => (
+              <FromInfo>
+                <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
+                {eventStore.event.calName}
+                <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
+              </FromInfo>
+            )}
+          </Observer>
           {/* {eventStore.event.participants.length && <Participants participants={eventStore.event.participants} />} */}
-          {eventStore.event.location && <Location location={eventStore.event.location} />}
+          {eventStore.event.location && <Observer>{() => <Location location={eventStore.event.location} />}</Observer>}
           {/* {eventStore.event.alarmList.length > 0 && (
             <Notifications notifications={eventStore.event.alarmList.map(({ time, timestamp }) => `${time} ${timestamp}`)} />
           )} */}
-          {eventStore.event.description && <Description description={eventStore.event.description} />}
+          {eventStore.event.description && (
+            <Observer>{() => <Description description={eventStore.event.description} />}</Observer>
+          )}
           {/* {eventStore.event.attachments?.length && <Attachments attachments={eventStore.event.attachments} />} */}
         </EventDetailContainer>
       )}
     </EventDetailViewContainer>
   );
-});
+};
 
 export default EventDetailView;
