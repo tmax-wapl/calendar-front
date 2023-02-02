@@ -36,6 +36,7 @@ import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { Holiday, Lunar } from '../EventListView.style';
 import { getLunar } from 'holiday-kr';
+import { EventModel } from '@/stores/model/EventModel';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -277,6 +278,16 @@ const Calendar: React.FC = observer(() => {
 
   const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];
 
+  const createAllDayEvent = (event: EventModel) => {
+    const { startDate, endDate } = event;
+    const newEvent = new EventModel({ ...event.dto });
+    const is24Hours = endDate.diff(startDate, 'hours').toObject().hours >= 24;
+    newEvent.allDay = is24Hours;
+    newEvent.endDate =
+      is24Hours && endDate.startOf('day') < endDate ? endDate.startOf('day').plus({ days: 1 }) : endDate;
+    return newEvent;
+  };
+
   useEffect(() => {
     if (calendarRef) {
       uiStore.mainApi = calendarRef?.current?.getApi();
@@ -312,7 +323,13 @@ const Calendar: React.FC = observer(() => {
           dayCellContent={renderDayContent}
           eventClick={handleEventClick}
           allDayText="종일"
-          events={calendarStore.eventList.filter(event => event.importance || !uiStore.isImportanceChecked)}
+          events={
+            uiStore.viewMode === VIEW_MODE.MONTH
+              ? calendarStore.eventList.filter(event => event.importance || !uiStore.isImportanceChecked)
+              : calendarStore.eventList
+                  .filter(event => event.importance || !uiStore.isImportanceChecked)
+                  .map(event => createAllDayEvent(event))
+          }
           dayMaxEvents={5}
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}
