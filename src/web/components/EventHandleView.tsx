@@ -97,7 +97,7 @@ const EventHandleView = ({ action }: Props) => {
             ...eventStore.event.dto,
             id: null,
             repeatStartDate: toISO(startDate.toUTC()),
-            repeatEndDate: toISO(eventStore.event.repeatEndDate.toUTC()),
+            ...(eventStore.event.repeatEndDate && { repeatEndDate: toISO(eventStore.event.repeatEndDate.toUTC()) }),
             rrule: rruleString(eventStore.event.rrule),
           }),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
@@ -190,6 +190,7 @@ const EventHandleView = ({ action }: Props) => {
               defaultEndDate={eventStore.event.startDate?.plus({ years: 1 })}
               repeatEndDate={eventStore.event.repeatEndDate}
               onRRuleChange={value => (eventStore.event.rrule = value)}
+              onEndChange={value => (eventStore.event.repeatEndDate = value)}
             />
           )}
         </Observer>
