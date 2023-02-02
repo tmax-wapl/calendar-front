@@ -23,7 +23,7 @@ const EventListView = () => {
   };
 
   const handleClickEvent = useCallback(async (event: EventModel) => {
-    const eventInfo = await eventStore.getEventInfo(+event.id, event.rrule ? event.start : '');
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.start);
     eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   }, []);

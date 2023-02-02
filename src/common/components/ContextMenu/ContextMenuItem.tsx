@@ -114,7 +114,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   };
 
   const handleEventEdit = async () => {
-    const event = await eventStore.getEventInfo(id, type === 'repeatEvent' ? date.startdate : '');
+    const event = await eventStore.getEventInfo(id, date.startdate);
     eventStore.setEvent(event);
     if (!pathname.includes('update')) navigate(`/main/view-mode/${uiStore.viewMode}/update`);
     if (onClose) onClose();
@@ -131,7 +131,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   };
 
   const handleEventDelete = async () => {
-    const model = await eventStore.getEventInfo(id, type === 'repeatEvent' ? date.startdate : '');
+    const model = await eventStore.getEventInfo(id, date.startdate);
     if (!model.rrule) {
       uiStore.dialogInfo = {
         action: 'eventDelete',

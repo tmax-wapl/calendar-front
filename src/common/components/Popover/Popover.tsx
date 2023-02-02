@@ -37,7 +37,7 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
   };
 
   const handleEventClick = async (event: EventApi) => {
-    const eventInfo = await eventStore.getEventInfo(+event.id, event.extendedProps.dto.rrule ? event.startStr : '');
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.startStr);
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
