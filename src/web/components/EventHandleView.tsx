@@ -147,8 +147,10 @@ const EventHandleView = ({ action }: Props) => {
       return;
     }
     if (eventStore.event.allDay) {
-      eventStore.event.startDate = eventStore.event.startDate.set({ hour: 9, minute: 0 });
+      const startDate = eventStore.event.startDate.set({ hour: 9, minute: 0 });
+      eventStore.event.startDate = startDate;
       eventStore.event.endDate = eventStore.event.endDate.plus({ days: -1 }).set({ hour: 9, minute: 30 });
+      if (eventStore.event.repeatEndDate) eventStore.event.repeatEndDate = startDate;
       return;
     }
   }, [action, calendarStore.getCalendarId()]);
