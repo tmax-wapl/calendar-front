@@ -47,7 +47,7 @@ export const getRepeatSummary = (rrule: Partial<Options>): string => {
   const dayOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
   const byweekday = rrule.byweekday as Weekday[];
 
-  const interval = `${rrule.interval}${units[rrule.freq]} 간격`;
+  const interval = `${rrule.interval ?? 1}${units[rrule.freq]} 간격`;
   const weekday = ` ${byweekday?.reduce((acc, day) => (acc ? `${acc} ` : '') + `${dayOfWeek[day.weekday]}`, '')} 반복`;
   const until = ` / ${rrule.until?.toISOString().split('T')[0].replace(/-/g, '.')}. 종료`;
 
@@ -84,4 +84,8 @@ export const isSameDate = (date1: Date, date2: Date) => {
     date1.getMonth() === date2.getMonth() &&
     date1.getDate() === date2.getDate()
   );
+};
+
+export const isRRule = (rruleStr: RRule | RRuleSet): rruleStr is RRule => {
+  return !('_exdate' in rruleStr);
 };

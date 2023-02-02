@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { DateTime } from 'luxon';
 import { rrulestr, RRule, Options, RRuleSet } from 'rrule';
 import { EventDTO, AlarmDTO, ExceptionDTO } from '@constants/interfaces';
-import { toISO } from '@/utils';
+import { isRRule, toISO } from '@/utils';
 
 export class EventModel {
   dto: Partial<EventDTO>;
@@ -108,7 +108,7 @@ export class EventModel {
 
   get rrule(): Partial<Options> {
     return this.dto.rrule
-      ? Object.keys(rrulestr(this.dto.rrule).origOptions).length !== 0
+      ? isRRule(rrulestr(this.dto.rrule))
         ? rrulestr(this.dto.rrule).origOptions
         : (rrulestr(this.dto.rrule) as RRuleSet)._rrule[0].origOptions
       : undefined;

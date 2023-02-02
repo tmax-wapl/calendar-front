@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import { Observer } from 'mobx-react-lite';
 import { Icon, Button } from '@wapl/ui';
 import { useNavigate } from 'react-router-dom';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -18,16 +18,14 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { getStartDate, toISO, rruleString, toLuxon } from '@/utils';
-import { autorun } from 'mobx';
+import { getStartDate, toISO, rruleString } from '@/utils';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
-import { DateTime } from 'luxon';
 
 interface Props {
   action: 'create' | 'update';
 }
 
-const EventHandleView = observer(({ action }: Props) => {
+const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const { userId } = useContext(CalendarContext);
   const navigate = useNavigate();
@@ -161,84 +159,112 @@ const EventHandleView = observer(({ action }: Props) => {
         leftSide={[{ action: 'close', onClick: handleClose }]}
       />
       <EventHandleContainer>
-        <EventTitle
-          title={eventStore.event.title}
-          importance={eventStore.event.importance}
-          onTitleChange={value => (eventStore.event.title = value)}
-          onImportanceChange={value => (eventStore.event.importance = value)}
-        />
-        <EventDate
-          allDay={eventStore.event.allDay}
-          start={eventStore.event.startDate}
-          end={eventStore.event.endDate}
-          onAllDayChange={value => (eventStore.event.allDay = value)}
-          onStartChange={value => (eventStore.event.startDate = value)}
-          onEndChange={value => (eventStore.event.endDate = value)}
-        />
-        <RepeatInfo
-          rrule={eventStore.event.rrule}
-          startDate={eventStore.event.startDate}
-          defaultEndDate={eventStore.event.startDate?.plus({ years: 1 })}
-          repeatEndDate={eventStore.event.repeatEndDate}
-          onRRuleChange={value => (eventStore.event.rrule = value)}
-        />
-        <FromInfo>
-          <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
-          <ColorPicker
-            color={eventStore.event.color}
-            iterationCount={11}
-            columnGap={8}
-            onClick={color => (eventStore.event.color = color)}
-          />
-        </FromInfo>
+        <Observer>
+          {() => (
+            <EventTitle
+              title={eventStore.event.title}
+              importance={eventStore.event.importance}
+              onTitleChange={value => (eventStore.event.title = value)}
+              onImportanceChange={value => (eventStore.event.importance = value)}
+            />
+          )}
+        </Observer>
+        <Observer>
+          {() => (
+            <EventDate
+              allDay={eventStore.event.allDay}
+              start={eventStore.event.startDate}
+              end={eventStore.event.endDate}
+              onAllDayChange={value => (eventStore.event.allDay = value)}
+              onStartChange={value => (eventStore.event.startDate = value)}
+              onEndChange={value => (eventStore.event.endDate = value)}
+            />
+          )}
+        </Observer>
+        <Observer>
+          {() => (
+            <RepeatInfo
+              rrule={eventStore.event.rrule}
+              startDate={eventStore.event.startDate}
+              defaultEndDate={eventStore.event.startDate?.plus({ years: 1 })}
+              repeatEndDate={eventStore.event.repeatEndDate}
+              onRRuleChange={value => (eventStore.event.rrule = value)}
+            />
+          )}
+        </Observer>
+        <Observer>
+          {() => (
+            <FromInfo>
+              <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
+              <ColorPicker
+                color={eventStore.event.color}
+                iterationCount={11}
+                columnGap={8}
+                onClick={color => (eventStore.event.color = color)}
+              />
+            </FromInfo>
+          )}
+        </Observer>
         {/* <Participants participants={eventStore.event.participants} editable /> */}
-        <Location
-          location={eventStore.event.location}
-          onChange={value => (eventStore.event.location = value)}
-          editable
-        />
+        <Observer>
+          {() => (
+            <Location
+              location={eventStore.event.location}
+              onChange={value => (eventStore.event.location = value)}
+              editable
+            />
+          )}
+        </Observer>
         {/* <Notifications
           notifications={eventStore.event.notifications}
           onChange={value => setEvent(prev => ({ ...prev, ...value }))}
           editable
         /> */}
-        <Description
-          description={eventStore.event.description}
-          onChange={value => (eventStore.event.description = value)}
-          editable
-        />
-        {/* <Attachments attachments={eventStore.event.attachments} editable /> */}
-        <ButtonGroup fullWidth>
-          <Button variant="secondary" size="large" onClick={handleClose}>
-            취소
-          </Button>
-          {action === 'create' ? (
-            <Button
-              size="large"
-              onClick={handleCreate}
-              disabled={
-                eventStore.event.startDate > eventStore.event.endDate ||
-                eventStore.event.startDate > eventStore.event.repeatEndDate
-              }
-            >
-              생성
-            </Button>
-          ) : (
-            <Button
-              size="large"
-              onClick={handleUpdate}
-              disabled={
-                eventStore.event.startDate > eventStore.event.endDate ||
-                eventStore.event.startDate > eventStore.event.repeatEndDate
-              }
-            >
-              수정
-            </Button>
+        <Observer>
+          {() => (
+            <Description
+              description={eventStore.event.description}
+              onChange={value => (eventStore.event.description = value)}
+              editable
+            />
           )}
-        </ButtonGroup>
+        </Observer>
+        {/* <Attachments attachments={eventStore.event.attachments} editable /> */}
+        <Observer>
+          {() => (
+            <ButtonGroup fullWidth>
+              <Button variant="secondary" size="large" onClick={handleClose}>
+                취소
+              </Button>
+              {action === 'create' ? (
+                <Button
+                  size="large"
+                  onClick={handleCreate}
+                  disabled={
+                    eventStore.event.startDate > eventStore.event.endDate ||
+                    eventStore.event.startDate > eventStore.event.repeatEndDate
+                  }
+                >
+                  생성
+                </Button>
+              ) : (
+                <Button
+                  size="large"
+                  onClick={handleUpdate}
+                  disabled={
+                    eventStore.event.startDate > eventStore.event.endDate ||
+                    eventStore.event.startDate > eventStore.event.repeatEndDate
+                  }
+                >
+                  수정
+                </Button>
+              )}
+            </ButtonGroup>
+          )}
+        </Observer>
       </EventHandleContainer>
     </EventHandleViewContainer>
   );
-});
+};
 
 export default EventHandleView;
