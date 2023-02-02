@@ -148,6 +148,7 @@ const Calendar: React.FC = observer(() => {
           <EventWrapper
             data-color={backgroundColor}
             data-id={event.id}
+            data-type={event.extendedProps.dto.rrule ? 'repeatEvent' : 'event'}
             data-startdate={startStr}
             data-enddate={endStr ? endStr : event.extendedProps.dto.end}
             isHalfLess
@@ -161,6 +162,7 @@ const Calendar: React.FC = observer(() => {
           <WeekEventWrapper
             data-color={backgroundColor}
             data-id={event.id}
+            data-type={event.extendedProps.dto.rrule ? 'repeatEvent' : 'event'}
             data-startdate={startStr}
             data-enddate={endStr ? endStr : event.extendedProps.dto.end}
             isHalfLess={isHalfLess}
@@ -216,7 +218,7 @@ const Calendar: React.FC = observer(() => {
 
   const handleEventClick = async ({ event, jsEvent }: EventClickArg) => {
     jsEvent.stopPropagation();
-    const eventInfo = await eventStore.getEventInfo(+event.id);
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.startStr);
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
@@ -243,18 +245,18 @@ const Calendar: React.FC = observer(() => {
     const target = e.target?.closest('.fc-daygrid-event') || e.target?.closest('.fc-timegrid-event');
     if (!target) return;
 
-    const { color, id, startdate, enddate } = e.target?.querySelector('span[data-color]')?.dataset;
-    uiStore.contextClickArg = {
+    const { color, id, startdate, enddate, type } = e.target?.querySelector('span[data-color]')?.dataset;
+    uiStore.setContextClickArg({
       target,
       position: { top: e.clientY, left: e.clientX },
       color,
-      type: 'event',
+      type,
       id,
       date: {
         startdate,
         enddate,
       },
-    };
+    });
   };
 
   const handleMonthViewClick = ({ dayEl }: DateClickArg) => {

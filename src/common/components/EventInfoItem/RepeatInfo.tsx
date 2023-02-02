@@ -20,9 +20,10 @@ interface Props {
   defaultEndDate?: DateTime;
   repeatEndDate?: DateTime;
   onRRuleChange?: (value: Partial<Options>) => void;
+  onEndChange?: (value?: DateTime) => void;
 }
 
-const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleChange }: Props) => {
+const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleChange, onEndChange }: Props) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const dayOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
   const byweekday = (rrule?.byweekday as Weekday[])?.map(({ weekday }) => weekday);
@@ -37,7 +38,6 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
 
   const handleSelectChange = (freq: number) => {
     onRRuleChange({
-      // ...(freq > -1 && { dtstart: startDate.toJSDate(), interval: 1, freq }),
       ...(freq > -1 && { interval: 1, freq }),
       ...(freq === 2 && { byweekday: [startDate.weekday - 1] }),
     });
@@ -49,9 +49,9 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
   };
 
   const handleCheckboxChange = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    if (checked) onRRuleChange({ ...rrule, until: defaultEndDate?.toJSDate() || new Date() });
+    if (checked) onEndChange(defaultEndDate || DateTime.now());
     else {
-      onRRuleChange({ ...rrule, until: null });
+      onEndChange();
       setIsDatePickerOpen(false);
     }
   };
@@ -61,7 +61,7 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
   };
 
   const handleEndDateChange = (selectedDate: DateTime) => {
-    onRRuleChange({ ...rrule, until: selectedDate.toJSDate() });
+    onEndChange(selectedDate);
   };
 
   const handleDayClick = (index: number) => {
@@ -75,11 +75,6 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
     }
     onRRuleChange({ ...rrule, byweekday: byweekday.filter(weekday => weekday !== index) });
   };
-
-  // useEffect(() => {
-  //   if (!rrule) return;
-  //   onRRuleChange({ ...rrule, dtstart: startDate.toJSDate() });
-  // }, [startDate]);
 
   return (
     <RepeatInfoContainer>

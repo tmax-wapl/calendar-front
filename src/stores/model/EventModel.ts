@@ -143,7 +143,11 @@ export class EventModel {
   }
 
   get repeatEndDate(): DateTime {
-    return this.rrule?.until ? DateTime.fromJSDate(this.rrule?.until) : undefined;
+    return this.dto.repeatEndDate ? DateTime.fromISO(this.dto.repeatEndDate) : undefined;
+  }
+
+  set repeatEndDate(date: DateTime) {
+    this.dto.repeatEndDate = date ? toISO(date.toUTC()) : undefined;
   }
 
   get repeatStartDate(): DateTime {

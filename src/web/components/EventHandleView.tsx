@@ -18,7 +18,7 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { getStartDate, toISO, rruleString } from '@/utils';
+import { getStartDate, toISO, rruleString, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 
 interface Props {
@@ -46,6 +46,9 @@ const EventHandleView = ({ action }: Props) => {
         end: toISO(event.endDate.startOf('day').plus({ days: 1 }).toUTC()),
       }),
       ...(event.rrule && {
+        ...(event.rrule.freq === 2 && {
+          rrule: applyWeekdayOffset(event.rrule, startDate, 'UTC').toString().replace(/\n/, ' '),
+        }),
         repeatStartDate: toISO(startDate.toUTC()),
         ...(event.repeatEndDate && {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
@@ -66,7 +69,7 @@ const EventHandleView = ({ action }: Props) => {
     const event = await eventStore.updateEvent(
       +eventStore.event.id,
       preprocessEvent(eventStore.event),
-      EVENT_UPDATE_OPTION.DEFAULT,
+      isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
     );
     if (!isRepeat) calendarStore.updateEventList(event);
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
@@ -96,7 +99,7 @@ const EventHandleView = ({ action }: Props) => {
             ...eventStore.event.dto,
             id: null,
             repeatStartDate: toISO(startDate.toUTC()),
-            repeatEndDate: toISO(eventStore.event.repeatEndDate.toUTC()),
+            ...(eventStore.event.repeatEndDate && { repeatEndDate: toISO(eventStore.event.repeatEndDate.toUTC()) }),
             rrule: rruleString(eventStore.event.rrule),
           }),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
@@ -146,8 +149,10 @@ const EventHandleView = ({ action }: Props) => {
       return;
     }
     if (eventStore.event.allDay) {
-      eventStore.event.startDate = eventStore.event.startDate.set({ hour: 9, minute: 0 });
+      const startDate = eventStore.event.startDate.set({ hour: 9, minute: 0 });
+      eventStore.event.startDate = startDate;
       eventStore.event.endDate = eventStore.event.endDate.plus({ days: -1 }).set({ hour: 9, minute: 30 });
+      if (eventStore.event.repeatEndDate) eventStore.event.repeatEndDate = startDate;
       return;
     }
   }, [action, calendarStore.getCalendarId()]);
@@ -189,6 +194,7 @@ const EventHandleView = ({ action }: Props) => {
               defaultEndDate={eventStore.event.startDate?.plus({ years: 1 })}
               repeatEndDate={eventStore.event.repeatEndDate}
               onRRuleChange={value => (eventStore.event.rrule = value)}
+              onEndChange={value => (eventStore.event.repeatEndDate = value)}
             />
           )}
         </Observer>
