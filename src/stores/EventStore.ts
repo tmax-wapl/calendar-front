@@ -81,8 +81,8 @@ export default class EventStore {
     return this.event;
   }
 
-  async deleteEvent(eventId: number, deleteOption: EVENT_DELETE_OPTION) {
-    const res = await this.repo.deleteEvent(eventId, deleteOption);
+  async deleteEvent(eventId: number) {
+    const res = await this.repo.deleteEvent(eventId);
     return res;
   }
 

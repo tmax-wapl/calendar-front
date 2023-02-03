@@ -24,7 +24,7 @@ const EventDetailView = () => {
   };
 
   const deleteEvent = async () => {
-    await eventStore.deleteEvent(+eventStore.event.id, EVENT_DELETE_OPTION.DEFAULT);
+    await eventStore.deleteEvent(+eventStore.event.id);
     calendarStore.filterEventList(eventStore.event.id);
     navigate(-1);
     closeDialog();
@@ -54,7 +54,7 @@ const EventDetailView = () => {
         );
         break;
       case 'all': // 모든 일정 삭제
-        await eventStore.deleteEvent(+event.id, EVENT_DELETE_OPTION.DEFAULT);
+        await eventStore.deleteEvent(+event.id);
         break;
       default:
         break;

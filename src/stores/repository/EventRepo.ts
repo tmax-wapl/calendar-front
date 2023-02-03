@@ -44,9 +44,9 @@ export default class EventRepo {
     }
   }
 
-  async deleteEvent(eventId: number, deleteOption: EVENT_DELETE_OPTION) {
+  async deleteEvent(eventId: number) {
     try {
-      const { response, success } = await API.delete(`/apis/v1/event/delete/${eventId}/${deleteOption}`);
+      const { response, success } = await API.delete(`/apis/v1/event/delete/${eventId}`);
       if (success) return response;
     } catch (e) {
       throw Error(JSON.stringify(e));
