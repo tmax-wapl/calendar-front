@@ -78,12 +78,8 @@ export const rruleString = (rrule: Partial<Options>) => {
   return dtstart + ' ' + freq;
 };
 
-export const isSameDate = (date1: Date, date2: Date) => {
-  return (
-    date1.getFullYear() === date2.getFullYear() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getDate() === date2.getDate()
-  );
+export const isSameDate = (date1: DateTime, date2: DateTime) => {
+  return date1.year === date2.year && date1.month === date2.month && date1.day === date2.day;
 };
 
 export const isRRule = (rruleStr: RRule | RRuleSet): rruleStr is RRule => {

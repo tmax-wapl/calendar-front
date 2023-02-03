@@ -2,7 +2,7 @@ import RootStore from './RootStore';
 import { DateTime } from 'luxon';
 import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable, action } from 'mobx';
-import { isEqualMonth, toDateString } from '@/utils';
+import { isEqualMonth, isSameDate, toDateString } from '@/utils';
 import { EventModel } from './model/EventModel';
 
 type DateRange = { start: string; view?: DateTime; end: string };
@@ -77,6 +77,7 @@ export default class UiStore {
   }
 
   setDateDay(date: DateTime) {
+    if (isSameDate(this.dateDay, date)) return;
     this.dateDay = date;
   }
 
