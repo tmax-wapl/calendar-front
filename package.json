@@ -18,7 +18,7 @@
     "@mui/system": "^5.10.14",
     "@mui/x-date-pickers": "^5.0.8",
     "@wapl/core": "^0.2.22",
-    "@wapl/ui": "^0.2.16",
+    "@wapl/ui": "^0.2.19",
     "axios": "^1.1.3",
     "fullcalendar": "^5.11.3",
     "luxon": "^3.1.0",

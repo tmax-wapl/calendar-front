@@ -5684,32 +5684,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wapl/ui@npm:^0.2.16":
-  version: 0.2.16
-  resolution: "@wapl/ui@npm:0.2.16"
-  dependencies:
-    "@emotion/react": ^11.7.1
-    "@emotion/styled": ^11.6.0
-    "@mui/material": ^5.4.1
-    emotion-reset: ^3.0.1
-    lodash.clonedeep: ^4.5.0
-    mobx: ^6.3.12
-    mobx-react-lite: ^3.3.0
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-router-dom: ^6.2.1
-    react-scripts: 5.0.0
-    react-spring: ^9.4.2
-  peerDependencies:
-    mobx: ^6.3.12
-    mobx-react-lite: ^3.3.0
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-router-dom: ^6.2.1
-  checksum: ce265fd0d63e8c0986cd42006b3c4c4eab451f46c88d5366b2090a3134bcefe979a05a57378af8c792fda800ec73ca85dc1a9dcaede1ad6dadf6887bb6c48e87
-  languageName: node
-  linkType: hard
-
 "@wapl/ui@npm:^0.2.19":
   version: 0.2.19
   resolution: "@wapl/ui@npm:0.2.19"
@@ -7669,7 +7643,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
     "@wapl/core": ^0.2.22
-    "@wapl/ui": ^0.2.16
+    "@wapl/ui": ^0.2.19
     axios: ^1.1.3
     babel-loader: ^9.0.1
     clean-webpack-plugin: ^4.0.0
