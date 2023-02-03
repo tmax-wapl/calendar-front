@@ -237,7 +237,7 @@ const Calendar: React.FC = observer(() => {
 
   const handleDoubleClick = ({ dayEl }: DateClickArg) => {
     setDateDay(dayEl);
-    if (!pathname.includes('create')) navigate('create');
+    if (!pathname.includes('create')) navigate(`/main/view-mode/${uiStore.viewMode}/create`);
   };
 
   const handleRightClick = (e: any) => {
