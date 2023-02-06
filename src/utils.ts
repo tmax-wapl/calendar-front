@@ -49,9 +49,8 @@ export const getRepeatSummary = (rrule: Partial<Options>): string => {
 
   const interval = `${rrule.interval ?? 1}${units[rrule.freq]} 간격`;
   const weekday = ` ${byweekday?.reduce((acc, day) => (acc ? `${acc} ` : '') + `${dayOfWeek[day.weekday]}`, '')} 반복`;
-  const until = ` / ${rrule.until?.toISOString().split('T')[0].replace(/-/g, '.')}. 종료`;
 
-  return `${interval}${byweekday ? weekday : ''}${rrule.until ? until : ''}`;
+  return `${interval}${byweekday ? weekday : ''}`;
 };
 
 export const toHalfHourUnit = (date: DateTime) => {
