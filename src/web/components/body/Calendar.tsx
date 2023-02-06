@@ -175,7 +175,13 @@ const Calendar: React.FC = observer(() => {
           >
             <EventSpan>
               {event.extendedProps.dto.importance && (
-                <Icon.BookmarkFill className="mr-2" width={12} height={12} color="#FCBB00" />
+                <Icon.BookmarkFill
+                  className="mr-2"
+                  width={12}
+                  height={12}
+                  color="#FCBB00"
+                  {...{ style: { minWidth: '12px' } }}
+                />
               )}
               {event.title}
             </EventSpan>
