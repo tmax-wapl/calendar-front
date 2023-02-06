@@ -25,6 +25,7 @@ export interface EventDTO {
   attachments?: any[];
   notifications?: any[];
   exDate?: string;
+  exceptionEvent?: boolean;
 }
 
 export interface HolidayDTO {
