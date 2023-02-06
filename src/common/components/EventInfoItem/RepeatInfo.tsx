@@ -121,7 +121,12 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
 
                 {isDatePickerOpen && (
                   <DatePickerWrapper>
-                    <DatePicker size={0.85} date={repeatEndDate} onDateClick={handleEndDateChange} />
+                    <DatePicker
+                      size={0.85}
+                      date={repeatEndDate}
+                      onDateClick={handleEndDateChange}
+                      onOutsideClick={handleEndDateClick}
+                    />
                   </DatePickerWrapper>
                 )}
               </PickerContainer>
