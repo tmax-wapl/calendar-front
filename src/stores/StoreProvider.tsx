@@ -1,3 +1,4 @@
+import { API } from '@/common/lib/API';
 import { AccountLoader, PrivateRoute, ProtectedRoute } from '@wapl/core';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import RootStore from './RootStore';
@@ -14,7 +15,10 @@ export const WaplShellProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   useEffect(() => {
     window.addEventListener('message', ({ data: { type, token } }) => {
-      if (type === 'token') setToken(token);
+      if (type === 'token') {
+        setToken(token);
+        API.setToken(token);
+      }
     });
   }, []);
 

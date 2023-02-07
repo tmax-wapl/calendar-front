@@ -1,9 +1,10 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 import { ResponseData } from '../constants/interfaces';
 
 const baseUrl = process.env.REACT_APP_SERVICE_URL;
 class APIClass {
   instance;
+  token: string | null = null;
 
   constructor() {
     this.instance = axios.create({
@@ -13,6 +14,19 @@ class APIClass {
         'Content-Type': 'application/json',
       },
     });
+
+    this.instance.interceptors.request.use(
+      config => {
+        const headers = config.headers as AxiosRequestHeaders;
+        if (this.token) {
+          headers.Authorization = `Bearer ${this.token}`;
+        }
+        return config;
+      },
+      error => {
+        return Promise.reject(error);
+      },
+    );
 
     this.instance.interceptors.response.use(
       response => {
@@ -31,6 +45,12 @@ class APIClass {
       },
     );
   }
+
+  setToken(token: string) {
+    this.token = token;
+    // refresh token처리나 token 만료는 shell쪽에서 해주는 듯?
+  }
+
   /**
    * HTTP Get 요청
    * @alias module:API
