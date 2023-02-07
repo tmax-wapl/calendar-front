@@ -44,8 +44,9 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
   };
 
   const handleIntervalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isNaN(Number(e.target.value))) return;
-    onRRuleChange({ ...rrule, interval: Number(e.target.value) });
+    const interval = Number(e.target.value);
+    if (isNaN(interval) || interval > 999 || (rrule.freq !== 3 && interval > 99)) return;
+    onRRuleChange({ ...rrule, interval });
   };
 
   const handleCheckboxChange = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -121,7 +122,12 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
 
                 {isDatePickerOpen && (
                   <DatePickerWrapper>
-                    <DatePicker size={0.85} date={repeatEndDate} onDateClick={handleEndDateChange} />
+                    <DatePicker
+                      size={0.85}
+                      date={repeatEndDate}
+                      onDateClick={handleEndDateChange}
+                      onOutsideClick={handleEndDateClick}
+                    />
                   </DatePickerWrapper>
                 )}
               </PickerContainer>
