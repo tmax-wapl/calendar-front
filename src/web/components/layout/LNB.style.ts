@@ -36,7 +36,7 @@ export const CategoryListWrapper = styled.div`
 `;
 
 export const SubscriptionListWrapper = styled.div`
-  padding: 0px 8px 0px 28px;
+  padding: 0px 8px;
 `;
 
 export const Divider = styled.div`

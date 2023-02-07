@@ -93,7 +93,7 @@ export const Dialog = () => {
       case 'subscribe':
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
-          { variant: 'negative', text: '추가', onClick: onClick[1] },
+          { variant: 'primary', text: '추가', onClick: onClick[1] },
         ];
       case 'subscribeFail':
       case 'subscribeDuplication':
