@@ -181,4 +181,8 @@ export class EventModel {
   set exDate(date: DateTime) {
     this.dto.exDate = toISO(date);
   }
+
+  get exceptionEvent(): boolean {
+    return this.dto.exceptionEvent;
+  }
 }

@@ -110,7 +110,7 @@ export default class CalendarStore {
   }
 
   async deleteEvent(id: number) {
-    await this.rootStore.eventStore.repo.deleteEvent(id, EVENT_DELETE_OPTION.DEFAULT);
+    await this.rootStore.eventStore.repo.deleteEvent(id);
     this.eventList = this.eventList.filter(item => item.id !== '' + id);
   }
 

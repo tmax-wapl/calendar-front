@@ -46,7 +46,7 @@ export default class EventStore {
 
     const arr: EventModel[] = [];
     eventList.map(event => {
-      if (event.rrule) arr.push(...this.makeRRuleObject(event));
+      if (event.rrule && !event.exceptionEvent) arr.push(...this.makeRRuleObject(event));
       else arr.push(new EventModel(event));
     });
     return { eventList: arr, holidayList };
@@ -81,8 +81,8 @@ export default class EventStore {
     return this.event;
   }
 
-  async deleteEvent(eventId: number, deleteOption: EVENT_DELETE_OPTION) {
-    const res = await this.repo.deleteEvent(eventId, deleteOption);
+  async deleteEvent(eventId: number) {
+    const res = await this.repo.deleteEvent(eventId);
     return res;
   }
 
