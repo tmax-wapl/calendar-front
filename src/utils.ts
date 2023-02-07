@@ -79,7 +79,7 @@ export const rruleString = (rrule: Partial<Options>) => {
 };
 
 export const isSameDate = (date1: DateTime, date2: DateTime) => {
-  return date1.year === date2.year && date1.month === date2.month && date1.day === date2.day;
+  return date1.hasSame(date2, 'day');
 };
 
 export const isRRule = (rruleStr: RRule | RRuleSet): rruleStr is RRule => {
