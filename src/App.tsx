@@ -1,26 +1,25 @@
 import React from 'react';
-import { StoreProvider, WaplShellProvider } from './stores/StoreProvider';
+import { StoreProvider } from './stores/StoreProvider';
 import { WaplUiProvider } from '@wapl/ui';
 import CalendarProvider from '@contexts/CalendarContext';
 import { MODE } from './common/constants/common';
-import { useAccountStore } from '@wapl/core';
+import { useAccountStore, useUserStore } from '@wapl/core';
 import Web from './web';
 import Mobile from './mobile';
 
 const App: React.FC = () => {
   const isMobile = false;
   const { selectedUser } = useAccountStore();
+  const { userList } = useUserStore();
 
-  console.log(selectedUser);
+  const userId = selectedUser ? selectedUser.id : userList[0]?.id;
 
   return (
-    <WaplShellProvider>
-      <WaplUiProvider>
-        <CalendarProvider mode={MODE.FULL} userId={14}>
-          <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
-        </CalendarProvider>
-      </WaplUiProvider>
-    </WaplShellProvider>
+    <WaplUiProvider>
+      <CalendarProvider mode={MODE.FULL} userId={userId}>
+        <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
+      </CalendarProvider>
+    </WaplUiProvider>
   );
 };
 

@@ -154,7 +154,13 @@ const Calendar: React.FC = observer(() => {
             isHalfLess
           >
             {event.extendedProps.dto.importance && (
-              <Icon.BookmarkFill className="mr-2" width={12} height={12} color="#FCBB00" />
+              <Icon.BookmarkFill
+                className="mr-2"
+                width={12}
+                height={12}
+                color="#FCBB00"
+                {...{ style: { minWidth: '12px' } }}
+              />
             )}
             {event.title}
           </EventWrapper>
@@ -169,7 +175,13 @@ const Calendar: React.FC = observer(() => {
           >
             <EventSpan>
               {event.extendedProps.dto.importance && (
-                <Icon.BookmarkFill className="mr-2" width={12} height={12} color="#FCBB00" />
+                <Icon.BookmarkFill
+                  className="mr-2"
+                  width={12}
+                  height={12}
+                  color="#FCBB00"
+                  {...{ style: { minWidth: '12px' } }}
+                />
               )}
               {event.title}
             </EventSpan>
@@ -237,7 +249,7 @@ const Calendar: React.FC = observer(() => {
 
   const handleDoubleClick = ({ dayEl }: DateClickArg) => {
     setDateDay(dayEl);
-    if (!pathname.includes('create')) navigate('create');
+    if (!pathname.includes('create')) navigate(`/main/view-mode/${uiStore.viewMode}/create`);
   };
 
   const handleRightClick = (e: any) => {

@@ -330,6 +330,7 @@ export const EventSpan = styled.span`
   display: flex;
   align-items: center;
   font-size: 13px;
+  white-space: pre;
 `;
 
 export const WeekDayHeader = styled.span<{ color: string }>`
