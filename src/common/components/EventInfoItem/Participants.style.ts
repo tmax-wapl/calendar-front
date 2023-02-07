@@ -29,7 +29,7 @@ export const AccordionDetails = styled(Mui.AccordionDetails, {
 export const ParticipantChip = styled(Chip, {
   shouldForwardProp: (prop: string) => prop !== 'editable',
 })<{ editable: boolean }>`
-  ${({ editable }) => !editable && 'height: 32px !important; padding: 6px !important;'};
+  ${({ editable }) => !editable && 'height: 32px !important; padding: 6px !important;'}
   :not(:last-child) {
     margin-right: 6px;
   }
