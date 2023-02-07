@@ -58,10 +58,8 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const handleCreate = async () => {
-    const event = await eventStore.createEvent(preprocessEvent(eventStore.event));
-    if (!eventStore.event.rrule) {
-      calendarStore.appendEventList(event);
-    } else uiStore.changeDateRange();
+    await eventStore.createEvent(preprocessEvent(eventStore.event));
+    uiStore.changeDateRange();
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
