@@ -8,7 +8,7 @@ export const EventItemContainer = styled.div<{ isDetail: boolean }>`
   box-sizing: border-box;
   padding: ${({ isDetail }) => (isDetail ? '0' : '12px 8px 10px')};
   margin-bottom: ${({ isDetail }) => (isDetail ? '8px' : '0')};
-  cursor: pointer;
+  ${({ isDetail }) => !isDetail && 'cursor: pointer;'}
   > span {
     margin-left: 28px;
   }
