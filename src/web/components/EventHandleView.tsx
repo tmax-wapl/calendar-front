@@ -110,7 +110,7 @@ const EventHandleView = ({ action }: Props) => {
       default:
         break;
     }
-    uiStore.dialogInfo = null;
+    uiStore.setDialogInfo(null);
     uiStore.changeDateRange();
   };
 
@@ -121,11 +121,11 @@ const EventHandleView = ({ action }: Props) => {
     else {
       // 팝업 열고.. 선택해야겠지..?
       // 선택하는데 옵션이 아마 세개가 올거야 contextMenuItem 처럼
-      uiStore.dialogInfo = {
+      uiStore.setDialogInfo({
         action: 'repeatEventUpdate',
-        onClick: [(): void => (uiStore.dialogInfo = null), updateRepeatEvent],
+        onClick: [(): void => uiStore.setDialogInfo(null), updateRepeatEvent],
         type: 'select',
-      };
+      });
     }
   };
 

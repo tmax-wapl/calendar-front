@@ -106,10 +106,10 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   };
 
   const handleCalendarDelete = (type: string) => {
-    uiStore.dialogInfo = {
+    uiStore.setDialogInfo({
       action: type === 'subCalendar' ? 'calendarDelete' : 'subscriptionDelete',
       onClick: [closeDialog, deleteCalendar],
-    };
+    });
     if (onClose) onClose();
   };
 
@@ -133,17 +133,17 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const handleEventDelete = async () => {
     const model = await eventStore.getEventInfo(id, date.startdate);
     if (!model.rrule) {
-      uiStore.dialogInfo = {
+      uiStore.setDialogInfo({
         action: 'eventDelete',
         onClick: [closeDialog, deleteEvent],
-      };
+      });
     } else {
-      uiStore.dialogInfo = {
+      uiStore.setDialogInfo({
         action: 'repeatEventDelete',
         onClick: [closeDialog, repeatEventDelete],
         type: 'select',
         data: { model },
-      };
+      });
     }
   };
 
