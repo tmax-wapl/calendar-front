@@ -3,7 +3,7 @@ import RootStore from './RootStore';
 import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
 import { EventDTO } from '@/common/constants/interfaces';
-import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
+import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { toISO, applyWeekdayOffset } from '@/utils';
 import { DateTime } from 'luxon';
 

@@ -1,6 +1,6 @@
-import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@/common/constants';
+import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { EventDTO, HolidayDTO } from '@/common/constants/interfaces';
-import { CustomError, HTTPError } from '@/error';
+import { HTTPError } from '@/error';
 import { AxiosError } from 'axios';
 import { API } from '../../common/lib/API';
 

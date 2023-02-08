@@ -7,7 +7,7 @@ import EventBar from './EventBar';
 import EventItem from './EventItem';
 import { Participants, Location, Notifications, Description, Attachments } from '@common/components/EventInfoItem';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@common/constants';
+import { EVENT_UPDATE_OPTION } from '@common/constants';
 import { EventModel } from '@/stores/model/EventModel';
 import { toISO } from '@/utils';
 

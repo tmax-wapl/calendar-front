@@ -24,10 +24,6 @@ export enum EVENT_UPDATE_OPTION { // TODO: UPDATE 타입 통합 예정
   AFTER_REPEAT_EVENT_EXCEPT = 5, // 이 일정 및 향 후 모든 일정 예외
 }
 
-export enum EVENT_DELETE_OPTION {
-  DEFAULT = 0, // 일반 일정 및 모든 일정 삭제,
-}
-
 export const ERROR_STATUS: { [key: number]: string } = {
   401: '로그인이 필요합니다.',
   403: '권한이 필요합니다.',
