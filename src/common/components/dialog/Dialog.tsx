@@ -126,7 +126,7 @@ export const Dialog = () => {
           />
         );
       case 'select':
-        return <SelectDialog open title={title} buttons={buttons} />;
+        return <SelectDialog open title={title} buttons={buttons} selectType={data?.selectType} />;
       default:
         return (
           <DialogCompo open onClose={handleClose}>
