@@ -1,4 +1,6 @@
+import { HTTPError } from '@/error';
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
+import { ERROR_STATUS } from '../constants';
 import { ResponseData } from '../constants/interfaces';
 
 const baseUrl = process.env.REACT_APP_SERVICE_URL;
@@ -38,9 +40,9 @@ class APIClass {
 
         if (response) {
           const status = response.status;
-          const { message } = response.data;
+          const message = ERROR_STATUS[status];
 
-          return Promise.reject({ status, message });
+          throw new HTTPError(status, message);
         }
       },
     );
