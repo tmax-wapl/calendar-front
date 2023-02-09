@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toISO, toLuxon } from '@/utils';
 import { EventModel } from '@/stores/model/EventModel';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
+import { HTTPError } from '@/error';
 
 const MenuItemWrapper = styled.div`
   display: flex;
@@ -100,8 +101,10 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       const { start, end } = uiStore.dateRange;
       const iCalendar = await calendarStore.syncCalendar(id, start, end);
       if (iCalendar.subscribeStatus === 'success') notify(`${iCalendar.name} 캘린더 동기화가 성공하였습니다.`);
-    } catch (status: any) {
-      if (status === 500) calendarStore.updateCalendarDTO(id, 'subscribeStatus', 'wait');
+    } catch (e) {
+      if (e instanceof HTTPError) {
+        if (e.status === 500) calendarStore.updateCalendarDTO(id, 'subscribeStatus', 'wait');
+      }
     }
   };
 
