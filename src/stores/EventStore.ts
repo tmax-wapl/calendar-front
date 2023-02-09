@@ -75,8 +75,8 @@ export default class EventStore {
     return this.event;
   }
 
-  async updateEvent(eventId: number, { dto }: EventModel, updateOption: EVENT_UPDATE_OPTION) {
-    const res = await this.repo.updateEvent(eventId, dto, updateOption);
+  async updateEvent(eventId: number, { dto }: EventModel, updateOption: EVENT_UPDATE_OPTION, originStart?: string) {
+    const res = await this.repo.updateEvent(eventId, dto, updateOption, originStart);
     this.event = this.preprocessEvent(new EventModel(res));
     return this.event;
   }

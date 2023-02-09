@@ -32,10 +32,10 @@ export default class EventRepo {
     }
   }
 
-  async updateEvent(eventId: number, dto: Partial<EventDTO>, updateOption: EVENT_UPDATE_OPTION) {
+  async updateEvent(eventId: number, dto: Partial<EventDTO>, updateOption: EVENT_UPDATE_OPTION, originStart?: string) {
     try {
       const { response, success } = await API.patch<Partial<EventDTO>, EventDTO>(
-        `/apis/v1/event/update/${eventId}/${updateOption}`,
+        `/apis/v1/event/update/${eventId}/${updateOption}${originStart ? `?date=${originStart}` : ''}`,
         dto,
       );
       if (success) return response;

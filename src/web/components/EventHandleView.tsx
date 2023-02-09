@@ -101,6 +101,7 @@ const EventHandleView = ({ action }: Props) => {
             rrule: rruleString(eventStore.event.rrule),
           }),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
+          originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
         );
         navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         break;
