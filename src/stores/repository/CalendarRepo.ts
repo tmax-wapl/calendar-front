@@ -33,7 +33,7 @@ export default class CalendarRepo {
       return response;
     } catch (e) {
       if (e instanceof HTTPError) {
-        throw Error(JSON.stringify(e));
+        throw e.status;
       }
     }
   }
