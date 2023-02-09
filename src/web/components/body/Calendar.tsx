@@ -4,6 +4,7 @@ import FullCalendar, {
   DayHeaderContentArg,
   EventClickArg,
   EventContentArg,
+  EventMountArg,
   EventSegment,
   MoreLinkArg,
   MoreLinkContentArg,
@@ -145,14 +146,7 @@ const Calendar: React.FC = observer(() => {
       <>
         <CalendarColor color={event.extendedProps.dto.calColor} />
         {uiStore.viewMode === VIEW_MODE.MONTH ? (
-          <EventWrapper
-            data-color={backgroundColor}
-            data-id={event.id}
-            data-type={event.extendedProps.dto.rrule ? 'repeatEvent' : 'event'}
-            data-startdate={startStr}
-            data-enddate={endStr ? endStr : event.extendedProps.dto.end}
-            isHalfLess
-          >
+          <EventWrapper isHalfLess>
             {event.extendedProps.dto.importance && (
               <Icon.BookmarkFill
                 className="mr-2"
@@ -165,14 +159,7 @@ const Calendar: React.FC = observer(() => {
             {event.title}
           </EventWrapper>
         ) : (
-          <WeekEventWrapper
-            data-color={backgroundColor}
-            data-id={event.id}
-            data-type={event.extendedProps.dto.rrule ? 'repeatEvent' : 'event'}
-            data-startdate={startStr}
-            data-enddate={endStr ? endStr : event.extendedProps.dto.end}
-            isHalfLess={isHalfLess}
-          >
+          <WeekEventWrapper isHalfLess={isHalfLess}>
             <EventSpan>
               {event.extendedProps.dto.importance && (
                 <Icon.BookmarkFill
@@ -252,25 +239,6 @@ const Calendar: React.FC = observer(() => {
     if (!pathname.includes('create')) navigate(`/main/view-mode/${uiStore.viewMode}/create`);
   };
 
-  const handleRightClick = (e: any) => {
-    e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
-    const target = e.target?.closest('.fc-daygrid-event') || e.target?.closest('.fc-timegrid-event');
-    if (!target) return;
-
-    const { color, id, startdate, enddate, type } = e.target?.querySelector('span[data-color]')?.dataset;
-    uiStore.setContextClickArg({
-      target,
-      position: { top: e.clientY, left: e.clientX },
-      color,
-      type,
-      id,
-      date: {
-        startdate,
-        enddate,
-      },
-    });
-  };
-
   const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
     setDateDay(dayEl);
     if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
@@ -285,6 +253,27 @@ const Calendar: React.FC = observer(() => {
     console.log(dayEl, jsEvent);
   };
 
+  const handleDidMount = (arg: EventMountArg) => {
+    // 이벤트 렌더 후처리, 현재는 ContextMenu만 제어.
+    const target = arg.el;
+    const { id, backgroundColor: color, startStr: startdate, endStr: enddate, extendedProps } = arg.event;
+    const type = extendedProps.dto.rrule ? 'repeatEvent' : 'event';
+
+    target.addEventListener('contextmenu', (e: MouseEvent) => {
+      e.preventDefault();
+      uiStore.setContextClickArg({
+        target,
+        position: { top: e.clientY, left: e.clientX },
+        color,
+        type,
+        id: +id,
+        date: {
+          startdate,
+          enddate,
+        },
+      });
+    });
+  };
   const setDateDay = (dayEl: HTMLElement) => {
     const { date } = dayEl.dataset;
     uiStore.setDateDay(toLuxon(date));
@@ -328,7 +317,7 @@ const Calendar: React.FC = observer(() => {
 
   return (
     <CalendarContainer>
-      <FullCalendarWrapper onContextMenu={handleRightClick}>
+      <FullCalendarWrapper>
         <FullCalendar
           locale="ko"
           ref={calendarRef}
@@ -353,6 +342,7 @@ const Calendar: React.FC = observer(() => {
           eventContent={renderEventContent}
           nowIndicator
           eventOrder="-allDay,start,-duration,-regDate"
+          eventDidMount={handleDidMount}
         />
         <Popover moreLinkData={moreLinkData} setMoreLinkData={setMoreLinkData} />
       </FullCalendarWrapper>
