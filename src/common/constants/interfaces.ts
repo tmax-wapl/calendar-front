@@ -114,7 +114,7 @@ export interface ExceptionDTO {
 }
 
 // response data 명시 해주기로..
-export interface ResponseData<T = any> {
+export interface ResponseData<T> {
   error?: {
     status: number;
     message: string;

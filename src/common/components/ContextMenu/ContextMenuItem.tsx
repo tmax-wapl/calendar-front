@@ -102,9 +102,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       const iCalendar = await calendarStore.syncCalendar(id, start, end);
       if (iCalendar.subscribeStatus === 'success') notify(`${iCalendar.name} 캘린더 동기화가 성공하였습니다.`);
     } catch (e) {
-      if (e instanceof HTTPError) {
-        if (e.status === 500) calendarStore.updateCalendarDTO(id, 'subscribeStatus', 'wait');
-      }
+      if (e instanceof HTTPError && e.status === 500) calendarStore.updateCalendarDTO(id, 'subscribeStatus', 'wait');
     }
   };
 

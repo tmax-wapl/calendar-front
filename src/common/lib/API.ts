@@ -82,7 +82,7 @@ class APIClass {
    * @param  {object} config
    * @return {Promise}
    */
-  async put(url: string, params: any, config?: AxiosRequestConfig) {
+  async put(url: string, params: AxiosRequestConfig, config?: AxiosRequestConfig) {
     return this.instance.put(url, params || undefined, config || undefined);
   }
   /**

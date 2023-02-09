@@ -1,4 +1,4 @@
-import { useState, memo, useContext } from 'react';
+import { useState, memo, useContext, MouseEvent } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -13,6 +13,7 @@ import {
   ButtonWarpper,
   ErrorIcon,
 } from './Item.style';
+import { HTTPError } from '@/error';
 
 interface Props {
   category: CalendarModel;
@@ -26,9 +27,10 @@ const Item = observer(({ category }: Props) => {
     toast: { notify },
   } = useWaplUiStore();
 
-  const onContextMenuOpen = (e: any, category: CalendarModel) => {
+  const onContextMenuOpen = (e: MouseEvent, category: CalendarModel) => {
     e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
-    const target = e.target;
+
+    const target = e.target as HTMLDivElement;
     if (!target) return;
     const type = category.type === 'url' ? 'subscribe' : category.mainFlag ? 'mainCalendar' : 'subCalendar';
     uiStore.setContextClickArg({
@@ -62,8 +64,9 @@ const Item = observer(({ category }: Props) => {
       const { start, end } = uiStore.dateRange;
       const iCalendar = await calendarStore.syncCalendar(category.id, start, end);
       if (iCalendar.subscribeStatus === 'success') notify(`${iCalendar.name} 캘린더 동기화가 성공하였습니다.`);
-    } catch (status: any) {
-      if (status === 500) calendarStore.updateCalendarDTO(category.id, 'subscribeStatus', 'wait');
+    } catch (e) {
+      if (e instanceof HTTPError && e.status === 500)
+        calendarStore.updateCalendarDTO(category.id, 'subscribeStatus', 'wait');
     }
   };
 
