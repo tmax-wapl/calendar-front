@@ -29,6 +29,7 @@ const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const { userId } = useContext(CalendarContext);
   const navigate = useNavigate();
+  const originEvent = new EventModel({ ...eventStore.event.dto });
 
   const handleClose = () => {
     navigate(`/main/view-mode/${uiStore.viewMode}/date`);
@@ -66,12 +67,12 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const updateEvent = async (isRepeat = false) => {
-    const event = await eventStore.updateEvent(
+    await eventStore.updateEvent(
       +eventStore.event.id,
       preprocessEvent(eventStore.event),
       isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
     );
-    if (!isRepeat) calendarStore.updateEventList(event);
+    uiStore.changeDateRange();
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
@@ -112,15 +113,16 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const handleUpdate = async () => {
-    // 1. 일반 일정인지? 반복 일정인지 여부
-    // 2. 팝업에서 선택한 옵션에 따라 서비스 콜 분기.
-    if (!eventStore.event.rrule) updateEvent();
+    const { rrule: originRRuleStr, start: originStart } = originEvent.dto;
+    const { rrule: newRRuleStr, start: newStart } = eventStore.event.dto;
+
+    if (!!originRRuleStr !== !!newRRuleStr) updateEvent();
+    else if (originRRuleStr !== newRRuleStr && originStart !== newStart) updateRepeatEvent('after');
     else {
-      // 팝업 열고.. 선택해야겠지..?
-      // 선택하는데 옵션이 아마 세개가 올거야 contextMenuItem 처럼
       uiStore.setDialogInfo({
         action: 'repeatEventUpdate',
         onClick: [(): void => uiStore.setDialogInfo(null), updateRepeatEvent],
+        data: { selectType: originStart !== newStart ? 'hideOne' : 'hideNone' },
         type: 'select',
       });
     }
