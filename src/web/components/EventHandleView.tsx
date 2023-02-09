@@ -18,7 +18,7 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { getStartDate, toISO, rruleString, applyWeekdayOffset } from '@/utils';
+import { getStartDate, toISO, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 
 interface Props {
