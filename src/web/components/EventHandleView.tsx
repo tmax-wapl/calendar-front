@@ -81,13 +81,13 @@ const EventHandleView = ({ action }: Props) => {
       case 'one': // 이 일정만 수정
         await eventStore.updateEvent(
           +eventStore.event.id,
-          new EventModel({
-            ...eventStore.event.dto,
-            id: null,
-            start: toISO(startDate.toUTC()),
-            end: toISO(endDate.toUTC()),
-            exDate: toISO(startDate.toUTC()),
-          }),
+          preprocessEvent(
+            new EventModel({
+              ...eventStore.event.dto,
+              id: null,
+              exDate: toISO(startDate.toUTC()),
+            }),
+          ),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
         );
         navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
@@ -95,13 +95,7 @@ const EventHandleView = ({ action }: Props) => {
       case 'after': // 이 일정 및 향후 일정 수정
         await eventStore.updateEvent(
           +eventStore.event.id,
-          new EventModel({
-            ...eventStore.event.dto,
-            id: null,
-            repeatStartDate: toISO(startDate.toUTC()),
-            ...(eventStore.event.repeatEndDate && { repeatEndDate: toISO(eventStore.event.repeatEndDate.toUTC()) }),
-            rrule: rruleString(eventStore.event.rrule),
-          }),
+          preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
           originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
         );
