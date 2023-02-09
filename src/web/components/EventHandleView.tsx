@@ -47,9 +47,11 @@ const EventHandleView = ({ action }: Props) => {
       }),
       ...(event.rrule && {
         ...(event.rrule.freq === 2 && {
-          rrule: applyWeekdayOffset(event.rrule, startDate, 'UTC').toString().replace(/\n/, ' '),
+          rrule: applyWeekdayOffset(event.rrule, startDate, 'UTC').toString(),
         }),
-        repeatStartDate: toISO(startDate.toUTC()),
+        repeatStartDate: toISO(
+          event.allDay ? event.repeatStartDate.startOf('day').toUTC() : event.repeatStartDate.toUTC(),
+        ),
         ...(event.repeatEndDate && {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
         }),
@@ -193,6 +195,7 @@ const EventHandleView = ({ action }: Props) => {
               defaultEndDate={eventStore.event.startDate?.plus({ years: 1 })}
               repeatEndDate={eventStore.event.repeatEndDate}
               onRRuleChange={value => (eventStore.event.rrule = value)}
+              onStartChange={value => (eventStore.event.repeatStartDate = value)}
               onEndChange={value => (eventStore.event.repeatEndDate = value)}
             />
           )}
