@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import FullCalendar, {
   DayCellContentArg,
   DayHeaderContentArg,
+  EventApi,
   EventClickArg,
   EventContentArg,
+  EventDropArg,
   EventMountArg,
   EventSegment,
   MoreLinkArg,
@@ -29,9 +31,9 @@ import {
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
-import { VIEW_MODE } from '@common/constants/common';
+import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toLuxon, diffTime, toDateString } from '@/utils';
+import { toLuxon, diffTime, toDateString, toISO } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -137,7 +139,7 @@ const Calendar: React.FC = observer(() => {
 
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
 
-  const renderEventContent = ({ event, timeText, backgroundColor }: EventContentArg) => {
+  const renderEventContent = ({ event, timeText }: EventContentArg) => {
     const { startStr, endStr } = event;
     const { minutes } = diffTime(startStr, endStr);
     const isHalfLess = minutes <= 30;
@@ -261,6 +263,7 @@ const Calendar: React.FC = observer(() => {
 
     target.addEventListener('contextmenu', (e: MouseEvent) => {
       e.preventDefault();
+      if (extendedProps.dto.subEvent) return;
       uiStore.setContextClickArg({
         target,
         position: { top: e.clientY, left: e.clientX },
@@ -274,6 +277,40 @@ const Calendar: React.FC = observer(() => {
       });
     });
   };
+
+  const handleDragEnd = (args: EventDropArg) => {
+    const { event, revert } = args;
+    const {
+      extendedProps: {
+        dto: { rrule, subEvent },
+      },
+    } = event;
+    if (subEvent) {
+      revert(); // 외부 일정인 경우 드롭 안되게
+      return;
+    }
+    if (rrule) {
+      // TODO: 반복일정
+      return;
+    }
+    updateEvent(event); // 일반일정
+  };
+
+  const updateEvent = async (event: EventApi) => {
+    const { id } = event;
+    const target = await eventStore.updateEvent(
+      +id,
+      new EventModel({
+        ...event.extendedProps.dto,
+        start: toISO(DateTime.fromJSDate(event.start).toUTC()),
+        end: toISO(DateTime.fromJSDate(event.end).toUTC()),
+      }),
+      EVENT_UPDATE_OPTION.DEFAULT,
+    );
+    calendarStore.updateEventList(target);
+    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+  };
+
   const setDateDay = (dayEl: HTMLElement) => {
     const { date } = dayEl.dataset;
     uiStore.setDateDay(toLuxon(date));
@@ -343,6 +380,8 @@ const Calendar: React.FC = observer(() => {
           nowIndicator
           eventOrder="-allDay,start,-duration,-regDate"
           eventDidMount={handleDidMount}
+          eventDrop={handleDragEnd}
+          editable
         />
         <Popover moreLinkData={moreLinkData} setMoreLinkData={setMoreLinkData} />
       </FullCalendarWrapper>
