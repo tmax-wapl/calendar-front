@@ -15,12 +15,6 @@ const ContextMenuItemContainer = styled.div`
   flex-direction: column;
 `;
 
-interface MenuItem {
-  label: string;
-  icon: JSX.Element;
-  onClick: () => void;
-}
-
 interface Props {
   id: number;
   type?: string;
@@ -55,8 +49,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     if (onClose) onClose();
   };
 
-  const repeatEventDelete = async (value: string) => {
-    const model = uiStore.dialogInfo.data.model;
+  const deleteRepeatEvent = async (value: string) => {
+    const event = await eventStore.getEventInfo(id, date.startdate);
     switch (value) {
       case 'one': // 이 일정만 삭제
         await eventStore.updateEvent(
@@ -105,7 +99,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     }
   };
 
-  const handleCalendarDelete = (type: string) => {
+  const handleCalendarDelete = () => {
     uiStore.setDialogInfo({
       action: type === 'subCalendar' ? 'calendarDelete' : 'subscriptionDelete',
       onClick: [closeDialog, deleteCalendar],
@@ -113,7 +107,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     if (onClose) onClose();
   };
 
-  const handleEventEdit = async () => {
+  const handleEventUpdate = async () => {
     const event = await eventStore.getEventInfo(id, date.startdate);
     eventStore.setEvent(event);
     if (!pathname.includes('update')) navigate(`/main/view-mode/${uiStore.viewMode}/update`);
@@ -130,9 +124,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     console.log('일정 공유');
   };
 
-  const handleEventDelete = async () => {
-    const model = await eventStore.getEventInfo(id, date.startdate);
-    if (!model.rrule) {
+  const handleEventDeleteClick = async () => {
+    if (type === 'event') {
       uiStore.setDialogInfo({
         action: 'eventDelete',
         onClick: [closeDialog, deleteEvent],
@@ -140,73 +133,58 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     } else {
       uiStore.setDialogInfo({
         action: 'repeatEventDelete',
-        onClick: [closeDialog, repeatEventDelete],
+        onClick: [closeDialog, deleteRepeatEvent],
         type: 'select',
-        data: { model },
       });
     }
   };
 
-  const menuItem: { [key: string]: MenuItem[] } = {
-    mainCalendar: [
-      {
-        label: '이름 변경',
-        onClick: handleNameChange,
-        icon: <Icon.EditLine width={16} height={16} className="mr-8" />,
-      },
-    ],
-    subCalendar: [
-      {
-        label: '이름 변경',
-        onClick: handleNameChange,
-        icon: <Icon.EditLine width={16} height={16} className="mr-8" />,
-      },
-      {
-        label: '캘린더 삭제',
-        onClick: () => handleCalendarDelete('subCalendar'),
-        icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
-      },
-    ],
-    subscribe: [
-      {
-        label: '이름 변경',
-        onClick: handleNameChange,
-        icon: <Icon.EditLine width={16} height={16} className="mr-8" />,
-      },
-      {
-        label: '캘린더 동기화',
-        onClick: handleCalendarSync,
-        icon: <Icon.RenewLine width={16} height={16} className="mr-8" />,
-      },
-      {
-        label: '캘린더 삭제',
-        onClick: () => handleCalendarDelete('subscribe'),
-        icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
-      },
-    ],
-    // TODO: event와 repeatEvent 분리
-    event: [
-      { label: '일정 수정', onClick: handleEventEdit, icon: <Icon.EditLine className="mr-8" /> },
-      // { label: '일정 공유', onClick: handleEventShare, icon: <Icon.ShareLine className="mr-8" /> },
-      { label: '일정 삭제', onClick: handleEventDelete, icon: <Icon.DeleteLine className="mr-8" /> },
-    ],
-    repeatEvent: [
-      { label: '일정 수정', onClick: handleEventEdit, icon: <Icon.EditLine className="mr-8" /> },
-      // { label: '일정 공유', onClick: handleEventShare, icon: <Icon.ShareLine className="mr-8" /> },
-      { label: '일정 삭제', onClick: handleEventDelete, icon: <Icon.DeleteLine className="mr-8" /> },
-    ],
+  const actions = {
+    renameCalendar: {
+      label: '이름 변경',
+      onClick: handleNameChange,
+      icon: <Icon.EditLine width={16} height={16} className="mr-8" />,
+    },
+    syncCalendar: {
+      label: '캘린더 동기화',
+      onClick: handleCalendarSync,
+      icon: <Icon.RenewLine width={16} height={16} className="mr-8" />,
+    },
+    deleteCalendar: {
+      label: '캘린더 삭제',
+      onClick: handleCalendarDelete,
+      icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
+    },
+    updateEvent: { label: '일정 수정', onClick: handleEventUpdate, icon: <Icon.EditLine className="mr-8" /> },
+    deleteEvent: { label: '일정 삭제', onClick: handleEventDeleteClick, icon: <Icon.DeleteLine className="mr-8" /> },
   };
 
-  const RenderItem = (): JSX.Element[] => {
-    return menuItem[type]?.map(item => (
-      <Mui.MenuItem key={item.label} onClick={item.onClick}>
-        <MenuItemWrapper>
-          {item.icon}
-          {item.label}
-        </MenuItemWrapper>
-      </Mui.MenuItem>
-    ));
-  };
+  const menuItems = (() => {
+    switch (type) {
+      case 'mainCalendar':
+        return [actions.renameCalendar];
+      case 'subCalendar':
+        return [actions.renameCalendar, actions.deleteCalendar];
+      case 'subscribe':
+        return [actions.renameCalendar, actions.syncCalendar, actions.deleteCalendar];
+      case 'event':
+      case 'repeatEvent':
+        return [actions.updateEvent, actions.deleteEvent];
+      default:
+        return [];
+    }
+  })();
 
-  return <ContextMenuItemContainer>{RenderItem()}</ContextMenuItemContainer>;
+  return (
+    <ContextMenuItemContainer>
+      {menuItems.map(item => (
+        <Mui.MenuItem key={item.label} onClick={item.onClick}>
+          <MenuItemWrapper>
+            {item.icon}
+            {item.label}
+          </MenuItemWrapper>
+        </Mui.MenuItem>
+      ))}
+    </ContextMenuItemContainer>
+  );
 };
