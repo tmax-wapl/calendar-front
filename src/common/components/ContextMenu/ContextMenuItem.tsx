@@ -1,8 +1,7 @@
 import { Icon, Mui, styled, useWaplUiStore } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toISO, toLuxon } from '@/utils';
-import { EventModel } from '@/stores/model/EventModel';
+import { toLuxon } from '@/utils';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 
 const MenuItemWrapper = styled.div`
@@ -53,24 +52,10 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     const event = await eventStore.getEventInfo(id, date.startdate);
     switch (value) {
       case 'one': // 이 일정만 삭제
-        await eventStore.updateEvent(
-          id,
-          new EventModel({
-            ...model.dto,
-            exDate: toISO(toLuxon(date.startdate).toUTC()),
-          }),
-          EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT_EXCEPT,
-        );
+        await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT_EXCEPT);
         break;
       case 'after': // 이 일정 및 향후 일정 삭제
-        await eventStore.updateEvent(
-          id,
-          new EventModel({
-            ...model.dto,
-            repeatEndDate: toISO(toLuxon(date.enddate).toUTC()),
-          }),
-          EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT_EXCEPT,
-        );
+        await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT_EXCEPT);
         break;
       case 'all': // 모든 일정 삭제
         await calendarStore.deleteEvent(id);

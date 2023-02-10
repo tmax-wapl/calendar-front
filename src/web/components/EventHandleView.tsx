@@ -77,18 +77,11 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const updateRepeatEvent = async (value: string) => {
-    const { startDate, endDate } = eventStore.event;
     switch (value) {
       case 'one': // 이 일정만 수정
         await eventStore.updateEvent(
           +eventStore.event.id,
-          preprocessEvent(
-            new EventModel({
-              ...eventStore.event.dto,
-              id: null,
-              exDate: toISO(startDate.toUTC()),
-            }),
-          ),
+          preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
         );
         navigate(`/main/view-mode/${uiStore.viewMode}/detail`);

@@ -7,9 +7,7 @@ import EventBar from './EventBar';
 import EventItem from './EventItem';
 import { Participants, Location, Notifications, Description, Attachments } from '@common/components/EventInfoItem';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { EVENT_DELETE_OPTION, EVENT_UPDATE_OPTION } from '@common/constants';
-import { EventModel } from '@/stores/model/EventModel';
-import { toISO } from '@/utils';
+import { EVENT_UPDATE_OPTION } from '@common/constants';
 
 const EventDetailView = () => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
@@ -30,28 +28,14 @@ const EventDetailView = () => {
     closeDialog();
   };
 
-  const repeatEventDelete = async (value: string) => {
+  const deleteRepeatEvent = async (value: string) => {
     const event = eventStore.event;
     switch (value) {
       case 'one': // 이 일정만 삭제
-        await eventStore.updateEvent(
-          +event.id,
-          new EventModel({
-            ...event.dto,
-            exDate: toISO(event.startDate.toUTC()),
-          }),
-          EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT_EXCEPT,
-        );
+        await eventStore.updateEvent(+event.id, event, EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT_EXCEPT);
         break;
       case 'after': // 이 일정 및 향후 일정 삭제
-        await eventStore.updateEvent(
-          +event.id,
-          new EventModel({
-            ...event.dto,
-            repeatEndDate: toISO(event.endDate.toUTC()),
-          }),
-          EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT_EXCEPT,
-        );
+        await eventStore.updateEvent(+event.id, event, EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT_EXCEPT);
         break;
       case 'all': // 모든 일정 삭제
         await eventStore.deleteEvent(+event.id);
@@ -72,9 +56,8 @@ const EventDetailView = () => {
     } else {
       uiStore.setDialogInfo({
         action: 'repeatEventDelete',
-        onClick: [closeDialog, repeatEventDelete],
+        onClick: [closeDialog, deleteRepeatEvent],
         type: 'select',
-        data: { model: eventStore.event },
       });
     }
   };
