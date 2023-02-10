@@ -13,8 +13,12 @@ const EventDetailView = () => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
 
-  const handleBack = () => {
+  const handleBackClick = () => {
     navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+  };
+
+  const handleEditClick = () => {
+    navigate(`/main/view-mode/${uiStore.viewMode}/update`);
   };
 
   const closeDialog = () => {
@@ -69,36 +73,34 @@ const EventDetailView = () => {
   return (
     <EventDetailViewContainer>
       <EventBar
-        leftSide={[{ action: 'back', onClick: handleBack }]}
+        leftSide={[{ action: 'back', onClick: handleBackClick }]}
         rightSide={[
           // { action: 'share', onClick: () => console.log('share') },
-          { action: 'edit', onClick: () => navigate(`/main/view-mode/${uiStore.viewMode}/update`) },
+          { action: 'edit', onClick: handleEditClick },
           { action: 'delete', onClick: handleDeleteClick },
         ]}
       />
-      {eventStore.event && (
-        <EventDetailContainer>
-          <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
-          <Observer>
-            {() => (
-              <FromInfo>
-                <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
-                {eventStore.event.calName}
-                <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
-              </FromInfo>
-            )}
-          </Observer>
-          {/* {eventStore.event.participants.length && <Participants participants={eventStore.event.participants} />} */}
-          {eventStore.event.location && <Observer>{() => <Location location={eventStore.event.location} />}</Observer>}
-          {/* {eventStore.event.alarmList.length > 0 && (
+      <EventDetailContainer>
+        <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
+        <Observer>
+          {() => (
+            <FromInfo>
+              <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
+              {eventStore.event.calName}
+              <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
+            </FromInfo>
+          )}
+        </Observer>
+        {/* {eventStore.event.participants.length && <Participants participants={eventStore.event.participants} />} */}
+        {eventStore.event.location && <Observer>{() => <Location location={eventStore.event.location} />}</Observer>}
+        {/* {eventStore.event.alarmList.length > 0 && (
             <Notifications notifications={eventStore.event.alarmList.map(({ time, timestamp }) => `${time} ${timestamp}`)} />
           )} */}
-          {eventStore.event.description && (
-            <Observer>{() => <Description description={eventStore.event.description} />}</Observer>
-          )}
-          {/* {eventStore.event.attachments?.length && <Attachments attachments={eventStore.event.attachments} />} */}
-        </EventDetailContainer>
-      )}
+        {eventStore.event.description && (
+          <Observer>{() => <Description description={eventStore.event.description} />}</Observer>
+        )}
+        {/* {eventStore.event.attachments?.length && <Attachments attachments={eventStore.event.attachments} />} */}
+      </EventDetailContainer>
     </EventDetailViewContainer>
   );
 };
