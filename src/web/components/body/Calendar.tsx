@@ -59,6 +59,10 @@ export type ClickArg = {
   color?: string;
 };
 
+interface ContextMenuEventTarget extends EventTarget {
+  getBoundingClientRect(): DOMRect;
+}
+
 const Calendar: React.FC = observer(() => {
   const { calendarStore, eventStore } = useCalendarStores();
   const calendarRef = useRef<FullCalendar>(null);
@@ -271,11 +275,14 @@ const Calendar: React.FC = observer(() => {
     const type = extendedProps.dto.rrule ? 'repeatEvent' : 'event';
 
     target.addEventListener('contextmenu', (e: MouseEvent) => {
+      const el = e.target as ContextMenuEventTarget;
+      const domRect: DOMRect = el.getBoundingClientRect();
+
       e.preventDefault();
       if (extendedProps.dto.subEvent) return;
       uiStore.setContextClickArg({
         target,
-        position: { top: e.clientY, left: e.clientX },
+        position: { top: domRect.top, left: domRect.right + 3 },
         color,
         type,
         id: +id,
