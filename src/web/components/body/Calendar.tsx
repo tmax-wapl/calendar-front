@@ -79,6 +79,7 @@ const Calendar: React.FC = observer(() => {
     position: { top: 0, left: 0 },
     events: null,
   });
+  // let dragEL: EventDropArg = null;
 
   const fetchData = async (start: string, end: string) => {
     const { eventList, holidayList } = await eventStore.getEventList(userId, start, end);
@@ -314,8 +315,23 @@ const Calendar: React.FC = observer(() => {
       revert(); // 외부 일정인 경우 드롭 안되게
       return;
     }
+
     if (rrule) {
-      // TODO: 반복일정
+      // dragEL = args;
+      uiStore.setDialogInfo({
+        action: 'repeatEventUpdate',
+        onClick: [
+          (): void => {
+            uiStore.setDialogInfo(null);
+            // drag 요소 초기화.
+            // dragEL = null;
+          },
+          updateRepeatEvent,
+        ],
+        data: { selectType: 'hideAll' },
+        type: 'select',
+      });
+      revert();
       return;
     }
     updateEvent(event); // 일반일정
@@ -323,7 +339,7 @@ const Calendar: React.FC = observer(() => {
 
   const updateEvent = async (event: EventApi) => {
     const { id } = event;
-    const target = await eventStore.updateEvent(
+    await eventStore.updateEvent(
       +id,
       new EventModel({
         ...event.extendedProps.dto,
@@ -332,8 +348,21 @@ const Calendar: React.FC = observer(() => {
       }),
       EVENT_UPDATE_OPTION.DEFAULT,
     );
-    calendarStore.updateEventList(target);
+    uiStore.changeDateRange();
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+  };
+
+  const updateRepeatEvent = async (value: string) => {
+    switch (value) {
+      case 'one': // 이 일정만 수정
+        break;
+      case 'after': // 이 일정 및 향후 일정 수정
+        break;
+      default:
+        break;
+    }
+    uiStore.setDialogInfo(null);
+    uiStore.changeDateRange();
   };
 
   const setDateDay = (dayEl: HTMLElement) => {
