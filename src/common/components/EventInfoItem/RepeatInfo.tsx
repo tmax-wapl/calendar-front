@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { Options, Weekday } from 'rrule';
 import { Icon, Select, Tooltip, Checkbox } from '@wapl/ui';
@@ -20,10 +20,19 @@ interface Props {
   defaultEndDate?: DateTime;
   repeatEndDate?: DateTime;
   onRRuleChange?: (value: Partial<Options>) => void;
+  onStartChange?: (value?: DateTime) => void;
   onEndChange?: (value?: DateTime) => void;
 }
 
-const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleChange, onEndChange }: Props) => {
+const RepeatInfo = ({
+  rrule,
+  startDate,
+  defaultEndDate,
+  repeatEndDate,
+  onRRuleChange,
+  onStartChange,
+  onEndChange,
+}: Props) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const dayOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
   const byweekday = (rrule?.byweekday as Weekday[])?.map(({ weekday }) => weekday);
@@ -41,6 +50,8 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
       ...(freq > -1 && { interval: 1, freq }),
       ...(freq === 2 && { byweekday: [startDate.weekday - 1] }),
     });
+    onStartChange(freq > -1 ? startDate : undefined);
+    onEndChange();
   };
 
   const handleIntervalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,6 +87,10 @@ const RepeatInfo = ({ rrule, startDate, defaultEndDate, repeatEndDate, onRRuleCh
     }
     onRRuleChange({ ...rrule, byweekday: byweekday.filter(weekday => weekday !== index) });
   };
+
+  useEffect(() => {
+    if (rrule?.freq > -1) onStartChange(startDate);
+  }, [startDate]);
 
   return (
     <RepeatInfoContainer>

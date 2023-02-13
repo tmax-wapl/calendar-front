@@ -70,13 +70,6 @@ export const toISO = (date: DateTime) => {
 export const isEqualMonth = (mainCalDate: Date, selectedDate: Date) =>
   mainCalDate.getMonth() === selectedDate.getMonth();
 
-export const rruleString = (rrule: Partial<Options>) => {
-  const rruleSet = new RRuleSet();
-  rruleSet.rrule(new RRule(rrule));
-  const [dtstart, freq] = rruleSet.valueOf();
-  return dtstart + ' ' + freq;
-};
-
 export const isSameDate = (date1: DateTime, date2: DateTime) => {
   return date1.hasSame(date2, 'day');
 };

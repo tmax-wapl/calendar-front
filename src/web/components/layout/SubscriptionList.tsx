@@ -12,7 +12,7 @@ const SubscriptionList = observer(() => {
   const { uiStore, calendarStore } = useCalendarStores();
 
   const closeDialog = () => {
-    uiStore.dialogInfo = null;
+    uiStore.setDialogInfo(null);
   };
 
   const handleSubscribe = async (url: string) => {
@@ -21,15 +21,15 @@ const SubscriptionList = observer(() => {
       closeDialog();
     } catch (status) {
       if (status === 400) {
-        uiStore.dialogInfo = {
+        uiStore.setDialogInfo({
           action: 'subscribeDuplication',
           onClick: [closeDialog],
-        };
+        });
       } else {
-        uiStore.dialogInfo = {
+        uiStore.setDialogInfo({
           action: 'subscribeFail',
           onClick: [closeDialog],
-        };
+        });
       }
     }
   };
@@ -38,13 +38,13 @@ const SubscriptionList = observer(() => {
     <>
       <SubscriptionButton
         onClick={() => {
-          uiStore.dialogInfo = {
+          uiStore.setDialogInfo({
             action: 'subscribe',
             onCloseClick: closeDialog,
             onClick: [closeDialog, handleSubscribe],
             data: { placeholder: 'URL 입력' },
             type: 'input',
-          };
+          });
         }}
       >
         <Icon.Add2Line width={20} height={20} className="mr-8" color="#80868B" />

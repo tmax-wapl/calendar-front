@@ -12,6 +12,7 @@ interface SelectDialogProps {
     description?: string;
   };
   buttons: DialogButton[];
+  selectType?: string;
 }
 
 interface RadioItem {
@@ -19,22 +20,25 @@ interface RadioItem {
   value: string;
 }
 
-export const SelectDialog = ({ open, title, buttons }: SelectDialogProps) => {
-  const [selectItem, setSelectItem] = useState('');
+export const SelectDialog = ({ open, title, buttons, selectType = 'hideNone' }: SelectDialogProps) => {
+  const [selectItem, setSelectItem] = useState(selectType === 'hideOne' ? 'after' : 'one');
 
   const handleChange = (value: string) => setSelectItem(value);
 
   const RepeatSelect = ({ selectType }: { selectType: string }) => {
     const radioItem: { [key: string]: RadioItem[] } = {
-      // TODO: 세분화
-      delete: [
+      hideNone: [
         { label: '이 일정만', value: 'one' },
         { label: '이 일정 및 향후 일정', value: 'after' },
         { label: '모든 일정', value: 'all' },
       ],
-      update: [
+      hideOne: [
         { label: '이 일정 및 향후 일정', value: 'after' },
         { label: '모든 일정', value: 'all' },
+      ],
+      hideAll: [
+        { label: '이 일정만', value: 'one' },
+        { label: '이 일정 및 향후 일정', value: 'after' },
       ],
     };
 
@@ -64,7 +68,7 @@ export const SelectDialog = ({ open, title, buttons }: SelectDialogProps) => {
       <Title>{title.title}</Title>
       <SubTitle>{title?.subTitle}</SubTitle>
       <Description>{title.description}</Description>
-      <RepeatSelect selectType={'delete'} />
+      <RepeatSelect selectType={selectType} />
       <DialogButtonWrapper>
         {buttons?.map((button: DialogButton) => (
           <Button

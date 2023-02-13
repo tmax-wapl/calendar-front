@@ -37,6 +37,7 @@ export const EventTitle = styled.span`
 export const EventInfo = styled.span`
   display: flex;
   font-size: 13px;
+  line-height: 16px;
   color: #80868b;
   white-space: nowrap;
   overflow-x: hidden;

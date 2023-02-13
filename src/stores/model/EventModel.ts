@@ -151,7 +151,11 @@ export class EventModel {
   }
 
   get repeatStartDate(): DateTime {
-    return this.rrule?.dtstart ? DateTime.fromJSDate(this.rrule?.dtstart) : undefined;
+    return this.dto.repeatStartDate ? DateTime.fromISO(this.dto.repeatStartDate) : undefined;
+  }
+
+  set repeatStartDate(date: DateTime) {
+    this.dto.repeatStartDate = date ? toISO(date.toUTC()) : undefined;
   }
 
   get repeatgroupId(): number {
