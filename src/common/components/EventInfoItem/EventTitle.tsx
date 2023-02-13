@@ -26,6 +26,7 @@ const EventTitle = ({ title = '', importance, onTitleChange, onImportanceChange 
         <Icon.BookmarkFill color={importance ? '#fcbb00' : '#bdc1c6'} width={20} height={20} />
       </IconButton>
       <EventTitleInput
+        variant="standard"
         placeholder="일정 제목을 입력해주세요."
         visibleClear={false}
         value={title}
