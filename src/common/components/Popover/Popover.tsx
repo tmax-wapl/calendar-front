@@ -67,7 +67,13 @@ const PopOver = ({ moreLinkData: { target, events, position, date }, setMoreLink
               <EventWrapper key={event.id} onClick={() => handleEventClick(event)}>
                 <EventIcon backgroundColor={event.backgroundColor} />
                 {event.extendedProps.dto.importance && (
-                  <Icon.BookmarkFill className="mr-8" width={16} height={16} color="#FCBB00" />
+                  <Icon.BookmarkFill
+                    className="mr-8"
+                    width={16}
+                    height={16}
+                    color="#FCBB00"
+                    {...{ style: { minWidth: '16px' } }}
+                  />
                 )}
                 <EventTitle>{event.title}</EventTitle>
               </EventWrapper>
