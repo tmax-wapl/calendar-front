@@ -4,7 +4,6 @@ import CalendarRepo from './repository/CalendarRepo';
 import { CalendarDTO, CalendarPatchDTO, HolidayDTO } from '@/common/constants/interfaces';
 import { CalendarModel } from './model/CalendarModel';
 import { EventModel } from './model/EventModel';
-import { EVENT_DELETE_OPTION } from '@/common/constants';
 
 export default class CalendarStore {
   rootStore: RootStore;

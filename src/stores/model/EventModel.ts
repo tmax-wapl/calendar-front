@@ -189,4 +189,12 @@ export class EventModel {
   get exceptionEvent(): boolean {
     return this.dto.exceptionEvent;
   }
+
+  set subEvent(subEvent: boolean) {
+    this.dto.subEvent = subEvent;
+  }
+
+  get subEvent(): boolean {
+    return this.dto.subEvent;
+  }
 }

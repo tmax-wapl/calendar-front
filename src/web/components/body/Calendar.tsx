@@ -2,8 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import FullCalendar, {
   DayCellContentArg,
   DayHeaderContentArg,
+  EventApi,
   EventClickArg,
   EventContentArg,
+  EventDropArg,
+  EventMountArg,
   EventSegment,
   MoreLinkArg,
   MoreLinkContentArg,
@@ -24,13 +27,15 @@ import {
   CalendarColor,
   FullCalendarWrapper,
   WeekDayHeader,
+  EventTitle,
+  Today,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
-import { VIEW_MODE } from '@common/constants/common';
+import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toLuxon, diffTime, toDateString } from '@/utils';
+import { toLuxon, diffTime, toDateString, toISO } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -55,6 +60,10 @@ export type ClickArg = {
   color?: string;
 };
 
+interface ContextMenuEventTarget extends EventTarget {
+  getBoundingClientRect(): DOMRect;
+}
+
 const Calendar: React.FC = observer(() => {
   const { calendarStore, eventStore } = useCalendarStores();
   const calendarRef = useRef<FullCalendar>(null);
@@ -70,6 +79,7 @@ const Calendar: React.FC = observer(() => {
     position: { top: 0, left: 0 },
     events: null,
   });
+  // let dragEL: EventDropArg = null;
 
   const fetchData = async (start: string, end: string) => {
     const { eventList, holidayList } = await eventStore.getEventList(userId, start, end);
@@ -105,6 +115,13 @@ const Calendar: React.FC = observer(() => {
       text
     );
 
+  const date = (content: DayHeaderContentArg) => {
+    const isToday = toDateString(content.date) === DateTime.local().toFormat('yyyy-LL-dd');
+    const dateNum = content.date.getDate();
+
+    return isToday ? <Today>{dateNum}</Today> : <span style={{ marginRight: '4px' }}>{dateNum}</span>;
+  };
+
   const lunar = (date: Date) => {
     const { month, day } = getLunar(date);
     return `음 ${month}.${day}.`;
@@ -113,7 +130,13 @@ const Calendar: React.FC = observer(() => {
   const holiday = (content: DayHeaderContentArg) => {
     const date = toDateString(content.date);
     const holiday = calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
-    return holiday && <Holiday isRed={holiday.isRed}>{holiday.name}</Holiday>;
+    return (
+      holiday && (
+        <Holiday isRed={holiday.isRed} style={{ marginLeft: '10px' }}>
+          {holiday.name}
+        </Holiday>
+      )
+    );
   };
 
   const renderHeaderContent = (content: DayHeaderContentArg) => {
@@ -121,10 +144,13 @@ const Calendar: React.FC = observer(() => {
       <Observer>
         {() => (
           <WeekDayHeader color={DateColor(content, true)}>
-            {content.date.getDate()} {getDay(content.dow)}
+            {date(content)}
+            {getDay(content.dow)}
             {uiStore.isHolidayChecked && holiday(content)}
             {uiStore.isLunarChecked && (
-              <Lunar isRed={isHoliday(toDateString(content.date))}>{lunar(content.date)}</Lunar>
+              <Lunar isRed={isHoliday(toDateString(content.date))} style={{ marginLeft: 'auto' }}>
+                {lunar(content.date)}
+              </Lunar>
             )}
           </WeekDayHeader>
         )}
@@ -136,7 +162,7 @@ const Calendar: React.FC = observer(() => {
 
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
 
-  const renderEventContent = ({ event, timeText, backgroundColor }: EventContentArg) => {
+  const renderEventContent = ({ event, timeText }: EventContentArg) => {
     const { startStr, endStr } = event;
     const { minutes } = diffTime(startStr, endStr);
     const isHalfLess = minutes <= 30;
@@ -145,14 +171,7 @@ const Calendar: React.FC = observer(() => {
       <>
         <CalendarColor color={event.extendedProps.dto.calColor} />
         {uiStore.viewMode === VIEW_MODE.MONTH ? (
-          <EventWrapper
-            data-color={backgroundColor}
-            data-id={event.id}
-            data-type={event.extendedProps.dto.rrule ? 'repeatEvent' : 'event'}
-            data-startdate={startStr}
-            data-enddate={endStr ? endStr : event.extendedProps.dto.end}
-            isHalfLess
-          >
+          <EventWrapper isHalfLess>
             {event.extendedProps.dto.importance && (
               <Icon.BookmarkFill
                 className="mr-2"
@@ -162,28 +181,21 @@ const Calendar: React.FC = observer(() => {
                 {...{ style: { minWidth: '12px' } }}
               />
             )}
-            {event.title}
+            <EventTitle isHalfLess>{event.title}</EventTitle>
           </EventWrapper>
         ) : (
-          <WeekEventWrapper
-            data-color={backgroundColor}
-            data-id={event.id}
-            data-type={event.extendedProps.dto.rrule ? 'repeatEvent' : 'event'}
-            data-startdate={startStr}
-            data-enddate={endStr ? endStr : event.extendedProps.dto.end}
-            isHalfLess={isHalfLess}
-          >
+          <WeekEventWrapper isHalfLess={isHalfLess}>
             <EventSpan>
               {event.extendedProps.dto.importance && (
                 <Icon.BookmarkFill
-                  className="mr-2"
+                  className="mr-2 mt-2"
                   width={12}
                   height={12}
                   color="#FCBB00"
                   {...{ style: { minWidth: '12px' } }}
                 />
               )}
-              {event.title}
+              <EventTitle isHalfLess={isHalfLess}>{event.title}</EventTitle>
             </EventSpan>
             {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
           </WeekEventWrapper>
@@ -252,25 +264,6 @@ const Calendar: React.FC = observer(() => {
     if (!pathname.includes('create')) navigate(`/main/view-mode/${uiStore.viewMode}/create`);
   };
 
-  const handleRightClick = (e: any) => {
-    e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
-    const target = e.target?.closest('.fc-daygrid-event') || e.target?.closest('.fc-timegrid-event');
-    if (!target) return;
-
-    const { color, id, startdate, enddate, type } = e.target?.querySelector('span[data-color]')?.dataset;
-    uiStore.setContextClickArg({
-      target,
-      position: { top: e.clientY, left: e.clientX },
-      color,
-      type,
-      id,
-      date: {
-        startdate,
-        enddate,
-      },
-    });
-  };
-
   const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
     setDateDay(dayEl);
     if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
@@ -283,6 +276,93 @@ const Calendar: React.FC = observer(() => {
     if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
     console.log(time);
     console.log(dayEl, jsEvent);
+  };
+
+  const handleDidMount = (arg: EventMountArg) => {
+    // 이벤트 렌더 후처리, 현재는 ContextMenu만 제어.
+    const target = arg.el;
+    const { id, backgroundColor: color, startStr: startdate, endStr: enddate, extendedProps } = arg.event;
+    const type = extendedProps.dto.rrule ? 'repeatEvent' : 'event';
+
+    target.addEventListener('contextmenu', (e: MouseEvent) => {
+      const el = e.target as ContextMenuEventTarget;
+      const domRect: DOMRect = el.getBoundingClientRect();
+
+      e.preventDefault();
+      if (extendedProps.dto.subEvent) return;
+      uiStore.setContextClickArg({
+        target,
+        position: { top: domRect.top, left: domRect.right + 3 },
+        color,
+        type,
+        id: +id,
+        date: {
+          startdate,
+          enddate,
+        },
+      });
+    });
+  };
+
+  const handleDragEnd = (args: EventDropArg) => {
+    const { event, revert } = args;
+    const {
+      extendedProps: {
+        dto: { rrule, subEvent },
+      },
+    } = event;
+    if (subEvent) {
+      revert(); // 외부 일정인 경우 드롭 안되게
+      return;
+    }
+
+    if (rrule) {
+      // dragEL = args;
+      uiStore.setDialogInfo({
+        action: 'repeatEventUpdate',
+        onClick: [
+          (): void => {
+            uiStore.setDialogInfo(null);
+            // drag 요소 초기화.
+            // dragEL = null;
+          },
+          updateRepeatEvent,
+        ],
+        data: { selectType: 'hideAll' },
+        type: 'select',
+      });
+      revert();
+      return;
+    }
+    updateEvent(event); // 일반일정
+  };
+
+  const updateEvent = async (event: EventApi) => {
+    const { id } = event;
+    await eventStore.updateEvent(
+      +id,
+      new EventModel({
+        ...event.extendedProps.dto,
+        start: toISO(DateTime.fromJSDate(event.start).toUTC()),
+        end: toISO(DateTime.fromJSDate(event.end).toUTC()),
+      }),
+      EVENT_UPDATE_OPTION.DEFAULT,
+    );
+    uiStore.changeDateRange();
+    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+  };
+
+  const updateRepeatEvent = async (value: string) => {
+    switch (value) {
+      case 'one': // 이 일정만 수정
+        break;
+      case 'after': // 이 일정 및 향후 일정 수정
+        break;
+      default:
+        break;
+    }
+    uiStore.setDialogInfo(null);
+    uiStore.changeDateRange();
   };
 
   const setDateDay = (dayEl: HTMLElement) => {
@@ -328,7 +408,7 @@ const Calendar: React.FC = observer(() => {
 
   return (
     <CalendarContainer>
-      <FullCalendarWrapper onContextMenu={handleRightClick}>
+      <FullCalendarWrapper>
         <FullCalendar
           locale="ko"
           ref={calendarRef}
@@ -353,6 +433,10 @@ const Calendar: React.FC = observer(() => {
           eventContent={renderEventContent}
           nowIndicator
           eventOrder="-allDay,start,-duration,-regDate"
+          eventDidMount={handleDidMount}
+          eventDrop={handleDragEnd}
+          editable
+          selectable
         />
         <Popover moreLinkData={moreLinkData} setMoreLinkData={setMoreLinkData} />
       </FullCalendarWrapper>

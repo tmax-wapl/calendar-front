@@ -1,13 +1,16 @@
 import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
 import { API } from '@/common/lib/API';
+import { HTTPError } from '@/error';
 
 export default class CalendarRepo {
   async createCalendar(dto: Partial<CalendarDTO>) {
     try {
       const { response } = await API.post<Partial<CalendarDTO>, CalendarDTO>('/apis/v1/calendars/create', dto);
       return response;
-    } catch (e: any) {
-      throw e.status;
+    } catch (e) {
+      if (e instanceof HTTPError) {
+        throw Error(JSON.stringify(e));
+      }
     }
   }
 
@@ -16,7 +19,9 @@ export default class CalendarRepo {
       const { response, success } = await API.get<CalendarDTO[]>(`/apis/v1/user/list/calendar/${userId}`);
       if (success) return response;
     } catch (e) {
-      throw Error(JSON.stringify(e));
+      if (e instanceof HTTPError) {
+        throw Error(JSON.stringify(e));
+      }
     }
   }
 
@@ -26,8 +31,10 @@ export default class CalendarRepo {
         `/apis/v1/calendars/icalendar/${calId}?start=${start}&end=${end}`,
       );
       return response;
-    } catch (e: any) {
-      throw e.status;
+    } catch (e) {
+      if (e instanceof HTTPError) {
+        throw e;
+      }
     }
   }
 
@@ -36,7 +43,9 @@ export default class CalendarRepo {
       const { response, success } = await API.get<CalendarDTO>(`/apis/v1/calendars/${calId}?start=${start}&end=${end}`);
       if (success) return response;
     } catch (e) {
-      throw Error(JSON.stringify(e));
+      if (e instanceof HTTPError) {
+        throw Error(JSON.stringify(e));
+      }
     }
   }
 
@@ -45,7 +54,9 @@ export default class CalendarRepo {
       const { response, success } = await API.delete(`/apis/v1/calendars/delete/${calId}`);
       if (success) return response;
     } catch (e) {
-      throw Error(JSON.stringify(e));
+      if (e instanceof HTTPError) {
+        throw Error(JSON.stringify(e));
+      }
     }
   }
 
@@ -57,7 +68,9 @@ export default class CalendarRepo {
       );
       if (success) return response;
     } catch (e) {
-      throw Error(JSON.stringify(e));
+      if (e instanceof HTTPError) {
+        throw Error(JSON.stringify(e));
+      }
     }
   }
 }
