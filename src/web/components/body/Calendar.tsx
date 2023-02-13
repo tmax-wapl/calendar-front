@@ -28,6 +28,7 @@ import {
   FullCalendarWrapper,
   WeekDayHeader,
   EventTitle,
+  Today,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
@@ -113,6 +114,13 @@ const Calendar: React.FC = observer(() => {
       text
     );
 
+  const date = (content: DayHeaderContentArg) => {
+    const isToday = toDateString(content.date) === DateTime.local().toFormat('yyyy-LL-dd');
+    const dateNum = content.date.getDate();
+
+    return isToday ? <Today>{dateNum}</Today> : <span style={{ marginRight: '4px' }}>{dateNum}</span>;
+  };
+
   const lunar = (date: Date) => {
     const { month, day } = getLunar(date);
     return `음 ${month}.${day}.`;
@@ -135,7 +143,8 @@ const Calendar: React.FC = observer(() => {
       <Observer>
         {() => (
           <WeekDayHeader color={DateColor(content, true)}>
-            {content.date.getDate()} {getDay(content.dow)}
+            {date(content)}
+            {getDay(content.dow)}
             {uiStore.isHolidayChecked && holiday(content)}
             {uiStore.isLunarChecked && (
               <Lunar isRed={isHoliday(toDateString(content.date))} style={{ marginLeft: 'auto' }}>

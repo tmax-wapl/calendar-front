@@ -357,4 +357,16 @@ export const WeekDayHeader = styled.span<{ color: string }>`
   color: ${({ color }) => color};
   display: flex;
   width: 100%;
+  align-items: center;
+`;
+
+export const Today = styled.span`
+  width: 20px;
+  height: 20px;
+  font-size: 13px;
+  line-height: 20px;
+  background: #ff6258;
+  color: white;
+  border-radius: 15px;
+  margin-right: 4px;
 `;
