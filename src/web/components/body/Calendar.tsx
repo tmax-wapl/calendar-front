@@ -27,6 +27,7 @@ import {
   CalendarColor,
   FullCalendarWrapper,
   WeekDayHeader,
+  EventTitle,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
@@ -116,7 +117,13 @@ const Calendar: React.FC = observer(() => {
   const holiday = (content: DayHeaderContentArg) => {
     const date = toDateString(content.date);
     const holiday = calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
-    return holiday && <Holiday isRed={holiday.isRed}>{holiday.name}</Holiday>;
+    return (
+      holiday && (
+        <Holiday isRed={holiday.isRed} style={{ marginLeft: '10px' }}>
+          {holiday.name}
+        </Holiday>
+      )
+    );
   };
 
   const renderHeaderContent = (content: DayHeaderContentArg) => {
@@ -127,7 +134,9 @@ const Calendar: React.FC = observer(() => {
             {content.date.getDate()} {getDay(content.dow)}
             {uiStore.isHolidayChecked && holiday(content)}
             {uiStore.isLunarChecked && (
-              <Lunar isRed={isHoliday(toDateString(content.date))}>{lunar(content.date)}</Lunar>
+              <Lunar isRed={isHoliday(toDateString(content.date))} style={{ marginLeft: 'auto' }}>
+                {lunar(content.date)}
+              </Lunar>
             )}
           </WeekDayHeader>
         )}
@@ -158,21 +167,21 @@ const Calendar: React.FC = observer(() => {
                 {...{ style: { minWidth: '12px' } }}
               />
             )}
-            {event.title}
+            <EventTitle isHalfLess>{event.title}</EventTitle>
           </EventWrapper>
         ) : (
           <WeekEventWrapper isHalfLess={isHalfLess}>
             <EventSpan>
               {event.extendedProps.dto.importance && (
                 <Icon.BookmarkFill
-                  className="mr-2"
+                  className="mr-2 mt-2"
                   width={12}
                   height={12}
                   color="#FCBB00"
                   {...{ style: { minWidth: '12px' } }}
                 />
               )}
-              {event.title}
+              <EventTitle isHalfLess={isHalfLess}>{event.title}</EventTitle>
             </EventSpan>
             {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
           </WeekEventWrapper>
@@ -382,6 +391,7 @@ const Calendar: React.FC = observer(() => {
           eventDidMount={handleDidMount}
           eventDrop={handleDragEnd}
           editable
+          selectable
         />
         <Popover moreLinkData={moreLinkData} setMoreLinkData={setMoreLinkData} />
       </FullCalendarWrapper>

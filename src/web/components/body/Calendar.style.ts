@@ -130,6 +130,13 @@ export const CalendarContainer = styled.div`
     }
   }
 
+  .fc-daygrid-day {
+    .fc-highlight {
+      background: #f1f3f4;
+      z-index: -1;
+    }
+  }
+
   .fc-timeGridWeek-view {
     tr.fc-scrollgrid-section:first-of-type {
       .fc-daygrid-day-top {
@@ -182,6 +189,7 @@ export const CalendarContainer = styled.div`
       // 시간텍스트영역 cell wrapper
       position: relative;
       top: -14px;
+      padding: 0 10px 0 0;
     }
     [data-time='00:00:00'] .fc-timegrid-slot-label-cushion {
       // 오전12시 시간텍스트영역 cell wrapper
@@ -307,7 +315,7 @@ export const ArrowButton = styled.div<{ isTop: boolean }>`
 export const EventWrapper = styled.span<{ isHalfLess: boolean }>`
   display: flex;
   align-items: center;
-  padding: ${({ isHalfLess }) => (isHalfLess ? '0px 8px' : '4px 8px')};
+  padding: ${({ isHalfLess }) => (isHalfLess ? '0px 10px 0 8px' : '4px 8px')};
   &:hover {
     cursor: pointer;
   }
@@ -316,6 +324,8 @@ export const EventWrapper = styled.span<{ isHalfLess: boolean }>`
 export const WeekEventWrapper = styled(EventWrapper)`
   flex-direction: column;
   align-items: normal;
+  height: 100%;
+  padding: ${({ isHalfLess }) => (isHalfLess ? '1px 10px 1px 8px' : '4px 8px')};
 `;
 
 export const CalendarColor = styled.span<{ color: string }>`
@@ -328,14 +338,23 @@ export const CalendarColor = styled.span<{ color: string }>`
 
 export const EventSpan = styled.span`
   display: flex;
-  align-items: center;
+`;
+
+export const EventTitle = styled.span<{ isHalfLess: boolean }>`
+  display: ${({ isHalfLess }) => (isHalfLess ? 'inline' : '-webkit-box')};
   font-size: 13px;
-  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  ${({ isHalfLess }) =>
+    isHalfLess
+      ? 'white-space: pre;'
+      : `-webkit-line-clamp: 2; 
+    word-break: break-word; 
+    -webkit-box-orient: vertical;`};
 `;
 
 export const WeekDayHeader = styled.span<{ color: string }>`
   color: ${({ color }) => color};
   display: flex;
-  justify-content: space-between;
   width: 100%;
 `;
