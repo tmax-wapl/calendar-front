@@ -54,8 +54,13 @@ export const EventIcon = styled.div<{ backgroundColor: string }>`
   border-radius: 25px;
   background-color: ${props => props.backgroundColor};
   margin-right: 10px;
+  min-width: 16px;
 `;
-export const EventTitle = styled.div`
+export const EventTitle = styled.span`
+  display: inline;
   font-weight: 400;
   font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
 `;

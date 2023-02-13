@@ -21,6 +21,7 @@ export interface EventDTO {
   repeatEndDate?: string;
   repeatStartDate?: string;
   repeatgroupId?: number;
+  subEvent?: boolean;
   participants?: any[];
   attachments?: any[];
   notifications?: any[];
@@ -103,7 +104,7 @@ export interface ExceptionDTO {
 }
 
 // response data 명시 해주기로..
-export interface ResponseData<T = any> {
+export interface ResponseData<T> {
   error?: {
     status: number;
     message: string;
