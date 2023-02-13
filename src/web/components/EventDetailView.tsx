@@ -8,15 +8,17 @@ import EventItem from './EventItem';
 import { Participants, Location, Notifications, Description, Attachments } from '@common/components/EventInfoItem';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EVENT_UPDATE_OPTION } from '@common/constants';
-import { EventModel } from '@/stores/model/EventModel';
-import { toISO } from '@/utils';
 
 const EventDetailView = () => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
 
-  const handleBack = () => {
+  const handleBackClick = () => {
     navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+  };
+
+  const handleEditClick = () => {
+    navigate(`/main/view-mode/${uiStore.viewMode}/update`);
   };
 
   const closeDialog = () => {
@@ -30,28 +32,14 @@ const EventDetailView = () => {
     closeDialog();
   };
 
-  const repeatEventDelete = async (value: string) => {
+  const deleteRepeatEvent = async (value: string) => {
     const event = eventStore.event;
     switch (value) {
       case 'one': // 이 일정만 삭제
-        await eventStore.updateEvent(
-          +event.id,
-          new EventModel({
-            ...event.dto,
-            exDate: toISO(event.startDate.toUTC()),
-          }),
-          EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT_EXCEPT,
-        );
+        await eventStore.updateEvent(+event.id, event, EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT_EXCEPT);
         break;
       case 'after': // 이 일정 및 향후 일정 삭제
-        await eventStore.updateEvent(
-          +event.id,
-          new EventModel({
-            ...event.dto,
-            repeatEndDate: toISO(event.endDate.toUTC()),
-          }),
-          EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT_EXCEPT,
-        );
+        await eventStore.updateEvent(+event.id, event, EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT_EXCEPT);
         break;
       case 'all': // 모든 일정 삭제
         await eventStore.deleteEvent(+event.id);
@@ -72,9 +60,8 @@ const EventDetailView = () => {
     } else {
       uiStore.setDialogInfo({
         action: 'repeatEventDelete',
-        onClick: [closeDialog, repeatEventDelete],
+        onClick: [closeDialog, deleteRepeatEvent],
         type: 'select',
-        data: { model: eventStore.event },
       });
     }
   };
@@ -86,36 +73,34 @@ const EventDetailView = () => {
   return (
     <EventDetailViewContainer>
       <EventBar
-        leftSide={[{ action: 'back', onClick: handleBack }]}
+        leftSide={[{ action: 'back', onClick: handleBackClick }]}
         rightSide={[
           // { action: 'share', onClick: () => console.log('share') },
-          { action: 'edit', onClick: () => navigate(`/main/view-mode/${uiStore.viewMode}/update`) },
+          { action: 'edit', onClick: handleEditClick },
           { action: 'delete', onClick: handleDeleteClick },
         ]}
       />
-      {eventStore.event && (
-        <EventDetailContainer>
-          <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
-          <Observer>
-            {() => (
-              <FromInfo>
-                <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
-                {eventStore.event.calName}
-                <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
-              </FromInfo>
-            )}
-          </Observer>
-          {/* {eventStore.event.participants.length && <Participants participants={eventStore.event.participants} />} */}
-          {eventStore.event.location && <Observer>{() => <Location location={eventStore.event.location} />}</Observer>}
-          {/* {eventStore.event.alarmList.length > 0 && (
+      <EventDetailContainer>
+        <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
+        <Observer>
+          {() => (
+            <FromInfo>
+              <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
+              {eventStore.event.calName}
+              <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
+            </FromInfo>
+          )}
+        </Observer>
+        {/* {eventStore.event.participants.length && <Participants participants={eventStore.event.participants} />} */}
+        {eventStore.event.location && <Observer>{() => <Location location={eventStore.event.location} />}</Observer>}
+        {/* {eventStore.event.alarmList.length > 0 && (
             <Notifications notifications={eventStore.event.alarmList.map(({ time, timestamp }) => `${time} ${timestamp}`)} />
           )} */}
-          {eventStore.event.description && (
-            <Observer>{() => <Description description={eventStore.event.description} />}</Observer>
-          )}
-          {/* {eventStore.event.attachments?.length && <Attachments attachments={eventStore.event.attachments} />} */}
-        </EventDetailContainer>
-      )}
+        {eventStore.event.description && (
+          <Observer>{() => <Description description={eventStore.event.description} />}</Observer>
+        )}
+        {/* {eventStore.event.attachments?.length && <Attachments attachments={eventStore.event.attachments} />} */}
+      </EventDetailContainer>
     </EventDetailViewContainer>
   );
 };

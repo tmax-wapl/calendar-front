@@ -18,7 +18,7 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { getStartDate, toISO, rruleString, applyWeekdayOffset } from '@/utils';
+import { getStartDate, toISO, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 
 interface Props {
@@ -29,6 +29,7 @@ const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const { userId } = useContext(CalendarContext);
   const navigate = useNavigate();
+  const originEvent = new EventModel({ ...eventStore.event.dto });
 
   const handleClose = () => {
     navigate(`/main/view-mode/${uiStore.viewMode}/date`);
@@ -47,9 +48,11 @@ const EventHandleView = ({ action }: Props) => {
       }),
       ...(event.rrule && {
         ...(event.rrule.freq === 2 && {
-          rrule: applyWeekdayOffset(event.rrule, startDate, 'UTC').toString().replace(/\n/, ' '),
+          rrule: applyWeekdayOffset(event.rrule, startDate, 'UTC').toString(),
         }),
-        repeatStartDate: toISO(startDate.toUTC()),
+        repeatStartDate: toISO(
+          event.allDay ? event.repeatStartDate.startOf('day').toUTC() : event.repeatStartDate.toUTC(),
+        ),
         ...(event.repeatEndDate && {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
         }),
@@ -64,28 +67,21 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const updateEvent = async (isRepeat = false) => {
-    const event = await eventStore.updateEvent(
+    await eventStore.updateEvent(
       +eventStore.event.id,
       preprocessEvent(eventStore.event),
       isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
     );
-    if (!isRepeat) calendarStore.updateEventList(event);
+    uiStore.changeDateRange();
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
   const updateRepeatEvent = async (value: string) => {
-    const { startDate, endDate } = eventStore.event;
     switch (value) {
       case 'one': // 이 일정만 수정
         await eventStore.updateEvent(
           +eventStore.event.id,
-          new EventModel({
-            ...eventStore.event.dto,
-            id: null,
-            start: toISO(startDate.toUTC()),
-            end: toISO(endDate.toUTC()),
-            exDate: toISO(startDate.toUTC()),
-          }),
+          preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
         );
         navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
@@ -93,14 +89,9 @@ const EventHandleView = ({ action }: Props) => {
       case 'after': // 이 일정 및 향후 일정 수정
         await eventStore.updateEvent(
           +eventStore.event.id,
-          new EventModel({
-            ...eventStore.event.dto,
-            id: null,
-            repeatStartDate: toISO(startDate.toUTC()),
-            ...(eventStore.event.repeatEndDate && { repeatEndDate: toISO(eventStore.event.repeatEndDate.toUTC()) }),
-            rrule: rruleString(eventStore.event.rrule),
-          }),
+          preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
+          originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
         );
         navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         break;
@@ -110,22 +101,34 @@ const EventHandleView = ({ action }: Props) => {
       default:
         break;
     }
-    uiStore.dialogInfo = null;
+    uiStore.setDialogInfo(null);
     uiStore.changeDateRange();
   };
 
   const handleUpdate = async () => {
-    // 1. 일반 일정인지? 반복 일정인지 여부
-    // 2. 팝업에서 선택한 옵션에 따라 서비스 콜 분기.
-    if (!eventStore.event.rrule) updateEvent();
+    const originStartDate = originEvent.startDate.toFormat('yyyy-LL-dd');
+    const { rrule: originRRuleStr, repeatEndDate: originRepeatEnd } = originEvent.dto;
+    const newStartDate = eventStore.event.startDate.toFormat('yyyy-LL-dd');
+    const { rrule: newRRuleStr, repeatEndDate: newRepeatEnd } = eventStore.event.dto;
+
+    if (!newRRuleStr) updateEvent();
+    else if (!originRRuleStr && newRRuleStr) updateEvent(true);
+    else if (originStartDate !== newStartDate && (originRRuleStr !== newRRuleStr || originRepeatEnd !== newRepeatEnd))
+      updateRepeatEvent('after');
     else {
-      // 팝업 열고.. 선택해야겠지..?
-      // 선택하는데 옵션이 아마 세개가 올거야 contextMenuItem 처럼
-      uiStore.dialogInfo = {
+      uiStore.setDialogInfo({
         action: 'repeatEventUpdate',
-        onClick: [(): void => (uiStore.dialogInfo = null), updateRepeatEvent],
+        onClick: [(): void => uiStore.setDialogInfo(null), updateRepeatEvent],
+        data: {
+          selectType:
+            originStartDate !== newStartDate
+              ? 'hideAll'
+              : originRRuleStr !== newRRuleStr || originRepeatEnd !== newRepeatEnd
+              ? 'hideOne'
+              : 'hideNone',
+        },
         type: 'select',
-      };
+      });
     }
   };
 
@@ -192,6 +195,7 @@ const EventHandleView = ({ action }: Props) => {
               defaultEndDate={eventStore.event.startDate?.plus({ years: 1 })}
               repeatEndDate={eventStore.event.repeatEndDate}
               onRRuleChange={value => (eventStore.event.rrule = value)}
+              onStartChange={value => (eventStore.event.repeatStartDate = value)}
               onEndChange={value => (eventStore.event.repeatEndDate = value)}
             />
           )}

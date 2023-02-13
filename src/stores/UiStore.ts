@@ -17,6 +17,7 @@ interface DialogInfo {
     num?: number;
     placeholder?: string;
     model?: EventModel;
+    selectType?: string;
   };
   type?: string;
 }
