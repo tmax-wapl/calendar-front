@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { DateTime } from 'luxon';
 import { rrulestr, RRule, Options, RRuleSet } from 'rrule';
-import { EventDTO, AlarmDTO, ExceptionDTO } from '@constants/interfaces';
+import { EventDTO, ExceptionDTO } from '@constants/interfaces';
 import { isRRule, toISO } from '@/utils';
 
 export class EventModel {
@@ -170,11 +170,11 @@ export class EventModel {
     return this.dto.attachments;
   }
 
-  get notifications(): AlarmDTO[] {
+  get notifications(): string[] {
     return this.dto.alarmList;
   }
 
-  set notifications(notifications: AlarmDTO[]) {
+  set notifications(notifications: string[]) {
     this.dto.alarmList = notifications;
   }
 
