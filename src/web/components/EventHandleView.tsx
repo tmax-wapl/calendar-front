@@ -106,16 +106,27 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const handleUpdate = async () => {
-    const { rrule: originRRuleStr, start: originStart } = originEvent.dto;
-    const { rrule: newRRuleStr, start: newStart } = eventStore.event.dto;
+    const originStartDate = originEvent.startDate.toFormat('yyyy-LL-dd');
+    const { rrule: originRRuleStr, repeatEndDate: originRepeatEnd } = originEvent.dto;
+    const newStartDate = eventStore.event.startDate.toFormat('yyyy-LL-dd');
+    const { rrule: newRRuleStr, repeatEndDate: newRepeatEnd } = eventStore.event.dto;
 
-    if (!!originRRuleStr !== !!newRRuleStr) updateEvent();
-    else if (originRRuleStr !== newRRuleStr && originStart !== newStart) updateRepeatEvent('after');
+    if (!newRRuleStr) updateEvent();
+    else if (!originRRuleStr && newRRuleStr) updateEvent(true);
+    else if (originStartDate !== newStartDate && (originRRuleStr !== newRRuleStr || originRepeatEnd !== newRepeatEnd))
+      updateRepeatEvent('after');
     else {
       uiStore.setDialogInfo({
         action: 'repeatEventUpdate',
         onClick: [(): void => uiStore.setDialogInfo(null), updateRepeatEvent],
-        data: { selectType: originStart !== newStart ? 'hideOne' : 'hideNone' },
+        data: {
+          selectType:
+            originStartDate !== newStartDate
+              ? 'hideAll'
+              : originRRuleStr !== newRRuleStr || originRepeatEnd !== newRepeatEnd
+              ? 'hideOne'
+              : 'hideNone',
+        },
         type: 'select',
       });
     }
