@@ -14,7 +14,7 @@ export interface EventDTO {
   regDate?: string;
   regUserId?: number;
   rrule?: string;
-  alarmList?: AlarmDTO[];
+  alarmList?: string[];
   exceptionList?: ExceptionDTO[];
   location?: string;
   description?: string;
@@ -95,17 +95,6 @@ export interface EventSharePersonaDTO {
   modUserId: string;
   roomId: string;
   shareEventList?: EventDTO[];
-}
-
-export interface AlarmDTO {
-  endDate: string;
-  eventId: number;
-  id: number;
-  onGoing: string;
-  startDate: string;
-  time: string;
-  timestamp: string;
-  userTime: string;
 }
 
 export interface ExceptionDTO {

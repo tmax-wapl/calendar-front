@@ -1,4 +1,4 @@
-import { Icon, Mui } from '@wapl/ui';
+import { Icon, Select } from '@wapl/ui';
 import { NotificationItemContainer, IconButton } from './NotificationItem.style';
 
 interface Props {
@@ -23,16 +23,14 @@ const NotificationItem = ({ index, notification, onChange, onDelete }: Props) =>
 
   return (
     <NotificationItemContainer>
-      {/* TODO: 추후 wapl-ui 업데이트 시 value 요청 필요. 대체 예정. */}
-      <Mui.FormControl size="small">
-        <Mui.Select defaultValue={'0'} value={notification} onChange={e => onChange(e.target.value, index)}>
-          {selectItems.map(item => (
-            <Mui.MenuItem key={item.value} value={item.value}>
-              {item.label}
-            </Mui.MenuItem>
-          ))}
-        </Mui.Select>
-      </Mui.FormControl>
+      <Select
+        name="notification"
+        value={notification || '0'}
+        types="normal"
+        items={selectItems}
+        width="100px"
+        onChange={(value: string) => onChange(value, index)}
+      />
       <IconButton onClick={() => onDelete(index)}>
         <Icon.DeleteFill color="rgba(0, 0, 0, 0.2)" width={20} height={20} />
       </IconButton>

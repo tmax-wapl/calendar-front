@@ -93,9 +93,7 @@ const EventDetailView = () => {
         </Observer>
         {/* {eventStore.event.participants.length && <Participants participants={eventStore.event.participants} />} */}
         {eventStore.event.location && <Observer>{() => <Location location={eventStore.event.location} />}</Observer>}
-        {/* {eventStore.event.alarmList.length > 0 && (
-            <Notifications notifications={eventStore.event.alarmList.map(({ time, timestamp }) => `${time} ${timestamp}`)} />
-          )} */}
+        {eventStore.event.notifications?.length > 0 && <Notifications notifications={eventStore.event.notifications} />}
         {eventStore.event.description && (
           <Observer>{() => <Description description={eventStore.event.description} />}</Observer>
         )}

@@ -223,11 +223,15 @@ const EventHandleView = ({ action }: Props) => {
             />
           )}
         </Observer>
-        {/* <Notifications
-          notifications={eventStore.event.notifications}
-          onChange={value => setEvent(prev => ({ ...prev, ...value }))}
-          editable
-        /> */}
+        <Observer>
+          {() => (
+            <Notifications
+              notifications={eventStore.event.notifications}
+              onChange={value => (eventStore.event.notifications = value)}
+              editable
+            />
+          )}
+        </Observer>
         <Observer>
           {() => (
             <Description

@@ -5,7 +5,7 @@ import NotificationItem from './NotificationItem';
 
 interface Props {
   notifications?: string[];
-  onChange?: (value: { notifications: string[] }) => void;
+  onChange?: (value: string[]) => void;
   editable?: boolean;
 }
 
@@ -22,21 +22,17 @@ const Notifications = ({ notifications = ['0'], onChange, editable = false }: Pr
 
   const handleSelectChange = (changedNotification: string, targetIndex: number) => {
     if (!onChange) return;
-    onChange({
-      notifications: notifications.map((notification, index) =>
-        index === targetIndex ? changedNotification : notification,
-      ),
-    });
+    onChange(notifications.map((notification, index) => (index === targetIndex ? changedNotification : notification)));
   };
 
   const handleNotificationDelete = (targetIndex: number) => {
     if (!onChange) return;
-    onChange({ notifications: notifications.filter((_, index) => index !== targetIndex) });
+    onChange(notifications.filter((_, index) => index !== targetIndex));
   };
 
   const handleNotificationAdd = () => {
     if (!onChange) return;
-    onChange({ notifications: [...notifications, '0'] });
+    onChange([...notifications, '0']);
   };
 
   const getNotificationsTitle = (notifications: string[]) => {
