@@ -4,7 +4,7 @@ export const EventHandleViewContainer = styled.div`
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  width: 380px;
+  width: 100%;
   height: 100%;
   color: #202124;
 `;

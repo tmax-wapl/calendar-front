@@ -4,7 +4,7 @@ export const EventDetailViewContainer = styled.div`
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  width: 380px;
+  width: 100%;
   height: 100%;
 `;
 

@@ -4,7 +4,7 @@ export const EventListViewContainer = styled.div`
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  width: 380px;
+  width: 100%;
   box-sizing: border-box;
   padding: 12px;
   overflow-y: auto;
