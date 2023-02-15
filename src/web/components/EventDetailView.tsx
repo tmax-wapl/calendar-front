@@ -85,18 +85,26 @@ const EventDetailView = () => {
         <Observer>
           {() => (
             <FromInfo>
-              <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
+              <Icon.CalendarLine className="mr-8" width={20} height={20} />
               {eventStore.event.calName}
               <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
             </FromInfo>
           )}
         </Observer>
-        {/* {eventStore.event.participants.length && <Participants participants={eventStore.event.participants} />} */}
-        {eventStore.event.location && <Observer>{() => <Location location={eventStore.event.location} />}</Observer>}
-        {eventStore.event.notifications?.length > 0 && <Notifications notifications={eventStore.event.notifications} />}
-        {eventStore.event.description && (
-          <Observer>{() => <Description description={eventStore.event.description} />}</Observer>
-        )}
+        {/* {eventStore.event.participants?.length && <Participants participants={eventStore.event.participants} />} */}
+        <Observer>
+          {() => (eventStore.event.location ? <Location location={eventStore.event.location} /> : null)}
+        </Observer>
+        <Observer>
+          {() =>
+            eventStore.event.notifications?.length > 0 && (
+              <Notifications notifications={eventStore.event.notifications} />
+            )
+          }
+        </Observer>
+        <Observer>
+          {() => (eventStore.event.description ? <Description description={eventStore.event.description} /> : null)}
+        </Observer>
         {/* {eventStore.event.attachments?.length && <Attachments attachments={eventStore.event.attachments} />} */}
       </EventDetailContainer>
     </EventDetailViewContainer>
