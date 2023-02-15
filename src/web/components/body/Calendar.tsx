@@ -361,23 +361,39 @@ const Calendar: React.FC = observer(() => {
   };
 
   const updateRepeatEvent = async (value: string) => {
+    const {
+      oldEvent: { id, start, end },
+      newEvent: {
+        extendedProps: { dto },
+        start: newStart,
+        end: newEnd,
+      },
+    } = dragEL;
+
     switch (value) {
       case 'one': // 이 일정만 수정
+        await eventStore.updateEvent(
+          +id,
+          new EventModel({
+            ...dto,
+            id: null,
+            start: toISO(toDateTime(newStart).toUTC()),
+            end: toISO(toDateTime(newEnd).toUTC()),
+            exDate: toISO(toDateTime(start).toUTC()),
+          }),
+          EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
+        );
+        uiStore.setDateDay(toDateTime(newStart));
         break;
       case 'after': // 이 일정 및 향후 일정 수정
-        const {
-          oldEvent: { id, start },
-          newEvent: {
-            extendedProps: { dto },
-          },
-        } = dragEL;
-
         await eventStore.updateEvent(
           +id,
           new EventModel({
             ...dto,
             id: null,
             rrule: applyDropRRule().toString(),
+            start: toISO(toDateTime(newStart).toUTC()),
+            end: toISO(toDateTime(newEnd).toUTC()),
             repeatStartDate: toISO(
               dragEL.oldEvent.allDay ? toDateTime(start).startOf('day').toUTC() : toDateTime(start).toUTC(),
             ),
@@ -385,6 +401,7 @@ const Calendar: React.FC = observer(() => {
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
           toDateTime(start).toUTC().toFormat('yyyy-LL-dd'),
         );
+        uiStore.setDateDay(toDateTime(newStart));
         break;
       default:
         break;
