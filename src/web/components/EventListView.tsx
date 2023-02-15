@@ -8,7 +8,7 @@ import { DateTime } from 'luxon';
 import { getLunar } from 'holiday-kr';
 import { autorun } from 'mobx';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toLuxon } from '@/utils';
+import { toISO, toLuxon } from '@/utils';
 import { EventModel } from '@/stores/model/EventModel';
 
 const EventListView = () => {
@@ -41,6 +41,7 @@ const EventListView = () => {
     };
     const dispose = autorun(() => {
       fetchData(uiStore.dateDay);
+      uiStore.mainApi?.select(toISO(uiStore.dateDay));
     });
     return () => dispose();
   }, []);
