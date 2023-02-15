@@ -6,19 +6,14 @@ export const EventItemContainer = styled.div<{ isDetail: boolean }>`
   width: 100%;
   height: fit-content;
   box-sizing: border-box;
-  padding: ${({ isDetail }) => (isDetail ? '0' : '12px 8px 10px')};
-  margin-bottom: ${({ isDetail }) => (isDetail ? '8px' : '0')};
-  ${({ isDetail }) => !isDetail && 'cursor: pointer;'}
-  > span {
-    margin-left: 28px;
-  }
+  ${({ isDetail }) => !isDetail && 'padding: 12px 0 10px; cursor: pointer;'}
 `;
 
 export const ItemTitleContainer = styled.div<{ isDetail: boolean }>`
   display: flex;
   align-items: center;
-  :not(:last-child) {
-    margin-bottom: ${({ isDetail }) => (isDetail ? '12px' : '4px')};
+  :not(:last-of-type) {
+    margin-bottom: ${({ isDetail }) => (isDetail ? '14px' : '5px')};
   }
   > svg:first-of-type {
     margin-right: 10px !important;
@@ -28,23 +23,34 @@ export const ItemTitleContainer = styled.div<{ isDetail: boolean }>`
 export const EventTitle = styled.span`
   display: block;
   flex: 1;
-  font-size: 14px;
+  ${({ theme: { Font } }) => Font.Text.m.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
-export const EventInfo = styled.span`
+export const EventInfoContainer = styled.div<{ isDetail: boolean }>`
   display: flex;
-  font-size: 13px;
-  line-height: 16px;
-  color: #80868b;
+  flex-direction: column;
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[600]};
+  margin-left: 28px;
+  > :not(:last-of-type) {
+    margin-bottom: ${({ isDetail }) => (isDetail ? '4px' : '2px')};
+  }
+  > :last-of-type {
+    margin-bottom: ${({ isDetail }) => (isDetail ? '2px' : '4px')};
+  }
+`;
+
+export const EventInfo = styled.span`
   white-space: nowrap;
   overflow-x: hidden;
 `;
 
 export const CalendarName = styled.span`
-  display: flex;
-  font-size: 12px;
-  margin-top: 4px;
+  ${({ theme: { Font } }) => Font.Text.xs.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[800]};
+  margin-left: 28px;
 `;

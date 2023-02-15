@@ -1,4 +1,4 @@
-import { EventListViewContainer, DateInfo, DateDay, Holiday, Lunar } from './EventListView.style';
+import { EventListViewContainer, DateInfo, DateDay, Holiday, Lunar, EventListWrapper } from './EventListView.style';
 import EventItem from './EventItem';
 import NoResult from './NoResult';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -82,7 +82,11 @@ const EventListView = () => {
         </Observer>
       </DateInfo>
       {eventList.length > 0 ? (
-        eventList.map((event, index) => <EventItem key={index} event={event} onClick={handleClickEvent} />)
+        <EventListWrapper>
+          {eventList.map((event, index) => (
+            <EventItem key={index} event={event} onClick={handleClickEvent} />
+          ))}
+        </EventListWrapper>
       ) : (
         <NoResult />
       )}

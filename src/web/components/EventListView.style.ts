@@ -5,40 +5,39 @@ export const EventListViewContainer = styled.div`
   flex-shrink: 0;
   flex-direction: column;
   width: 100%;
-  box-sizing: border-box;
-  padding: 12px;
-  overflow-y: auto;
 `;
 
 export const DateInfo = styled.div`
   display: flex;
   flex-shrink: 0;
   width: 100%;
-  height: 50px;
+  height: 62px;
   align-items: center;
   box-sizing: border-box;
-  padding: 0 8px;
+  padding: 0 20px;
   > :not(:last-child) {
     margin-right: 8px;
   }
 `;
 
-export const DateDay = styled.span`
-  display: flex;
-  font-weight: 700;
-  font-size: 16px;
+export const DateDay = styled.strong`
+  ${({ theme: { Font } }) => Font.Text.l.Bold};
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
 `;
 
 export const Holiday = styled.span<{ isRed: boolean }>`
-  display: flex;
-  font-weight: 400;
-  font-size: 13px;
-  color: ${({ isRed }) => (isRed ? '#f44336' : '#9AA0A6')};
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
+  color: ${({ isRed, theme: { Color } }) => (isRed ? Color.Validation.negative : Color.Gray[900])};
 `;
 
 export const Lunar = styled.span<{ isRed: boolean }>`
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
+  color: ${({ isRed, theme: { Color } }) => (isRed ? Color.Validation.negative : Color.Gray[500])};
+`;
+
+export const EventListWrapper = styled.div`
   display: flex;
-  font-weight: 400;
-  font-size: 13px;
-  color: ${({ isRed }) => (isRed ? '#f44336' : '#9AA0A6')};
+  flex-direction: column;
+  padding: 0 18px 20px;
+  overflow-y: auto;
 `;
