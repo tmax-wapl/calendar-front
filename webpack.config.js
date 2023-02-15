@@ -86,13 +86,15 @@ module.exports = env => {
       new Dotenv({
         path: dev ? './.env.development' : './.env.production',
       }),
-      new UglifyJSPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: true,
-        },
-      }),
-      // new BundleAnalyzerPlugin({}),
-    ],
+      !dev
+        ? new UglifyJSPlugin({
+            sourceMap: true,
+            uglifyOptions: {
+              compress: true,
+            },
+          })
+        : false,
+      // new BundleAnalyzerPlugin({}), // for bundle size
+    ].filter(n => n),
   };
 };
