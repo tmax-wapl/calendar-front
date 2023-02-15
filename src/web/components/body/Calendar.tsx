@@ -35,13 +35,14 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toLuxon, diffTime, toDateString, toISO } from '@/utils';
+import { toLuxon, diffTime, toDateString, toISO, toDateTime } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { Holiday, Lunar } from '../EventListView.style';
 import { getLunar } from 'holiday-kr';
 import { EventModel } from '@/stores/model/EventModel';
+import { RRule, rrulestr, Weekday } from 'rrule';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -64,6 +65,11 @@ interface ContextMenuEventTarget extends EventTarget {
   getBoundingClientRect(): DOMRect;
 }
 
+interface DragElement {
+  oldEvent: EventApi | null;
+  newEvent: EventApi | null;
+}
+
 const Calendar: React.FC = observer(() => {
   const { calendarStore, eventStore } = useCalendarStores();
   const calendarRef = useRef<FullCalendar>(null);
@@ -79,7 +85,10 @@ const Calendar: React.FC = observer(() => {
     position: { top: 0, left: 0 },
     events: null,
   });
-  // let dragEL: EventDropArg = null;
+  let dragEL: DragElement = {
+    oldEvent: null,
+    newEvent: null,
+  };
 
   const fetchData = async (start: string, end: string) => {
     const { eventList, holidayList } = await eventStore.getEventList(userId, start, end);
@@ -301,7 +310,7 @@ const Calendar: React.FC = observer(() => {
   };
 
   const handleDragEnd = (args: EventDropArg) => {
-    const { event, revert } = args;
+    const { event, revert, oldEvent } = args;
     const {
       extendedProps: {
         dto: { rrule, subEvent },
@@ -313,14 +322,17 @@ const Calendar: React.FC = observer(() => {
     }
 
     if (rrule) {
-      // dragEL = args;
+      dragEL = {
+        oldEvent,
+        newEvent: event,
+      };
       uiStore.setDialogInfo({
         action: 'repeatEventUpdate',
         onClick: [
           (): void => {
             uiStore.setDialogInfo(null);
             // drag 요소 초기화.
-            // dragEL = null;
+            dragEL = null;
           },
           updateRepeatEvent,
         ],
@@ -353,12 +365,47 @@ const Calendar: React.FC = observer(() => {
       case 'one': // 이 일정만 수정
         break;
       case 'after': // 이 일정 및 향후 일정 수정
+        const {
+          oldEvent: { id, start },
+          newEvent: {
+            extendedProps: { dto },
+          },
+        } = dragEL;
+
+        await eventStore.updateEvent(
+          +id,
+          new EventModel({
+            ...dto,
+            id: null,
+            rrule: applyDropRRule().toString(),
+            repeatStartDate: toISO(
+              dragEL.oldEvent.allDay ? toDateTime(start).startOf('day').toUTC() : toDateTime(start).toUTC(),
+            ),
+          }),
+          EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
+          toDateTime(start).toUTC().toFormat('yyyy-LL-dd'),
+        );
         break;
       default:
         break;
     }
+    dragEL = null;
     uiStore.setDialogInfo(null);
     uiStore.changeDateRange();
+  };
+
+  const applyDropRRule = (): RRule => {
+    const { oldEvent, newEvent } = dragEL;
+    const originRRule = new EventModel(oldEvent.extendedProps.dto).rrule;
+
+    const originWeekDay = originRRule.byweekday as Weekday[];
+    const newWeekDay = toDateTime(newEvent.start).weekday - 1;
+    const weekdayOffset = newWeekDay - originWeekDay[0].weekday;
+
+    const byweekday = (originWeekDay as Weekday[]).map(({ weekday }) => (weekday + weekdayOffset + 7) % 7);
+    const rrule = new RRule({ ...originRRule, byweekday, dtstart: newEvent.start });
+
+    return rrule;
   };
 
   const setDateDay = (dayEl: HTMLElement) => {
