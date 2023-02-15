@@ -172,29 +172,13 @@ const Calendar: React.FC = observer(() => {
         <CalendarColor color={event.extendedProps.dto.calColor} />
         {uiStore.viewMode === VIEW_MODE.MONTH ? (
           <EventWrapper isHalfLess>
-            {event.extendedProps.dto.importance && (
-              <Icon.BookmarkFill
-                className="mr-2"
-                width={12}
-                height={12}
-                color="#FCBB00"
-                {...{ style: { minWidth: '12px' } }}
-              />
-            )}
+            {event.extendedProps.dto.importance && <BookMarkIcon params="mr-2" />}
             <EventTitle isHalfLess>{event.title}</EventTitle>
           </EventWrapper>
         ) : (
           <WeekEventWrapper isHalfLess={isHalfLess}>
             <EventSpan>
-              {event.extendedProps.dto.importance && (
-                <Icon.BookmarkFill
-                  className="mr-2 mt-2"
-                  width={12}
-                  height={12}
-                  color="#FCBB00"
-                  {...{ style: { minWidth: '12px' } }}
-                />
-              )}
+              {event.extendedProps.dto.importance && <BookMarkIcon params="mr-2 mt-2" />}
               <EventTitle isHalfLess={isHalfLess}>{event.title}</EventTitle>
             </EventSpan>
             {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
@@ -233,6 +217,18 @@ const Calendar: React.FC = observer(() => {
     mainApi.setOption('dayMaxEvents', false);
     setDirection(true);
   };
+
+  const BookMarkIcon = React.memo(({ params }: { params: string }) => {
+    return (
+      <Icon.BookmarkFill
+        className={params}
+        width={12}
+        height={12}
+        color="#FCBB00"
+        {...{ style: { minWidth: '12px' } }}
+      />
+    );
+  });
 
   const handleArrow = () => {
     const mainApi = uiStore.getApi();
