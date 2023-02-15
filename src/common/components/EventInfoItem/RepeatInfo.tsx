@@ -138,7 +138,6 @@ const RepeatInfo = ({
                 {isDatePickerOpen && (
                   <DatePickerWrapper>
                     <DatePicker
-                      size={0.85}
                       date={repeatEndDate}
                       onDateClick={handleEndDateChange}
                       onOutsideClick={handleEndDateClick}

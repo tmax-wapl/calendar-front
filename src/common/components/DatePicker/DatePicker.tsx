@@ -9,7 +9,8 @@ import {
   DatePickerContainer,
   DatePickerHeader,
   DatePickerBody,
-  StyledIconButton,
+  TitleWrapper,
+  IconButton,
   CalendarPickerButtonWrapper,
 } from './DatePicker.style';
 import PickerBody from './PickerBody';
@@ -86,18 +87,18 @@ const DatePicker = ({
   return (
     <DatePickerContainer ref={pickerRef} backgroundColor={backgroundColor}>
       <DatePickerHeader size={size}>
-        <StyledIconButton onClick={handleSwitch}>
-          {titleDate.toFormat('yyyy.LL.')}
+        <TitleWrapper onClick={handleSwitch}>
+          {titleDate.toFormat('yyyy.LL')}
           <SwitchIcon />
-        </StyledIconButton>
+        </TitleWrapper>
         {!isTitleClick && (
           <CalendarPickerButtonWrapper>
-            <StyledIconButton onClick={handlePrevClick}>
+            <IconButton onClick={handlePrevClick}>
               <Icon.ArrowBackLine color="#202124" width={18} height={18} />
-            </StyledIconButton>
-            <StyledIconButton onClick={handleNextClick}>
+            </IconButton>
+            <IconButton onClick={handleNextClick}>
               <Icon.ArrowFrontLine color="#202124" width={18} height={18} />
-            </StyledIconButton>
+            </IconButton>
           </CalendarPickerButtonWrapper>
         )}
       </DatePickerHeader>
