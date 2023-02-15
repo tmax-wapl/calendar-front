@@ -27,6 +27,5 @@ export const EventBarTitle = styled.span`
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: 16px;
-  font-weight: 700;
+  ${({ theme: { Font } }) => Font.Text.l.Bold};
 `;

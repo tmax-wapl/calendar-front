@@ -12,13 +12,19 @@ export const ItemTitleContainer = styled.div`
   align-items: center;
 `;
 
-export const DescriptionTextarea = styled.textarea`
+export const DescriptionTextarea = styled.textarea<{ editable: boolean }>`
   display: flex;
   height: 100px;
   box-sizing: border-box;
   padding: 6px 8px;
-  border: 1px solid #e8eaed;
+  border: ${({ editable }) => (editable ? '1px solid #e8eaed' : 'none')};
   border-radius: 8px;
   outline: none;
   resize: none;
+  font-size: 12px;
+  line-height: 18px;
+  ::placeholder {
+    ${({ theme: { Font } }) => Font.Text.s.Regular};
+    color: ${({ theme: { Color } }) => Color.Gray[500]};
+  }
 `;

@@ -16,7 +16,7 @@ interface Props {
 
 const Participants = ({ participants = [], editable = false }: Props) => {
   const ExpandIcon = (): JSX.Element => {
-    if (editable) return <Icon.Add2Line color="#202124" width={20} height={20} />;
+    if (editable) return <Icon.Add2Line width={20} height={20} />;
     return <Icon.ArrowBottomLine color="#bdbdbd" width={20} height={20} />;
   };
 
@@ -27,7 +27,7 @@ const Participants = ({ participants = [], editable = false }: Props) => {
   return (
     <Accordion disableGutters elevation={0} defaultExpanded={!!participants?.length} expanded={editable || undefined}>
       <AccordionSummary expandIcon={<ExpandIcon />} {...(editable && { onClick: handleSummaryClick })}>
-        <Icon.UserLine className="mr-8" color="#202124" width={20} height={20} />
+        <Icon.UserLine className="mr-8" width={20} height={20} />
         참여 구성원
         {!editable && <ParticipantsCount>&nbsp;{participants?.length}</ParticipantsCount>}
       </AccordionSummary>

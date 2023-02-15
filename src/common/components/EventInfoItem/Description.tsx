@@ -20,7 +20,7 @@ const Description = ({ description = '', onChange, editable = false }: Props) =>
   return (
     <DescriptionContainer>
       <ItemTitleContainer>
-        <Icon.EditingTextalignLeftLine className="mr-8" color="#202124" width={20} height={20} />
+        <Icon.EditingTextalignLeftLine className="mr-8" width={20} height={20} />
         설명
       </ItemTitleContainer>
       <DescriptionTextarea
@@ -28,6 +28,7 @@ const Description = ({ description = '', onChange, editable = false }: Props) =>
         placeholder="설명 추가"
         onChange={handleTextareaChange}
         readOnly={!editable}
+        editable={editable}
       />
     </DescriptionContainer>
   );
