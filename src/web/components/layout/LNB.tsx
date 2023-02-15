@@ -2,16 +2,7 @@ import { memo, useEffect, useContext } from 'react';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Icon } from '@wapl/ui';
-import {
-  LNBContainer,
-  LNBHeader,
-  DatePickerWrapper,
-  FilterListWrapper,
-  ScrollListWrapper,
-  CategoryListWrapper,
-  SubscriptionListWrapper,
-  Divider,
-} from './LNB.style';
+import { LNBContainer, LNBHeader, DatePickerWrapper, FilterListWrapper, ScrollListWrapper, Divider } from './LNB.style';
 import DatePicker from '@common/components/DatePicker/DatePicker';
 import FilterList from './FilterList';
 import CategoryList from './CategoryList';
@@ -55,16 +46,12 @@ const LNB = () => {
       </DatePickerWrapper>
       <FilterListWrapper>
         <FilterList />
+        <Divider />
       </FilterListWrapper>
       <ScrollListWrapper>
-        <CategoryListWrapper>
-          <Divider />
-          <CategoryList />
-        </CategoryListWrapper>
-        <SubscriptionListWrapper>
-          <Divider />
-          <SubscriptionList />
-        </SubscriptionListWrapper>
+        <CategoryList />
+        <Divider />
+        <SubscriptionList />
       </ScrollListWrapper>
     </LNBContainer>
   );
