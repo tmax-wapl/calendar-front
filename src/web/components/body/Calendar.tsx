@@ -35,13 +35,14 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toLuxon, diffTime, toDateString, toISO } from '@/utils';
+import { toLuxon, diffTime, toDateString, toISO, toDateTime, toUTC } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { Holiday, Lunar } from '../EventListView.style';
 import { getLunar } from 'holiday-kr';
 import { EventModel } from '@/stores/model/EventModel';
+import { RRule, Weekday } from 'rrule';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -64,6 +65,11 @@ interface ContextMenuEventTarget extends EventTarget {
   getBoundingClientRect(): DOMRect;
 }
 
+interface DragElement {
+  oldEvent: EventApi | null;
+  newEvent: EventApi | null;
+}
+
 const Calendar: React.FC = observer(() => {
   const { calendarStore, eventStore } = useCalendarStores();
   const calendarRef = useRef<FullCalendar>(null);
@@ -79,7 +85,10 @@ const Calendar: React.FC = observer(() => {
     position: { top: 0, left: 0 },
     events: null,
   });
-  // let dragEL: EventDropArg = null;
+  let dragEL: DragElement = {
+    oldEvent: null,
+    newEvent: null,
+  };
 
   const fetchData = async (start: string, end: string) => {
     const { eventList, holidayList } = await eventStore.getEventList(userId, start, end);
@@ -172,29 +181,13 @@ const Calendar: React.FC = observer(() => {
         <CalendarColor color={event.extendedProps.dto.calColor} />
         {uiStore.viewMode === VIEW_MODE.MONTH ? (
           <EventWrapper isHalfLess>
-            {event.extendedProps.dto.importance && (
-              <Icon.BookmarkFill
-                className="mr-2"
-                width={12}
-                height={12}
-                color="#FCBB00"
-                {...{ style: { minWidth: '12px' } }}
-              />
-            )}
+            {event.extendedProps.dto.importance && <BookMarkIcon className="mr-2" />}
             <EventTitle isHalfLess>{event.title}</EventTitle>
           </EventWrapper>
         ) : (
           <WeekEventWrapper isHalfLess={isHalfLess}>
             <EventSpan>
-              {event.extendedProps.dto.importance && (
-                <Icon.BookmarkFill
-                  className="mr-2 mt-2"
-                  width={12}
-                  height={12}
-                  color="#FCBB00"
-                  {...{ style: { minWidth: '12px' } }}
-                />
-              )}
+              {event.extendedProps.dto.importance && <BookMarkIcon className="mr-2 mt-2" />}
               <EventTitle isHalfLess={isHalfLess}>{event.title}</EventTitle>
             </EventSpan>
             {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
@@ -233,6 +226,18 @@ const Calendar: React.FC = observer(() => {
     mainApi.setOption('dayMaxEvents', false);
     setDirection(true);
   };
+
+  const BookMarkIcon = React.memo(({ className }: { className: string }) => {
+    return (
+      <Icon.BookmarkFill
+        className={className}
+        width={12}
+        height={12}
+        color="#FCBB00"
+        {...{ style: { minWidth: '12px' } }}
+      />
+    );
+  });
 
   const handleArrow = () => {
     const mainApi = uiStore.getApi();
@@ -305,7 +310,7 @@ const Calendar: React.FC = observer(() => {
   };
 
   const handleDragEnd = (args: EventDropArg) => {
-    const { event, revert } = args;
+    const { event, revert, oldEvent } = args;
     const {
       extendedProps: {
         dto: { rrule, subEvent },
@@ -317,14 +322,17 @@ const Calendar: React.FC = observer(() => {
     }
 
     if (rrule) {
-      // dragEL = args;
+      dragEL = {
+        oldEvent,
+        newEvent: event,
+      };
       uiStore.setDialogInfo({
         action: 'repeatEventUpdate',
         onClick: [
           (): void => {
             uiStore.setDialogInfo(null);
             // drag 요소 초기화.
-            // dragEL = null;
+            dragEL = null;
           },
           updateRepeatEvent,
         ],
@@ -353,16 +361,71 @@ const Calendar: React.FC = observer(() => {
   };
 
   const updateRepeatEvent = async (value: string) => {
+    const {
+      oldEvent: { id, start, end },
+      newEvent: {
+        extendedProps: { dto },
+        start: newStart,
+        end: newEnd,
+      },
+    } = dragEL;
+
     switch (value) {
       case 'one': // 이 일정만 수정
+        await eventStore.updateEvent(
+          +id,
+          new EventModel({
+            ...dto,
+            id: null,
+            start: toUTC(newStart),
+            end: toUTC(newEnd),
+          }),
+          EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
+          toDateTime(start).toUTC().toFormat('yyyy-LL-dd'),
+        );
+        uiStore.setDateDay(toDateTime(newStart));
         break;
       case 'after': // 이 일정 및 향후 일정 수정
+        await eventStore.updateEvent(
+          +id,
+          new EventModel({
+            ...dto,
+            id: null,
+            rrule: applyDropRRule().toString(),
+            start: toUTC(newStart),
+            end: toUTC(newEnd),
+            repeatStartDate: toISO(
+              dragEL.oldEvent.allDay ? toDateTime(start).startOf('day').toUTC() : toDateTime(start).toUTC(),
+            ),
+          }),
+          EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
+          toDateTime(start).toUTC().toFormat('yyyy-LL-dd'),
+        );
+        uiStore.setDateDay(toDateTime(newStart));
         break;
       default:
         break;
     }
+    dragEL = null;
     uiStore.setDialogInfo(null);
     uiStore.changeDateRange();
+  };
+
+  const applyDropRRule = (): RRule => {
+    const { oldEvent, newEvent } = dragEL;
+    const originRRule = new EventModel(oldEvent.extendedProps.dto).rrule;
+
+    const originWeekDay = originRRule.byweekday as Weekday[];
+    const newWeekDay = toDateTime(newEvent.start).weekday - 1;
+
+    const dayOffset = newWeekDay - originWeekDay[0].weekday;
+    const utcOffset = toDateTime(newEvent.start).toUTC().weekday - toDateTime(newEvent.start).weekday;
+    const weekdayOffset = dayOffset + utcOffset;
+
+    const byweekday = (originWeekDay as Weekday[]).map(({ weekday }) => (weekday + weekdayOffset + 7) % 7);
+    const rrule = new RRule({ ...originRRule, byweekday, dtstart: newEvent.start });
+
+    return rrule;
   };
 
   const setDateDay = (dayEl: HTMLElement) => {

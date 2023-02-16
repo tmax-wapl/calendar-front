@@ -84,3 +84,15 @@ export const applyWeekdayOffset = (rrule: Partial<Options>, start: DateTime, to:
   const byweekday = (rrule.byweekday as Weekday[]).map(({ weekday }) => (weekday + weekdayOffset + 7) % 7);
   return new RRule({ ...rrule, byweekday });
 };
+
+export const toDateTime = (date: Date) => {
+  return DateTime.fromJSDate(date);
+};
+
+export const isDateTime = (date: Date | DateTime): date is DateTime => {
+  return date instanceof DateTime;
+};
+
+export const toUTC = (date: Date | DateTime): string => {
+  return isDateTime(date) ? toISO(date.toUTC()) : toISO(DateTime.fromJSDate(date).toUTC());
+};

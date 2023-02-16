@@ -44,8 +44,8 @@ export const ContextMenu = () => {
         calendarStore.setEventList(eventList);
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
+      case 'repeatEvent':
       case 'event':
-        // TODO: 일정 색상 변경 서비스 호출
         const event = new EventModel({ modUserId: userId, color, calId: calendarStore.getCalendarId() });
         await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.DEFAULT);
         eventStore.updateEventColor('' + id, color);
