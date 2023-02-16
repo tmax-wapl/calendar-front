@@ -29,7 +29,7 @@ export const RepeatIntervalInput = styled.input`
 export const PickerContainer = styled.div`
   display: flex;
   position: relative;
-  margin-left: 8px;
+  margin-left: auto;
   ${({ theme: { Font } }) => Font.Text.s.Regular};
 `;
 
