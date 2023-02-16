@@ -181,13 +181,13 @@ const Calendar: React.FC = observer(() => {
         <CalendarColor color={event.extendedProps.dto.calColor} />
         {uiStore.viewMode === VIEW_MODE.MONTH ? (
           <EventWrapper isHalfLess>
-            {event.extendedProps.dto.importance && <BookMarkIcon params="mr-2" />}
+            {event.extendedProps.dto.importance && <BookMarkIcon className="mr-2" />}
             <EventTitle isHalfLess>{event.title}</EventTitle>
           </EventWrapper>
         ) : (
           <WeekEventWrapper isHalfLess={isHalfLess}>
             <EventSpan>
-              {event.extendedProps.dto.importance && <BookMarkIcon params="mr-2 mt-2" />}
+              {event.extendedProps.dto.importance && <BookMarkIcon className="mr-2 mt-2" />}
               <EventTitle isHalfLess={isHalfLess}>{event.title}</EventTitle>
             </EventSpan>
             {minutes >= 60 && <EventSpan>{timeText}</EventSpan>}
@@ -227,10 +227,10 @@ const Calendar: React.FC = observer(() => {
     setDirection(true);
   };
 
-  const BookMarkIcon = React.memo(({ params }: { params: string }) => {
+  const BookMarkIcon = React.memo(({ className }: { className: string }) => {
     return (
       <Icon.BookmarkFill
-        className={params}
+        className={className}
         width={12}
         height={12}
         color="#FCBB00"
@@ -379,9 +379,9 @@ const Calendar: React.FC = observer(() => {
             id: null,
             start: toUTC(newStart),
             end: toUTC(newEnd),
-            exDate: toUTC(start),
           }),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
+          toDateTime(start).toUTC().toFormat('yyyy-LL-dd'),
         );
         uiStore.setDateDay(toDateTime(newStart));
         break;
