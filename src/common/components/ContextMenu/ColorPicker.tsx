@@ -11,10 +11,11 @@ interface Props {
   color?: string;
   iterationCount?: number;
   columnGap?: number;
+  rowGap?: number;
   onClick?: (color: string) => void;
 }
 
-export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12, onClick }: Props) => {
+export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12, rowGap = 8, onClick }: Props) => {
   const [selected, setSelected] = useState(color ?? '');
 
   const colorItem: ColorItemType = [
@@ -40,7 +41,7 @@ export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12, on
   }, [color]);
 
   return (
-    <ColorWrapper iterationCount={iterationCount} columnGap={columnGap}>
+    <ColorWrapper iterationCount={iterationCount} columnGap={columnGap} rowGap={rowGap}>
       {colorItem.map(({ color, value }) => (
         <ColorItemWrapper key={value} selected={color === selected} onClick={() => handleSelect(color)}>
           <Icon.CalendarDotFill color={color} width={20} height={20} />

@@ -95,7 +95,7 @@ const RepeatInfo = ({
   return (
     <RepeatInfoContainer>
       <ItemContainer>
-        <Icon.RepeatLine className="mr-8" color="#202124" width={20} height={20} />
+        <Icon.RepeatLine className="mr-8" width={20} height={20} />
         <Select
           name="repeat"
           value={rrule?.freq || -1}
@@ -131,7 +131,7 @@ const RepeatInfo = ({
                     onClick={handleEndDateClick}
                   >
                     {repeatEndDate.toFormat('yyyy.LL.dd')}
-                    <Icon.CalendarLine className="ml-8" color="#202124" width={16} height={16} />
+                    <Icon.CalendarLine className="ml-4" width={16} height={16} />
                   </DateWrapper>
                 </Tooltip>
 

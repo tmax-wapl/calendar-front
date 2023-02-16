@@ -20,7 +20,7 @@ export const RepeatIntervalInput = styled.input`
   height: 32px;
   box-sizing: border-box;
   text-align: center;
-  background: #f1f3f4;
+  background: ${({ theme: { Color } }) => Color.Gray[100]};
   outline: none;
   border: none;
   border-radius: 10px;
@@ -30,20 +30,21 @@ export const PickerContainer = styled.div`
   display: flex;
   position: relative;
   margin-left: 8px;
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
 `;
 
 export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   display: flex;
-  width: 122px;
-  height: 28px;
+  width: 100px;
+  padding: 6px;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   border-radius: 6px;
-  ${({ isInvalid }) => isInvalid && 'border: 1px solid #F44336'};
+  ${({ isInvalid, theme: { Color } }) => isInvalid && `border: 1px solid ${Color.Validation.negative}`};
   cursor: pointer;
   :hover {
-    background: rgba(0, 0, 0, 0.04);
+    background: ${({ theme: { Color } }) => Color.Black[4]};
   }
 `;
 
@@ -54,7 +55,7 @@ export const DatePickerWrapper = styled.div`
   z-index: 1;
   margin-top: 8px;
   padding: 16px;
-  background: #fff;
+  background: ${({ theme: { Color } }) => Color.White[100]};
   box-shadow: 0px 0px 8px rgb(0 0 0 / 20%);
   border-radius: 12px;
 `;
@@ -74,13 +75,13 @@ export const RepeatDay = styled.div`
   }
 
   &.select {
-    color: #fff;
-    background: #ff6258;
+    color: ${({ theme: { Color } }) => Color.White[100]};
+    background: ${({ theme: { Color } }) => Color.Scarlet[500]};
     border-radius: 50%;
     & + & {
       :not(:first-of-type)::before {
         content: '';
-        background: #ff6258;
+        background: ${({ theme: { Color } }) => Color.Scarlet[500]};
         width: 28px;
         height: 20px;
         position: absolute;

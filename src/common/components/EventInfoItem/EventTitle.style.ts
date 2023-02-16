@@ -13,6 +13,6 @@ export const IconButton = styled(Mui.IconButton)`
 
 export const EventTitleInput = styled(TextField)`
   .MuiInput-input::placeholder {
-    font-size: 14px;
+    ${({ theme: { Font } }) => Font.Text.m.Regular};
   }
 `;

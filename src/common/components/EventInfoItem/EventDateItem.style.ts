@@ -3,29 +3,34 @@ import { styled } from '@wapl/ui';
 export const EventDateItemContainer = styled.div`
   display: flex;
   height: 44px;
+  ${({ theme: { Font } }) => Font.Text.m.Regular};
   align-items: center;
 `;
 
 export const PickerContainer = styled.div`
   display: flex;
   position: relative;
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
   :first-of-type {
     margin-left: auto;
+  }
+  :not(:last-of-type) {
+    margin-right: 4px;
   }
 `;
 
 export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   display: flex;
-  width: 122px;
-  height: 28px;
+  width: 100px;
+  padding: 6px;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   border-radius: 6px;
-  ${({ isInvalid }) => isInvalid && 'border: 1px solid #F44336'};
+  ${({ isInvalid, theme: { Color } }) => isInvalid && `border: 1px solid ${Color.Validation.negative}`};
   cursor: pointer;
   :hover {
-    background: rgba(0, 0, 0, 0.04);
+    background: ${({ theme: { Color } }) => Color.Black[4]};
   }
 `;
 
@@ -36,23 +41,21 @@ export const DatePickerWrapper = styled.div`
   z-index: 1;
   margin-top: 8px;
   padding: 16px;
-  background: #fff;
+  background: ${({ theme: { Color } }) => Color.White[100]};
   box-shadow: 0px 0px 8px rgb(0 0 0 / 20%);
   border-radius: 12px;
 `;
 
 export const TimeWrapper = styled.div<{ isInvalid?: boolean }>`
   display: flex;
-  width: 86px;
-  height: 28px;
+  width: 75px;
   box-sizing: border-box;
-  padding: 5px 11px;
+  padding: 5px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
-  border: 1px solid ${({ isInvalid }) => (isInvalid ? '#F44336' : 'transparent')};
+  border: 1px solid ${({ isInvalid, theme: { Color } }) => (isInvalid ? Color.Validation.negative : 'transparent')};
   :hover {
-    background: rgba(0, 0, 0, 0.04);
+    background: ${({ theme: { Color } }) => Color.Black[4]};
   }
   > :last-child {
     margin-left: auto;
@@ -69,5 +72,5 @@ export const TimePickerWrapper = styled.div`
   right: 0;
   z-index: 1;
   margin-top: 8px;
-  background: #fff;
+  background: ${({ theme: { Color } }) => Color.White[100]};
 `;

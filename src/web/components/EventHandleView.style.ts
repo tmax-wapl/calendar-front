@@ -6,7 +6,7 @@ export const EventHandleViewContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  color: #202124;
+  ${({ theme: { Color } }) => Color.Gray[900]};
 `;
 
 export const EventHandleContainer = styled.div`
@@ -14,16 +14,15 @@ export const EventHandleContainer = styled.div`
   flex-direction: column;
   height: 100%;
   padding: 0 20px 20px;
-  font-size: 14px;
+  ${({ theme: { Font } }) => Font.Text.m.Regular};
 `;
 
 export const FromInfo = styled.div`
   display: flex;
-  height: 44px;
-  align-items: center;
+  margin: 12px 0;
 `;
 
 export const ButtonGroup = styled(WButtonGroup)`
   box-sizing: border-box;
-  padding: 8px 10px 0 !important;
+  padding: 16px 10px 0 !important;
 `;
