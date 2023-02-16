@@ -116,7 +116,7 @@ const RepeatInfo = ({
           </ItemContainer>
           <ItemContainer height="32">
             <Checkbox checked={!!repeatEndDate} checkboxSize={20} onChange={handleCheckboxChange} />
-            &nbsp;&nbsp;종료 날짜 선택
+            &nbsp;&nbsp;종료 날짜
             {repeatEndDate && (
               <PickerContainer>
                 <Tooltip
