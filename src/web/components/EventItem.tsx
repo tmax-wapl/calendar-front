@@ -1,6 +1,13 @@
 import { Icon } from '@wapl/ui';
 import { EventModel } from '@/stores/model/EventModel';
-import { EventItemContainer, ItemTitleContainer, EventTitle, EventInfo, CalendarName } from './EventItem.style';
+import {
+  EventItemContainer,
+  ItemTitleContainer,
+  EventTitle,
+  EventInfoContainer,
+  EventInfo,
+  CalendarName,
+} from './EventItem.style';
 import { getRepeatSummary } from '@/utils';
 import { getEventDuration } from '../../utils';
 
@@ -18,13 +25,12 @@ const EventItem = ({ event, isDetail = false, onClick }: Props) => {
         {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
         <EventTitle>{event.title}</EventTitle>
       </ItemTitleContainer>
-      <EventInfo>{getEventDuration(event.startDate, event.endDate, event.allDay)}</EventInfo>
-      {event.rrule && <EventInfo>{getRepeatSummary(event.rrule)}</EventInfo>}
-      {isDetail ? (
-        event.repeatEndDate && <EventInfo>{event.repeatEndDate.toFormat('yyyy. LL. dd. 종료')}</EventInfo>
-      ) : (
-        <CalendarName>{event.calName}</CalendarName>
-      )}
+      <EventInfoContainer isDetail={isDetail}>
+        <EventInfo>{getEventDuration(event.startDate, event.endDate, event.allDay)}</EventInfo>
+        {event.rrule && <EventInfo>{getRepeatSummary(event.rrule)}</EventInfo>}
+        {isDetail && event.repeatEndDate && <EventInfo>{event.repeatEndDate.toFormat('yyyy. LL. dd. 종료')}</EventInfo>}
+      </EventInfoContainer>
+      {!isDetail && <CalendarName>{event.calName}</CalendarName>}
     </EventItemContainer>
   );
 };

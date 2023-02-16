@@ -18,7 +18,7 @@ const Location = ({ location, onChange, editable = false }: Props) => {
 
   return (
     <LocationContainer>
-      <Icon.LocationLine className="mr-8" color="#202124" width={20} height={20} />
+      <Icon.LocationLine className="mr-8" width={20} height={20} />
       <LocationInput
         value={location || value}
         placeholder="장소 추가"

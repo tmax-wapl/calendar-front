@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { CalendarViewContainter, CalendarViewBody, RPanelWrapper } from './CalendarView.style';
 import Header from '@wcomponents/header/Header';
 import Calendar from '@wcomponents/body/Calendar';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -15,20 +16,15 @@ const CalendarView: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
+    <CalendarViewContainter>
       <Header />
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          flexDirection: 'row',
-          height: 'calc(100% - 62px)',
-        }}
-      >
+      <CalendarViewBody>
         <Calendar />
-        <Outlet />
-      </div>
-    </div>
+        <RPanelWrapper>
+          <Outlet />
+        </RPanelWrapper>
+      </CalendarViewBody>
+    </CalendarViewContainter>
   );
 };
 

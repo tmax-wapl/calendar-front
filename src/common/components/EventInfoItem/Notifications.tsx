@@ -44,7 +44,7 @@ const Notifications = ({ notifications = ['0'], onChange, editable = false }: Pr
 
   return (
     <NotificationsContainer>
-      <Icon.AlarmOnLine className="mr-8" color="#202124" width={20} height={20} />
+      <Icon.AlarmOnLine className="mr-8" width={20} height={20} />
       {editable ? (
         <ItemContainer>
           {notifications.map((notification, index) => (
@@ -59,7 +59,7 @@ const Notifications = ({ notifications = ['0'], onChange, editable = false }: Pr
           {notifications.length < 5 && (
             <NotificationAddItem isEmpty={!notifications.length} onClick={handleNotificationAdd}>
               미리 알림 추가
-              <Icon.Add2Line color="#202124" width={20} height={20} />
+              <Icon.Add2Line width={20} height={20} />
             </NotificationAddItem>
           )}
         </ItemContainer>

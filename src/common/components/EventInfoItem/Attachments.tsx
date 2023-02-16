@@ -18,14 +18,14 @@ interface Props {
 
 const Attachments = ({ attachments = [], editable = false }: Props) => {
   const ExpandIcon = (): JSX.Element => {
-    if (editable) return <Icon.Add2Line color="#202124" width={20} height={20} />;
+    if (editable) return <Icon.Add2Line width={20} height={20} />;
     return <Icon.ArrowBottomLine color="#bdbdbd" width={20} height={20} />;
   };
 
   return (
     <Accordion disableGutters elevation={0} defaultExpanded={!!attachments?.length} expanded={editable || undefined}>
       <AccordionSummary expandIcon={<ExpandIcon />}>
-        <Icon.AttachLine className="mr-8" color="#202124" width={20} height={20} />
+        <Icon.AttachLine className="mr-8" width={20} height={20} />
         첨부파일
         {!editable && <AttachmentsCount>&nbsp;{attachments.length}</AttachmentsCount>}
       </AccordionSummary>

@@ -30,7 +30,7 @@ export const NotificationAddItem = styled.div<{ isEmpty: boolean }>`
   display: flex;
   height: ${({ isEmpty }) => (isEmpty ? '44px' : '32px')};
   align-items: center;
-  color: #9aa0a6;
+  color: ${({ theme: { Color } }) => Color.Gray[500]};
   cursor: pointer;
   > svg {
     margin-left: auto;

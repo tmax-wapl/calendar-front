@@ -37,7 +37,7 @@ const EventDate = ({
   return (
     <EventDateContainer>
       <ItemTitleContainer>
-        <Icon.Add1Line className="mr-8" color="#202124" width={20} height={20} />
+        <Icon.TimeLine className="mr-8" width={20} height={20} />
         종일
         <Switch size="small" checked={allDay ?? false} onChange={handleSwitch} />
       </ItemTitleContainer>

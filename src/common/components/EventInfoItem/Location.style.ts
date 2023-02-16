@@ -12,8 +12,14 @@ export const LocationInput = styled.input`
   width: 100%;
   border: none;
   outline: none;
+  padding: 0;
   ::placeholder {
-    font-size: 14px;
-    color: #9aa0a6;
+    ${({ theme: { Font } }) => Font.Text.m.Regular};
+    color: ${({ theme: { Color } }) => Color.Gray[500]};
+  }
+  :read-only {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 `;

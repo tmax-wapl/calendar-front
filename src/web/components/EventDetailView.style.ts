@@ -4,7 +4,7 @@ export const EventDetailViewContainer = styled.div`
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  width: 380px;
+  width: 100%;
   height: 100%;
 `;
 
@@ -13,7 +13,9 @@ export const EventDetailContainer = styled.div`
   flex-direction: column;
   height: 100%;
   padding: 12px 20px;
-  font-size: 14px;
+  ${({ theme: { Font } }) => Font.Text.m.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
+  overflow-y: auto;
 `;
 
 export const FromInfo = styled.div`
@@ -23,5 +25,5 @@ export const FromInfo = styled.div`
 `;
 
 export const Creator = styled.span`
-  color: #80868b;
+  color: ${({ theme: { Color } }) => Color.Gray[600]};
 `;

@@ -50,7 +50,7 @@ const EventDateItem = ({ title, date, allDay, isDateInvalid, isTimeInvalid, onCh
             onClick={handleDateClick}
           >
             {date.toFormat('yyyy.LL.dd')}
-            <Icon.CalendarLine className="ml-8" color="#202124" width={16} height={16} />
+            <Icon.CalendarLine className="ml-4" width={16} height={16} />
           </DateWrapper>
         </Tooltip>
         {isDatePickerOpen && (

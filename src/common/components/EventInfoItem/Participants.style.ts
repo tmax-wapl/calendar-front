@@ -11,7 +11,7 @@ export const AccordionSummary = styled(Mui.AccordionSummary)`
 `;
 
 export const ParticipantsCount = styled.span`
-  color: #ff6258;
+  color: ${({ theme: { Color } }) => Color.Scarlet[500]};
 `;
 
 export const AccordionDetails = styled(Mui.AccordionDetails, {
@@ -22,7 +22,7 @@ export const AccordionDetails = styled(Mui.AccordionDetails, {
   align-items: center;
   padding: ${({ editable }) => (editable ? 0 : '0 0 0 28px')};
   margin-bottom: ${({ editable }) => (editable ? '10px' : '8px')};
-  background: ${({ editable }) => (editable ? '#f1f3f4' : 'none')};
+  background: ${({ editable, theme: { Color } }) => (editable ? Color.Gray[100] : 'none')};
   border-radius: 8px;
 `;
 
@@ -37,5 +37,5 @@ export const ParticipantChip = styled(Chip, {
 
 export const ParticipantsPlaceholder = styled.span`
   margin: 0 12px;
-  color: #bdc1c6;
+  color: ${({ theme: { Color } }) => Color.Gray[400]};
 `;

@@ -203,10 +203,11 @@ const EventHandleView = ({ action }: Props) => {
         <Observer>
           {() => (
             <FromInfo>
-              <Icon.CalendarLine className="mr-8" color="#202124" width={20} height={20} />
+              <Icon.CalendarLine className="mr-8" width={20} height={20} />
               <ColorPicker
                 color={eventStore.event.color}
-                iterationCount={11}
+                iterationCount={8}
+                rowGap={6}
                 columnGap={8}
                 onClick={color => (eventStore.event.color = color)}
               />
