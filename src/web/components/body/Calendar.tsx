@@ -42,7 +42,7 @@ import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { Holiday, Lunar } from '../EventListView.style';
 import { getLunar } from 'holiday-kr';
 import { EventModel } from '@/stores/model/EventModel';
-import { RRule, rrulestr, Weekday } from 'rrule';
+import { RRule, Weekday } from 'rrule';
 
 interface VUIEventWithPosition extends VUIEvent {
   clientX?: number;
@@ -417,7 +417,10 @@ const Calendar: React.FC = observer(() => {
 
     const originWeekDay = originRRule.byweekday as Weekday[];
     const newWeekDay = toDateTime(newEvent.start).weekday - 1;
-    const weekdayOffset = newWeekDay - originWeekDay[0].weekday;
+
+    const dayOffset = newWeekDay - originWeekDay[0].weekday;
+    const utcOffset = toDateTime(newEvent.start).toUTC().weekday - toDateTime(newEvent.start).weekday;
+    const weekdayOffset = dayOffset + utcOffset;
 
     const byweekday = (originWeekDay as Weekday[]).map(({ weekday }) => (weekday + weekdayOffset + 7) % 7);
     const rrule = new RRule({ ...originRRule, byweekday, dtstart: newEvent.start });
