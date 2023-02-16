@@ -35,7 +35,7 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toLuxon, diffTime, toDateString, toISO, toDateTime } from '@/utils';
+import { toLuxon, diffTime, toDateString, toISO, toDateTime, toUTC } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -377,9 +377,9 @@ const Calendar: React.FC = observer(() => {
           new EventModel({
             ...dto,
             id: null,
-            start: toISO(toDateTime(newStart).toUTC()),
-            end: toISO(toDateTime(newEnd).toUTC()),
-            exDate: toISO(toDateTime(start).toUTC()),
+            start: toUTC(newStart),
+            end: toUTC(newEnd),
+            exDate: toUTC(start),
           }),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
         );
@@ -392,8 +392,8 @@ const Calendar: React.FC = observer(() => {
             ...dto,
             id: null,
             rrule: applyDropRRule().toString(),
-            start: toISO(toDateTime(newStart).toUTC()),
-            end: toISO(toDateTime(newEnd).toUTC()),
+            start: toUTC(newStart),
+            end: toUTC(newEnd),
             repeatStartDate: toISO(
               dragEL.oldEvent.allDay ? toDateTime(start).startOf('day').toUTC() : toDateTime(start).toUTC(),
             ),
