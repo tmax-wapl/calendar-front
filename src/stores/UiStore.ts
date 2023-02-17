@@ -4,6 +4,7 @@ import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable, action } from 'mobx';
 import { isEqualMonth, isSameDate, toDateString } from '@/utils';
 import { EventModel } from './model/EventModel';
+import { VIEW_MODE } from '@/common/constants';
 
 type DateRange = { start: string; view?: DateTime; end: string };
 
@@ -78,7 +79,7 @@ export default class UiStore {
   }
 
   setDateDay(date: DateTime) {
-    if (isSameDate(this.dateDay, date)) return;
+    if (isSameDate(this.dateDay, date) && this.viewMode === VIEW_MODE.MONTH) return;
     this.dateDay = date;
   }
 
