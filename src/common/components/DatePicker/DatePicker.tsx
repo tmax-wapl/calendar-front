@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { CalendarPickerView } from '@mui/x-date-pickers';
 import { Icon } from '@wapl/ui';
 import { useDidMountEffect } from '@common/hooks';
 import {
@@ -10,10 +9,12 @@ import {
   DatePickerHeader,
   DatePickerBody,
   TitleWrapper,
+  TextButton,
   IconButton,
   CalendarPickerButtonWrapper,
 } from './DatePicker.style';
-import PickerBody from './PickerBody';
+import TitlePicker from './TitlePicker';
+import CalendarPicker from './CalendarPicker';
 
 interface DatePickerProps {
   size?: number;
@@ -35,9 +36,10 @@ const DatePicker = ({
   const pickerRef = useRef<HTMLDivElement | null>(null);
   const [selectedDate, setSelectedDate] = useState<DateTime>(date);
   const [titleDate, setTitleDate] = useState<DateTime>(selectedDate);
-  const [tempDate, setTempDate] = useState<DateTime>(date);
-  const [view, setView] = useState<CalendarPickerView>('day');
-  const [isTitleClick, setTitleClick] = useState<boolean>(false);
+  const [isYearClick, setYearClick] = useState<boolean>(false);
+  const [isMonthClick, setMonthClick] = useState<boolean>(false);
+  const year = Array.from(Array(200), (_, i) => `${i + DateTime.now().year - 100}`);
+  const month = Array.from(Array(12), (_, i) => `00${i + 1}`.slice(-2));
 
   useDidMountEffect(() => {
     if (!onDateClick) return;
@@ -49,14 +51,8 @@ const DatePicker = ({
   }, [date]);
 
   const SwitchIcon = (): JSX.Element => {
-    if (isTitleClick) return <Icon.ArrowTopLine color="#191919" width={18} height={18} />;
+    if (isYearClick || isMonthClick) return <Icon.ArrowTopLine color="#191919" width={18} height={18} />;
     return <Icon.ArrowBottomLine color="#191919" width={18} height={18} />;
-  };
-
-  const handleSwitch = () => {
-    if (isTitleClick) setView('day');
-    else setView('year');
-    setTitleClick(value => !value);
   };
 
   const handlePrevClick = () => {
@@ -74,8 +70,9 @@ const DatePicker = ({
       !(e.target instanceof Node) ||
       pickerRef.current?.parentElement?.parentElement?.contains(e.target) ||
       !onOutsideClick
-    )
+    ) {
       return;
+    }
     onOutsideClick();
   };
 
@@ -87,36 +84,60 @@ const DatePicker = ({
   return (
     <DatePickerContainer ref={pickerRef} backgroundColor={backgroundColor}>
       <DatePickerHeader size={size}>
-        <TitleWrapper onClick={handleSwitch}>
-          {titleDate.toFormat('yyyy.LL')}
+        <TitleWrapper>
+          <TextButton onClick={() => setYearClick(true)}>{titleDate.toFormat('yyyy')}</TextButton>.
+          <TextButton onClick={() => setMonthClick(true)}>{titleDate.toFormat('LL')}</TextButton>
           <SwitchIcon />
         </TitleWrapper>
-        {!isTitleClick && (
-          <CalendarPickerButtonWrapper>
-            <IconButton onClick={handlePrevClick}>
-              <Icon.ArrowBackLine color="#202124" width={18} height={18} />
-            </IconButton>
-            <IconButton onClick={handleNextClick}>
-              <Icon.ArrowFrontLine color="#202124" width={18} height={18} />
-            </IconButton>
-          </CalendarPickerButtonWrapper>
+        {isYearClick && (
+          <TitlePicker
+            width={60}
+            item={year}
+            selectedValue={`${selectedDate.toFormat('yyyy')}`}
+            onValueClick={value => {
+              const newDate = titleDate.set({ year: +value });
+              setTitleDate(newDate);
+              setYearClick(prev => !prev);
+            }}
+            onOutsideClick={() => {
+              setYearClick(prev => !prev);
+            }}
+          />
         )}
+        {isMonthClick && (
+          <TitlePicker
+            width={40}
+            item={month}
+            selectedValue={`${selectedDate.toFormat('LL')}`}
+            onValueClick={value => {
+              const newDate = titleDate.set({ month: +value });
+              setTitleDate(newDate);
+              setMonthClick(prev => !prev);
+            }}
+            onOutsideClick={() => {
+              setMonthClick(prev => !prev);
+            }}
+          />
+        )}
+        <CalendarPickerButtonWrapper>
+          <IconButton onClick={handlePrevClick}>
+            <Icon.ArrowBackLine color="#202124" width={18} height={18} />
+          </IconButton>
+          <IconButton onClick={handleNextClick}>
+            <Icon.ArrowFrontLine color="#202124" width={18} height={18} />
+          </IconButton>
+        </CalendarPickerButtonWrapper>
       </DatePickerHeader>
       <DatePickerBody size={size}>
         <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
-          <PickerBody
+          <CalendarPicker
             size={size}
             backgroundColor={backgroundColor}
+            date={titleDate}
             startingDay={startingDay}
-            viewMode={view}
-            setView={setView}
-            setTitleClick={setTitleClick}
+            setTitleDate={setTitleDate}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
-            titleDate={titleDate}
-            setTitleDate={setTitleDate}
-            tempDate={tempDate}
-            setTempDate={setTempDate}
           />
         </LocalizationProvider>
       </DatePickerBody>

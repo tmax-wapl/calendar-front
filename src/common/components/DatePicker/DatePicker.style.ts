@@ -31,6 +31,14 @@ export const TitleWrapper = styled.div`
   }
 `;
 
+export const TextButton = styled.div`
+  display: flex;
+  align-items: center;
+  color: #202124;
+  cursor: pointer;
+  ${({ theme: { Font } }) => Font.Text.m.Medium};
+`;
+
 export const IconButton = styled(Mui.IconButton)`
   padding: 0;
   :first-of-type {
