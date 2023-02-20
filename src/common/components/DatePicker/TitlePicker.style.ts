@@ -8,8 +8,8 @@ export const PickerContainer = styled.div<{ width: number }>`
   padding: 16px;
   position: absolute;
   z-index: 1;
-  background-color: #fff;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+  background-color: ${({ theme: { Color } }) => Color.White[100]};
+  box-shadow: 0px 0px 8px ${({ theme: { Color } }) => Color.Black[20]};
   border-radius: 12px;
 `;
 
@@ -33,6 +33,6 @@ export const PickerValueWrapper = styled.div`
   scroll-snap-align: start;
   border-radius: 8px;
   :hover {
-    background: rgba(0, 0, 0, 0.04);
+    background: ${({ theme: { Color } }) => Color.Black[4]};
   }
 `;

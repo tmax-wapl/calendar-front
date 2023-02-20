@@ -3,9 +3,9 @@ import { styled } from '@wapl/ui';
 export const LNBContainer = styled.div`
   width: 260px;
   height: 100%;
-  background-color: #f8f9fa;
+  background-color: ${({ theme: { Color } }) => Color.Gray[50]};
   flex-shrink: 0;
-  border-right: 1px solid #e8eaed;
+  border-right: 1px solid ${({ theme: { Color } }) => Color.Gray[200]};
 `;
 
 export const LNBHeader = styled.div`
@@ -13,6 +13,7 @@ export const LNBHeader = styled.div`
   align-items: center;
   height: 32px;
   padding: 18px 14px 12px;
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
   ${({ theme: { Font } }) => Font.Text.xl.Medium};
 `;
 
@@ -41,6 +42,6 @@ export const ScrollListWrapper = styled.div`
 export const Divider = styled.div`
   height: 1px;
   margin: 0px 12px;
-  background: #e8eaed;
+  background: ${({ theme: { Color } }) => Color.Gray[200]};
   border-radius: 1px;
 `;

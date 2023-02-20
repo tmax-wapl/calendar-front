@@ -23,7 +23,7 @@ export const DatePickerBody = styled.div<{ size: number }>`
 export const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  color: #202124;
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
   cursor: pointer;
   ${({ theme: { Font } }) => Font.Text.m.Medium};
   svg {
@@ -34,7 +34,6 @@ export const TitleWrapper = styled.div`
 export const TextButton = styled.div`
   display: flex;
   align-items: center;
-  color: #202124;
   cursor: pointer;
   ${({ theme: { Font } }) => Font.Text.m.Medium};
 `;

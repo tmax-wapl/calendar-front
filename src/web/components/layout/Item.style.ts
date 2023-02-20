@@ -39,7 +39,7 @@ export const CheckItemContainer = styled.div`
   box-sizing: border-box;
   align-items: center;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: ${({ theme: { Color } }) => Color.Black[4]};
     svg,
     button {
       display: flex;

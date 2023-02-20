@@ -51,8 +51,8 @@ const DatePicker = ({
   }, [date]);
 
   const SwitchIcon = (): JSX.Element => {
-    if (isYearClick || isMonthClick) return <Icon.ArrowTopLine color="#191919" width={18} height={18} />;
-    return <Icon.ArrowBottomLine color="#191919" width={18} height={18} />;
+    if (isYearClick || isMonthClick) return <Icon.ArrowTopLine width={18} height={18} />;
+    return <Icon.ArrowBottomLine width={18} height={18} />;
   };
 
   const handlePrevClick = () => {
@@ -121,10 +121,10 @@ const DatePicker = ({
         )}
         <CalendarPickerButtonWrapper>
           <IconButton onClick={handlePrevClick}>
-            <Icon.ArrowBackLine color="#202124" width={18} height={18} />
+            <Icon.ArrowBackLine width={18} height={18} />
           </IconButton>
           <IconButton onClick={handleNextClick}>
-            <Icon.ArrowFrontLine color="#202124" width={18} height={18} />
+            <Icon.ArrowFrontLine width={18} height={18} />
           </IconButton>
         </CalendarPickerButtonWrapper>
       </DatePickerHeader>
