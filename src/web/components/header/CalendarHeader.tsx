@@ -106,7 +106,7 @@ const CalendarHeader: React.FC = () => {
           width={64}
           name="viewSelect"
           types="box"
-          defaultValue={viewMode ?? VIEW_MODE.MONTH}
+          value={viewMode ?? VIEW_MODE.MONTH}
           items={[
             {
               label: '월',
