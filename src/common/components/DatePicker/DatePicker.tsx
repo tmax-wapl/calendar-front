@@ -70,9 +70,8 @@ const DatePicker = ({
       !(e.target instanceof Node) ||
       pickerRef.current?.parentElement?.parentElement?.contains(e.target) ||
       !onOutsideClick
-    ) {
+    )
       return;
-    }
     onOutsideClick();
   };
 
