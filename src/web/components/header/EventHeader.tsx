@@ -1,18 +1,29 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EventModel } from '@/stores/model/EventModel';
-import { ROUTES } from '@common/constants/routes';
 import { EventHeaderContainer, EventCreateButton, SearchField } from './EventHeader.style';
+import { getStartDate, toISO } from '@/utils';
 
 const EventHeader: React.FC = () => {
-  const { eventStore, uiStore } = useCalendarStores();
+  const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const handleCreateClick = () => {
-    eventStore.setEvent(new EventModel({}));
-    if (!pathname.includes('create')) navigate(`view-mode/${uiStore.viewMode}/create`);
+    if (!pathname.includes('create')) {
+      navigate(`view-mode/${uiStore.viewMode}/create`);
+      return;
+    }
+    const start = getStartDate(uiStore.dateDay).toUTC();
+    const calId = calendarStore.getCalendarId();
+    eventStore.setEvent(
+      new EventModel({
+        calId: calId,
+        start: toISO(start),
+        end: toISO(start.plus({ minutes: 30 })),
+      }),
+    );
   };
 
   return (

@@ -162,7 +162,7 @@ const EventHandleView = ({ action }: Props) => {
       setOriginEvent(new EventModel({ ...eventStore.event.dto }));
       return;
     }
-  }, [action, calendarStore.getCalendarId()]);
+  }, [action]);
 
   const isModified = () => {
     const { event } = eventStore;
