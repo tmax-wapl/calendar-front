@@ -6,6 +6,6 @@ export const SubscriptionButton = styled(Mui.IconButton)`
   padding: 0px 12px;
   justify-content: left;
   border-radius: 8px;
-  font-size: 14px;
   color: #80868b;
+  ${({ theme: { Font } }) => Font.Text.m.Regular};
 `;
