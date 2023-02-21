@@ -27,8 +27,8 @@ export const PopoverBody = styled.div`
   overflow: auto;
 `;
 export const PopoverTitle = styled.span`
+  ${({ theme: { Font } }) => Font.Text.xl.Medium};
   font-weight: 500;
-  font-size: 20px;
 `;
 export const PopoverIcon = styled.span`
   &:hover {
@@ -44,7 +44,7 @@ export const EventWrapper = styled.div`
   padding: 0 12px;
   &:hover {
     cursor: pointer;
-    background: #ededed;
+    background: ${({ theme: { Color } }) => Color.Gray[200]};
     border-radius: 8px;
   }
 `;
@@ -58,8 +58,7 @@ export const EventIcon = styled.div<{ backgroundColor: string }>`
 `;
 export const EventTitle = styled.span`
   display: inline;
-  font-weight: 400;
-  font-size: 14px;
+  ${({ theme: { Font } }) => Font.Text.m.Regular};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: pre;

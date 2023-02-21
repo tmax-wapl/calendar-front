@@ -50,19 +50,20 @@ export const CalendarContainer = styled.div`
   }
   .fc-col-header-cell-cushion {
     display: flex;
-    ${({ theme: { Font } }) => Font.Text.s.Medium}
+    ${({ theme: { Font } }) => Font.Text.xs.Bold};
     padding: 12px 0px 7px 13px;
   }
 
   .fc-timegrid .fc-col-header-cell-cushion {
     display: flex;
-    ${({ theme: { Font } }) => Font.Text.s.Medium}
+    ${({ theme: { Font } }) => Font.Text.xs.Bold};
     padding: 12px 6px 7px 8px;
   }
 
   .fc-daygrid-day-number {
     padding: 14px 0px 0px 16px;
-    ${({ theme: { Font } }) => Font.Text.xs.Medium}
+    ${({ theme: { Font } }) => Font.Text.xs.Medium};
+    line-height: 17px;
   }
   .fc-timegrid-divider {
     // 주/일 보기모드 종일/시간영역 분리자
@@ -337,7 +338,7 @@ export const EventSpan = styled.span`
 
 export const EventTitle = styled.span<{ isHalfLess: boolean }>`
   display: ${({ isHalfLess }) => (isHalfLess ? 'inline' : '-webkit-box')};
-  ${({ theme: { Font } }) => Font.Text.s.Medium}
+  ${({ theme: { Font } }) => Font.Text.s.Medium};
   overflow: hidden;
   text-overflow: ellipsis;
   ${({ isHalfLess }) =>

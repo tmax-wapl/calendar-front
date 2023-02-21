@@ -15,6 +15,12 @@ const ContextMenuItemContainer = styled.div`
   flex-direction: column;
 `;
 
+const ContextMenuItemLabel = styled.span`
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
+  line-height: 21px;
+`;
+
 interface Props {
   id: number;
   type?: string;
@@ -168,7 +174,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         <Mui.MenuItem key={item.label} onClick={item.onClick}>
           <MenuItemWrapper>
             {item.icon}
-            {item.label}
+            <ContextMenuItemLabel>{item.label}</ContextMenuItemLabel>
           </MenuItemWrapper>
         </Mui.MenuItem>
       ))}
