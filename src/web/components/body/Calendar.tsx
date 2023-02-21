@@ -158,7 +158,7 @@ const Calendar: React.FC = observer(() => {
             {getDay(content.dow)}
             {uiStore.isHolidayChecked && holiday(content)}
             {uiStore.isLunarChecked && (
-              <Lunar isRed={isHoliday(toDateString(content.date))} style={{ marginLeft: 'auto' }}>
+              <Lunar isRed={isHoliday(toDateString(content.date))} style={{ marginLeft: 'auto', fontSize: '11px' }}>
                 {lunar(content.date)}
               </Lunar>
             )}
