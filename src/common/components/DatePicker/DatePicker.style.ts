@@ -1,5 +1,4 @@
 import { styled, Mui } from '@wapl/ui';
-const { IconButton } = Mui;
 
 export const DatePickerContainer = styled.div<{ backgroundColor?: string }>`
   width: max-content;
@@ -8,22 +7,45 @@ export const DatePickerContainer = styled.div<{ backgroundColor?: string }>`
 `;
 
 export const DatePickerHeader = styled.div<{ size: number }>`
-  width: calc(280px * ${({ size }) => size});
+  display: flex;
+  width: calc(224px * ${({ size }) => size});
   height: 18px;
-  line-height: 18px;
-  margin-bottom: 16px;
+  padding: 0px 2px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
 `;
 
 export const DatePickerBody = styled.div<{ size: number }>`
-  width: calc(280px * ${({ size }) => size});
-  height: calc(256px * ${({ size }) => size});
+  width: calc(224px * ${({ size }) => size});
+  height: calc(208px * ${({ size }) => size});
 `;
 
-export const StyledIconButton = styled(IconButton)`
-  font-size: 14px;
-  padding: 0px;
+export const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
+  cursor: pointer;
+  ${({ theme: { Font } }) => Font.Text.m.Medium};
+  svg {
+    margin-left: 4px;
+  }
+`;
+
+export const TextButton = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  ${({ theme: { Font } }) => Font.Text.m.Medium};
+`;
+
+export const IconButton = styled(Mui.IconButton)`
+  padding: 0;
+  :first-of-type {
+    margin-right: 12px;
+  }
 `;
 
 export const CalendarPickerButtonWrapper = styled.div`
-  float: right;
+  display: flex;
+  margin-left: auto;
 `;

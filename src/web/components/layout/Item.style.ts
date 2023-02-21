@@ -18,13 +18,13 @@ export const InputItemContainer = styled.div<{ calendarcolor: string }>`
 `;
 
 export const Input = styled(Mui.TextField)`
-  width: 100%;
-  margin-left: 10px;
+  width: calc(100% - 30px);
+  margin-left: 8px;
   .MuiInputBase-root {
     height: 30px;
     border-radius: 8px;
     .MuiInputBase-input {
-      font-size: 14px;
+      ${({ theme: { Font } }) => Font.Text.m.Regular};
       padding: 0px 12px;
     }
   }
@@ -36,9 +36,10 @@ export const CheckItemContainer = styled.div`
   height: 44px;
   padding: 0px 12px;
   border-radius: 8px;
+  box-sizing: border-box;
   align-items: center;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: ${({ theme: { Color } }) => Color.Black[4]};
     svg,
     button {
       display: flex;
@@ -48,12 +49,12 @@ export const CheckItemContainer = styled.div`
 
 export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: string; type: string }>`
   display: flex;
-  width: ${({ type }) => (type === 'url' ? `calc(100% - 56px)` : `calc(100% - 28px)`)};
+  width: 100%;
   height: 44px;
   margin: 0px;
   overflow: hidden;
   .MuiFormControlLabel-label {
-    font-size: 14px;
+    ${({ theme: { Font } }) => Font.Text.m.Regular};
     margin-left: 8px;
   }
   .Mui-checked {
@@ -69,9 +70,8 @@ export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: str
 `;
 
 export const ErrorIcon = styled(Icon.ErrorLine)`
-  display: none;
   flex-shrink: 0;
-  margin-right: 6px;
+  margin: 0px 4px 0px 12px;
 `;
 
 export const ButtonWarpper = styled(Mui.IconButton)`
@@ -79,4 +79,5 @@ export const ButtonWarpper = styled(Mui.IconButton)`
   width: 28px;
   height: 28px;
   padding: 0px;
+  margin-left: -2px;
 `;

@@ -6,7 +6,7 @@ export const CheckBoxWrapper = styled(Mui.FormControlLabel)`
   height: 44px;
   padding: 0px 12px;
   .MuiFormControlLabel-label {
-    font-size: 14px;
+    ${({ theme: { Font } }) => Font.Text.m.Regular};
     margin-left: 8px;
   }
 `;
