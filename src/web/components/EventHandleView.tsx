@@ -158,7 +158,8 @@ const EventHandleView = ({ action }: Props) => {
       const startDate = eventStore.event.startDate.set({ hour: 9, minute: 0 });
       eventStore.event.startDate = startDate;
       eventStore.event.endDate = eventStore.event.endDate.plus({ days: -1 }).set({ hour: 9, minute: 30 });
-      if (eventStore.event.repeatEndDate) eventStore.event.repeatEndDate = startDate;
+      if (eventStore.event.repeatEndDate)
+        eventStore.event.repeatEndDate = eventStore.event.repeatEndDate.set({ hour: 9, minute: 0 });
       setOriginEvent(new EventModel({ ...eventStore.event.dto }));
       return;
     }
