@@ -272,13 +272,13 @@ const Calendar: React.FC = observer(() => {
 
   const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
     setDateDay(dayEl);
+    if (pathname.includes('create')) return;
     if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
   };
 
   const handleDateTimeSelect = ({ start, end }: DateSelectArg) => {
-    if (uiStore.viewMode === VIEW_MODE.MONTH) return;
-
-    uiStore.setDateDay(toDateTime(start));
+    uiStore.viewMode === VIEW_MODE.WEEK && uiStore.setDateDay(toDateTime(start));
+    // TODO: 2일 연속이면 allDay true ? 시간 관련 기획 물어보기
     eventStore.event.startDate = toDateTime(start);
     eventStore.event.endDate = toDateTime(end);
 
