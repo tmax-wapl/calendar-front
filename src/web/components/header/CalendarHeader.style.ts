@@ -15,8 +15,7 @@ export const DateButton = styled.div`
   width: 125px;
   margin: 0 auto;
   border: 0px;
-  font-size: 22px;
-  font-weight: 700;
+  ${({ theme: { Font } }) => Font.Text.xxl.Bold};
   border-radius: 6px;
   &:hover {
     cursor: pointer;
@@ -33,11 +32,11 @@ export const PrevButton = styled.div`
   justify-content: center;
   align-items: center;
   width: 32px;
-  border: 1px solid #e8eaed;
+  border: 1px solid ${({ theme: { Color } }) => Color.Gray[200]};
   border-radius: 6px 0px 0px 6px;
   &:hover {
     cursor: pointer;
-    background: #e8eaed;
+    background: ${({ theme: { Color } }) => Color.Gray[200]};
   }
 
   &::after {
@@ -48,8 +47,8 @@ export const PrevButton = styled.div`
     width: 6px;
     height: 6px;
     margin-left: 3px;
-    border-top: 0.1rem solid #202124;
-    border-right: 0.1rem solid #202124;
+    border-top: 0.1rem solid ${({ theme: { Color } }) => Color.Gray[900]};
+    border-right: 0.1rem solid ${({ theme: { Color } }) => Color.Gray[900]};
     transform: rotate(-135deg);
   }
 `;
@@ -63,15 +62,15 @@ export const TodayButton = styled.div`
   width: 64px;
   height: 30px;
   max-height: 32px;
-  font-size: 13px;
+  ${({ theme: { Font } }) => Font.Text.s.Medium};
   justify-content: center;
   align-items: center;
   border: 1px solid #eeeeee;
   border-radius: 6px;
-  color: #202124;
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
   &:hover {
     cursor: pointer;
-    background: #e8eaed;
+    background: ${({ theme: { Color } }) => Color.Gray[200]};
   }
 `;
 
@@ -83,10 +82,10 @@ export const LeftContainer = styled.div`
 export const ViewSelect = styled(Select<string>)`
   height: 32px;
   background: white;
-  color: #202124;
-  border: 1px solid #e8eaed;
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
+  border: 1px solid ${({ theme: { Color } }) => Color.Gray[200]};
   border-radius: 6px;
-  font-size: 13px;
+  ${({ theme: { Font } }) => Font.Text.s.Medium};
 
   ~ .MuiSelectUnstyled-popper {
     z-index: 3;

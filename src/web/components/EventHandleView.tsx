@@ -20,7 +20,7 @@ import {
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
-import { EVENT_UPDATE_OPTION } from '@/common/constants';
+import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@/common/constants';
 
 interface Props {
   action: 'create' | 'update';
@@ -136,9 +136,11 @@ const EventHandleView = ({ action }: Props) => {
     }
   };
 
+  const isMonth = (): boolean => uiStore.viewMode === VIEW_MODE.MONTH || !eventStore.event.startDate.isValid;
+
   useEffect(() => {
     if (action === 'create') {
-      const start = getStartDate(uiStore.dateDay).toUTC();
+      const start = isMonth() ? getStartDate(uiStore.dateDay).toUTC() : eventStore.event.startDate.toUTC();
       const calId = calendarStore.getCalendarId();
       eventStore.setEvent(
         new EventModel({

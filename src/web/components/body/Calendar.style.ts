@@ -50,21 +50,20 @@ export const CalendarContainer = styled.div`
   }
   .fc-col-header-cell-cushion {
     display: flex;
-    font-size: 14px;
+    ${({ theme: { Font } }) => Font.Text.xs.Bold};
     padding: 12px 0px 7px 13px;
   }
 
   .fc-timegrid .fc-col-header-cell-cushion {
     display: flex;
-    font-size: 14px;
+    ${({ theme: { Font } }) => Font.Text.xs.Bold};
     padding: 12px 6px 7px 8px;
   }
 
   .fc-daygrid-day-number {
     padding: 14px 0px 0px 16px;
-    font-family: 'Spoqa Han Sans Neo';
-    font-weight: 700;
-    font-size: 14px;
+    ${({ theme: { Font } }) => Font.Text.xs.Medium};
+    line-height: 17px;
   }
   .fc-timegrid-divider {
     // 주/일 보기모드 종일/시간영역 분리자
@@ -88,7 +87,7 @@ export const CalendarContainer = styled.div`
       .fc-daygrid-day-top {
         width: 26px;
         height: 26px;
-        background-color: #ff6258;
+        background-color: ${({ theme: { Color } }) => Color.Scarlet[500]};
         border-radius: 15px;
         transform: translate(11px, 11px);
         justify-content: center;
@@ -132,7 +131,7 @@ export const CalendarContainer = styled.div`
 
   .fc-daygrid-day {
     .fc-highlight {
-      background: #f1f3f4;
+      background: ${({ theme: { Color } }) => Color.Gray[100]};
       z-index: -1;
     }
   }
@@ -179,11 +178,8 @@ export const CalendarContainer = styled.div`
     }
     .fc-scrollgrid-shrink-cushion {
       // 시간텍스트영역 cell 폰트
-      font-family: 'Spoqa Han Sans Neo';
       font-style: normal;
-      font-weight: 400;
-      font-size: 11px;
-      line-height: 11px;
+      ${({ theme: { Font } }) => Font.Text.xxs.Regular}
     }
     .fc-timegrid-slot-label-cushion {
       // 시간텍스트영역 cell wrapper
@@ -204,7 +200,7 @@ export const CalendarContainer = styled.div`
     }
     .fc-timegrid-now-indicator-line {
       // 현재 시간일정영역 표시 선
-      border-color: #202124;
+      border-color: ${({ theme: { Color } }) => Color.Gray[900]};
       border-width: 1px 0px 0px;
       height: 1px;
       &::after {
@@ -214,7 +210,7 @@ export const CalendarContainer = styled.div`
         height: 7px;
         margin: 0;
         vertical-align: middle;
-        background: #202124;
+        background: ${({ theme: { Color } }) => Color.Gray[900]};
         border-radius: 50%;
         top: -4px;
         left: -4px;
@@ -230,16 +226,16 @@ export const CalendarContainer = styled.div`
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      background-color: #ff6258;
+      background-color: ${({ theme: { Color } }) => Color.Scarlet[500]};
       color: white;
     }
     .fc-daygrid-day.fc-day-today {
       // 오늘 종일일정영역 cell
-      background-color: #fafafa;
+      background-color: ${({ theme: { Color } }) => Color.Gray[50]};
     }
     .fc-timegrid-col.fc-day-today {
       // 오늘 시간일정영역 cell
-      background-color: #fafafa;
+      background-color: ${({ theme: { Color } }) => Color.Gray[50]};
     }
     .fc-timegrid-event .fc-event-main {
       padding: 0;
@@ -305,8 +301,8 @@ export const ArrowButton = styled.div<{ isTop: boolean }>`
     justify-content: center;
     width: 8px;
     height: 8px;
-    border-top: 0.1rem solid #202124;
-    border-right: 0.1rem solid #202124;
+    border-top: 0.1rem solid ${({ theme: { Color } }) => Color.Gray[900]};
+    border-right: 0.1rem solid ${({ theme: { Color } }) => Color.Gray[900]};
     margin-top: ${({ isTop }) => (isTop ? '7px;' : '0px;')};
     transform: ${({ isTop }) => (isTop ? 'rotate(-45deg);' : 'rotate(135deg);')};
   }
@@ -342,7 +338,7 @@ export const EventSpan = styled.span`
 
 export const EventTitle = styled.span<{ isHalfLess: boolean }>`
   display: ${({ isHalfLess }) => (isHalfLess ? 'inline' : '-webkit-box')};
-  font-size: 13px;
+  ${({ theme: { Font } }) => Font.Text.s.Medium};
   overflow: hidden;
   text-overflow: ellipsis;
   ${({ isHalfLess }) =>
@@ -363,9 +359,9 @@ export const WeekDayHeader = styled.span<{ color: string }>`
 export const Today = styled.span`
   width: 20px;
   height: 20px;
-  font-size: 13px;
-  line-height: 20px;
-  background: #ff6258;
+  ${({ theme: { Font } }) => Font.Text.s.Bold};
+  line-height: 17px;
+  background: ${({ theme: { Color } }) => Color.Scarlet[500]};
   color: white;
   border-radius: 15px;
   margin-right: 4px;

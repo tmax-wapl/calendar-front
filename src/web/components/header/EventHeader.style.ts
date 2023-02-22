@@ -9,11 +9,11 @@ export const EventCreateButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  ${({ theme: { Font } }) => Font.Text.s.Medium};
   font-weight: 400;
   width: 79px;
   border-radius: 6px;
-  background: #202124;
+  background: ${({ theme: { Color } }) => Color.Gray[900]};
   color: #ffffff;
   height: 32px;
   margin: 0px 12px;
@@ -27,9 +27,9 @@ export const SearchField = styled(WSearchField)`
     height: 32px;
   }
   .MuiInputBase-input {
-    font-size: 14px;
+    ${({ theme: { Font } }) => Font.Text.m.Regular};
     ::placeholder {
-      font-size: 14px;
+      ${({ theme: { Font } }) => Font.Text.m.Regular};
     }
   }
 `;
