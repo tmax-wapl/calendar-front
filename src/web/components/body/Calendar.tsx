@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import FullCalendar, {
+  DateSelectArg,
   DayCellContentArg,
   DayHeaderContentArg,
   EventApi,
@@ -157,7 +158,7 @@ const Calendar: React.FC = observer(() => {
             {getDay(content.dow)}
             {uiStore.isHolidayChecked && holiday(content)}
             {uiStore.isLunarChecked && (
-              <Lunar isRed={isHoliday(toDateString(content.date))} style={{ marginLeft: 'auto' }}>
+              <Lunar isRed={isHoliday(toDateString(content.date))} style={{ marginLeft: 'auto', fontSize: '11px' }}>
                 {lunar(content.date)}
               </Lunar>
             )}
@@ -261,7 +262,7 @@ const Calendar: React.FC = observer(() => {
 
   const handleDateClick = (dateInfo: DateClickArg) => {
     const { viewMode } = uiStore;
-    viewMode === VIEW_MODE.MONTH ? handleMonthViewClick(dateInfo) : handleDateTimeSelect(dateInfo);
+    viewMode === VIEW_MODE.MONTH && handleMonthViewClick(dateInfo);
   };
 
   const handleDoubleClick = ({ dayEl }: DateClickArg) => {
@@ -274,13 +275,13 @@ const Calendar: React.FC = observer(() => {
     if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
   };
 
-  const handleDateTimeSelect = ({ dayEl, jsEvent }: DateClickArg) => {
-    if (!(jsEvent.target instanceof HTMLElement)) return;
-    const { time } = jsEvent.target.dataset;
-    setDateDay(dayEl);
+  const handleDateTimeSelect = ({ start, end }: DateSelectArg) => {
+    uiStore.setDateDay(toDateTime(start));
+    eventStore.event.startDate = toDateTime(start);
+    eventStore.event.endDate = toDateTime(end);
+
+    if (pathname.includes('create')) return;
     if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
-    console.log(time);
-    console.log(dayEl, jsEvent);
   };
 
   const handleDidMount = (arg: EventMountArg) => {
@@ -493,6 +494,7 @@ const Calendar: React.FC = observer(() => {
           moreLinkClick={renderMoreClick}
           dayHeaderContent={renderHeaderContent}
           dateClick={handleClick}
+          select={handleDateTimeSelect}
           eventContent={renderEventContent}
           nowIndicator
           eventOrder="-allDay,start,-duration,-regDate"

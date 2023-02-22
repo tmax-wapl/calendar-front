@@ -46,7 +46,6 @@ export const EventInfoContainer = styled.div<{ isDetail: boolean }>`
 
 export const EventInfo = styled.span`
   white-space: nowrap;
-  overflow-x: hidden;
 `;
 
 export const CalendarName = styled.span`

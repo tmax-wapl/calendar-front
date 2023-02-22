@@ -10,6 +10,7 @@ import { autorun } from 'mobx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toISO, toLuxon } from '@/utils';
 import { EventModel } from '@/stores/model/EventModel';
+import { VIEW_MODE } from '@/common/constants';
 
 const EventListView = () => {
   const { uiStore, eventStore, calendarStore } = useCalendarStores();
@@ -41,7 +42,7 @@ const EventListView = () => {
     };
     const dispose = autorun(() => {
       fetchData(uiStore.dateDay);
-      uiStore.mainApi?.select(toISO(uiStore.dateDay));
+      uiStore.viewMode === VIEW_MODE.MONTH && uiStore.mainApi?.select(toISO(uiStore.dateDay));
     });
     return () => dispose();
   }, []);
