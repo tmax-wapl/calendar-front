@@ -29,7 +29,7 @@ module.exports = env => {
       historyApiFallback: true,
       static: path.join(__dirname, './public/'),
     },
-    devtool: 'eval-cheap-source-map',
+    devtool: dev === 'true' && 'eval',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].js',
@@ -88,9 +88,9 @@ module.exports = env => {
       }),
       !dev
         ? new UglifyJSPlugin({
-            sourceMap: true,
             uglifyOptions: {
               compress: true,
+              warnings: false,
             },
           })
         : false,
