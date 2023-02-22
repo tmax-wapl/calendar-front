@@ -276,6 +276,8 @@ const Calendar: React.FC = observer(() => {
   };
 
   const handleDateTimeSelect = ({ start, end }: DateSelectArg) => {
+    if (uiStore.viewMode === VIEW_MODE.MONTH) return;
+
     uiStore.setDateDay(toDateTime(start));
     eventStore.event.startDate = toDateTime(start);
     eventStore.event.endDate = toDateTime(end);
