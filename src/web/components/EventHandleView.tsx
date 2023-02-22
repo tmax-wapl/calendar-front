@@ -171,15 +171,12 @@ const EventHandleView = ({ action }: Props) => {
   const isModified = () => {
     const { event } = eventStore;
     return (Object.keys(event.dto) as Array<keyof typeof event.dto>).find(key => {
-      if (['start', 'end', 'repeatStartDate', 'repeatEndDate'].includes(key)) {
+      if ((!event.dto[key] && !originEvent.dto[key]) || key === 'repeatStartDate') return false;
+      if (['start', 'end', 'repeatEndDate'].includes(key))
         return event.allDay
           ? !isSameDate(DateTime.fromISO(event.dto[key] as string), DateTime.fromISO(originEvent.dto[key] as string))
           : event.dto[key] !== originEvent.dto[key];
-      }
-      return (
-        (event.dto[key] || originEvent.dto[key]) &&
-        JSON.stringify(event.dto[key]) !== JSON.stringify(originEvent.dto[key])
-      );
+      return JSON.stringify(event.dto[key]) !== JSON.stringify(originEvent.dto[key]);
     });
   };
 
