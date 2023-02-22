@@ -13,7 +13,7 @@ interface Unit {
   [key: string]: string;
 }
 
-const Notifications = ({ notifications = ['0'], onChange, editable = false }: Props) => {
+const Notifications = ({ notifications = [], onChange, editable = false }: Props) => {
   const units: Unit = {
     m: '분',
     h: '시간',

@@ -30,7 +30,7 @@ export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   ${({ isInvalid, theme: { Color } }) => isInvalid && `border: 1px solid ${Color.Validation.negative}`};
   cursor: pointer;
   :hover {
-    background: ${({ theme: { Color } }) => Color.Black[4]};
+    background: ${({ theme: { Color } }) => Color.Black[6]};
   }
 `;
 
@@ -55,7 +55,7 @@ export const TimeWrapper = styled.div<{ isInvalid?: boolean }>`
   cursor: pointer;
   border: 1px solid ${({ isInvalid, theme: { Color } }) => (isInvalid ? Color.Validation.negative : 'transparent')};
   :hover {
-    background: ${({ theme: { Color } }) => Color.Black[4]};
+    background: ${({ theme: { Color } }) => Color.Black[6]};
   }
   > :last-child {
     margin-left: auto;

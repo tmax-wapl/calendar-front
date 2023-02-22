@@ -1,7 +1,8 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon, Button } from '@wapl/ui';
 import { useNavigate } from 'react-router-dom';
+import { DateTime } from 'luxon';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@common/contexts/CalendarContext';
 import { EventModel } from '@/stores/model/EventModel';
@@ -18,7 +19,7 @@ import {
   Attachments,
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
-import { getStartDate, toISO, applyWeekdayOffset } from '@/utils';
+import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@/common/constants';
 
 interface Props {
@@ -29,7 +30,7 @@ const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const { userId } = useContext(CalendarContext);
   const navigate = useNavigate();
-  const originEvent = new EventModel({ ...eventStore.event.dto });
+  const [originEvent, setOriginEvent] = useState(new EventModel({ ...eventStore.event.dto }));
 
   const handleClose = () => {
     navigate(`/main/view-mode/${uiStore.viewMode}/date`);
@@ -146,8 +147,10 @@ const EventHandleView = ({ action }: Props) => {
           calId: calId,
           start: toISO(start),
           end: toISO(start.plus({ minutes: 30 })),
+          alarmList: ['0'],
         }),
       );
+      setOriginEvent(new EventModel({ ...eventStore.event.dto }));
       return;
     }
     if (!eventStore.event.id) {
@@ -158,10 +161,35 @@ const EventHandleView = ({ action }: Props) => {
       const startDate = eventStore.event.startDate.set({ hour: 9, minute: 0 });
       eventStore.event.startDate = startDate;
       eventStore.event.endDate = eventStore.event.endDate.plus({ days: -1 }).set({ hour: 9, minute: 30 });
-      if (eventStore.event.repeatEndDate) eventStore.event.repeatEndDate = startDate;
+      if (eventStore.event.repeatEndDate)
+        eventStore.event.repeatEndDate = eventStore.event.repeatEndDate.set({ hour: 9, minute: 0 });
+      setOriginEvent(new EventModel({ ...eventStore.event.dto }));
       return;
     }
-  }, [action, calendarStore.getCalendarId()]);
+  }, [action]);
+
+  const isModified = () => {
+    const { event } = eventStore;
+    return (Object.keys(event.dto) as Array<keyof typeof event.dto>).find(key => {
+      if ((!event.dto[key] && !originEvent.dto[key]) || key === 'repeatStartDate') return false;
+      if (['start', 'end', 'repeatEndDate'].includes(key))
+        return event.allDay
+          ? !isSameDate(DateTime.fromISO(event.dto[key] as string), DateTime.fromISO(originEvent.dto[key] as string))
+          : event.dto[key] !== originEvent.dto[key];
+      return JSON.stringify(event.dto[key]) !== JSON.stringify(originEvent.dto[key]);
+    });
+  };
+
+  const preventRefresh = (e: BeforeUnloadEvent) => {
+    if (!isModified()) return;
+    e.preventDefault();
+    e.returnValue = '';
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', preventRefresh, {});
+    return () => window.removeEventListener('beforeunload', preventRefresh);
+  }, [originEvent]);
 
   return (
     <EventHandleViewContainer>
