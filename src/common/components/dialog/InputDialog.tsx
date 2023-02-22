@@ -1,7 +1,7 @@
-import { Dialog, Button, Icon } from '@wapl/ui';
+import { Dialog, Button, DialogHeader } from '@wapl/ui';
 import { useState } from 'react';
 import { DialogButton } from './Dialog';
-import { InputDialogTitle, CloseButton, Input, InputDialogDescription, DialogButtonWrapper } from './Dialog.style';
+import { Input, InputDialogDescription, InputDialogContent, DialogButtonWrapper } from './Dialog.style';
 
 interface InputDialogProps {
   open: boolean;
@@ -23,17 +23,26 @@ export const InputDialog = ({ open, title, onCloseClick, placeholder, buttons }:
 
   return (
     <Dialog open={open}>
-      <InputDialogTitle>
-        {title.title}
-        <CloseButton onClick={onCloseClick}>
-          <Icon.CloseLine />
-        </CloseButton>
-      </InputDialogTitle>
-      <Input variant="filled" visibleClear={false} placeholder={placeholder} onChange={handleChange} autoFocus />
-      <InputDialogDescription>{title.description}</InputDialogDescription>
+      <DialogHeader title={title.title} handleClose={onCloseClick} />
+      <InputDialogContent>
+        <Input
+          variant="filled"
+          type="text"
+          visibleClear={false}
+          placeholder={placeholder}
+          onChange={handleChange}
+          autoFocus
+        />
+        <InputDialogDescription>{title.description}</InputDialogDescription>
+      </InputDialogContent>
       <DialogButtonWrapper>
         {buttons?.map((button: DialogButton) => (
-          <Button key={button.text} variant={button.variant} onClick={() => button.onClick(input.trim())}>
+          <Button
+            key={button.text}
+            variant={button.variant}
+            onClick={() => button.onClick(input.trim())}
+            disabled={button.text !== '취소' && input.trim().length === 0}
+          >
             {button.text}
           </Button>
         ))}

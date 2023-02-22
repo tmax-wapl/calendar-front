@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import Item from './Item';
 import { Icon } from '@wapl/ui';
 import { SubscriptionButton } from './SubscriptionList.style';
+import { HTTPError } from '@/error';
 
 const SubscriptionList = observer(() => {
   const { userId } = useContext(CalendarContext);
@@ -19,8 +20,8 @@ const SubscriptionList = observer(() => {
     try {
       await calendarStore.createCalendar({ regUserId: userId, url, type: 'url' });
       closeDialog();
-    } catch (status) {
-      if (status === 400) {
+    } catch (e) {
+      if (e instanceof HTTPError && e.status === 400) {
         uiStore.setDialogInfo({
           action: 'subscribeDuplication',
           onClick: [closeDialog],

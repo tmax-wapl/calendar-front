@@ -1,8 +1,15 @@
-import { FormControl, FormControlLabel } from '@mui/material';
-import { Dialog, Button, Radio, RadioGroup } from '@wapl/ui';
-import { useEffect, useState } from 'react';
+import { FormControl } from '@mui/material';
+import { Dialog, AlertWrapper, Button, Radio, RadioGroup } from '@wapl/ui';
+import { useState } from 'react';
 import { DialogButton } from './Dialog';
-import { DialogButtonWrapper, SubTitle, Description, Title } from './Dialog.style';
+import {
+  DialogButtonWrapper,
+  SubTitle,
+  Description,
+  SelectDialogContent,
+  SelectItemLabel,
+  Title,
+} from './Dialog.style';
 
 interface SelectDialogProps {
   open: boolean;
@@ -43,32 +50,34 @@ export const SelectDialog = ({ open, title, buttons, selectType = 'hideNone' }: 
     };
 
     return (
-      <div style={{ margin: '0 42px' }}>
-        <FormControl>
-          <RadioGroup value={selectItem} onChange={(e, value) => handleChange(value)}>
-            {radioItem[selectType].map(item => (
-              <FormControlLabel
-                key={item.value}
-                value={item.value}
-                control={<Radio sx={{ marginRight: '10px' }} />}
-                label={item.label}
-                sx={{
-                  marginBottom: '10px',
-                }}
-              />
-            ))}
-          </RadioGroup>
-        </FormControl>
-      </div>
+      <FormControl>
+        <RadioGroup value={selectItem} onChange={(e, value) => handleChange(value)}>
+          {radioItem[selectType].map(item => (
+            <SelectItemLabel
+              key={item.value}
+              value={item.value}
+              control={<Radio sx={{ marginRight: '10px' }} />}
+              label={item.label}
+              sx={{
+                marginBottom: '10px',
+              }}
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
     );
   };
 
   return (
     <Dialog open={open}>
-      <Title>{title.title}</Title>
-      <SubTitle>{title?.subTitle}</SubTitle>
-      <Description>{title.description}</Description>
-      <RepeatSelect selectType={selectType} />
+      <AlertWrapper>
+        <Title>{title.title}</Title>
+        <SubTitle>{title?.subTitle}</SubTitle>
+        <Description>{title.description}</Description>
+        <SelectDialogContent>
+          <RepeatSelect selectType={selectType} />
+        </SelectDialogContent>
+      </AlertWrapper>
       <DialogButtonWrapper>
         {buttons?.map((button: DialogButton) => (
           <Button
