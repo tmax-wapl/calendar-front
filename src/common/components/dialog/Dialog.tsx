@@ -1,4 +1,4 @@
-import { Dialog as DialogCompo, Button } from '@wapl/ui';
+import { Dialog as DialogCompo, AlertWrapper, Button } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Title, SubTitle, Description, DialogButtonWrapper } from './Dialog.style';
 import { InputDialog } from './InputDialog';
@@ -33,19 +33,19 @@ export const Dialog = () => {
       case 'repeatEventUpdate':
         return {
           title: '일정 수정',
-          subTitle: `이 일정은 반복 설정된 일정입니다. \n 선택한 일정을 수정하시겠습니까?`,
+          subTitle: `이 일정은 반복 설정된 일정입니다.\n 선택한 일정을 수정하시겠습니까?`,
         };
       case 'repeatEventDelete':
         return {
           title: '일정 삭제',
-          subTitle: `이 일정은 반복 설정된 일정입니다. \n 선택한 일정을 삭제하시겠습니까?`,
-          description: `공유한 상대방에게도 삭제되며, \n 삭제 후 복구할 수 없습니다.`,
+          subTitle: `이 일정은 반복 설정된 일정입니다.\n 선택한 일정을 삭제하시겠습니까?`,
+          description: `공유한 상대방에게도 삭제되며,\n 삭제 후 복구할 수 없습니다.`,
         };
       case 'calendarDelete':
         return {
           title: '캘린더 삭제',
           subTitle: `선택한 캘린더를 삭제하시겠습니까?`,
-          description: `삭제 후에는 복구할 수 없으며, \n공유한 상대방에게도 사라집니다.`,
+          description: `삭제 후에는 복구할 수 없으며,\n공유한 상대방에게도 사라집니다.`,
         };
       case 'subscriptionDelete':
         return {
@@ -68,7 +68,8 @@ export const Dialog = () => {
           title: '구독 캘린더 추가 실패',
           description: `이미 구독 중입니다.`,
         };
-
+      case 'refresh':
+        return { subTitle: '변경 사항을 저장하지 않고 나가시겠습니까?' };
       default:
         return {};
     }
@@ -97,13 +98,17 @@ export const Dialog = () => {
         ];
       case 'subscribeFail':
       case 'subscribeDuplication':
-        return [{ variant: 'secondary', text: '확인', onClick: onClick[0] }];
+        return [{ variant: 'primary', text: '확인', onClick: onClick[0] }];
       case 'repeatEventUpdate':
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
           { variant: 'primary', text: '수정', onClick: onClick[1] },
         ];
-
+      case 'refresh':
+        return [
+          { variant: 'secondary', text: '취소', onClick: onClick[0] },
+          { variant: 'primary', text: '나가기', onClick: onClick[1] },
+        ];
       default:
         return [];
     }
@@ -130,9 +135,11 @@ export const Dialog = () => {
       default:
         return (
           <DialogCompo open onClose={handleClose}>
-            <Title>{title?.title}</Title>
-            <SubTitle>{title?.subTitle}</SubTitle>
-            <Description>{title?.description}</Description>
+            <AlertWrapper>
+              <Title>{title?.title}</Title>
+              <SubTitle>{title?.subTitle}</SubTitle>
+              <Description>{title?.description}</Description>
+            </AlertWrapper>
             <DialogButtonWrapper>
               {buttons?.map((button: DialogButton) => (
                 <Button key={button.text} variant={button.variant} onClick={() => button.onClick()}>
