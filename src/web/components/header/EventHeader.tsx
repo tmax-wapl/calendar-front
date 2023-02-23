@@ -1,12 +1,10 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { EventModel } from '@/stores/model/EventModel';
 import { EventHeaderContainer, EventCreateButton, SearchField } from './EventHeader.style';
-import { getStartDate, toISO } from '@/utils';
 
 const EventHeader: React.FC = () => {
-  const { calendarStore, eventStore, uiStore } = useCalendarStores();
+  const { uiStore } = useCalendarStores();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -15,15 +13,6 @@ const EventHeader: React.FC = () => {
       navigate(`view-mode/${uiStore.viewMode}/create`);
       return;
     }
-    const start = getStartDate(uiStore.dateDay).toUTC();
-    const calId = calendarStore.getCalendarId();
-    eventStore.setEvent(
-      new EventModel({
-        calId: calId,
-        start: toISO(start),
-        end: toISO(start.plus({ minutes: 30 })),
-      }),
-    );
   };
 
   return (

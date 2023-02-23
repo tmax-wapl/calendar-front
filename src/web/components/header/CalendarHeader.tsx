@@ -15,9 +15,10 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { DateTime } from 'luxon';
 import { DATE_EVENT, VIEW_MODE } from '@constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { isEqualMonth, toDateString } from '@/utils';
+import { getStartDate, isEqualMonth, toDateString, toISO } from '@/utils';
 import DatePicker from '@/common/components/DatePicker/DatePicker';
 import { autorun } from 'mobx';
+import { EventModel } from '@/stores/model/EventModel';
 
 type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
 
@@ -44,7 +45,7 @@ const DateButton = ({ selected = false, togglePicker }: { selected?: boolean; to
 
 const CalendarHeader: React.FC = () => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
-  const { uiStore } = useCalendarStores();
+  const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
   const { viewMode } = useParams();
   const { pathname } = useLocation();
@@ -55,6 +56,20 @@ const CalendarHeader: React.FC = () => {
     if (pathname.includes('view-mode')) navigate(`view-mode/${uiStore.viewMode}/date`, { replace: true });
     mainApi?.changeView(value);
     handleDayMaxEvents();
+
+    value === VIEW_MODE.WEEK && setInitialTimeData();
+  };
+
+  const setInitialTimeData = () => {
+    const start = getStartDate(DateTime.now()).toUTC();
+    const calId = calendarStore.getCalendarId();
+    eventStore.setEvent(
+      new EventModel({
+        calId: calId,
+        start: toISO(start),
+        end: toISO(start.plus({ minutes: 30 })),
+      }),
+    );
   };
 
   const handleDayMaxEvents = () => {

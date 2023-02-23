@@ -254,33 +254,19 @@ const Calendar: React.FC = observer(() => {
     if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
-  const handleClick = (dateInfo: DateClickArg) => {
-    dateInfo.jsEvent.stopPropagation();
-    if (dateInfo.jsEvent.detail === 1) handleDateClick(dateInfo);
-    if (dateInfo.jsEvent.detail % 2 === 0) handleDoubleClick(dateInfo);
-  };
-
-  const handleDateClick = (dateInfo: DateClickArg) => {
-    const { viewMode } = uiStore;
-    viewMode === VIEW_MODE.MONTH && handleMonthViewClick(dateInfo);
-  };
-
-  const handleDoubleClick = ({ dayEl }: DateClickArg) => {
-    setDateDay(dayEl);
-    if (!pathname.includes('create')) navigate(`/main/view-mode/${uiStore.viewMode}/create`);
-  };
-
-  const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
-    setDateDay(dayEl);
-    if (pathname.includes('create')) return;
-    if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
+  const handleDoubleClick = ({ jsEvent }: DateClickArg) => {
+    jsEvent.stopPropagation();
+    if (jsEvent.detail % 2 === 0 && !pathname.includes('create'))
+      navigate(`/main/view-mode/${uiStore.viewMode}/create`);
   };
 
   const handleDateTimeSelect = ({ start, end }: DateSelectArg) => {
-    uiStore.viewMode === VIEW_MODE.WEEK && uiStore.setDateDay(toDateTime(start));
-    // TODO: 2일 연속이면 allDay true ? 시간 관련 기획 물어보기
+    const isMonth = uiStore.viewMode === VIEW_MODE.MONTH;
+    uiStore.setDateDay(toDateTime(start));
+
     eventStore.event.startDate = toDateTime(start);
-    eventStore.event.endDate = toDateTime(end);
+    eventStore.event.endDate = isMonth ? toDateTime(end).minus({ minute: 1 }) : toDateTime(end);
+    eventStore.event.allDay = isMonth;
 
     if (pathname.includes('create')) return;
     if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
@@ -495,7 +481,7 @@ const Calendar: React.FC = observer(() => {
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
           dayHeaderContent={renderHeaderContent}
-          dateClick={handleClick}
+          dateClick={handleDoubleClick}
           select={handleDateTimeSelect}
           eventContent={renderEventContent}
           nowIndicator
