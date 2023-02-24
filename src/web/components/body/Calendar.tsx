@@ -36,7 +36,7 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toLuxon, diffTime, toDateString, toISO, toDateTime, toUTC } from '@/utils';
+import { toLuxon, diffTime, toDateString, toISO, toDateTime, toUTC, getStartDate } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -260,13 +260,11 @@ const Calendar: React.FC = observer(() => {
       navigate(`/main/view-mode/${uiStore.viewMode}/create`);
   };
 
-  const handleDateTimeSelect = ({ start, end }: DateSelectArg) => {
-    const isMonth = uiStore.viewMode === VIEW_MODE.MONTH;
-    uiStore.setDateDay(toDateTime(start));
+  const handleDateTimeSelect = ({ start, end, jsEvent }: DateSelectArg) => {
+    if (jsEvent?.detail % 2 === 0) return;
 
-    eventStore.event.startDate = toDateTime(start);
-    eventStore.event.endDate = isMonth ? toDateTime(end).minus({ minute: 1 }) : toDateTime(end);
-    eventStore.event.allDay = isMonth;
+    uiStore.setDateDay(toDateTime(start));
+    setDateTime(start, end);
 
     if (pathname.includes('create')) return;
     if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
@@ -417,9 +415,20 @@ const Calendar: React.FC = observer(() => {
     return rrule;
   };
 
-  const setDateDay = (dayEl: HTMLElement) => {
-    const { date } = dayEl.dataset;
-    uiStore.setDateDay(toLuxon(date));
+  const setDateTime = (start: Date, end: Date) => {
+    const isMonth = uiStore.viewMode === VIEW_MODE.MONTH;
+    const isToday = toDateString(start) === DateTime.local().toFormat('yyyy-LL-dd');
+
+    if (isToday && isMonth) {
+      const startDate = getStartDate(toDateTime(start));
+      eventStore.event.startDate = startDate;
+      eventStore.event.endDate = startDate.plus({ minute: 30 });
+      eventStore.event.allDay = false;
+    } else {
+      eventStore.event.startDate = toDateTime(start);
+      eventStore.event.endDate = isMonth ? toDateTime(end).minus({ minute: 1 }) : toDateTime(end);
+      eventStore.event.allDay = isMonth;
+    }
   };
 
   const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];
