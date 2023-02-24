@@ -98,7 +98,7 @@ const RepeatInfo = ({
         <Icon.RepeatLine className="mr-8" width={20} height={20} />
         <Select
           name="repeat"
-          value={rrule?.freq || -1}
+          defaultValue={rrule?.freq || -1}
           types="normal"
           items={repeatItems}
           width="100px"
