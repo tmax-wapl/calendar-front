@@ -1,4 +1,4 @@
-import { Icon, Select } from '@wapl/ui';
+import { Icon, Mui } from '@wapl/ui';
 import { NotificationItemContainer, IconButton } from './NotificationItem.style';
 
 interface Props {
@@ -23,14 +23,15 @@ const NotificationItem = ({ index, notification, onChange, onDelete }: Props) =>
 
   return (
     <NotificationItemContainer>
-      <Select
-        name="notification"
-        value={notification || '0'}
-        types="normal"
-        items={selectItems}
-        width="100px"
-        onChange={(value: string) => onChange(value, index)}
-      />
+      <Mui.FormControl size="small">
+        <Mui.Select value={notification || '0'} onChange={e => onChange(e.target.value, index)}>
+          {selectItems.map(item => (
+            <Mui.MenuItem key={item.value} value={item.value}>
+              {item.label}
+            </Mui.MenuItem>
+          ))}
+        </Mui.Select>
+      </Mui.FormControl>
       <IconButton onClick={() => onDelete(index)}>
         <Icon.DeleteFill color="rgba(0, 0, 0, 0.2)" width={20} height={20} />
       </IconButton>
