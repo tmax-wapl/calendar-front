@@ -214,7 +214,7 @@ const EventHandleView = ({ action }: Props) => {
           closeDialog,
           () => {
             handleClose();
-            uiStore.setDialogInfo(null);
+            closeDialog();
           },
         ],
       });
