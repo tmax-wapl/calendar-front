@@ -263,7 +263,7 @@ const Calendar: React.FC = observer(() => {
   const handleDateTimeSelect = ({ start, end, jsEvent }: DateSelectArg) => {
     if (jsEvent?.detail % 2 === 0) return;
 
-    uiStore.setDateDay(toDateTime(start));
+    if (!pathname.includes('create')) uiStore.setDateDay(toDateTime(start));
     setDateTime(start, end);
 
     if (pathname.includes('create')) return;

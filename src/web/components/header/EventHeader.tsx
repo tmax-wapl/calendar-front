@@ -9,10 +9,11 @@ const EventHeader: React.FC = () => {
   const { pathname } = useLocation();
 
   const handleCreateClick = () => {
-    if (!pathname.includes('create')) {
-      navigate(`view-mode/${uiStore.viewMode}/create`);
-      return;
-    }
+    navigate(`view-mode/${uiStore.viewMode}/create`, {
+      state: {
+        isModify: !!pathname.includes('create'),
+      },
+    });
   };
 
   return (
