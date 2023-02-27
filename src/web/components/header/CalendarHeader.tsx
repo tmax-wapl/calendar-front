@@ -57,7 +57,7 @@ const CalendarHeader: React.FC = () => {
     mainApi?.changeView(value);
     handleDayMaxEvents();
 
-    value === VIEW_MODE.WEEK && setInitialTimeData();
+    if (value === VIEW_MODE.WEEK) setInitialTimeData();
   };
 
   const setInitialTimeData = () => {
