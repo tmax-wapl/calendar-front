@@ -205,18 +205,17 @@ const EventHandleView = ({ action }: Props) => {
     uiStore.setDialogInfo(null);
   };
 
+  const handleReset = () => {
+    eventStore.setEvent(new EventModel({ ...originEvent.dto }));
+    closeDialog();
+  };
+
   useDidMountEffect(() => {
     if (!state) return;
     if (state?.isModify && isModified()) {
       uiStore.setDialogInfo({
         action: 'refresh',
-        onClick: [
-          closeDialog,
-          () => {
-            handleClose();
-            closeDialog();
-          },
-        ],
+        onClick: [closeDialog, handleReset],
       });
     }
   }, [state]);
