@@ -25,7 +25,7 @@ const NotificationItem = ({ index, notification, onChange, onDelete }: Props) =>
     <NotificationItemContainer>
       <Select
         name="notification"
-        value={notification || '0'}
+        defaultValue={notification || '0'}
         types="normal"
         items={selectItems}
         width="100px"

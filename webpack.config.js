@@ -29,7 +29,7 @@ module.exports = env => {
       historyApiFallback: true,
       static: path.join(__dirname, './public/'),
     },
-    devtool: dev === 'true' && 'eval',
+    devtool: dev === 'true' && 'eval-source-map',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].js',
