@@ -22,15 +22,14 @@ const NotificationItem = ({ index, notification, onChange, onDelete }: Props) =>
     { label: '2일 전', value: '2 d' },
   ];
 
-  const ArrowIcon = (props: any) => <Icon.ArrowBottomLine width={16} height={16} color={Color.Gray[900]} {...props} />;
-
   return (
     <NotificationItemContainer>
       <Mui.FormControl size="small">
         <StyledSelect
           value={notification || '0'}
           onChange={e => onChange(e.target.value, index)}
-          IconComponent={ArrowIcon}
+          IconComponent={props => <Icon.ArrowBottomLine width={16} height={16} color={Color.Gray[900]} {...props} />}
+          MenuProps={{ MenuListProps: { style: {} } }}
         >
           {selectItems.map(item => (
             <StyledMenuItem key={item.value} value={item.value}>
