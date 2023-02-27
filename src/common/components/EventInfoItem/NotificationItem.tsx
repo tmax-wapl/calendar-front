@@ -1,5 +1,5 @@
-import { Icon, Mui } from '@wapl/ui';
-import { NotificationItemContainer, IconButton } from './NotificationItem.style';
+import { Icon, Mui, useTheme } from '@wapl/ui';
+import { NotificationItemContainer, IconButton, StyledSelect, StyledMenuItem } from './NotificationItem.style';
 
 interface Props {
   index: number;
@@ -9,6 +9,7 @@ interface Props {
 }
 
 const NotificationItem = ({ index, notification, onChange, onDelete }: Props) => {
+  const { Color } = useTheme();
   const selectItems = [
     { label: '일정 당시', value: '0' },
     { label: '5분 전', value: '5 m' },
@@ -21,16 +22,22 @@ const NotificationItem = ({ index, notification, onChange, onDelete }: Props) =>
     { label: '2일 전', value: '2 d' },
   ];
 
+  const ArrowIcon = (props: any) => <Icon.ArrowBottomLine width={16} height={16} color={Color.Gray[900]} {...props} />;
+
   return (
     <NotificationItemContainer>
       <Mui.FormControl size="small">
-        <Mui.Select value={notification || '0'} onChange={e => onChange(e.target.value, index)}>
+        <StyledSelect
+          value={notification || '0'}
+          onChange={e => onChange(e.target.value, index)}
+          IconComponent={ArrowIcon}
+        >
           {selectItems.map(item => (
-            <Mui.MenuItem key={item.value} value={item.value}>
+            <StyledMenuItem key={item.value} value={item.value}>
               {item.label}
-            </Mui.MenuItem>
+            </StyledMenuItem>
           ))}
-        </Mui.Select>
+        </StyledSelect>
       </Mui.FormControl>
       <IconButton onClick={() => onDelete(index)}>
         <Icon.DeleteFill color="rgba(0, 0, 0, 0.2)" width={20} height={20} />
