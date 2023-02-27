@@ -36,7 +36,7 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toLuxon, diffTime, toDateString, toISO, toDateTime, toUTC } from '@/utils';
+import { toLuxon, diffTime, toDateString, toISO, toDateTime, toUTC, getStartDate } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -254,33 +254,17 @@ const Calendar: React.FC = observer(() => {
     if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
-  const handleClick = (dateInfo: DateClickArg) => {
-    dateInfo.jsEvent.stopPropagation();
-    if (dateInfo.jsEvent.detail === 1) handleDateClick(dateInfo);
-    if (dateInfo.jsEvent.detail % 2 === 0) handleDoubleClick(dateInfo);
+  const handleDoubleClick = ({ jsEvent }: DateClickArg) => {
+    jsEvent.stopPropagation();
+    if (jsEvent.detail % 2 === 0 && !pathname.includes('create'))
+      navigate(`/main/view-mode/${uiStore.viewMode}/create`);
   };
 
-  const handleDateClick = (dateInfo: DateClickArg) => {
-    const { viewMode } = uiStore;
-    viewMode === VIEW_MODE.MONTH && handleMonthViewClick(dateInfo);
-  };
+  const handleDateTimeSelect = ({ start, end, jsEvent }: DateSelectArg) => {
+    if (jsEvent?.detail % 2 === 0) return;
 
-  const handleDoubleClick = ({ dayEl }: DateClickArg) => {
-    setDateDay(dayEl);
-    if (!pathname.includes('create')) navigate(`/main/view-mode/${uiStore.viewMode}/create`);
-  };
-
-  const handleMonthViewClick = ({ dayEl }: DateClickArg) => {
-    setDateDay(dayEl);
-    if (pathname.includes('create')) return;
-    if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
-  };
-
-  const handleDateTimeSelect = ({ start, end }: DateSelectArg) => {
-    uiStore.viewMode === VIEW_MODE.WEEK && uiStore.setDateDay(toDateTime(start));
-    // TODO: 2일 연속이면 allDay true ? 시간 관련 기획 물어보기
-    eventStore.event.startDate = toDateTime(start);
-    eventStore.event.endDate = toDateTime(end);
+    if (!pathname.includes('create')) uiStore.setDateDay(toDateTime(start));
+    setDateTime(start, end);
 
     if (pathname.includes('create')) return;
     if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
@@ -431,9 +415,20 @@ const Calendar: React.FC = observer(() => {
     return rrule;
   };
 
-  const setDateDay = (dayEl: HTMLElement) => {
-    const { date } = dayEl.dataset;
-    uiStore.setDateDay(toLuxon(date));
+  const setDateTime = (start: Date, end: Date) => {
+    const isMonth = uiStore.viewMode === VIEW_MODE.MONTH;
+    const isToday = toDateString(start) === DateTime.local().toFormat('yyyy-LL-dd');
+
+    if (isToday && isMonth) {
+      const startDate = getStartDate(toDateTime(start));
+      eventStore.event.startDate = startDate;
+      eventStore.event.endDate = startDate.plus({ minute: 30 });
+      eventStore.event.allDay = false;
+    } else {
+      eventStore.event.startDate = toDateTime(start);
+      eventStore.event.endDate = isMonth ? toDateTime(end).minus({ minute: 1 }) : toDateTime(end);
+      eventStore.event.allDay = isMonth;
+    }
   };
 
   const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];
@@ -495,7 +490,7 @@ const Calendar: React.FC = observer(() => {
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
           dayHeaderContent={renderHeaderContent}
-          dateClick={handleClick}
+          dateClick={handleDoubleClick}
           select={handleDateTimeSelect}
           eventContent={renderEventContent}
           nowIndicator

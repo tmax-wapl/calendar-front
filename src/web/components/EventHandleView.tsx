@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon, Button } from '@wapl/ui';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@common/contexts/CalendarContext';
@@ -21,6 +21,7 @@ import {
 import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@/common/constants';
+import { useDidMountEffect } from '@/common/hooks';
 
 interface Props {
   action: 'create' | 'update';
@@ -30,6 +31,7 @@ const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const { userId } = useContext(CalendarContext);
   const navigate = useNavigate();
+  const { state } = useLocation();
   const [originEvent, setOriginEvent] = useState(new EventModel({ ...eventStore.event.dto }));
 
   const handleClose = () => {
@@ -137,17 +139,25 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const isMonth = (): boolean => uiStore.viewMode === VIEW_MODE.MONTH || !eventStore.event.startDate.isValid;
+  const isToday = uiStore.dateDay.startOf('day').equals(DateTime.now().startOf('day'));
+
+  const getTime = () => {
+    const start = isMonth() && isToday ? getStartDate(uiStore.dateDay).toUTC() : eventStore.event.startDate.toUTC();
+    const end = isMonth() && isToday ? start.plus({ minutes: 30 }) : eventStore.event.endDate.toUTC();
+
+    return { start: toISO(start), end: toISO(end) };
+  };
 
   useEffect(() => {
     if (action === 'create') {
-      const start = isMonth() ? getStartDate(uiStore.dateDay).toUTC() : eventStore.event.startDate.toUTC();
       const calId = calendarStore.getCalendarId();
       eventStore.setEvent(
         new EventModel({
           calId: calId,
-          start: toISO(start),
-          end: toISO(start.plus({ minutes: 30 })),
+          start: getTime().start,
+          end: getTime().end,
           alarmList: ['0'],
+          allDay: !isToday && isMonth(),
         }),
       );
       setOriginEvent(new EventModel({ ...eventStore.event.dto }));
@@ -190,6 +200,25 @@ const EventHandleView = ({ action }: Props) => {
     window.addEventListener('beforeunload', preventRefresh, {});
     return () => window.removeEventListener('beforeunload', preventRefresh);
   }, [originEvent]);
+
+  const closeDialog = () => {
+    uiStore.setDialogInfo(null);
+  };
+
+  const handleReset = () => {
+    eventStore.setEvent(new EventModel({ ...originEvent.dto }));
+    closeDialog();
+  };
+
+  useDidMountEffect(() => {
+    if (!state) return;
+    if (state?.isModify && isModified()) {
+      uiStore.setDialogInfo({
+        action: 'refresh',
+        onClick: [closeDialog, handleReset],
+      });
+    }
+  }, [state]);
 
   return (
     <EventHandleViewContainer>
