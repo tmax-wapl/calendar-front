@@ -51,6 +51,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
 
   const deleteEvent = async () => {
     await calendarStore.deleteEvent(id);
+    if (+eventStore.event.id === id && pathname.includes('detail'))
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
     closeDialog();
     if (onClose) onClose();
   };

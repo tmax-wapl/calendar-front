@@ -26,9 +26,8 @@ const EventDetailView = () => {
   };
 
   const deleteEvent = async () => {
-    await eventStore.deleteEvent(+eventStore.event.id);
-    calendarStore.filterEventList(eventStore.event.id);
-    navigate(-1);
+    await calendarStore.deleteEvent(+eventStore.event.id);
+    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
     closeDialog();
   };
 
