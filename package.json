@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --open --hot --env dev=true",
-    "build": "webpack --env dev=false",
-    "qa:build": "webpack --env dev=false qa=true",
+    "build": "webpack --env dev=false && build.bat",
+    "qa:build": "webpack --env dev=false qa=true && build.bat",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
