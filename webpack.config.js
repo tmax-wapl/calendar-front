@@ -8,7 +8,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const mode = process.env.REACT_APP_MODE || 'development';
 
 module.exports = env => {
-  const { dev } = env;
+  const { dev, qa } = env;
 
   return {
     mode,
@@ -84,7 +84,7 @@ module.exports = env => {
           : false,
       }),
       new Dotenv({
-        path: dev ? './.env.development' : './.env.production',
+        path: dev === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production',
       }),
       !dev
         ? new UglifyJSPlugin({
