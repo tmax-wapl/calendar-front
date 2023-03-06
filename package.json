@@ -84,5 +84,5 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1"
   },
-  "packageManager": "yarn@3.2.4"
+  "packageManager": "yarn@3.4.1"
 }
