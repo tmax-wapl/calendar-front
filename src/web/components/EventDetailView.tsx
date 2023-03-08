@@ -48,6 +48,7 @@ const EventDetailView = () => {
     }
     closeDialog();
     uiStore.changeDateRange();
+    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
   const handleDeleteClick = () => {
