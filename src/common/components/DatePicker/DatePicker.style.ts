@@ -31,11 +31,13 @@ export const TitleWrapper = styled.div`
   }
 `;
 
-export const TextButton = styled.div`
+export const TextButton = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
+  border-radius: 6px;
   ${({ theme: { Font } }) => Font.Text.m.Medium};
+  ${({ selected, theme: { Color } }) => selected && { background: Color.Black[6] }}
 `;
 
 export const IconButton = styled(Mui.IconButton)`

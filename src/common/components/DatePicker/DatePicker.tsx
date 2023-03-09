@@ -36,6 +36,7 @@ const DatePicker = ({
   const pickerRef = useRef<HTMLDivElement | null>(null);
   const [selectedDate, setSelectedDate] = useState<DateTime>(date);
   const [titleDate, setTitleDate] = useState<DateTime>(selectedDate);
+  const [isPickerOpen, setPickerOpen] = useState<boolean>(false);
   const [isYearClick, setYearClick] = useState<boolean>(false);
   const [isMonthClick, setMonthClick] = useState<boolean>(false);
   const year = Array.from(Array(200), (_, i) => `${i + DateTime.now().year - 100}`);
@@ -51,7 +52,7 @@ const DatePicker = ({
   }, [date]);
 
   const SwitchIcon = (): JSX.Element => {
-    if (isYearClick || isMonthClick) return <Icon.ArrowTopLine width={18} height={18} />;
+    if (isPickerOpen) return <Icon.ArrowTopLine width={18} height={18} />;
     return <Icon.ArrowBottomLine width={18} height={18} />;
   };
 
@@ -84,37 +85,65 @@ const DatePicker = ({
     <DatePickerContainer ref={pickerRef} backgroundColor={backgroundColor}>
       <DatePickerHeader size={size}>
         <TitleWrapper>
-          <TextButton onClick={() => setYearClick(true)}>{titleDate.toFormat('yyyy')}</TextButton>.
-          <TextButton onClick={() => setMonthClick(true)}>{titleDate.toFormat('LL')}</TextButton>
+          <TextButton
+            id="yearButton"
+            selected={isYearClick}
+            onClick={() => {
+              setPickerOpen(true);
+              setYearClick(true);
+            }}
+          >
+            {titleDate.toFormat('yyyy')}
+          </TextButton>
+          .
+          <TextButton
+            id="monthButton"
+            selected={isMonthClick}
+            onClick={() => {
+              setPickerOpen(true);
+              setMonthClick(true);
+            }}
+          >
+            {titleDate.toFormat('LL')}
+          </TextButton>
           <SwitchIcon />
         </TitleWrapper>
         {isYearClick && (
           <TitlePicker
-            width={60}
+            width={71}
             item={year}
             selectedValue={`${selectedDate.toFormat('yyyy')}`}
             onValueClick={value => {
               const newDate = titleDate.set({ year: +value });
               setTitleDate(newDate);
               setYearClick(prev => !prev);
+              setPickerOpen(prev => !prev);
             }}
-            onOutsideClick={() => {
+            onOutsideClick={e => {
               setYearClick(prev => !prev);
+              if (e.target instanceof Element && (e.target.id === 'yearButton' || e.target.id === 'monthButton'))
+                return;
+              setPickerOpen(prev => !prev);
             }}
           />
         )}
         {isMonthClick && (
           <TitlePicker
-            width={40}
+            width={56}
+            offsetLeft={57}
             item={month}
             selectedValue={`${selectedDate.toFormat('LL')}`}
             onValueClick={value => {
               const newDate = titleDate.set({ month: +value });
               setTitleDate(newDate);
               setMonthClick(prev => !prev);
+              setPickerOpen(prev => !prev);
             }}
-            onOutsideClick={() => {
+            onOutsideClick={e => {
               setMonthClick(prev => !prev);
+              if (e.target instanceof Element && (e.target.id === 'yearButton' || e.target.id === 'monthButton'))
+                return;
+              setPickerOpen(prev => !prev);
             }}
           />
         )}
