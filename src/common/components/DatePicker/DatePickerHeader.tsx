@@ -24,9 +24,36 @@ const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: D
   const year = Array.from(Array(200), (_, i) => `${i + DateTime.now().year - 100}`);
   const month = Array.from(Array(12), (_, i) => `00${i + 1}`.slice(-2));
 
+  const handleTitleClick = (type: string) => {
+    setPickerOpen(true);
+    if (type === 'year') setYearClick(true);
+    else setMonthClick(true);
+  };
+
   const SwitchIcon = (): JSX.Element => {
     if (isPickerOpen) return <Icon.ArrowTopLine width={18} height={18} />;
     return <Icon.ArrowBottomLine width={18} height={18} />;
+  };
+
+  const handleYearClick = (year: string) => {
+    const newDate = titleDate.set({ year: +year });
+    setTitleDate(newDate);
+    setYearClick(prev => !prev);
+    setPickerOpen(prev => !prev);
+  };
+
+  const handleMonthClick = (month: string) => {
+    const newDate = titleDate.set({ month: +month });
+    setTitleDate(newDate);
+    setMonthClick(prev => !prev);
+    setPickerOpen(prev => !prev);
+  };
+
+  const handleOutsideClick = (type: string) => (e: MouseEvent) => {
+    if (type === 'year') setYearClick(prev => !prev);
+    else setMonthClick(prev => !prev);
+    if (e.target instanceof Element && (e.target.id === 'yearButton' || e.target.id === 'monthButton')) return;
+    setPickerOpen(prev => !prev);
   };
 
   const handlePrevClick = () => {
@@ -42,25 +69,11 @@ const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: D
   return (
     <HeaderContainer size={size}>
       <TitleWrapper>
-        <TextButton
-          id="yearButton"
-          selected={isYearClick}
-          onClick={() => {
-            setPickerOpen(true);
-            setYearClick(true);
-          }}
-        >
+        <TextButton id="yearButton" selected={isYearClick} onClick={() => handleTitleClick('year')}>
           {titleDate.toFormat('yyyy')}
         </TextButton>
         .
-        <TextButton
-          id="monthButton"
-          selected={isMonthClick}
-          onClick={() => {
-            setPickerOpen(true);
-            setMonthClick(true);
-          }}
-        >
+        <TextButton id="monthButton" selected={isMonthClick} onClick={() => handleTitleClick('month')}>
           {titleDate.toFormat('LL')}
         </TextButton>
         <SwitchIcon />
@@ -70,17 +83,8 @@ const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: D
           width={71}
           item={year}
           selectedValue={`${selectedDate.toFormat('yyyy')}`}
-          onValueClick={value => {
-            const newDate = titleDate.set({ year: +value });
-            setTitleDate(newDate);
-            setYearClick(prev => !prev);
-            setPickerOpen(prev => !prev);
-          }}
-          onOutsideClick={e => {
-            setYearClick(prev => !prev);
-            if (e.target instanceof Element && (e.target.id === 'yearButton' || e.target.id === 'monthButton')) return;
-            setPickerOpen(prev => !prev);
-          }}
+          onValueClick={handleYearClick}
+          onOutsideClick={handleOutsideClick('year')}
         />
       )}
       {isMonthClick && (
@@ -89,17 +93,8 @@ const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: D
           offsetLeft={57}
           item={month}
           selectedValue={`${selectedDate.toFormat('LL')}`}
-          onValueClick={value => {
-            const newDate = titleDate.set({ month: +value });
-            setTitleDate(newDate);
-            setMonthClick(prev => !prev);
-            setPickerOpen(prev => !prev);
-          }}
-          onOutsideClick={e => {
-            setMonthClick(prev => !prev);
-            if (e.target instanceof Element && (e.target.id === 'yearButton' || e.target.id === 'monthButton')) return;
-            setPickerOpen(prev => !prev);
-          }}
+          onValueClick={handleMonthClick}
+          onOutsideClick={handleOutsideClick('month')}
         />
       )}
       <CalendarPickerButtonWrapper>
