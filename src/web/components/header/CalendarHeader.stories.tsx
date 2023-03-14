@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { CalendarHeader } from './index';
+import CalendarHeader from './CalendarHeader';
 
 export default {
   title: 'Components/CalendarHeader',

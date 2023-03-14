@@ -1,4 +1,3 @@
-import CalendarHeader from './CalendarHeader';
-import EventHeader from './EventHeader';
-
-export { CalendarHeader, EventHeader };
+export * from './CalendarHeader';
+export * from './EventHeader';
+export * from './Header';
