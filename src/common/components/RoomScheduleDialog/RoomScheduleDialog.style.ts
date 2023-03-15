@@ -4,7 +4,6 @@ export const ButtonWrapper = styled.div`
   display: flex;
   gap: 12px;
   padding: 0px 20px 20px 20px;
-  width: 100%;
 `;
 
 export const FilterHeader = styled.div`
