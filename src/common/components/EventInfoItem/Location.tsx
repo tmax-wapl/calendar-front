@@ -10,8 +10,10 @@ interface Props {
 
 const Location = ({ location, onChange, editable = false }: Props) => {
   const [value, setValue] = useState<typeof location>('');
+  const maxLength = 50;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > maxLength) return;
     if (onChange) onChange(e.target.value);
     setValue(e.target.value);
   };
@@ -22,6 +24,7 @@ const Location = ({ location, onChange, editable = false }: Props) => {
       <LocationInput
         value={location || value}
         placeholder="장소 추가"
+        maxLength={maxLength}
         onChange={handleInputChange}
         readOnly={!editable}
       />
