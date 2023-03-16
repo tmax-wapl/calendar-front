@@ -17,20 +17,21 @@ const PickerValue = ({ value, onClick, isSelected = false }: ValueProps) => {
 
 interface Props {
   width: number;
+  offsetLeft?: number;
   item: string[];
   selectedValue: string;
   onValueClick: (value: string) => void;
-  onOutsideClick?: () => void;
+  onOutsideClick?: (e: MouseEvent) => void;
 }
 
-const TitlePicker = ({ width, item, selectedValue, onValueClick, onOutsideClick }: Props) => {
+const TitlePicker = ({ width, offsetLeft, item, selectedValue, onValueClick, onOutsideClick }: Props) => {
   const pickerRef = useRef<HTMLDivElement | null>(null);
 
   const handleOutsideClick = (e: MouseEvent) => {
     if (!(e.target instanceof Node) || pickerRef.current?.parentElement?.contains(e.target) || !onOutsideClick) {
       return;
     }
-    onOutsideClick();
+    onOutsideClick(e);
   };
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const TitlePicker = ({ width, item, selectedValue, onValueClick, onOutsideClick 
   }, []);
 
   return (
-    <PickerContainer width={width}>
+    <PickerContainer width={width} offsetLeft={offsetLeft}>
       <PickerItemContainer ref={pickerRef}>
         {item.map(value => (
           <PickerValue key={value} value={value} onClick={onValueClick} isSelected={value === selectedValue} />
