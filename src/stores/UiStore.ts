@@ -28,6 +28,7 @@ interface ContextClickArg {
   position: { top: number; left: number };
   id?: number;
   color?: string;
+  hideColorPicker?: boolean;
   type?: string;
   date?: {
     startdate?: string;
