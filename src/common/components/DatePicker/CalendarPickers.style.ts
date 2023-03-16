@@ -40,7 +40,8 @@ export const CustomPickersDay = styled(PickersDay<DateTime>, {
     ${({ theme: { Font } }) => Font.Text.xxs.Medium};
   }
   &.Mui-selected {
-    background-color: ${({ theme: { Color } }) => Color.Black[6]} !important;
+    border: 1px solid ${({ theme: { Color } }) => Color.Gray[900]} !important;
+    background-color: ${({ theme: { Color } }) => Color.Gray[100]} !important;
   }
   &.MuiPickersDay-today {
     background-color: ${({ isOutside, theme: { Color } }) =>

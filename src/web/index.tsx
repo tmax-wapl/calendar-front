@@ -7,7 +7,7 @@ import Detail from '@wcomponents/EventDetailView';
 import EventHandleView from '@wcomponents/EventHandleView';
 import { ROUTES } from '@constants/routes';
 import { Observer } from 'mobx-react-lite';
-import { Dialog } from '@common/components/Dialog';
+import { Dialog } from '@/common/components/Dialog';
 import { ContextMenu } from '@/common/components/ContextMenu';
 import { useCalendarStores } from '@/stores/StoreProvider';
 

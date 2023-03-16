@@ -1,8 +1,13 @@
 {
-  "name": "calendar-front",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "@wapl/calendar",
+  "version": "0.1.0",
   "homepage": ".",
+  "main": "dist/main.js",
+  "module": "dist/main.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --open --hot --env dev=true",
@@ -84,5 +89,5 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1"
   },
-  "packageManager": "yarn@3.2.4"
+  "packageManager": "yarn@3.4.1"
 }

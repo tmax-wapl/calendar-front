@@ -12,7 +12,7 @@ module.exports = env => {
 
   return {
     mode,
-    entry: './src/index.tsx',
+    entry: dev === 'true' ? './src/entry.tsx' : './src/index.ts',
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
