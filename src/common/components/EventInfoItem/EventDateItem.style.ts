@@ -27,7 +27,7 @@ export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   justify-content: center;
   box-sizing: border-box;
   border-radius: 6px;
-  ${({ isInvalid, theme: { Color } }) => isInvalid && `border: 1px solid ${Color.Validation.negative}`};
+  border: 1px solid ${({ isInvalid, theme: { Color } }) => (isInvalid ? Color.Validation.negative : 'transparent')};
   cursor: pointer;
   :hover {
     background: ${({ theme: { Color } }) => Color.Black[6]};
