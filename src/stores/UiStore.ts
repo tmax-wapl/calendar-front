@@ -11,7 +11,7 @@ type DateRange = { start: string; view?: DateTime; end: string };
 interface DialogInfo {
   action: string;
   onCloseClick?: () => void;
-  onClick: (() => void)[] | ((value?: string) => void)[];
+  onClick: (() => void)[] | ((value?: string) => void)[] | ((value?: string[]) => void)[];
   data?: {
     title?: string;
     name?: string;

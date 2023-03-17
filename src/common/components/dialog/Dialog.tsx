@@ -3,11 +3,12 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { Title, SubTitle, Description, DialogButtonWrapper } from './Dialog.style';
 import { InputDialog } from './InputDialog';
 import { SelectDialog } from './SelectDialog';
+import RoomScheduleDialog from '../RoomScheduleDialog/RoomScheduleDialog';
 
 export interface DialogButton {
   variant: 'primary' | 'secondary' | 'secondary-web' | 'third' | 'negative';
   text: string;
-  onClick: (() => void) | ((value?: string) => void);
+  onClick: (() => void) | ((value?: string | string[]) => void);
 }
 
 export const Dialog = () => {
@@ -109,6 +110,11 @@ export const Dialog = () => {
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
           { variant: 'primary', text: '나가기', onClick: onClick[1] },
         ];
+      case 'roomSchedule':
+        return [
+          { variant: 'secondary', text: '취소', onClick: onClick[0] },
+          { variant: 'primary', text: '저장', onClick: onClick[1] },
+        ];
       default:
         return [];
     }
@@ -132,6 +138,8 @@ export const Dialog = () => {
         );
       case 'select':
         return <SelectDialog open title={title} buttons={buttons} selectType={data?.selectType} />;
+      case 'roomSchedule':
+        return <RoomScheduleDialog buttons={buttons} onClose={onCloseClick} />;
       default:
         return (
           <DialogCompo open onClose={handleClose}>

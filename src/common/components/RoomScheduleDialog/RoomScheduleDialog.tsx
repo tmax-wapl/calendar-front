@@ -1,8 +1,13 @@
 import { Button, Checkbox, Dialog, DialogContent, DialogHeader, SearchField } from '@wapl/ui';
+import { useCallback, memo, useState, useEffect } from 'react';
+import { DialogButton } from '../Dialog';
 import RoomList from './RoomList';
 import { FilterHeader, TitleWrapper, TitleTotal, TitleCount, ButtonWrapper } from './RoomScheduleDialog.style';
 
-const RoomScheduleDialog = ({ onClose }: { onClose: () => void }) => {
+const RoomScheduleDialog = ({ buttons, onClose }: { buttons: DialogButton[]; onClose: () => void }) => {
+  const [allChecked, setAllChecked] = useState(false);
+  const [selectedRoomList, setSelectedRoomList] = useState(new Set<string>());
+
   return (
     <Dialog open>
       <DialogHeader title="룸 일정 가져오기" handleClose={onClose} />
@@ -13,17 +18,25 @@ const RoomScheduleDialog = ({ onClose }: { onClose: () => void }) => {
             <TitleTotal>전체</TitleTotal>
             <TitleCount>5</TitleCount>
           </TitleWrapper>
-          <Checkbox />
+          <Checkbox checked={allChecked} onChange={() => setAllChecked(!allChecked)} />
         </FilterHeader>
-        <RoomList />
+        <RoomList
+          allChecked={allChecked}
+          selectedRoomList={selectedRoomList}
+          setSelectedRoomList={setSelectedRoomList}
+        />
       </DialogContent>
       <ButtonWrapper>
-        <Button size="large" style={{ width: '100%' }} variant="secondary" onClick={onClose}>
-          취소
-        </Button>
-        <Button size="large" style={{ width: '100%' }}>
-          저장
-        </Button>
+        {buttons?.map((button: DialogButton) => (
+          <Button
+            key={button.text}
+            width="100%"
+            variant={button.variant}
+            onClick={() => button.onClick(Array.from(selectedRoomList))}
+          >
+            {button.text}
+          </Button>
+        ))}
       </ButtonWrapper>
     </Dialog>
   );

@@ -122,6 +122,10 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     }
   };
 
+  const handleRoomSchedule = (roomList: string[]) => {
+    console.log(roomList);
+  };
+
   const handleUrlSubscribe = () => {
     uiStore.setDialogInfo({
       action: 'subscribe',
@@ -133,7 +137,12 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   };
 
   const handleRoomSubscribe = () => {
-    console.log('룸 일정 가져오기');
+    uiStore.setDialogInfo({
+      action: 'roomSchedule',
+      onCloseClick: closeDialog,
+      onClick: [closeDialog, handleRoomSchedule],
+      type: 'roomSchedule',
+    });
   };
 
   const handleEventUpdate = async () => {
