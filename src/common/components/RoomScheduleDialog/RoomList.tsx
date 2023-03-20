@@ -1,33 +1,37 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useCallback } from 'react';
 import { RoomListWrapper } from './RoomScheduleDialog.style';
-import { RoomDummy } from './RoomDummy';
 import RoomItem from './RoomItem';
+import { RoomType } from './RoomDummy';
 
 const RoomList = ({
-  allChecked,
+  roomList,
   selectedRoomList,
   setSelectedRoomList,
 }: {
-  allChecked: boolean;
-  selectedRoomList: Set<string>;
-  setSelectedRoomList: Dispatch<React.SetStateAction<Set<string>>>;
+  roomList: RoomType[];
+  selectedRoomList: string[];
+  setSelectedRoomList: Dispatch<SetStateAction<string[]>>;
 }) => {
-  const handleSelectedRoom = (id: string, isChecked: boolean) => {
-    if (isChecked) {
-      selectedRoomList.add(id);
-      setSelectedRoomList(selectedRoomList);
-    } else if (!isChecked && selectedRoomList.has(id)) {
-      selectedRoomList.delete(id);
-      setSelectedRoomList(selectedRoomList);
-    }
-  };
-
-  // TODO:// 체크 다하면 ALL 선택, 하나 풀리면 ALL 해제 로직
+  const handleSelectedRoom = useCallback(
+    (id: string, isChecked: boolean) => {
+      if (isChecked) {
+        setSelectedRoomList([...selectedRoomList, id]);
+      } else if (!isChecked && selectedRoomList.includes(id)) {
+        setSelectedRoomList(selectedRoomList.filter(el => el !== id));
+      }
+    },
+    [selectedRoomList, setSelectedRoomList],
+  );
 
   return (
     <RoomListWrapper>
-      {RoomDummy.map(room => (
-        <RoomItem key={room.id} room={room} allChecked={allChecked} handleSelectedRoom={handleSelectedRoom} />
+      {roomList.map((room: RoomType) => (
+        <RoomItem
+          key={room.id}
+          room={room}
+          selectedRoomList={selectedRoomList}
+          handleSelectedRoom={handleSelectedRoom}
+        />
       ))}
     </RoomListWrapper>
   );

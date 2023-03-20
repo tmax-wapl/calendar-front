@@ -1,5 +1,6 @@
 import { Checkbox } from '@wapl/ui';
-import { useEffect, useState, memo, ChangeEvent } from 'react';
+import { memo, ChangeEvent } from 'react';
+import { RoomType } from './RoomDummy';
 import {
   RoomItemContainer,
   RoomItemProfile,
@@ -9,49 +10,38 @@ import {
   RoomItemCheckBox,
 } from './RoomItem.style';
 
-// TODO: roomType 정의
 const RoomItem = ({
   room,
-  allChecked,
+  selectedRoomList,
   handleSelectedRoom,
 }: {
-  room: any;
-  allChecked: boolean;
+  room: RoomType;
+  selectedRoomList: string[];
   handleSelectedRoom: (id: string, isChecked: boolean) => void;
 }) => {
-  const [checked, setChecked] = useState(false);
+  // TODO: myRoom 제외
+  const isMyRoom = () => room.id === 'test';
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setChecked(!checked);
-    handleSelectedRoom(room.id, e.target.checked);
-  };
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => handleSelectedRoom(room.id, e.target.checked);
 
-  const RoomInfo = memo(() => (
+  const RoomItemInfo = memo(() => (
     <>
       <RoomItemProfile>{room.icon}</RoomItemProfile>
       <RoomItemContent>
         <Title>{room.title}</Title>
         <Content>{room.content}</Content>
       </RoomItemContent>
+      <RoomItemCheckBox>
+        <Checkbox checked={selectedRoomList.includes(room.id)} onChange={e => handleChange(e)} disabled={isMyRoom()} />
+      </RoomItemCheckBox>
     </>
   ));
 
-  // TODO: myRoom 제외
-  const isMyRoom = () => room.id === 'test';
-
-  useEffect(() => {
-    setChecked(allChecked);
-    if (!isMyRoom()) handleSelectedRoom(room.id, allChecked);
-  }, [allChecked]);
-
   return (
     <RoomItemContainer>
-      <RoomInfo />
-      <RoomItemCheckBox>
-        <Checkbox checked={isMyRoom() ? false : checked} onChange={e => handleChange(e)} disabled={isMyRoom()} />
-      </RoomItemCheckBox>
+      <RoomItemInfo />
     </RoomItemContainer>
   );
 };
 
-export default memo(RoomItem);
+export default RoomItem;

@@ -124,6 +124,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
 
   const handleRoomSchedule = (roomList: string[]) => {
     console.log(roomList);
+    closeDialog();
   };
 
   const handleUrlSubscribe = () => {
