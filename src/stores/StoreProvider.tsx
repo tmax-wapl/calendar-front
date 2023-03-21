@@ -19,6 +19,7 @@ export const WaplShellProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     WAPLAUTH_CLIENT_ID: process.env.REACT_APP_WAPLAUTH_CLIENT_ID as string,
     COMMON_API_URL: process.env.REACT_APP_COMMON_API_URL,
     CALENDAR_API_URL: process.env.REACT_APP_CALENDAR_API_URL,
+    ORG_API_URL: process.env.REACT_APP_ORG_API_URL,
   };
 
   useEffect(() => {
