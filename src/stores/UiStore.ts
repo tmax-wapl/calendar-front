@@ -7,11 +7,12 @@ import { EventModel } from './model/EventModel';
 import { VIEW_MODE } from '@/common/constants';
 
 type DateRange = { start: string; view?: DateTime; end: string };
+type ShareRoom = (personaIdList: number[], roomIdList: number[]) => void;
 
-interface DialogInfo {
-  action: string;
+export interface DialogInfo {
+  action?: string;
   onCloseClick?: () => void;
-  onClick: (() => void)[] | ((value?: string) => void)[] | ((value?: string[]) => void)[];
+  onClick?: (() => void)[] | ((value?: string) => void)[] | ((value?: string[]) => void)[];
   data?: {
     title?: string;
     name?: string;
@@ -20,6 +21,7 @@ interface DialogInfo {
     model?: EventModel;
     selectType?: string;
   };
+  onComplete?: ShareRoom; // TODO: 여러 타입 메소드 변경
   type?: string;
 }
 

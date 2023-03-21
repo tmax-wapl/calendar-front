@@ -66,6 +66,25 @@ const EventDetailView = () => {
     }
   };
 
+  const shareEvent = async (personaIdList: number[], roomIdList: number[]) => {
+    const event = eventStore.event;
+    await eventStore.shareEvent({
+      eventId: +event.id,
+      personaIdList,
+      roomIdList,
+    });
+    // TODO: 공유 완료 되었다는 팝업
+  };
+
+  const handleShareClick = () => {
+    uiStore.setDialogInfo({
+      type: 'roomFriend',
+      data: { title: '일정 공유' },
+      onComplete: shareEvent,
+      onCloseClick: closeDialog,
+    });
+  };
+
   useEffect(() => {
     if (!eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   }, []);
@@ -75,7 +94,7 @@ const EventDetailView = () => {
       <EventBar
         leftSide={[{ action: 'back', onClick: handleBackClick }]}
         rightSide={[
-          // { action: 'share', onClick: () => console.log('share') },
+          { action: 'share', onClick: handleShareClick },
           { action: 'edit', onClick: handleEditClick },
           { action: 'delete', onClick: handleDeleteClick },
         ]}

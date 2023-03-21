@@ -1,5 +1,6 @@
 import { Dialog as DialogCompo, AlertWrapper, Button } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { DesktopRoom } from '@wapl/core';
 import { Title, SubTitle, Description, DialogButtonWrapper } from './Dialog.style';
 import { InputDialog } from './InputDialog';
 import { SelectDialog } from './SelectDialog';
@@ -13,7 +14,7 @@ export interface DialogButton {
 
 export const Dialog = () => {
   const { uiStore } = useCalendarStores();
-  const { action, onCloseClick, onClick, data, type } = uiStore.dialogInfo;
+  const { action, onCloseClick, onClick, data, type, onComplete } = uiStore.dialogInfo;
 
   const title = ((): { title?: string; subTitle?: string; description?: string } => {
     switch (action) {
@@ -140,6 +141,17 @@ export const Dialog = () => {
         return <SelectDialog open title={title} buttons={buttons} selectType={data?.selectType} />;
       case 'roomSchedule':
         return <RoomScheduleDialog buttons={buttons} onClose={onCloseClick} />;
+      case 'roomFriend':
+        return (
+          <DesktopRoom.MemberSelectorDialog
+            open
+            onClose={onCloseClick}
+            title={data?.title}
+            tabs={['friends', 'room']}
+            confirmBtnText={'공유'}
+            onComplete={onComplete}
+          />
+        );
       default:
         return (
           <DialogCompo open onClose={handleClose}>

@@ -159,8 +159,22 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     eventStore.event.endDate = toLuxon(date.enddate);
   };
 
-  const handleEventShare = () => {
-    console.log('일정 공유');
+  const handleEventShare = async (personaIdList: number[], roomIdList: number[]) => {
+    await eventStore.shareEvent({
+      eventId: id,
+      personaIdList,
+      roomIdList,
+    });
+    // TODO: 공유 완료 되었다는 팝업
+  };
+
+  const handleEventShareClick = () => {
+    uiStore.setDialogInfo({
+      type: 'roomFriend',
+      data: { title: '일정 공유' },
+      onComplete: handleEventShare,
+      onCloseClick: closeDialog,
+    });
   };
 
   const handleEventDeleteClick = async () => {
@@ -206,6 +220,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     },
     updateEvent: { label: '일정 수정', onClick: handleEventUpdate, icon: <Icon.EditLine className="mr-8" /> },
     deleteEvent: { label: '일정 삭제', onClick: handleEventDeleteClick, icon: <Icon.DeleteLine className="mr-8" /> },
+    shareEvent: { label: '일정 공유', onClick: handleEventShareClick, icon: <Icon.ShareLine className="mr-8" /> },
   };
 
   const menuItems = (() => {
@@ -220,7 +235,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         return [actions.renameCalendar, actions.syncCalendar, actions.deleteCalendar];
       case 'event':
       case 'repeatEvent':
-        return [actions.updateEvent, actions.deleteEvent];
+        return [actions.updateEvent, actions.shareEvent, actions.deleteEvent];
       default:
         return [];
     }
