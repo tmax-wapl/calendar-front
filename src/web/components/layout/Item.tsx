@@ -50,7 +50,11 @@ const Item = observer(({ category }: Props) => {
     await calendarStore.updateCalendar(category.id, { userId, checkFlag: checked });
     calendarStore.updateCalendarChecked(category.id, checked);
     uiStore.changeDateRange();
-    if (!checked && pathname.includes('detail') && category.id === eventStore.event.calId)
+    if (
+      !checked &&
+      (pathname.includes('detail') || pathname.includes('update')) &&
+      category.id === eventStore.event.calId
+    )
       navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 

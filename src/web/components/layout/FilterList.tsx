@@ -16,7 +16,11 @@ const FilterList = observer(() => {
       checked: uiStore.isImportanceChecked,
       onChange: (e: ChangeEvent<HTMLInputElement>) => {
         uiStore.setImportanceChecked(e.target.checked);
-        if (e.target.checked && pathname.includes('detail') && !eventStore.event.importance)
+        if (
+          e.target.checked &&
+          (pathname.includes('detail') || pathname.includes('update')) &&
+          !eventStore.event.importance
+        )
           navigate(`/main/view-mode/${uiStore.viewMode}/date`);
       },
     },
