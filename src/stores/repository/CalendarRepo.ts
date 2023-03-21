@@ -1,4 +1,4 @@
-import { CalendarDTO, CalendarPatchDTO } from '@/common/constants/interfaces';
+import { CalendarDTO, CalendarPatchDTO, CalendarShareDTO } from '@/common/constants/interfaces';
 import { API } from '@/common/lib/API';
 import { HTTPError } from '@/error';
 
@@ -70,6 +70,17 @@ export default class CalendarRepo {
     } catch (e) {
       if (e instanceof HTTPError) {
         throw Error(JSON.stringify(e));
+      }
+    }
+  }
+
+  async shareCalendar(dto: CalendarShareDTO) {
+    try {
+      const { response } = await API.post<CalendarShareDTO, number[]>(`/apis/v1/share/calendar`, dto);
+      return response;
+    } catch (e) {
+      if (e instanceof HTTPError) {
+        throw e;
       }
     }
   }

@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import RootStore from './RootStore';
 import CalendarRepo from './repository/CalendarRepo';
-import { CalendarDTO, CalendarPatchDTO, HolidayDTO } from '@/common/constants/interfaces';
+import { CalendarDTO, CalendarPatchDTO, CalendarShareDTO, HolidayDTO } from '@/common/constants/interfaces';
 import { CalendarModel } from './model/CalendarModel';
 import { EventModel } from './model/EventModel';
 
@@ -113,5 +113,10 @@ export default class CalendarStore {
 
   getCalendarId() {
     return this.calendarList?.find(item => item.mainFlag)?.id;
+  }
+
+  async shareCalendar(dto: CalendarShareDTO) {
+    const res = await this.repo.shareCalendar(dto);
+    return res;
   }
 }

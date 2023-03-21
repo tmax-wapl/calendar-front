@@ -1,5 +1,5 @@
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
-import { EventDTO, HolidayDTO } from '@/common/constants/interfaces';
+import { EventDTO, EventShareDTO, HolidayDTO } from '@/common/constants/interfaces';
 import { HTTPError } from '@/error';
 import { AxiosError } from 'axios';
 import { API } from '../../common/lib/API';
@@ -60,6 +60,16 @@ export default class EventRepo {
   async deleteEvent(eventId: number) {
     try {
       const { response, success } = await API.delete(`/apis/v1/event/delete/${eventId}`);
+      if (success) return response;
+    } catch (e) {
+      if (e instanceof HTTPError) {
+        throw Error(JSON.stringify(e));
+      }
+    }
+  }
+  async shareEvent(dto: EventShareDTO) {
+    try {
+      const { response, success } = await API.post(`/apis/v1/share/event`, dto);
       if (success) return response;
     } catch (e) {
       if (e instanceof HTTPError) {

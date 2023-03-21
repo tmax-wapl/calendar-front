@@ -112,3 +112,14 @@ export interface ResponseData<T> {
   response: T;
   success: boolean;
 }
+export interface CalendarShareDTO {
+  calendarId: number;
+  personaIdList?: number[];
+  roomIdList?: number[];
+}
+
+export interface EventShareDTO {
+  eventId: number;
+  personaIdList?: number[];
+  roomIdList?: number[];
+}
