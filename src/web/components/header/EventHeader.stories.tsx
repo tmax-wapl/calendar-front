@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { EventHeader } from './index';
+import EventHeader from './EventHeader';
 
 export default {
   title: 'Components/EventHeader',

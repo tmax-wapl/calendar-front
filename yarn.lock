@@ -5667,6 +5667,82 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@wapl/calendar@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@wapl/calendar@workspace:."
+  dependencies:
+    "@babel/cli": ^7.19.3
+    "@babel/core": ^7.19.6
+    "@babel/plugin-transform-runtime": ^7.19.6
+    "@babel/preset-env": ^7.19.4
+    "@babel/preset-react": ^7.18.6
+    "@babel/preset-typescript": ^7.18.6
+    "@babel/runtime": ^7.20.1
+    "@emotion/react": ^11.10.5
+    "@emotion/styled": ^11.10.5
+    "@fullcalendar/daygrid": ^5.11.3
+    "@fullcalendar/interaction": ^5.11.3
+    "@fullcalendar/react": ^5.11.2
+    "@fullcalendar/timegrid": ^5.11.3
+    "@mdx-js/react": ^1.6.22
+    "@mui/material": ^5.10.16
+    "@mui/system": ^5.10.14
+    "@mui/x-date-pickers": ^5.0.8
+    "@storybook/addon-actions": ^6.5.13
+    "@storybook/addon-docs": ^6.5.13
+    "@storybook/addon-essentials": ^6.5.13
+    "@storybook/addon-interactions": ^6.5.13
+    "@storybook/addon-links": ^6.5.13
+    "@storybook/builder-webpack5": ^6.5.13
+    "@storybook/manager-webpack5": ^6.5.13
+    "@storybook/react": ^6.5.13
+    "@storybook/testing-library": ^0.0.13
+    "@svgr/webpack": ^6.5.1
+    "@types/luxon": ^3
+    "@types/react": ^17.0.19
+    "@types/react-dom": ^17.0.11
+    "@types/webpack-bundle-analyzer": ^4
+    "@typescript-eslint/eslint-plugin": ^5.42.0
+    "@typescript-eslint/parser": ^5.42.0
+    "@wapl/core": ^0.3.0-alpha.1
+    "@wapl/ui": ^0.2.23
+    axios: ^1.1.3
+    babel-loader: ^9.0.1
+    clean-webpack-plugin: ^4.0.0
+    css-loader: ^6.7.1
+    dotenv-webpack: ^8.0.1
+    eslint: ^8.26.0
+    eslint-config-prettier: ^8.5.0
+    eslint-plugin-prettier: ^4.2.1
+    eslint-plugin-react: ^7.31.10
+    eslint-plugin-react-hooks: ^4.6.0
+    fullcalendar: ^5.11.3
+    holiday-kr: ^0.1.5
+    html-loader: ^4.2.0
+    html-webpack-plugin: ^5.5.0
+    ignore-loader: ^0.1.2
+    luxon: ^3.1.0
+    mobx: ^6.6.2
+    mobx-react: ^7.5.3
+    mobx-react-lite: ^3.4.0
+    moment: ^2.29.4
+    prettier: ^2.7.1
+    react: ^17.0.2
+    react-dom: ^17.0.2
+    react-router-dom: ^6.4.3
+    rrule: ^2.7.1
+    style-loader: ^3.3.1
+    ts-loader: ^9.4.1
+    tsconfig-paths-webpack-plugin: ^4.0.0
+    typescript: ^4.8.4
+    uglifyjs-webpack-plugin: ^2.2.0
+    webpack: ^5.74.0
+    webpack-bundle-analyzer: ^4.8.0
+    webpack-cli: ^4.10.0
+    webpack-dev-server: ^4.11.1
+  languageName: unknown
+  linkType: soft
+
 "@wapl/core@npm:^0.3.0-alpha.1":
   version: 0.3.0-alpha.1
   resolution: "@wapl/core@npm:0.3.0-alpha.1"
@@ -7665,82 +7741,6 @@ __metadata:
   checksum: 9114b8654fe2366eedc390bad0bcf534e2f01b239a888894e2928cb58cdc1e6ea23a73c6f3450dcfd2058aa73a8a981e723cd1e7c670c047bf11afdc65880107
   languageName: node
   linkType: hard
-
-"calendar-front@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "calendar-front@workspace:."
-  dependencies:
-    "@babel/cli": ^7.19.3
-    "@babel/core": ^7.19.6
-    "@babel/plugin-transform-runtime": ^7.19.6
-    "@babel/preset-env": ^7.19.4
-    "@babel/preset-react": ^7.18.6
-    "@babel/preset-typescript": ^7.18.6
-    "@babel/runtime": ^7.20.1
-    "@emotion/react": ^11.10.5
-    "@emotion/styled": ^11.10.5
-    "@fullcalendar/daygrid": ^5.11.3
-    "@fullcalendar/interaction": ^5.11.3
-    "@fullcalendar/react": ^5.11.2
-    "@fullcalendar/timegrid": ^5.11.3
-    "@mdx-js/react": ^1.6.22
-    "@mui/material": ^5.10.16
-    "@mui/system": ^5.10.14
-    "@mui/x-date-pickers": ^5.0.8
-    "@storybook/addon-actions": ^6.5.13
-    "@storybook/addon-docs": ^6.5.13
-    "@storybook/addon-essentials": ^6.5.13
-    "@storybook/addon-interactions": ^6.5.13
-    "@storybook/addon-links": ^6.5.13
-    "@storybook/builder-webpack5": ^6.5.13
-    "@storybook/manager-webpack5": ^6.5.13
-    "@storybook/react": ^6.5.13
-    "@storybook/testing-library": ^0.0.13
-    "@svgr/webpack": ^6.5.1
-    "@types/luxon": ^3
-    "@types/react": ^17.0.19
-    "@types/react-dom": ^17.0.11
-    "@types/webpack-bundle-analyzer": ^4
-    "@typescript-eslint/eslint-plugin": ^5.42.0
-    "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": ^0.3.0-alpha.1
-    "@wapl/ui": ^0.2.23
-    axios: ^1.1.3
-    babel-loader: ^9.0.1
-    clean-webpack-plugin: ^4.0.0
-    css-loader: ^6.7.1
-    dotenv-webpack: ^8.0.1
-    eslint: ^8.26.0
-    eslint-config-prettier: ^8.5.0
-    eslint-plugin-prettier: ^4.2.1
-    eslint-plugin-react: ^7.31.10
-    eslint-plugin-react-hooks: ^4.6.0
-    fullcalendar: ^5.11.3
-    holiday-kr: ^0.1.5
-    html-loader: ^4.2.0
-    html-webpack-plugin: ^5.5.0
-    ignore-loader: ^0.1.2
-    luxon: ^3.1.0
-    mobx: ^6.6.2
-    mobx-react: ^7.5.3
-    mobx-react-lite: ^3.4.0
-    moment: ^2.29.4
-    prettier: ^2.7.1
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-router-dom: ^6.4.3
-    rrule: ^2.7.1
-    style-loader: ^3.3.1
-    ts-loader: ^9.4.1
-    tsconfig-paths-webpack-plugin: ^4.0.0
-    typescript: ^4.8.4
-    uglifyjs-webpack-plugin: ^2.2.0
-    webpack: ^5.74.0
-    webpack-bundle-analyzer: ^4.8.0
-    webpack-cli: ^4.10.0
-    webpack-dev-server: ^4.11.1
-  languageName: unknown
-  linkType: soft
 
 "call-bind@npm:^1.0.0, call-bind@npm:^1.0.2":
   version: 1.0.2
@@ -20073,11 +20073,11 @@ __metadata:
 
 "typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
   version: 4.9.3
-  resolution: "typescript@patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=d73830"
+  resolution: "typescript@patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=a66ed4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 67ca21a387c0572f1c04936e638dde7782c5aa520c3754aadc7cc9b7c915da9ebc3e27c601bfff4ccb7d7264e82dce6d277ada82ec09dc75024349e0ef64926d
+  checksum: d7bdcf5e18193f709339540d69577f7b0389000265db2bf10edfaa67336a29d6bcbee11828084150f7fdd110d605794cfa6df33bebc0a2e33daad2dbe2a7a59f
   languageName: node
   linkType: hard
 
