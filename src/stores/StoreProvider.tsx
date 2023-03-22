@@ -1,5 +1,5 @@
 import { API } from '@/common/lib/API';
-import { PrivateRoute, ProtectedRoute, UserLoader } from '@wapl/core';
+import { PrivateRoute, ProtectedRoute, UserLoader, ToppingProvider } from '@wapl/core';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import RootStore from './RootStore';
 
@@ -30,14 +30,14 @@ export const WaplShellProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     });
   }, []);
 
-  return (
+  return process.env.REACT_APP_MODE === 'local' ? (
     <UserLoader config={config}>
-      {process.env.REACT_APP_MODE === 'local' ? (
-        <PrivateRoute>{children}</PrivateRoute>
-      ) : (
-        <ProtectedRoute>{children}</ProtectedRoute>
-      )}
+      <PrivateRoute>{children}</PrivateRoute>
     </UserLoader>
+  ) : (
+    <ToppingProvider>
+      <ProtectedRoute>{children}</ProtectedRoute>
+    </ToppingProvider>
   );
 };
 

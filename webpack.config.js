@@ -8,11 +8,11 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const mode = process.env.REACT_APP_MODE || 'development';
 
 module.exports = env => {
-  const { dev, qa } = env;
+  const { dev, qa, app } = env;
 
   return {
     mode,
-    entry: dev === 'true' ? './src/entry.tsx' : './src/index.ts',
+    entry: dev === 'true' || app === 'true' ? './src/entry.tsx' : './src/index.ts',
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
