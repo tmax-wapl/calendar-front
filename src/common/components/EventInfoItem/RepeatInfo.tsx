@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { Options, Weekday } from 'rrule';
-import { Icon, Select, Tooltip, Checkbox } from '@wapl/ui';
+import { Icon, Tooltip, Checkbox } from '@wapl/ui';
 import {
   RepeatInfoContainer,
   ItemContainer,
@@ -11,6 +11,7 @@ import {
   DatePickerWrapper,
   RepeatDay,
 } from './RepeatInfo.style';
+import Select from '../Select/Select';
 import DatePicker from '../DatePicker/DatePicker';
 import { getRepeatSummary } from '@/utils';
 
@@ -96,14 +97,7 @@ const RepeatInfo = ({
     <RepeatInfoContainer>
       <ItemContainer>
         <Icon.RepeatLine className="mr-8" width={20} height={20} />
-        <Select
-          name="repeat"
-          defaultValue={rrule?.freq || -1}
-          types="normal"
-          items={repeatItems}
-          width="100px"
-          onChange={handleSelectChange}
-        />
+        <Select value={rrule?.freq || -1} items={repeatItems} onChange={handleSelectChange} />
       </ItemContainer>
       {rrule?.freq > -1 && (
         <>

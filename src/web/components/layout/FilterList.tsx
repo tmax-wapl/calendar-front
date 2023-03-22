@@ -3,9 +3,12 @@ import { Checkbox } from '@wapl/ui';
 import { CheckBoxWrapper } from './FilterList.style';
 import { observer } from 'mobx-react-lite';
 import { ChangeEvent } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const FilterList = observer(() => {
-  const { uiStore } = useCalendarStores();
+  const { eventStore, uiStore } = useCalendarStores();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const filterItems = [
     {
       label: '중요 일정만 표시',
@@ -13,6 +16,12 @@ const FilterList = observer(() => {
       checked: uiStore.isImportanceChecked,
       onChange: (e: ChangeEvent<HTMLInputElement>) => {
         uiStore.setImportanceChecked(e.target.checked);
+        if (
+          e.target.checked &&
+          (pathname.includes('detail') || pathname.includes('update')) &&
+          !eventStore.event.importance
+        )
+          navigate(`/main/view-mode/${uiStore.viewMode}/date`);
       },
     },
     {

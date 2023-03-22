@@ -10,9 +10,11 @@ interface Props {
 
 const Description = ({ description = '', onChange, editable = false }: Props) => {
   const [value, setValue] = useState<typeof description>('');
+  const maxLength = 200;
 
   // TODO: editor로 변경
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length > maxLength) return;
     if (onChange) onChange(e.target.value);
     setValue(e.target.value);
   };
@@ -26,6 +28,7 @@ const Description = ({ description = '', onChange, editable = false }: Props) =>
       <DescriptionTextarea
         value={description || value}
         placeholder="설명 추가"
+        maxLength={maxLength}
         onChange={handleTextareaChange}
         readOnly={!editable}
         editable={editable}

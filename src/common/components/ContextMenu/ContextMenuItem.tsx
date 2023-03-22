@@ -46,11 +46,15 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
 
   const deleteCalendar = async () => {
     await calendarStore.deleteCalendar(id);
+    if ((pathname.includes('detail') || pathname.includes('update')) && id === eventStore.event.calId)
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
     closeDialog();
   };
 
   const deleteEvent = async () => {
     await calendarStore.deleteEvent(id);
+    if (+eventStore.event.id === id && (pathname.includes('detail') || pathname.includes('update')))
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
     closeDialog();
     if (onClose) onClose();
   };
@@ -70,6 +74,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       default:
         break;
     }
+    if (+eventStore.event.id === id && (pathname.includes('detail') || pathname.includes('update')))
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
     closeDialog();
     uiStore.changeDateRange();
     if (onClose) onClose();

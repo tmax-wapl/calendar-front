@@ -1,5 +1,6 @@
 import { useState, memo, useContext, MouseEvent } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { CalendarModel } from '@/stores/model/CalendarModel';
@@ -21,11 +22,13 @@ interface Props {
 
 const Item = observer(({ category }: Props) => {
   const { userId } = useContext(CalendarContext);
-  const { uiStore, calendarStore } = useCalendarStores();
+  const { uiStore, calendarStore, eventStore } = useCalendarStores();
   const [renameTitle, setRenameTitle] = useState(category.name);
   const {
     toast: { notify },
   } = useWaplUiStore();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const onContextMenuOpen = (e: MouseEvent, category: CalendarModel) => {
     e.preventDefault(); // 기존 브라우저 우클릭 동작 제어
@@ -47,6 +50,12 @@ const Item = observer(({ category }: Props) => {
     await calendarStore.updateCalendar(category.id, { userId, checkFlag: checked });
     calendarStore.updateCalendarChecked(category.id, checked);
     uiStore.changeDateRange();
+    if (
+      !checked &&
+      (pathname.includes('detail') || pathname.includes('update')) &&
+      category.id === eventStore.event.calId
+    )
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
