@@ -18,7 +18,8 @@ export const AccordionDetails = styled(Mui.AccordionDetails, {
   shouldForwardProp: (prop: string) => prop !== 'editable',
 })<{ editable: boolean }>`
   display: flex;
-  height: 32px;
+  min-height: 32px;
+  flex-wrap: wrap;
   align-items: center;
   padding: ${({ editable }) => (editable ? 0 : '0 0 0 28px')};
   margin-bottom: ${({ editable }) => (editable ? '10px' : '8px')};

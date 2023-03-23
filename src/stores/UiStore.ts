@@ -22,7 +22,7 @@ export interface DialogInfo {
     model?: EventModel;
     selectType?: string;
   };
-  onComplete?: ShareRoom; // TODO: 여러 타입 메소드 변경
+  onComplete?: any;
   type?: string;
 }
 

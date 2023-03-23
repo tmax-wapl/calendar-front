@@ -22,6 +22,7 @@ import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@/common/constants';
 import { useDidMountEffect } from '@/common/hooks';
+import { EventMember } from '@/common/constants/interfaces';
 
 interface Props {
   action: 'create' | 'update';
@@ -277,6 +278,19 @@ const EventHandleView = ({ action }: Props) => {
           )}
         </Observer>
         {/* <Participants participants={eventStore.event.participants} editable /> */}
+        <Observer>
+          {() => (
+            <Participants
+              participants={
+                eventStore.event.eventMember
+                  ? [...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]
+                  : []
+              }
+              onChange={(value: EventMember) => (eventStore.event.eventMember = value)}
+              editable
+            />
+          )}
+        </Observer>
         <Observer>
           {() => (
             <Location

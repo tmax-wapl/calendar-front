@@ -24,7 +24,10 @@ export interface EventDTO {
   repeatStartDate?: string;
   repeatgroupId?: number;
   subEvent?: boolean;
-  participants?: any[];
+  eventMember?: {
+    personaList: EventMemberPersona[];
+    roomList: EventMemberRoom[];
+  };
   attachments?: any[];
   notifications?: any[];
   exDate?: string;
@@ -132,4 +135,19 @@ export interface CustomRoomDTO extends RoomDTO.Room {
   disabled?: boolean;
   displayName?: string;
   displayPhoto?: string[];
+}
+
+export interface EventMember {
+  personaList?: EventMemberPersona[];
+  roomList?: EventMemberRoom[];
+}
+
+export interface EventMemberPersona {
+  personaId: number;
+  personaNick: string;
+}
+
+export interface EventMemberRoom {
+  roomId: number;
+  roomNick: string;
 }

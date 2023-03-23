@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { DateTime } from 'luxon';
 import { rrulestr, RRule, Options, RRuleSet } from 'rrule';
-import { EventDTO, ExceptionDTO } from '@constants/interfaces';
+import { EventDTO, EventMember, ExceptionDTO } from '@constants/interfaces';
 import { isRRule, toISO } from '@/utils';
 
 export class EventModel {
@@ -162,8 +162,15 @@ export class EventModel {
     return this.dto.repeatgroupId;
   }
 
-  get participants(): any[] {
-    return this.dto.participants;
+  get eventMember(): EventMember {
+    return this.dto.eventMember;
+  }
+
+  set eventMember(eventMember: EventMember) {
+    this.dto.eventMember = {
+      personaList: eventMember ? eventMember.personaList : [],
+      roomList: eventMember ? eventMember.roomList : [],
+    };
   }
 
   get attachments(): any[] {

@@ -110,7 +110,16 @@ const EventDetailView = () => {
             </FromInfo>
           )}
         </Observer>
-        {/* {eventStore.event.participants?.length && <Participants participants={eventStore.event.participants} />} */}
+        <Observer>
+          {() =>
+            eventStore.event.eventMember ? (
+              <Participants
+                participants={[...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]}
+                editable={false}
+              />
+            ) : null
+          }
+        </Observer>
         <Observer>
           {() => (eventStore.event.location ? <Location location={eventStore.event.location} /> : null)}
         </Observer>
