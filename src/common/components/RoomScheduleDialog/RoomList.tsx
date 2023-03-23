@@ -1,37 +1,25 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
+import { CustomRoomDTO } from '@/common/constants/interfaces';
 import { RoomListWrapper } from './RoomScheduleDialog.style';
 import RoomItem from './RoomItem';
-import { RoomType } from './RoomDummy';
 
-const RoomList = ({
-  roomList,
-  selectedRoomList,
-  setSelectedRoomList,
-}: {
-  roomList: RoomType[];
-  selectedRoomList: string[];
-  setSelectedRoomList: Dispatch<SetStateAction<string[]>>;
-}) => {
-  const handleSelectedRoom = useCallback(
-    (id: string, isChecked: boolean) => {
-      if (isChecked) {
-        setSelectedRoomList([...selectedRoomList, id]);
-      } else if (!isChecked && selectedRoomList.includes(id)) {
-        setSelectedRoomList(selectedRoomList.filter(el => el !== id));
-      }
+interface Props {
+  roomList: CustomRoomDTO[];
+  setRoomList: Dispatch<SetStateAction<CustomRoomDTO[]>>;
+}
+
+const RoomList = ({ roomList, setRoomList }: Props) => {
+  const onChange = useCallback(
+    (id: number, checked: boolean) => {
+      setRoomList(prev => prev.map(room => (room.id === id ? { ...room, checked } : room)));
     },
-    [selectedRoomList, setSelectedRoomList],
+    [roomList, setRoomList],
   );
 
   return (
     <RoomListWrapper>
-      {roomList.map((room: RoomType) => (
-        <RoomItem
-          key={room.id}
-          room={room}
-          selectedRoomList={selectedRoomList}
-          handleSelectedRoom={handleSelectedRoom}
-        />
+      {roomList?.map(room => (
+        <RoomItem key={room.id} room={room} onChange={onChange} />
       ))}
     </RoomListWrapper>
   );

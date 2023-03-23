@@ -1,3 +1,5 @@
+import { RoomDTO } from '@wapl/core';
+
 export interface EventDTO {
   id: number;
   calId: number;
@@ -37,6 +39,7 @@ export interface HolidayDTO {
 
 export interface CalendarDTO {
   id: number;
+  roomId?: number;
   name: string;
   color: string;
   checkFlag: boolean;
@@ -122,4 +125,11 @@ export interface EventShareDTO {
   eventId: number;
   personaIdList?: number[];
   roomIdList?: number[];
+}
+
+export interface CustomRoomDTO extends RoomDTO.Room {
+  checked?: boolean;
+  disabled?: boolean;
+  displayName?: string;
+  displayPhoto?: string[];
 }

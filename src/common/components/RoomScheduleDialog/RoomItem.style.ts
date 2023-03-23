@@ -2,8 +2,9 @@ import { styled } from '@wapl/ui';
 
 export const RoomItemContainer = styled.div`
   display: flex;
-  align-items: center;
+  box-sizing: border-box;
   height: 68px;
+  padding: 14px 0px;
 `;
 
 export const RoomItemProfile = styled.div`
@@ -13,6 +14,7 @@ export const RoomItemProfile = styled.div`
 export const RoomItemContent = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   width: 100%;
 `;
 

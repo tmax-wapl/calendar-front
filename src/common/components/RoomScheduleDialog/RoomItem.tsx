@@ -1,6 +1,6 @@
-import { Checkbox } from '@wapl/ui';
-import { memo, ChangeEvent } from 'react';
-import { RoomType } from './RoomDummy';
+import { Checkbox, Avatar } from '@wapl/ui';
+import { memo } from 'react';
+import { CustomRoomDTO } from '@/common/constants/interfaces';
 import {
   RoomItemContainer,
   RoomItemProfile,
@@ -10,29 +10,30 @@ import {
   RoomItemCheckBox,
 } from './RoomItem.style';
 
-const RoomItem = ({
-  room,
-  selectedRoomList,
-  handleSelectedRoom,
-}: {
-  room: RoomType;
-  selectedRoomList: string[];
-  handleSelectedRoom: (id: string, isChecked: boolean) => void;
-}) => {
-  // TODO: myRoom 제외
-  const isMyRoom = () => room.id === 'test';
+interface Props {
+  room: CustomRoomDTO;
+  onChange: (id: number, checked: boolean) => void;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => handleSelectedRoom(room.id, e.target.checked);
+const RoomItem = ({ room, onChange }: Props) => {
+  // TODO: myRoom 제외
+  const isMyRoom = () => room.type === 'my';
 
   const RoomItemInfo = memo(() => (
     <>
-      <RoomItemProfile>{room.icon}</RoomItemProfile>
+      <RoomItemProfile>
+        <Avatar size={40} imgSrc={room.displayPhoto} />
+      </RoomItemProfile>
       <RoomItemContent>
-        <Title>{room.title}</Title>
-        <Content>{room.content}</Content>
+        <Title>{room.displayName}</Title>
+        <Content>대화내용</Content>
       </RoomItemContent>
       <RoomItemCheckBox>
-        <Checkbox checked={selectedRoomList.includes(room.id)} onChange={e => handleChange(e)} disabled={isMyRoom()} />
+        <Checkbox
+          checked={room.checked}
+          onChange={e => onChange(room.id, e.target.checked)}
+          disabled={room.disabled || isMyRoom()}
+        />
       </RoomItemCheckBox>
     </>
   ));
@@ -44,4 +45,4 @@ const RoomItem = ({
   );
 };
 
-export default RoomItem;
+export default memo(RoomItem, (prev, next) => prev.room.checked === next.room.checked);

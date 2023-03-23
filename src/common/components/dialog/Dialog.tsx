@@ -1,5 +1,6 @@
 import { Dialog as DialogCompo, AlertWrapper, Button } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { CustomRoomDTO } from '@/common/constants/interfaces';
 import { DesktopRoom } from '@wapl/core';
 import { Title, SubTitle, Description, DialogButtonWrapper } from './Dialog.style';
 import { InputDialog } from './InputDialog';
@@ -9,7 +10,7 @@ import RoomScheduleDialog from '../RoomScheduleDialog/RoomScheduleDialog';
 export interface DialogButton {
   variant: 'primary' | 'secondary' | 'secondary-web' | 'third' | 'negative';
   text: string;
-  onClick: (() => void) | ((value?: string | string[]) => void);
+  onClick: (() => void) | ((value?: string | CustomRoomDTO[]) => void);
 }
 
 export const Dialog = () => {
