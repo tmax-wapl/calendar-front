@@ -5,6 +5,7 @@ import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { ColorPicker, ContextMenuItem } from './index';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { EventModel } from '@/stores/model/EventModel';
+import { CalendarModel } from '@/stores';
 
 const style = [
   {
@@ -50,6 +51,13 @@ export const ContextMenu = () => {
         await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.DEFAULT);
         eventStore.updateEventColor('' + id, color);
         handleClose();
+        break;
+      case 'roomCalendar':
+        const newRoomList = calendarStore.roomCalendarList?.map((room: CalendarModel) =>
+          room.roomId === id ? { ...room.dto, color } : room.dto,
+        );
+        calendarStore.setLocalRoomCalendarList(userId, newRoomList);
+        uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
       default:
         break;

@@ -7,6 +7,7 @@ import DatePicker from '@common/components/DatePicker/DatePicker';
 import FilterList from './FilterList';
 import CategoryList from './CategoryList';
 import SubscriptionList from './SubscriptionList';
+import RoomCalendarList from './RoomCalendarList';
 import { Observer } from 'mobx-react-lite';
 
 const LNB = () => {
@@ -52,6 +53,7 @@ const LNB = () => {
         <CategoryList />
         <Divider />
         <SubscriptionList />
+        <RoomCalendarList />
       </ScrollListWrapper>
     </LNBContainer>
   );

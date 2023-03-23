@@ -56,6 +56,11 @@ export const Dialog = () => {
           subTitle: `선택한 캘린더를 삭제하시겠습니까?`,
           description: `이 후, 이 캘린더에 접근할 수 없습니다.`,
         };
+      case 'roomCalendarDelete':
+        return {
+          title: '캘린더 삭제',
+          subTitle: `선택한 캘린더를 삭제하시겠습니까?`,
+        };
       case 'subscribe':
         return {
           title: '구독 캘린더 추가',
@@ -89,6 +94,7 @@ export const Dialog = () => {
       case 'eventDelete':
       case 'repeatEventDelete':
       case 'subscriptionDelete':
+      case 'roomCalendarDelete':
       case 'calendarDelete':
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },

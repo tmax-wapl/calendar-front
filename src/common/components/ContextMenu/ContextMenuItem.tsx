@@ -6,6 +6,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toLuxon } from '@/utils';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { HTTPError } from '@/error';
+import { CalendarModel } from '@/stores';
+import { CustomRoomDTO } from '@/common/constants/interfaces';
 
 const MenuItemWrapper = styled.div`
   display: flex;
@@ -49,6 +51,14 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
 
   const deleteCalendar = async () => {
     await calendarStore.deleteCalendar(id);
+    closeDialog();
+  };
+
+  const deleteRoomCalendar = async () => {
+    const newRoomList = calendarStore.roomCalendarList
+      ?.filter((room: CalendarModel) => room.roomId !== id)
+      .map(room => room.dto);
+    calendarStore.setLocalRoomCalendarList(userId, newRoomList);
     closeDialog();
   };
 
@@ -103,6 +113,14 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     if (onClose) onClose();
   };
 
+  const handleRoomCalendarDelete = () => {
+    uiStore.setDialogInfo({
+      action: 'roomCalendarDelete',
+      onClick: [closeDialog, deleteRoomCalendar],
+    });
+    if (onClose) onClose();
+  };
+
   const handleSubscribe = async (url: string) => {
     try {
       await calendarStore.createCalendar({ regUserId: userId, url, type: 'url' });
@@ -122,8 +140,21 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     }
   };
 
-  const handleRoomSchedule = (roomList: string[]) => {
-    console.log(roomList);
+  const handleRoomSchedule = (roomList: CustomRoomDTO[]) => {
+    const newRoomList = roomList
+      .filter(room => room.checked === true)
+      .map(room => {
+        return {
+          roomId: room.id,
+          name: room.displayName,
+          checkFlag: true,
+          color: '#A143FF',
+        };
+      });
+    calendarStore.setLocalRoomCalendarList(
+      userId,
+      calendarStore.roomCalendarList.map(room => room.dto).concat(newRoomList),
+    );
     closeDialog();
   };
 
@@ -221,6 +252,11 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     updateEvent: { label: '일정 수정', onClick: handleEventUpdate, icon: <Icon.EditLine className="mr-8" /> },
     deleteEvent: { label: '일정 삭제', onClick: handleEventDeleteClick, icon: <Icon.DeleteLine className="mr-8" /> },
     shareEvent: { label: '일정 공유', onClick: handleEventShareClick, icon: <Icon.ShareLine className="mr-8" /> },
+    deleteRoomCalendar: {
+      label: '캘린더 삭제',
+      onClick: handleRoomCalendarDelete,
+      icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
+    },
   };
 
   const menuItems = (() => {
@@ -229,6 +265,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         return [actions.renameCalendar];
       case 'subCalendar':
         return [actions.renameCalendar, actions.deleteCalendar];
+      case 'roomCalendar':
+        return [actions.renameCalendar, actions.deleteRoomCalendar];
       case 'addOther':
         return [actions.addSubscribe, actions.addRoomCalendar];
       case 'subscribe':
