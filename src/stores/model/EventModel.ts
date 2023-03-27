@@ -26,6 +26,10 @@ export class EventModel {
     return this.dto.calId;
   }
 
+  get roomId(): number {
+    return this.dto.roomId;
+  }
+
   get calName(): string {
     return this.dto.calName;
   }
