@@ -12,6 +12,7 @@ const baseUrl = isDevelop
 class APIClass {
   instance;
   token: string | null = null;
+  personaId: number | null = null;
 
   constructor() {
     this.instance = axios.create({
@@ -27,6 +28,7 @@ class APIClass {
         const headers = config.headers as AxiosRequestHeaders;
         if (this.token) {
           headers.Authorization = `Bearer ${this.token}`;
+          headers.Wpid = this.personaId;
         }
         return config;
       },
@@ -53,9 +55,10 @@ class APIClass {
     );
   }
 
-  setToken(token: string) {
+  setToken(token: string, personaId: number) {
     this.token = token;
-    // refresh token처리나 token 만료는 shell쪽에서 해주는 듯?
+    this.personaId = personaId;
+    // local 테스트 용도
   }
 
   /**

@@ -1,6 +1,5 @@
-import { API } from '@/common/lib/API';
 import { PrivateRoute, ProtectedRoute, UserLoader } from '@wapl/core';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 import RootStore from './RootStore';
 
 const rootStore = new RootStore();
@@ -11,8 +10,6 @@ export const StoreProvider = ({ children }: React.PropsWithChildren<unknown>) =>
 };
 
 export const WaplShellProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [token, setToken] = useState(null);
-
   const config = {
     WAPLAUTH_URL: process.env.REACT_APP_WAPLAUTH_URL as string,
     WAPLAUTH_REALM: process.env.REACT_APP_WAPLAUTH_REALM as string,
@@ -21,15 +18,6 @@ export const WaplShellProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     CALENDAR_API_URL: process.env.REACT_APP_CALENDAR_API_URL,
     ORG_API_URL: process.env.REACT_APP_ORG_API_URL,
   };
-
-  useEffect(() => {
-    window.addEventListener('message', ({ data: { type, token } }) => {
-      if (type === 'token') {
-        setToken(token);
-        API.setToken(token);
-      }
-    });
-  }, []);
 
   return (
     <UserLoader config={config}>
