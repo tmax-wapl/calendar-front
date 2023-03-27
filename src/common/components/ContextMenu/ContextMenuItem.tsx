@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toLuxon } from '@/utils';
+import { toLuxon, toUTC } from '@/utils';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { HTTPError } from '@/error';
 import { CalendarModel } from '@/stores';
@@ -149,6 +149,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
           name: room.displayName,
           checkFlag: true,
           color: '#A143FF',
+          regDate: toUTC(new Date()),
+          type: 'room',
         };
       });
     calendarStore.setLocalRoomCalendarList(

@@ -3,7 +3,8 @@ import { CalendarModel } from '@/stores/model/CalendarModel';
 import { observer } from 'mobx-react-lite';
 import Item from './Item';
 import { Icon } from '@wapl/ui';
-import { Title, AddButton } from './SubscriptionList.style';
+import { OtherCalendarListContainer, Title, AddButton } from './SubscriptionList.style';
+import RoomCalendarItem from './RoomCalendarItem';
 
 const SubscriptionList = observer(() => {
   const { uiStore, calendarStore } = useCalendarStores();
@@ -19,20 +20,34 @@ const SubscriptionList = observer(() => {
     });
   };
 
+  const sortCalendarList = (): CalendarModel[] => {
+    if (calendarStore.roomCalendarList && calendarStore.calendarList)
+      return [...calendarStore.roomCalendarList, ...calendarStore.calendarList]
+        .filter(
+          (calendar: CalendarModel) => calendar.type === 'url' || calendar.type === 'share' || calendar.type === 'room',
+        )
+        ?.sort((a, b) => {
+          return new Date(b.regDate).getTime() - new Date(a.regDate).getTime();
+        });
+    return [];
+  };
+
   return (
-    <>
+    <OtherCalendarListContainer>
       <Title>
         다른 캘린더
         <AddButton onClick={onContextMenuOpen}>
           <Icon.Add2Line width={20} height={20} color="#80868B" />
         </AddButton>
       </Title>
-      {calendarStore.calendarList
-        ?.filter((category: CalendarModel) => category.type === 'url')
-        .map((category: CalendarModel) => (
-          <Item key={category.id} category={category} />
-        ))}
-    </>
+      {sortCalendarList().map((calendar: CalendarModel) =>
+        calendar.type === 'room' ? (
+          <RoomCalendarItem key={calendar.roomId} calendar={calendar} />
+        ) : (
+          <Item key={calendar.id} category={calendar} />
+        ),
+      )}
+    </OtherCalendarListContainer>
   );
 });
 

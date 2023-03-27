@@ -3,6 +3,7 @@ import { RoomDTO } from '@wapl/core';
 export interface EventDTO {
   id: number;
   calId: number;
+  roomId?: number;
   calName: string;
   calColor: string;
   color: string;
@@ -133,6 +134,7 @@ export interface EventShareDTO {
 export interface CustomRoomDTO extends RoomDTO.Room {
   checked?: boolean;
   disabled?: boolean;
+  regDate?: string;
   displayName?: string;
   displayPhoto?: string[];
 }

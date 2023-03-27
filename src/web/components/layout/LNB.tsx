@@ -7,8 +7,9 @@ import DatePicker from '@common/components/DatePicker/DatePicker';
 import FilterList from './FilterList';
 import CategoryList from './CategoryList';
 import SubscriptionList from './SubscriptionList';
-import RoomCalendarList from './RoomCalendarList';
 import { Observer } from 'mobx-react-lite';
+import { CalendarDTO } from '@/common/constants/interfaces';
+import { CalendarModel } from '@/stores';
 
 const LNB = () => {
   const { userId } = useContext(CalendarContext);
@@ -17,6 +18,8 @@ const LNB = () => {
   const fetchData = async (userId: number) => {
     const calendarList = await calendarStore.getCalendarList(userId);
     calendarStore.setCalendarList(calendarList);
+    const roomCalendarList = calendarStore.getLocalRoomCalendarList(userId);
+    calendarStore.setRoomCalendarList(roomCalendarList.map((room: Partial<CalendarDTO>) => new CalendarModel(room)));
   };
 
   useEffect(() => {
@@ -53,7 +56,6 @@ const LNB = () => {
         <CategoryList />
         <Divider />
         <SubscriptionList />
-        <RoomCalendarList />
       </ScrollListWrapper>
     </LNBContainer>
   );

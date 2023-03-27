@@ -1,5 +1,10 @@
 import { styled, Mui } from '@wapl/ui';
 
+export const CategoryListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const Title = styled.div`
   display: flex;
   width: 100%;
