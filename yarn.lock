@@ -5743,9 +5743,9 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": ^0.4.7
+    "@wapl/core": 0.4.10
     "@wapl/ui": ^0.2.23
-    axios: ^1.1.3
+    axios: ^0.27.2
     babel-loader: ^9.0.1
     clean-webpack-plugin: ^4.0.0
     css-loader: ^6.7.1
@@ -5782,9 +5782,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:^0.4.7":
-  version: 0.4.7
-  resolution: "@wapl/core@npm:0.4.7"
+"@wapl/core@npm:0.4.10":
+  version: 0.4.10
+  resolution: "@wapl/core@npm:0.4.10"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
     "@wapl/ui": ^0.2.27
@@ -5815,7 +5815,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: 1b4fc67c4d57772fd5e8657b8cb55ffa6e42c3573962913913d4298f2bb7978e96ee86db37ee40f2397414afebb5d60898c50e21a7ee9fbc12ddc718d56ca78b
+  checksum: a312b8755024c08ec20af4abfa7b9647e9d85869247548ca66042118020cd4a161aff5b8273fdc00b247a5506ad403e21fb7080530f0b411b94c36523f61053b
   languageName: node
   linkType: hard
 
@@ -6996,17 +6996,6 @@ __metadata:
     follow-redirects: ^1.14.9
     form-data: ^4.0.0
   checksum: 38cb7540465fe8c4102850c4368053c21683af85c5fdf0ea619f9628abbcb59415d1e22ebc8a6390d2bbc9b58a9806c874f139767389c862ec9b772235f06854
-  languageName: node
-  linkType: hard
-
-"axios@npm:^1.1.3":
-  version: 1.2.1
-  resolution: "axios@npm:1.2.1"
-  dependencies:
-    follow-redirects: ^1.15.0
-    form-data: ^4.0.0
-    proxy-from-env: ^1.1.0
-  checksum: c4dc4e119064c9aed09a3de309bedb797a139a6fb372223aafe3e0c10a7d4a14e4d3e9c9d309467fadb9d2b490b891ee3df96ef5b55716bb971910466ff9f0c5
   languageName: node
   linkType: hard
 
@@ -10863,7 +10852,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.9":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -17095,13 +17084,6 @@ __metadata:
     forwarded: 0.2.0
     ipaddr.js: 1.9.1
   checksum: 29c6990ce9364648255454842f06f8c46fcd124d3e6d7c5066df44662de63cdc0bad032e9bf5a3d653ff72141cc7b6019873d685708ac8210c30458ad99f2b74
-  languageName: node
-  linkType: hard
-
-"proxy-from-env@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "proxy-from-env@npm:1.1.0"
-  checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
   languageName: node
   linkType: hard
 
