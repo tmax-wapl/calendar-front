@@ -168,8 +168,8 @@ export class EventModel {
 
   set eventMember(eventMember: EventMember) {
     this.dto.eventMember = {
-      personaList: eventMember ? eventMember.personaList : [],
-      roomList: eventMember ? eventMember.roomList : [],
+      personaList: eventMember.personaList,
+      roomList: eventMember.roomList,
     };
   }
 

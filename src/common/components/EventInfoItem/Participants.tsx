@@ -9,10 +9,11 @@ import {
   ParticipantsPlaceholder,
 } from './Participants.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { EventMemberPersona, EventMemberRoom } from '@constants/interfaces';
+import { EventMember, EventMemberPersona, EventMemberRoom } from '@constants/interfaces';
+import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
 interface Props {
-  participants?: Partial<EventMemberRoom & EventMemberPersona>[];
-  onChange?: (value?: any) => void;
+  participants?: Partial<EventMemberPersona & EventMemberRoom>[];
+  onChange?: (value?: EventMember) => void;
   editable?: boolean;
 }
 
@@ -25,16 +26,19 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
 
   const closeDialog = () => uiStore.setDialogInfo(null);
 
-  const onComplete = (personaIdList: Array<any>, roomIdList: Array<any>) => {
+  const onComplete = (
+    personaIdList: Partial<Member>[],
+    roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
+  ) => {
     let roomList = roomIdList.map(item => {
       return { roomId: item.id, roomNick: item.displayName };
     });
     let personaList = personaIdList.map(item => {
-      return { personaId: item.id, personaNick: item.displayName };
+      return { personaId: item.personaId, personaNick: item.nick };
     });
     if (eventStore.event.eventMember) {
-      roomList = [...eventStore.event.eventMember.roomList, ...roomList];
-      personaList = [...eventStore.event.eventMember.personaList, ...personaList];
+      roomList = [...eventStore.event.eventMember.roomList, ...roomList] as EventMemberRoom[];
+      personaList = [...eventStore.event.eventMember.personaList, ...personaList] as EventMemberPersona[];
     }
     onChange({ roomList, personaList });
   };
@@ -73,7 +77,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
           participants.map(participant => (
             <ParticipantChip
               key={participant.roomId || participant.personaId}
-              label={participant.personaNick || participant.roomNick}
+              label={participant.personaNick || participant.roomNick || participant.roomId} // 현재 roomNick 없어서 임시 처리
               editable={editable}
               {...(editable && { onDelete: () => handleDelete(participant) })}
             />

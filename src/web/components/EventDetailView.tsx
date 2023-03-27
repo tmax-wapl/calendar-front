@@ -112,7 +112,8 @@ const EventDetailView = () => {
         </Observer>
         <Observer>
           {() =>
-            eventStore.event.eventMember ? (
+            eventStore.event.eventMember?.personaList.length > 0 ||
+            eventStore.event.eventMember?.roomList.length > 0 ? (
               <Participants
                 participants={[...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]}
                 editable={false}
