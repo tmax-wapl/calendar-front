@@ -3,10 +3,10 @@ import { CalendarModel } from '@/stores/model/CalendarModel';
 import { observer } from 'mobx-react-lite';
 import Item from './Item';
 import { Icon } from '@wapl/ui';
-import { OtherCalendarListContainer, Title, AddButton } from './SubscriptionList.style';
+import { OtherCalendarListContainer, Title, AddButton } from './OtherCalendarList.style';
 import RoomCalendarItem from './RoomCalendarItem';
 
-const SubscriptionList = observer(() => {
+const OtherCalendarList = observer(() => {
   const { uiStore, calendarStore } = useCalendarStores();
 
   const onContextMenuOpen = (e: React.MouseEvent<Element, MouseEvent>) => {
@@ -51,4 +51,4 @@ const SubscriptionList = observer(() => {
   );
 });
 
-export default SubscriptionList;
+export default OtherCalendarList;

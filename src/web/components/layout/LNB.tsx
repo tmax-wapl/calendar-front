@@ -6,7 +6,7 @@ import { LNBContainer, LNBHeader, DatePickerWrapper, FilterListWrapper, ScrollLi
 import DatePicker from '@common/components/DatePicker/DatePicker';
 import FilterList from './FilterList';
 import CategoryList from './CategoryList';
-import SubscriptionList from './SubscriptionList';
+import OtherCalendarList from './OtherCalendarList';
 import { Observer } from 'mobx-react-lite';
 import { CalendarDTO } from '@/common/constants/interfaces';
 import { CalendarModel } from '@/stores';
@@ -55,7 +55,7 @@ const LNB = () => {
       <ScrollListWrapper>
         <CategoryList />
         <Divider />
-        <SubscriptionList />
+        <OtherCalendarList />
       </ScrollListWrapper>
     </LNBContainer>
   );
