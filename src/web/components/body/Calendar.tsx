@@ -470,10 +470,13 @@ const Calendar: React.FC = observer(() => {
 
   const events = () => {
     const checkedRoomIdList = calendarStore.roomCalendarList?.filter(room => room.checkFlag).map(room => room.roomId);
-
+    // TODO: 룸 일정 필터 로직 추후 제거
     const eventList = calendarStore.eventList
       .filter(event => event.roomId === null || checkedRoomIdList?.find(roomId => roomId === event.roomId))
-      .filter((event, index, callback) => index === callback.findIndex(newEvent => newEvent.id === event.id));
+      .filter(
+        (event, index, callback) =>
+          index === callback.findIndex(newEvent => newEvent.id === event.id && newEvent.start === event.start),
+      );
 
     return uiStore.viewMode === VIEW_MODE.MONTH
       ? eventList.filter(event => event.importance || !uiStore.isImportanceChecked)
