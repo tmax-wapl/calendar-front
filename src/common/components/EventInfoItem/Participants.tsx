@@ -46,7 +46,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
     });
   };
 
-  const handleSummaryClick = () => {
+  const handleShareClick = () => {
     uiStore.setDialogInfo({
       type: 'roomFriend',
       data: { title: '일정 공유' },
@@ -70,12 +70,12 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
 
   return (
     <Accordion disableGutters elevation={0} defaultExpanded={!!participants?.length} expanded={editable || undefined}>
-      <AccordionSummary expandIcon={<ExpandIcon />} {...(editable && { onClick: handleSummaryClick })}>
+      <AccordionSummary expandIcon={<ExpandIcon />} {...(editable && { onClick: handleShareClick })}>
         <Icon.UserLine className="mr-8" width={20} height={20} />
         참여 구성원
         {!editable && <ParticipantsCount>&nbsp;{participants?.length}</ParticipantsCount>}
       </AccordionSummary>
-      <AccordionDetails editable={editable}>
+      <AccordionDetails editable={editable} isExist={editable && !!participants?.length}>
         {participants.length ? (
           participants.map(participant => (
             <ParticipantChip
@@ -86,7 +86,9 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
             />
           ))
         ) : (
-          <ParticipantsPlaceholder>‘참여 구성원’ 혹은 이 곳을 클릭해 주세요.</ParticipantsPlaceholder>
+          <ParticipantsPlaceholder {...(editable && { onClick: handleShareClick })}>
+            ‘참여 구성원’ 혹은 이 곳을 클릭해 주세요.
+          </ParticipantsPlaceholder>
         )}
       </AccordionDetails>
     </Accordion>
