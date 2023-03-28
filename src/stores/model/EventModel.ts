@@ -167,7 +167,7 @@ export class EventModel {
   }
 
   get eventMember(): EventMember {
-    return this.dto.eventMember;
+    return this.dto.eventMember ?? { personaList: [], roomList: [] };
   }
 
   set eventMember(eventMember: EventMember) {

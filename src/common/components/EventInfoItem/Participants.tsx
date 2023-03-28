@@ -30,17 +30,20 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
     personaIdList: Partial<Member>[],
     roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
   ) => {
-    let roomList = roomIdList.map(item => {
-      return { roomId: item.id, roomNick: item.displayName };
+    onChange({
+      roomList: [
+        ...eventStore.event.eventMember.roomList,
+        ...roomIdList?.map(item => {
+          return { roomId: item.id, roomNick: item.displayName };
+        }),
+      ],
+      personaList: [
+        ...eventStore.event.eventMember.personaList,
+        ...personaIdList?.map(item => {
+          return { personaId: item.personaId, personaNick: item.nick };
+        }),
+      ],
     });
-    let personaList = personaIdList.map(item => {
-      return { personaId: item.personaId, personaNick: item.nick };
-    });
-    if (eventStore.event.eventMember) {
-      roomList = [...eventStore.event.eventMember.roomList, ...roomList] as EventMemberRoom[];
-      personaList = [...eventStore.event.eventMember.personaList, ...personaList] as EventMemberPersona[];
-    }
-    onChange({ roomList, personaList });
   };
 
   const handleSummaryClick = () => {
