@@ -62,14 +62,14 @@ const EventDateItem = ({ title, date, allDay, isDateInvalid, isTimeInvalid, onCh
       {!allDay && (
         <PickerContainer>
           <Tooltip
-            disableHoverListener={isDateInvalid || !isTimeInvalid}
+            disableHoverListener={!isTimeInvalid}
             placement="top-end"
             title="시작일과 같거나 이후로 설정해 주세요."
             sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
           >
             <TimeWrapper
               className={`${isTimePickerOpen ? 'selected' : ''}`}
-              isInvalid={!isDateInvalid && isTimeInvalid}
+              isInvalid={isTimeInvalid}
               onClick={handleTimeClick}
             >
               <TimeValue>{date.toFormat('a', { locale: 'ko' })}</TimeValue>

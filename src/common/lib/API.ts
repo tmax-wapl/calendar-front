@@ -3,7 +3,6 @@ import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 import { ERROR_STATUS } from '../constants';
 import { ResponseData } from '../constants/interfaces';
 
-
 const isDevelop = process.env.REACT_APP_MODE === 'local';
 const baseUrl = isDevelop
   ? `${window.parent.env?.REACT_APP_CALENDAR_API_URL ?? 'https://calendar.teespace.net'}`

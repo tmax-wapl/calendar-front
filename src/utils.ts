@@ -54,13 +54,15 @@ export const getRepeatSummary = (rrule: Partial<Options>): string => {
 };
 
 export const toHalfHourUnit = (date: DateTime) => {
-  return date.minute < 30 ? date.set({ minute: 0, millisecond: 0 }) : date.set({ minute: 30, millisecond: 0 });
+  return date.minute < 30 ? date.set({ minute: 30 }) : date.set({ hour: date.hour + 1, minute: 0 });
 };
 
 export const getStartDate = (date: DateTime) => {
   const now = DateTime.now();
   const isToday = date.startOf('day').equals(now.startOf('day'));
-  return isToday ? toHalfHourUnit(date.set({ hour: now.hour, minute: now.minute })) : date.set({ hour: 9 });
+  return isToday
+    ? toHalfHourUnit(date.set({ hour: now.hour, minute: now.minute, millisecond: 0 }))
+    : date.set({ hour: 9 });
 };
 
 export const toISO = (date: DateTime) => {

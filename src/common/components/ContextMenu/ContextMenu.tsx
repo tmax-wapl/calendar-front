@@ -50,7 +50,7 @@ export const ContextMenu = () => {
         const event = new EventModel({ modUserId: userId, color, calId: calendarStore.getCalendarId() });
         await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.DEFAULT);
         eventStore.updateEventColor('' + id, color);
-        handleClose();
+        uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
       case 'roomCalendar':
         const newRoomList = calendarStore.roomCalendarList?.map((room: CalendarModel) =>

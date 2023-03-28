@@ -26,9 +26,8 @@ const EventDetailView = () => {
   };
 
   const deleteEvent = async () => {
-    await eventStore.deleteEvent(+eventStore.event.id);
-    calendarStore.filterEventList(eventStore.event.id);
-    navigate(-1);
+    await calendarStore.deleteEvent(+eventStore.event.id);
+    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
     closeDialog();
   };
 
@@ -49,6 +48,7 @@ const EventDetailView = () => {
     }
     closeDialog();
     uiStore.changeDateRange();
+    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
   const handleDeleteClick = () => {
@@ -92,6 +92,7 @@ const EventDetailView = () => {
   return (
     <EventDetailViewContainer>
       <EventBar
+        title={eventStore.event.startDate.toFormat('LL월 dd일 cccc', { locale: 'ko' })}
         leftSide={[{ action: 'back', onClick: handleBackClick }]}
         rightSide={[
           { action: 'share', onClick: handleShareClick },
