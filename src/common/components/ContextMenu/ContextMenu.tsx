@@ -5,6 +5,7 @@ import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { ColorPicker, ContextMenuItem } from './index';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { EventModel } from '@/stores/model/EventModel';
+import { CalendarModel } from '@/stores';
 
 const style = [
   {
@@ -22,7 +23,7 @@ const style = [
 export const ContextMenu = () => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
-  const { target, position, id, color, type, date } = uiStore.contextClickArg;
+  const { target, position, id, color, hideColorPicker, type, date } = uiStore.contextClickArg;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -51,6 +52,13 @@ export const ContextMenu = () => {
         eventStore.updateEventColor('' + id, color);
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
+      case 'roomCalendar':
+        const newRoomList = calendarStore.roomCalendarList?.map((room: CalendarModel) =>
+          room.roomId === id ? { ...room.dto, color } : room.dto,
+        );
+        calendarStore.setLocalRoomCalendarList(userId, newRoomList);
+        uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
+        break;
       default:
         break;
     }
@@ -69,9 +77,11 @@ export const ContextMenu = () => {
         anchorPosition={{ top: position?.top, left: position?.left }}
         onClose={handleClose}
       >
-        <Mui.MenuItem sx={style} disableRipple>
-          <ColorPicker color={color} onClick={color => handleColorClick(color)} />
-        </Mui.MenuItem>
+        {!hideColorPicker && (
+          <Mui.MenuItem sx={style} disableRipple>
+            <ColorPicker color={color} onClick={color => handleColorClick(color)} />
+          </Mui.MenuItem>
+        )}
         <ContextMenuItem id={id} type={type} date={date} onClose={handleClose} />
       </Mui.Menu>
     </div>

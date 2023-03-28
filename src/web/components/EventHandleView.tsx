@@ -22,6 +22,7 @@ import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@/common/constants';
 import { useDidMountEffect } from '@/common/hooks';
+import { EventMember } from '@/common/constants/interfaces';
 
 interface Props {
   action: 'create' | 'update';
@@ -59,6 +60,16 @@ const EventHandleView = ({ action }: Props) => {
         ...(event.repeatEndDate && {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
         }),
+      }),
+      ...((event.eventMember?.personaList.length > 0 || event.eventMember?.roomList.length > 0) && {
+        eventMember: {
+          personaList: event.eventMember.personaList?.map(persona => {
+            return { personaId: persona.personaId };
+          }),
+          roomList: event.eventMember.roomList?.map(room => {
+            return { roomId: room.roomId };
+          }),
+        },
       }),
     });
   };
@@ -277,6 +288,19 @@ const EventHandleView = ({ action }: Props) => {
           )}
         </Observer>
         {/* <Participants participants={eventStore.event.participants} editable /> */}
+        <Observer>
+          {() => (
+            <Participants
+              participants={
+                eventStore.event.eventMember
+                  ? [...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]
+                  : []
+              }
+              onChange={(value: EventMember) => (eventStore.event.eventMember = value)}
+              editable
+            />
+          )}
+        </Observer>
         <Observer>
           {() => (
             <Location

@@ -13,6 +13,10 @@ export class CalendarModel {
     return this.dto.id;
   }
 
+  get roomId(): number {
+    return this.dto.roomId;
+  }
+
   get name(): string {
     return this.dto.name;
   }

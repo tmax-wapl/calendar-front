@@ -1,6 +1,9 @@
+import { RoomDTO } from '@wapl/core';
+
 export interface EventDTO {
   id: number;
   calId: number;
+  roomId?: number;
   calName: string;
   calColor: string;
   color: string;
@@ -22,7 +25,7 @@ export interface EventDTO {
   repeatStartDate?: string;
   repeatgroupId?: number;
   subEvent?: boolean;
-  participants?: any[];
+  eventMember?: EventMember;
   attachments?: any[];
   notifications?: any[];
   exDate?: string;
@@ -37,6 +40,7 @@ export interface HolidayDTO {
 
 export interface CalendarDTO {
   id: number;
+  roomId?: number;
   name: string;
   color: string;
   checkFlag: boolean;
@@ -111,4 +115,38 @@ export interface ResponseData<T> {
   };
   response: T;
   success: boolean;
+}
+export interface CalendarShareDTO {
+  calendarId: number;
+  personaIdList?: number[];
+  roomIdList?: number[];
+}
+
+export interface EventShareDTO {
+  eventId: number;
+  personaIdList?: number[];
+  roomIdList?: number[];
+}
+
+export interface CustomRoomDTO extends RoomDTO.Room {
+  checked?: boolean;
+  disabled?: boolean;
+  regDate?: string;
+  displayName?: string;
+  displayPhoto?: string[];
+}
+
+export interface EventMember {
+  personaList?: EventMemberPersona[] | { personaId: number }[];
+  roomList?: EventMemberRoom[] | { roomId: number }[];
+}
+
+export interface EventMemberPersona {
+  personaId: number;
+  personaNick: string;
+}
+
+export interface EventMemberRoom {
+  roomId: number;
+  roomNick: string;
 }

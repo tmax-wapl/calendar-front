@@ -81,7 +81,7 @@ const Item = observer(({ category }: Props) => {
   };
 
   return (
-    <ItemContainer main={category.mainFlag}>
+    <ItemContainer main={category.mainFlag || category.type === 'share'}>
       {calendarStore.renameId === category.id ? (
         <InputItemContainer calendarcolor={category.color}>
           <Checkbox checked={category.checkFlag} />

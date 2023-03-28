@@ -1,9 +1,13 @@
 import { Icon, Mui, styled, useWaplUiStore } from '@wapl/ui';
+import { useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toLuxon } from '@/utils';
+import { toLuxon, toUTC } from '@/utils';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { HTTPError } from '@/error';
+import { CalendarModel } from '@/stores';
+import { CustomRoomDTO } from '@/common/constants/interfaces';
 
 const MenuItemWrapper = styled.div`
   display: flex;
@@ -32,6 +36,7 @@ interface Props {
 }
 
 export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
+  const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -48,6 +53,14 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     await calendarStore.deleteCalendar(id);
     if ((pathname.includes('detail') || pathname.includes('update')) && id === eventStore.event.calId)
       navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    closeDialog();
+  };
+
+  const deleteRoomCalendar = async () => {
+    const newRoomList = calendarStore.roomCalendarList
+      ?.filter((room: CalendarModel) => room.roomId !== id)
+      .map(room => room.dto);
+    calendarStore.setLocalRoomCalendarList(userId, newRoomList);
     closeDialog();
   };
 
@@ -106,6 +119,72 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     if (onClose) onClose();
   };
 
+  const handleRoomCalendarDelete = () => {
+    uiStore.setDialogInfo({
+      action: 'roomCalendarDelete',
+      onClick: [closeDialog, deleteRoomCalendar],
+    });
+    if (onClose) onClose();
+  };
+
+  const handleSubscribe = async (url: string) => {
+    try {
+      await calendarStore.createCalendar({ regUserId: userId, url, type: 'url' });
+      closeDialog();
+    } catch (e) {
+      if (e instanceof HTTPError && e.status === 400) {
+        uiStore.setDialogInfo({
+          action: 'subscribeDuplication',
+          onClick: [closeDialog],
+        });
+      } else {
+        uiStore.setDialogInfo({
+          action: 'subscribeFail',
+          onClick: [closeDialog],
+        });
+      }
+    }
+  };
+
+  const handleRoomSchedule = (roomList: CustomRoomDTO[]) => {
+    const newRoomList = roomList
+      .filter(room => room.checked === true)
+      .map(room => {
+        return {
+          roomId: room.id,
+          name: room.displayName,
+          checkFlag: true,
+          color: '#A143FF',
+          regDate: toUTC(new Date()),
+          type: 'room',
+        };
+      });
+    calendarStore.setLocalRoomCalendarList(
+      userId,
+      calendarStore.roomCalendarList.map(room => room.dto).concat(newRoomList),
+    );
+    closeDialog();
+  };
+
+  const handleUrlSubscribe = () => {
+    uiStore.setDialogInfo({
+      action: 'subscribe',
+      onCloseClick: closeDialog,
+      onClick: [closeDialog, handleSubscribe],
+      data: { placeholder: 'URL 입력' },
+      type: 'input',
+    });
+  };
+
+  const handleRoomSubscribe = () => {
+    uiStore.setDialogInfo({
+      action: 'roomSchedule',
+      onCloseClick: closeDialog,
+      onClick: [closeDialog, handleRoomSchedule],
+      type: 'roomSchedule',
+    });
+  };
+
   const handleEventUpdate = async () => {
     const event = await eventStore.getEventInfo(id, date.startdate);
     eventStore.setEvent(event);
@@ -119,8 +198,22 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     eventStore.event.endDate = toLuxon(date.enddate);
   };
 
-  const handleEventShare = () => {
-    console.log('일정 공유');
+  const handleEventShare = async (personaIdList: number[], roomIdList: number[]) => {
+    await eventStore.shareEvent({
+      eventId: id,
+      personaIdList,
+      roomIdList,
+    });
+    // TODO: 공유 완료 되었다는 팝업
+  };
+
+  const handleEventShareClick = () => {
+    uiStore.setDialogInfo({
+      type: 'roomFriend',
+      data: { title: '일정 공유' },
+      onComplete: handleEventShare,
+      onCloseClick: closeDialog,
+    });
   };
 
   const handleEventDeleteClick = async () => {
@@ -154,8 +247,24 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       onClick: handleCalendarDelete,
       icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
     },
+    addSubscribe: {
+      label: 'URL로 추가',
+      onClick: handleUrlSubscribe,
+      icon: <Icon.Add1Line width={16} height={16} className="mr-8" />,
+    },
+    addRoomCalendar: {
+      label: '룸 일정 가져오기',
+      onClick: handleRoomSubscribe,
+      icon: <Icon.ChatLine width={16} height={16} className="mr-8" />,
+    },
     updateEvent: { label: '일정 수정', onClick: handleEventUpdate, icon: <Icon.EditLine className="mr-8" /> },
     deleteEvent: { label: '일정 삭제', onClick: handleEventDeleteClick, icon: <Icon.DeleteLine className="mr-8" /> },
+    shareEvent: { label: '일정 공유', onClick: handleEventShareClick, icon: <Icon.ShareLine className="mr-8" /> },
+    deleteRoomCalendar: {
+      label: '캘린더 삭제',
+      onClick: handleRoomCalendarDelete,
+      icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
+    },
   };
 
   const menuItems = (() => {
@@ -164,11 +273,15 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         return [actions.renameCalendar];
       case 'subCalendar':
         return [actions.renameCalendar, actions.deleteCalendar];
+      case 'roomCalendar':
+        return [actions.renameCalendar, actions.deleteRoomCalendar];
+      case 'addOther':
+        return [actions.addSubscribe, actions.addRoomCalendar];
       case 'subscribe':
         return [actions.renameCalendar, actions.syncCalendar, actions.deleteCalendar];
       case 'event':
       case 'repeatEvent':
-        return [actions.updateEvent, actions.deleteEvent];
+        return [actions.updateEvent, actions.shareEvent, actions.deleteEvent];
       default:
         return [];
     }

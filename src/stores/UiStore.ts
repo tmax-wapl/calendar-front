@@ -4,14 +4,16 @@ import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable, action } from 'mobx';
 import { isEqualMonth, isSameDate, toDateString } from '@/utils';
 import { EventModel } from './model/EventModel';
+import { CustomRoomDTO } from '@/common/constants/interfaces';
 import { VIEW_MODE } from '@/common/constants';
 
 type DateRange = { start: string; view?: DateTime; end: string };
+type ShareRoom = (personaIdList: number[], roomIdList: number[]) => void;
 
-interface DialogInfo {
-  action: string;
+export interface DialogInfo {
+  action?: string;
   onCloseClick?: () => void;
-  onClick: (() => void)[] | ((value?: string) => void)[];
+  onClick?: (() => void)[] | ((value?: string) => void)[] | ((value?: CustomRoomDTO[]) => void)[];
   data?: {
     title?: string;
     name?: string;
@@ -20,6 +22,7 @@ interface DialogInfo {
     model?: EventModel;
     selectType?: string;
   };
+  onComplete?: any;
   type?: string;
 }
 
@@ -28,6 +31,7 @@ interface ContextClickArg {
   position: { top: number; left: number };
   id?: number;
   color?: string;
+  hideColorPicker?: boolean;
   type?: string;
   date?: {
     startdate?: string;

@@ -1,18 +1,21 @@
 import { Dialog as DialogCompo, AlertWrapper, Button } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { CustomRoomDTO } from '@/common/constants/interfaces';
+import { DesktopRoom } from '@wapl/core';
 import { Title, SubTitle, Description, DialogButtonWrapper } from './Dialog.style';
 import { InputDialog } from './InputDialog';
 import { SelectDialog } from './SelectDialog';
+import RoomScheduleDialog from '../RoomScheduleDialog/RoomScheduleDialog';
 
 export interface DialogButton {
   variant: 'primary' | 'secondary' | 'secondary-web' | 'third' | 'negative';
   text: string;
-  onClick: (() => void) | ((value?: string) => void);
+  onClick: (() => void) | ((value?: string | CustomRoomDTO[]) => void);
 }
 
 export const Dialog = () => {
   const { uiStore } = useCalendarStores();
-  const { action, onCloseClick, onClick, data, type } = uiStore.dialogInfo;
+  const { action, onCloseClick, onClick, data, type, onComplete } = uiStore.dialogInfo;
 
   const title = ((): { title?: string; subTitle?: string; description?: string } => {
     switch (action) {
@@ -53,6 +56,11 @@ export const Dialog = () => {
           subTitle: `선택한 캘린더를 삭제하시겠습니까?`,
           description: `이 후, 이 캘린더에 접근할 수 없습니다.`,
         };
+      case 'roomCalendarDelete':
+        return {
+          title: '캘린더 삭제',
+          subTitle: `선택한 캘린더를 삭제하시겠습니까?`,
+        };
       case 'subscribe':
         return {
           title: '구독 캘린더 추가',
@@ -86,6 +94,7 @@ export const Dialog = () => {
       case 'eventDelete':
       case 'repeatEventDelete':
       case 'subscriptionDelete':
+      case 'roomCalendarDelete':
       case 'calendarDelete':
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
@@ -108,6 +117,11 @@ export const Dialog = () => {
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
           { variant: 'primary', text: '나가기', onClick: onClick[1] },
+        ];
+      case 'roomSchedule':
+        return [
+          { variant: 'secondary', text: '취소', onClick: onClick[0] },
+          { variant: 'primary', text: '저장', onClick: onClick[1] },
         ];
       default:
         return [];
@@ -132,6 +146,19 @@ export const Dialog = () => {
         );
       case 'select':
         return <SelectDialog open title={title} buttons={buttons} selectType={data?.selectType} />;
+      case 'roomSchedule':
+        return <RoomScheduleDialog buttons={buttons} onClose={onCloseClick} />;
+      case 'roomFriend':
+        return (
+          <DesktopRoom.MemberSelectorDialog
+            open
+            onClose={onCloseClick}
+            title={data?.title}
+            tabs={['org', 'room']}
+            confirmBtnText={'공유'}
+            onComplete={onComplete}
+          />
+        );
       default:
         return (
           <DialogCompo open onClose={handleClose}>

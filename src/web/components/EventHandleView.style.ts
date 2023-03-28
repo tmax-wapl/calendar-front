@@ -15,6 +15,7 @@ export const EventHandleContainer = styled.div`
   height: 100%;
   padding: 0 20px 20px;
   ${({ theme: { Font } }) => Font.Text.m.Regular};
+  overflow: scroll;
 `;
 
 export const FromInfo = styled.div`

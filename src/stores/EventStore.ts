@@ -2,7 +2,7 @@ import { makeObservable, observable, action } from 'mobx';
 import RootStore from './RootStore';
 import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
-import { EventDTO } from '@/common/constants/interfaces';
+import { EventDTO, EventShareDTO } from '@/common/constants/interfaces';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { toISO, applyWeekdayOffset } from '@/utils';
 import { DateTime } from 'luxon';
@@ -40,9 +40,8 @@ export default class EventStore {
     return this.preprocessEvent(new EventModel(res));
   }
 
-  async getEventList(userId: number, start: string, end: string = start, isListView = false) {
+  async getEventList(userId: number, start: string, end: string = start) {
     const { eventList, holidayList } = await this.repo.getEventList(userId, start, end);
-    if (isListView) return { eventList: eventList.map(event => new EventModel(event)), holidayList };
 
     const arr: EventModel[] = [];
     eventList.map(event => {
@@ -91,5 +90,10 @@ export default class EventStore {
       if (event.id === id) event.color = color;
       return event;
     });
+  }
+
+  async shareEvent(dto: EventShareDTO) {
+    const res = await this.repo.shareEvent(dto);
+    return res;
   }
 }

@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import RootStore from './RootStore';
 import CalendarRepo from './repository/CalendarRepo';
-import { CalendarDTO, CalendarPatchDTO, HolidayDTO } from '@/common/constants/interfaces';
+import { CalendarDTO, CalendarPatchDTO, CalendarShareDTO, HolidayDTO } from '@/common/constants/interfaces';
 import { CalendarModel } from './model/CalendarModel';
 import { EventModel } from './model/EventModel';
 
@@ -10,6 +10,7 @@ export default class CalendarStore {
   repo: CalendarRepo;
   renameId: number = null;
   calendarList: CalendarModel[] = null;
+  roomCalendarList: CalendarModel[] = null;
   eventList: EventModel[] = [];
   holidayList: HolidayDTO[] = [];
 
@@ -21,6 +22,8 @@ export default class CalendarStore {
       setRenameId: action,
       calendarList: observable,
       setCalendarList: action,
+      roomCalendarList: observable,
+      setRoomCalendarList: action,
       eventList: observable,
       setEventList: action,
       holidayList: observable,
@@ -34,6 +37,10 @@ export default class CalendarStore {
 
   setEventList(eventList: EventModel[]) {
     this.eventList = eventList;
+  }
+
+  setRoomCalendarList(roomCalendarList: CalendarModel[]) {
+    this.roomCalendarList = roomCalendarList;
   }
 
   appendEventList(event: EventModel) {
@@ -113,5 +120,34 @@ export default class CalendarStore {
 
   getCalendarId() {
     return this.calendarList?.find(item => item.mainFlag)?.id;
+  }
+
+  async shareCalendar(dto: CalendarShareDTO) {
+    const res = await this.repo.shareCalendar(dto);
+    return res;
+  }
+
+  getLocalRoomCalendarList(personaId: number) {
+    const setting = JSON.parse(localStorage.getItem('RoomCalendarList'));
+    if (!setting) {
+      return [];
+    }
+    if (setting[personaId]) {
+      return setting[personaId];
+    }
+  }
+
+  setLocalRoomCalendarList(personaId: number, roomList: Partial<CalendarDTO>[]) {
+    let setting = JSON.parse(localStorage.getItem('RoomCalendarList'));
+    if (!setting) {
+      setting = {};
+    }
+    if (!setting[personaId]) {
+      setting[personaId] = {};
+    }
+    setting[personaId] = roomList;
+    const settingString = JSON.stringify(setting);
+    localStorage.setItem('RoomCalendarList', settingString);
+    this.setRoomCalendarList(roomList.map(room => new CalendarModel(room)));
   }
 }

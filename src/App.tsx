@@ -6,13 +6,16 @@ import { MODE } from './common/constants/common';
 import { useUserStore, usePersonaStore } from '@wapl/core';
 import Web from './web';
 import Mobile from './mobile';
+import { API } from './common';
 
 const App: React.FC = () => {
   const isMobile = false;
-  const { selectedPersona } = useUserStore();
+  const { selectedPersona, keycloakInstance } = useUserStore();
   const { personaList } = usePersonaStore();
 
   const userId = selectedPersona ? selectedPersona.id : personaList[0]?.id;
+
+  API.setToken(keycloakInstance.token, userId);
 
   return (
     <WaplUiProvider>
