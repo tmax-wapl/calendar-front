@@ -50,9 +50,6 @@ const EventHandleView = ({ action }: Props) => {
         ...(event.rrule.freq === 2 && {
           rrule: applyWeekdayOffset(event.rrule, startDate, 'UTC').toString(),
         }),
-        repeatStartDate: toISO(
-          event.allDay ? event.repeatStartDate.startOf('day').toUTC() : event.repeatStartDate.toUTC(),
-        ),
         ...(event.repeatEndDate && {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
         }),
