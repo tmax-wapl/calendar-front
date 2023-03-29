@@ -33,10 +33,6 @@ const EventHandleView = ({ action }: Props) => {
   const { state } = useLocation();
   const [originEvent, setOriginEvent] = useState(new EventModel({ ...eventStore.event.dto }));
 
-  const handleClose = () => {
-    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
-  };
-
   const preprocessEvent = (event: EventModel): EventModel => {
     const startDate = event.allDay ? event.startDate.startOf('day') : event.startDate;
     return new EventModel({
@@ -50,9 +46,6 @@ const EventHandleView = ({ action }: Props) => {
         ...(event.rrule.freq === 2 && {
           rrule: applyWeekdayOffset(event.rrule, startDate, 'UTC').toString(),
         }),
-        repeatStartDate: toISO(
-          event.allDay ? event.repeatStartDate.startOf('day').toUTC() : event.repeatStartDate.toUTC(),
-        ),
         ...(event.repeatEndDate && {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
         }),
@@ -61,6 +54,7 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const handleCreate = async () => {
+    if (!eventStore.event.calId) eventStore.event.calId = calendarStore.getCalendarId();
     await eventStore.createEvent(preprocessEvent(eventStore.event));
     uiStore.changeDateRange();
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
@@ -216,6 +210,23 @@ const EventHandleView = ({ action }: Props) => {
       });
     }
   }, [state]);
+
+  const handleClose = () => {
+    if (!isModified()) {
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+      return;
+    }
+    uiStore.setDialogInfo({
+      action: 'refresh',
+      onClick: [
+        closeDialog,
+        () => {
+          navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+          closeDialog();
+        },
+      ],
+    });
+  };
 
   return (
     <EventHandleViewContainer>

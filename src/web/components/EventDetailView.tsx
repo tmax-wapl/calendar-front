@@ -95,15 +95,19 @@ const EventDetailView = () => {
 
   return (
     <EventDetailViewContainer>
-      <EventBar
-        title={eventStore.event.startDate.toFormat('LL월 dd일 cccc', { locale: 'ko' })}
-        leftSide={[{ action: 'back', onClick: handleBackClick }]}
-        rightSide={[
-          { action: 'share', onClick: handleShareClick },
-          { action: 'edit', onClick: handleEditClick },
-          { action: 'delete', onClick: handleDeleteClick },
-        ]}
-      />
+      <Observer>
+        {() => (
+          <EventBar
+            title={eventStore.event.startDate.toFormat('LL월 dd일 cccc', { locale: 'ko' })}
+            leftSide={[{ action: 'back', onClick: handleBackClick }]}
+            rightSide={[
+              { action: 'share', onClick: handleShareClick },
+              { action: 'edit', onClick: handleEditClick },
+              { action: 'delete', onClick: handleDeleteClick },
+            ]}
+          />
+        )}
+      </Observer>
       <EventDetailContainer>
         <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
         <Observer>

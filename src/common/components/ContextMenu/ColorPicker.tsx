@@ -25,7 +25,7 @@ export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12, ro
     { value: '#00C064', color: '#00C064' },
     { value: '#00C1B1', color: '#00C1B1' },
     { value: '#AECB00', color: '#AECB00' },
-    { value: '#FCBB00', color: '#FCBB00' },
+    { value: '#FFCF55', color: '#FFCF55' },
     { value: '#FF8E3D', color: '#FF8E3D' },
     { value: '#FF46B5', color: '#FF46B5' },
     { value: '#FF5154', color: '#FF5154' },

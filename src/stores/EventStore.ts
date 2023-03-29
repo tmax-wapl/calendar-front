@@ -41,7 +41,9 @@ export default class EventStore {
   }
 
   async getEventList(start: string, end: string = start) {
-    const { eventList, holidayList } = await this.repo.getEventList(start, end);
+    const utcStart = DateTime.fromISO(start).toUTC().toISODate();
+    const utcEnd = DateTime.fromISO(end).toUTC().toISODate();
+    const { eventList, holidayList } = await this.repo.getEventList(utcStart, utcEnd);
 
     const arr: EventModel[] = [];
     eventList.map(event => {
@@ -57,6 +59,7 @@ export default class EventStore {
     const activeStart = this.rootStore.uiStore.mainApi.view.activeStart;
     const activeEnd = this.rootStore.uiStore.mainApi.view.activeEnd;
     const duration = endDate.diff(startDate);
+    activeStart.setDate(activeStart.getDate() - 1);
 
     return rruleObj.between(activeStart, activeEnd).map(day => {
       return new EventModel({
