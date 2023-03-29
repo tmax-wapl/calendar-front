@@ -1,4 +1,5 @@
 import { Icon, Mui, styled, useWaplUiStore } from '@wapl/ui';
+import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
 import { useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -198,11 +199,14 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     eventStore.event.endDate = toLuxon(date.enddate);
   };
 
-  const handleEventShare = async (personaIdList: number[], roomIdList: number[]) => {
+  const handleEventShare = async (
+    personaIdList: Partial<Member>[],
+    roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
+  ) => {
     await eventStore.shareEvent({
       eventId: id,
-      personaIdList,
-      roomIdList,
+      personaIdList: personaIdList.map(persona => persona.personaId),
+      roomIdList: roomIdList.map(room => room.id),
     });
     // TODO: 공유 완료 되었다는 팝업
   };

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
+import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
 import { useNavigate } from 'react-router-dom';
 import { EventDetailViewContainer, EventDetailContainer, FromInfo, Creator } from './EventDetailView.style';
 import EventBar from './EventBar';
@@ -66,12 +67,15 @@ const EventDetailView = () => {
     }
   };
 
-  const shareEvent = async (personaIdList: number[], roomIdList: number[]) => {
+  const shareEvent = async (
+    personaIdList: Partial<Member>[],
+    roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
+  ) => {
     const event = eventStore.event;
     await eventStore.shareEvent({
       eventId: +event.id,
-      personaIdList,
-      roomIdList,
+      personaIdList: personaIdList.map(persona => persona.personaId),
+      roomIdList: roomIdList.map(room => room.id),
     });
     // TODO: 공유 완료 되었다는 팝업
   };

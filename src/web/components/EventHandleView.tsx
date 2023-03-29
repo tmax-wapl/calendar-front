@@ -57,16 +57,6 @@ const EventHandleView = ({ action }: Props) => {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
         }),
       }),
-      ...((event.eventMember?.personaList.length > 0 || event.eventMember?.roomList.length > 0) && {
-        eventMember: {
-          personaList: event.eventMember.personaList?.map(persona => {
-            return { personaId: persona.personaId };
-          }),
-          roomList: event.eventMember.roomList?.map(room => {
-            return { roomId: room.roomId };
-          }),
-        },
-      }),
     });
   };
 
@@ -283,7 +273,6 @@ const EventHandleView = ({ action }: Props) => {
             </FromInfo>
           )}
         </Observer>
-        {/* <Participants participants={eventStore.event.participants} editable /> */}
         <Observer>
           {() => (
             <Participants
