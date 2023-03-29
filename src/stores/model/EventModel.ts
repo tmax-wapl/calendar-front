@@ -26,6 +26,10 @@ export class EventModel {
     return this.dto.calId;
   }
 
+  set calId(id: number) {
+    this.dto.calId = id;
+  }
+
   get roomId(): number {
     return this.dto.roomId;
   }
