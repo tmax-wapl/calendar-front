@@ -19,7 +19,7 @@ const LNB = () => {
     const calendarList = await calendarStore.getCalendarList();
     calendarStore.setCalendarList(calendarList);
     const roomCalendarList = calendarStore.getLocalRoomCalendarList(userId);
-    calendarStore.setRoomCalendarList(roomCalendarList.map((room: Partial<CalendarDTO>) => new CalendarModel(room)));
+    calendarStore.setRoomCalendarList(roomCalendarList?.map((room: Partial<CalendarDTO>) => new CalendarModel(room)));
   };
 
   useEffect(() => {

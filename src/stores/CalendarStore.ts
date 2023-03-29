@@ -10,7 +10,7 @@ export default class CalendarStore {
   repo: CalendarRepo;
   renameId: number = null;
   calendarList: CalendarModel[] = null;
-  roomCalendarList: CalendarModel[] = null;
+  roomCalendarList: CalendarModel[] = [];
   eventList: EventModel[] = [];
   holidayList: HolidayDTO[] = [];
 
@@ -132,6 +132,9 @@ export default class CalendarStore {
     if (!setting) {
       return [];
     }
+    if (!setting[personaId]) {
+      setting[personaId] = [];
+    }
     if (setting[personaId]) {
       return setting[personaId];
     }
@@ -143,7 +146,7 @@ export default class CalendarStore {
       setting = {};
     }
     if (!setting[personaId]) {
-      setting[personaId] = {};
+      setting[personaId] = [];
     }
     setting[personaId] = roomList;
     const settingString = JSON.stringify(setting);
