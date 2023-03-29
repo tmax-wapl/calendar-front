@@ -27,10 +27,10 @@ export default class EventRepo {
     }
   }
 
-  async getEventList(userId: number, start: string, end: string) {
+  async getEventList(start: string, end: string) {
     try {
       const { response, success } = await API.get<{ eventList: EventDTO[]; holidayList: HolidayDTO[] }>(
-        `/apis/v1/user/list/event/holiday/${userId}?start=${start}&end=${end}`,
+        `/apis/v1/user/list/event/holiday?start=${start}&end=${end}`,
       );
       if (success) return response;
     } catch (e) {

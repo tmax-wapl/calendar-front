@@ -40,8 +40,8 @@ export default class EventStore {
     return this.preprocessEvent(new EventModel(res));
   }
 
-  async getEventList(userId: number, start: string, end: string = start) {
-    const { eventList, holidayList } = await this.repo.getEventList(userId, start, end);
+  async getEventList(start: string, end: string = start) {
+    const { eventList, holidayList } = await this.repo.getEventList(start, end);
 
     const arr: EventModel[] = [];
     eventList.map(event => {

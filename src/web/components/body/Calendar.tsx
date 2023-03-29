@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FullCalendar, {
   DateSelectArg,
   DayCellContentArg,
@@ -36,10 +36,9 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toLuxon, diffTime, toDateString, toISO, toDateTime, toUTC, getStartDate } from '@/utils';
+import { diffTime, toDateString, toISO, toDateTime, toUTC, getStartDate } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
-import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { Holiday, Lunar } from '../EventListView.style';
 import { getLunar } from 'holiday-kr';
 import { EventModel } from '@/stores/model/EventModel';
@@ -74,7 +73,6 @@ interface DragElement {
 const Calendar: React.FC = observer(() => {
   const { calendarStore, eventStore } = useCalendarStores();
   const calendarRef = useRef<FullCalendar>(null);
-  const { userId } = useContext(CalendarContext);
   const { uiStore } = useCalendarStores();
   const { viewMode } = useParams();
   const [direction, setDirection] = useState(false);
@@ -92,7 +90,7 @@ const Calendar: React.FC = observer(() => {
   };
 
   const fetchData = async (start: string, end: string) => {
-    const { eventList, holidayList } = await eventStore.getEventList(userId, start, end);
+    const { eventList, holidayList } = await eventStore.getEventList(start, end);
 
     transaction(() => {
       calendarStore.setEventList(eventList);

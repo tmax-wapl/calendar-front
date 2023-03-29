@@ -129,7 +129,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
 
   const handleSubscribe = async (url: string) => {
     try {
-      await calendarStore.createCalendar({ regUserId: userId, url, type: 'url' });
+      await calendarStore.createCalendar({ url, type: 'url' });
       closeDialog();
     } catch (e) {
       if (e instanceof HTTPError && e.status === 400) {

@@ -66,7 +66,6 @@ export interface CalendarPersonaDTO {
 }
 
 export interface CalendarPatchDTO {
-  userId: number;
   name?: string;
   color?: string;
   checkFlag?: boolean;

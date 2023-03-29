@@ -65,8 +65,8 @@ export default class CalendarStore {
     this.eventList = [...this.eventList, ...res.eventList.map(event => new EventModel(event))];
   }
 
-  async getCalendarList(userId: number) {
-    const data = await this.repo.getCalendarList(userId);
+  async getCalendarList() {
+    const data = await this.repo.getCalendarList();
     return data.map((dto: CalendarDTO) => new CalendarModel(dto));
   }
 

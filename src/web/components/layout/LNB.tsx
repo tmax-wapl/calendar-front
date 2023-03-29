@@ -15,16 +15,16 @@ const LNB = () => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore } = useCalendarStores();
 
-  const fetchData = async (userId: number) => {
-    const calendarList = await calendarStore.getCalendarList(userId);
+  const fetchData = async () => {
+    const calendarList = await calendarStore.getCalendarList();
     calendarStore.setCalendarList(calendarList);
     const roomCalendarList = calendarStore.getLocalRoomCalendarList(userId);
     calendarStore.setRoomCalendarList(roomCalendarList.map((room: Partial<CalendarDTO>) => new CalendarModel(room)));
   };
 
   useEffect(() => {
-    fetchData(userId);
-  }, [userId]);
+    fetchData();
+  }, []);
 
   return (
     <LNBContainer id="lnb">

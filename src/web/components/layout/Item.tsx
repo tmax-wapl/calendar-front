@@ -1,8 +1,7 @@
-import { useState, memo, useContext, MouseEvent } from 'react';
+import { useState, memo, MouseEvent } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { CalendarModel } from '@/stores/model/CalendarModel';
 import { Checkbox, Icon, Tooltip, useWaplUiStore } from '@wapl/ui';
 import {
@@ -21,7 +20,6 @@ interface Props {
 }
 
 const Item = observer(({ category }: Props) => {
-  const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
   const [renameTitle, setRenameTitle] = useState(category.name);
   const {
@@ -47,7 +45,7 @@ const Item = observer(({ category }: Props) => {
 
   const handleCheckedChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
-    await calendarStore.updateCalendar(category.id, { userId, checkFlag: checked });
+    await calendarStore.updateCalendar(category.id, { checkFlag: checked });
     calendarStore.updateCalendarChecked(category.id, checked);
     uiStore.changeDateRange();
     if (
@@ -63,7 +61,7 @@ const Item = observer(({ category }: Props) => {
   };
 
   const handleRename = async () => {
-    await calendarStore.updateCalendar(category.id, { userId, name: renameTitle });
+    await calendarStore.updateCalendar(category.id, { name: renameTitle });
     calendarStore.updateCalendarDTO(category.id, 'name', renameTitle);
     calendarStore.setRenameId(null);
   };

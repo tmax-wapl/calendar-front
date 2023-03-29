@@ -1,10 +1,9 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon, Button } from '@wapl/ui';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { CalendarContext } from '@common/contexts/CalendarContext';
 import { EventModel } from '@/stores/model/EventModel';
 import { EventHandleViewContainer, EventHandleContainer, FromInfo, ButtonGroup } from './EventHandleView.style';
 import EventBar from './EventBar';
@@ -30,7 +29,6 @@ interface Props {
 
 const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
-  const { userId } = useContext(CalendarContext);
   const navigate = useNavigate();
   const { state } = useLocation();
   const [originEvent, setOriginEvent] = useState(new EventModel({ ...eventStore.event.dto }));
@@ -43,8 +41,6 @@ const EventHandleView = ({ action }: Props) => {
     const startDate = event.allDay ? event.startDate.startOf('day') : event.startDate;
     return new EventModel({
       ...event.dto,
-      modUserId: userId,
-      ...(action === 'create' && { regUserId: userId }),
       ...(!event.title && { title: 'Untitled' }),
       ...(event.allDay && {
         start: toISO(startDate.toUTC()),

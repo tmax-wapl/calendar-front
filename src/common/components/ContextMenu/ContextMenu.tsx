@@ -37,7 +37,7 @@ export const ContextMenu = () => {
       case 'mainCalendar':
       case 'subCalendar':
       case 'subscribe':
-        await calendarStore.updateCalendar(id, { userId, color });
+        await calendarStore.updateCalendar(id, { color });
         calendarStore.updateCalendarDTO(id, 'color', color);
         const eventList = calendarStore.eventList.map(event =>
           event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
@@ -47,7 +47,7 @@ export const ContextMenu = () => {
         break;
       case 'repeatEvent':
       case 'event':
-        const event = new EventModel({ modUserId: userId, color, calId: calendarStore.getCalendarId() });
+        const event = new EventModel({ color, calId: calendarStore.getCalendarId() });
         await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.DEFAULT);
         eventStore.updateEventColor('' + id, color);
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });

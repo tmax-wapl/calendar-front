@@ -14,9 +14,9 @@ export default class CalendarRepo {
     }
   }
 
-  async getCalendarList(userId: number) {
+  async getCalendarList() {
     try {
-      const { response, success } = await API.get<CalendarDTO[]>(`/apis/v1/user/list/calendar/${userId}`);
+      const { response, success } = await API.get<CalendarDTO[]>(`/apis/v1/user/list/calendar`);
       if (success) return response;
     } catch (e) {
       if (e instanceof HTTPError) {
