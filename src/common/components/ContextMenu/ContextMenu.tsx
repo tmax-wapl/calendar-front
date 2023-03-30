@@ -37,12 +37,20 @@ export const ContextMenu = () => {
       case 'mainCalendar':
       case 'subCalendar':
       case 'subscribe':
+      case 'sharedEventCalendar':
         await calendarStore.updateCalendar(id, { color });
         calendarStore.updateCalendarDTO(id, 'color', color);
-        const eventList = calendarStore.eventList.map(event =>
-          event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
-        );
-        calendarStore.setEventList(eventList);
+        if (type === 'sharedEventCalendar') {
+          const sharedEventList = calendarStore.eventList.map(event =>
+            event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor: color }) : event,
+          );
+          calendarStore.setEventList(sharedEventList);
+        } else {
+          const eventList = calendarStore.eventList.map(event =>
+            event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
+          );
+          calendarStore.setEventList(eventList);
+        }
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
       case 'repeatEvent':
@@ -57,6 +65,10 @@ export const ContextMenu = () => {
           room.roomId === id ? { ...room.dto, color } : room.dto,
         );
         calendarStore.setLocalRoomCalendarList(userId, newRoomList);
+        const roomEventList = calendarStore.eventList.map(event =>
+          event.roomId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
+        );
+        calendarStore.setEventList(roomEventList);
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
       default:

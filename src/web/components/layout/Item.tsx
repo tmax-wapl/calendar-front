@@ -33,7 +33,14 @@ const Item = observer(({ category }: Props) => {
 
     const target = e.target as HTMLDivElement;
     if (!target) return;
-    const type = category.type === 'url' ? 'subscribe' : category.mainFlag ? 'mainCalendar' : 'subCalendar';
+
+    const type = (() => {
+      if (category.type === 'url') return 'subscribe';
+      if (category.type === 'share') return 'sharedEventCalendar';
+      if (category.mainFlag) return 'mainCalendar';
+      else return 'subCalendar';
+    })();
+
     uiStore.setContextClickArg({
       target,
       position: { top: e.clientY, left: e.clientX },

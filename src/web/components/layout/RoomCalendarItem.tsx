@@ -42,6 +42,7 @@ const RoomCalendarItem = observer(({ calendar }: Props) => {
       room.roomId === calendar.roomId ? { ...room.dto, checkFlag: e.target.checked } : room.dto,
     );
     calendarStore.setLocalRoomCalendarList(userId, newRoomList);
+    uiStore.changeDateRange();
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

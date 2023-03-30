@@ -208,4 +208,8 @@ export class EventModel {
   get subEvent(): boolean {
     return this.dto.subEvent;
   }
+
+  get shareEvent(): boolean {
+    return this.dto.shareEvent;
+  }
 }
