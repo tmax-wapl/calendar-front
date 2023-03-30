@@ -108,12 +108,14 @@ export interface ExceptionDTO {
 
 // response data 명시 해주기로..
 export interface ResponseData<T> {
-  error?: {
-    status: number;
-    message: string;
+  data: {
+    error?: {
+      status: number;
+      message: string;
+    };
+    response: T;
+    success: boolean;
   };
-  response: T;
-  success: boolean;
 }
 export interface CalendarShareDTO {
   calendarId: number;
@@ -148,4 +150,9 @@ export interface EventMemberPersona {
 export interface EventMemberRoom {
   roomId: number;
   roomNick: string;
+}
+
+export interface EventListDTO {
+  eventList: EventDTO[];
+  holidayList: HolidayDTO[];
 }

@@ -28,6 +28,7 @@ module.exports = env => {
     devServer: {
       historyApiFallback: true,
       static: path.join(__dirname, './public/'),
+      compress: true,
     },
     devtool: dev === 'true' && 'eval-source-map',
     output: {
@@ -84,7 +85,8 @@ module.exports = env => {
           : false,
       }),
       new Dotenv({
-        path: dev === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production',
+        path:
+          dev === 'true' || app === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production',
       }),
       !dev
         ? new UglifyJSPlugin({
