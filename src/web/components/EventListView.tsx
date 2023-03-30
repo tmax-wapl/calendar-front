@@ -32,20 +32,12 @@ const EventListView = () => {
   useEffect(() => {
     const fetchData = async (dateDay: DateTime) => {
       const date = dateDay.startOf('day');
-      const checkedRoomIdList = calendarStore.roomCalendarList?.filter(room => room.checkFlag).map(room => room.roomId);
-
-      const eventList = calendarStore.eventList
-        .filter(
-          event =>
-            date < toLuxon(event.end) &&
-            toLuxon(event.start) < date.plus({ days: 1 }) &&
-            (event.importance || !uiStore.isImportanceChecked),
-        ) // TODO: 룸 일정 필터 로직 추후 제거
-        .filter(event => event.roomId === null || checkedRoomIdList?.find(roomId => roomId === event.roomId))
-        .filter(
-          (event, index, callback) =>
-            index === callback.findIndex(newEvent => newEvent.id === event.id && newEvent.start === event.start),
-        );
+      const eventList = calendarStore.eventList.filter(
+        event =>
+          date < toLuxon(event.end) &&
+          toLuxon(event.start) < date.plus({ days: 1 }) &&
+          (event.importance || !uiStore.isImportanceChecked),
+      );
       setEventList(eventList);
     };
     const dispose = autorun(() => {
