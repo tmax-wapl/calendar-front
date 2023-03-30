@@ -1,5 +1,4 @@
-import { memo, useEffect, useContext } from 'react';
-import { CalendarContext } from '@/common/contexts/CalendarContext';
+import { memo } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Icon } from '@wapl/ui';
 import { LNBContainer, LNBHeader, DatePickerWrapper, FilterListWrapper, ScrollListWrapper, Divider } from './LNB.style';
@@ -8,23 +7,9 @@ import FilterList from './FilterList';
 import CategoryList from './CategoryList';
 import OtherCalendarList from './OtherCalendarList';
 import { Observer } from 'mobx-react-lite';
-import { CalendarDTO } from '@/common/constants/interfaces';
-import { CalendarModel } from '@/stores';
 
 const LNB = () => {
-  const { userId } = useContext(CalendarContext);
-  const { uiStore, calendarStore } = useCalendarStores();
-
-  const fetchData = async () => {
-    const calendarList = await calendarStore.getCalendarList();
-    calendarStore.setCalendarList(calendarList);
-    const roomCalendarList = calendarStore.getLocalRoomCalendarList(userId);
-    calendarStore.setRoomCalendarList(roomCalendarList?.map((room: Partial<CalendarDTO>) => new CalendarModel(room)));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { uiStore } = useCalendarStores();
 
   return (
     <LNBContainer id="lnb">
