@@ -159,10 +159,10 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
           type: 'room',
         };
       });
-    calendarStore.setLocalRoomCalendarList(
-      userId,
-      calendarStore.roomCalendarList.map(room => room.dto).concat(newRoomList),
-    );
+    calendarStore.setLocalRoomCalendarList(userId, [
+      ...newRoomList,
+      ...calendarStore.roomCalendarList.map(room => room.dto),
+    ]);
     closeDialog();
   };
 
