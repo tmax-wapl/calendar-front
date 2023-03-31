@@ -19,9 +19,7 @@ const RoomScheduleDialog = ({ buttons, onClose }: { buttons: DialogButton[]; onC
         ...room,
         checked: false,
         disabled:
-          room.type === 'my' || !!calendarStore.roomCalendarList?.find(roomCalendar => roomCalendar.roomId === room.id)
-            ? true
-            : false,
+          room.type === 'my' || !!calendarStore.roomCalendarList.find(roomCalendar => roomCalendar.roomId === room.id),
         displayName: room.displayName,
         displayPhoto: room.displayPhoto,
       };

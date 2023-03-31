@@ -25,6 +25,7 @@ export interface EventDTO {
   repeatStartDate?: string;
   repeatgroupId?: number;
   subEvent?: boolean;
+  shareEvent?: boolean;
   eventMember?: EventMember;
   attachments?: any[];
   notifications?: any[];

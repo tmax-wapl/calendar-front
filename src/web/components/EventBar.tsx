@@ -1,7 +1,7 @@
 import { Icon } from '@wapl/ui';
 import { EventBarContainer, IconButton, EventBarTitle } from './EventBar.style';
 
-interface EventBarButton {
+export interface EventBarButton {
   action: 'close' | 'back' | 'share' | 'edit' | 'delete';
   onClick: () => void;
 }

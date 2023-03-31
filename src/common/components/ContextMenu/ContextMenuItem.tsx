@@ -160,10 +160,10 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
           type: 'room',
         };
       });
-    calendarStore.setLocalRoomCalendarList(
-      userId,
-      calendarStore.roomCalendarList.map(room => room.dto).concat(newRoomList),
-    );
+    calendarStore.setLocalRoomCalendarList(userId, [
+      ...newRoomList,
+      ...calendarStore.roomCalendarList.map(room => room.dto),
+    ]);
     closeDialog();
   };
 
@@ -221,16 +221,16 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   };
 
   const handleEventDeleteClick = async () => {
-    if (type === 'event') {
-      uiStore.setDialogInfo({
-        action: 'eventDelete',
-        onClick: [closeDialog, deleteEvent],
-      });
-    } else {
+    if (type === 'repeatEvent') {
       uiStore.setDialogInfo({
         action: 'repeatEventDelete',
         onClick: [closeDialog, deleteRepeatEvent],
         type: 'select',
+      });
+    } else {
+      uiStore.setDialogInfo({
+        action: 'eventDelete',
+        onClick: [closeDialog, deleteEvent],
       });
     }
   };
@@ -286,6 +286,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       case 'event':
       case 'repeatEvent':
         return [actions.updateEvent, actions.shareEvent, actions.deleteEvent];
+      case 'shareEvent':
+        return [actions.deleteEvent];
       default:
         return [];
     }

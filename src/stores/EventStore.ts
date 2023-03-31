@@ -44,9 +44,28 @@ export default class EventStore {
     const utcStart = DateTime.fromISO(start).toUTC().toISODate();
     const utcEnd = DateTime.fromISO(end).toUTC().toISODate();
     const { eventList, holidayList } = await this.repo.getEventList(utcStart, utcEnd);
+    // TODO: 룸 일정 필터 로직 추후 제거
+    const eventListMap = new Map();
+    const checkedRoomIdListMap = new Map(
+      this.rootStore.calendarStore.roomCalendarList
+        ?.filter(room => room.checkFlag)
+        .map((room, index) => [room.roomId, { index, calendarColor: room.color }]),
+    );
+
+    eventList.map(event => {
+      const eventInfo = eventListMap.get(event.id);
+      if (event.roomId === null) eventListMap.set(event.id, event);
+      if (eventInfo) {
+        if (checkedRoomIdListMap.get(event.roomId) === undefined) return;
+        else if (checkedRoomIdListMap.get(eventInfo.roomId).index > checkedRoomIdListMap.get(event.roomId).index)
+          eventListMap.set(event.id, { ...event, calColor: checkedRoomIdListMap.get(event.roomId).calendarColor });
+      } else if (event.roomId === null) eventListMap.set(event.id, event);
+      else if (checkedRoomIdListMap.has(event.roomId))
+        eventListMap.set(event.id, { ...event, calColor: checkedRoomIdListMap.get(event.roomId).calendarColor });
+    });
 
     const arr: EventModel[] = [];
-    eventList.map(event => {
+    Array.from(eventListMap.values()).map(event => {
       if (event.rrule && !event.exceptionEvent) arr.push(...this.makeRRuleObject(event));
       else arr.push(new EventModel(event));
     });

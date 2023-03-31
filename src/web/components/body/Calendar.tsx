@@ -273,19 +273,20 @@ const Calendar: React.FC = observer(() => {
     // 이벤트 렌더 후처리, 현재는 ContextMenu만 제어.
     const target = arg.el;
     const { id, backgroundColor: color, startStr: startdate, endStr: enddate, extendedProps } = arg.event;
-    const type = extendedProps.dto.rrule ? 'repeatEvent' : 'event';
+    const type = extendedProps.dto.shareEvent ? 'shareEvent' : extendedProps.dto.rrule ? 'repeatEvent' : 'event';
 
     target.addEventListener('contextmenu', (e: MouseEvent) => {
       const el = e.target as ContextMenuEventTarget;
       const domRect: DOMRect = el.getBoundingClientRect();
 
       e.preventDefault();
-      if (extendedProps.dto.subEvent) return;
+      if (extendedProps.dto.subEvent || extendedProps.dto.shareEvent || extendedProps.dto.roomId) return;
       uiStore.setContextClickArg({
         target,
         position: { top: domRect.top, left: domRect.right + 3 },
         color,
         type,
+        hideColorPicker: extendedProps.dto.shareEvent,
         id: +id,
         date: {
           startdate,
@@ -466,23 +467,6 @@ const Calendar: React.FC = observer(() => {
     else uiStore.viewMode = VIEW_MODE.MONTH;
   }, [viewMode]);
 
-  const events = () => {
-    const checkedRoomIdList = calendarStore.roomCalendarList?.filter(room => room.checkFlag).map(room => room.roomId);
-    // TODO: 룸 일정 필터 로직 추후 제거
-    const eventList = calendarStore.eventList
-      .filter(event => event.roomId === null || checkedRoomIdList?.find(roomId => roomId === event.roomId))
-      .filter(
-        (event, index, callback) =>
-          index === callback.findIndex(newEvent => newEvent.id === event.id && newEvent.start === event.start),
-      );
-
-    return uiStore.viewMode === VIEW_MODE.MONTH
-      ? eventList.filter(event => event.importance || !uiStore.isImportanceChecked)
-      : eventList
-          .filter(event => event.importance || !uiStore.isImportanceChecked)
-          .map(event => createAllDayEvent(event));
-  };
-
   return (
     <CalendarContainer>
       <FullCalendarWrapper>
@@ -494,7 +478,13 @@ const Calendar: React.FC = observer(() => {
           dayCellContent={renderDayContent}
           eventClick={handleEventClick}
           allDayText="종일"
-          events={events()}
+          events={
+            uiStore.viewMode === VIEW_MODE.MONTH
+              ? calendarStore.eventList.filter(event => event.importance || !uiStore.isImportanceChecked)
+              : calendarStore.eventList
+                  .filter(event => event.importance || !uiStore.isImportanceChecked)
+                  .map(event => createAllDayEvent(event))
+          }
           dayMaxEvents={5}
           moreLinkContent={renderMoreLinkContent}
           allDayContent={renderAllDayContent}
