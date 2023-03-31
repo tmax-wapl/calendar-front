@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { DateTime } from 'luxon';
 import { Options, Weekday } from 'rrule';
 import { Icon, Tooltip, Checkbox } from '@wapl/ui';
@@ -88,10 +88,6 @@ const RepeatInfo = ({
     }
     onRRuleChange({ ...rrule, byweekday: byweekday.filter(weekday => weekday !== index) });
   };
-
-  useEffect(() => {
-    if (rrule?.freq > -1) onStartChange(startDate);
-  }, [startDate]);
 
   return (
     <RepeatInfoContainer>

@@ -1,11 +1,13 @@
-import { CalendarDTO, CalendarPatchDTO, CalendarShareDTO } from '@/common/constants/interfaces';
-import { API } from '@/common/lib/API';
+import { CalendarDTO, CalendarPatchDTO, CalendarShareDTO, ResponseData } from '@/common/constants/interfaces';
+import { API, baseUrl } from '@/common/lib/API';
 import { HTTPError } from '@/error';
 
 export default class CalendarRepo {
   async createCalendar(dto: Partial<CalendarDTO>) {
     try {
-      const { response } = await API.post<Partial<CalendarDTO>, CalendarDTO>('/apis/v1/calendars/create', dto);
+      const {
+        data: { response },
+      } = await API.post<Partial<CalendarDTO>, ResponseData<CalendarDTO>>('${baseUrl}/apis/v1/calendars/create', dto);
       return response;
     } catch (e) {
       if (e instanceof HTTPError) {
@@ -16,7 +18,9 @@ export default class CalendarRepo {
 
   async getCalendarList() {
     try {
-      const { response, success } = await API.get<CalendarDTO[]>(`/apis/v1/user/list/calendar`);
+      const {
+        data: { response, success },
+      } = await API.get<CalendarDTO[], ResponseData<CalendarDTO[]>>(`${baseUrl}/apis/v1/user/list/calendar`);
       if (success) return response;
     } catch (e) {
       if (e instanceof HTTPError) {
@@ -27,8 +31,10 @@ export default class CalendarRepo {
 
   async getICalendar(calId: number, start: string, end: string) {
     try {
-      const { response } = await API.get<CalendarDTO>(
-        `/apis/v1/calendars/icalendar/${calId}?start=${start}&end=${end}`,
+      const {
+        data: { response },
+      } = await API.get<CalendarDTO, ResponseData<CalendarDTO>>(
+        `${baseUrl}/apis/v1/calendars/icalendar/${calId}?start=${start}&end=${end}`,
       );
       return response;
     } catch (e) {
@@ -40,7 +46,11 @@ export default class CalendarRepo {
 
   async getCalendarInfo(calId: number, start: string, end: string) {
     try {
-      const { response, success } = await API.get<CalendarDTO>(`/apis/v1/calendars/${calId}?start=${start}&end=${end}`);
+      const {
+        data: { response, success },
+      } = await API.get<CalendarDTO, ResponseData<CalendarDTO>>(
+        `${baseUrl}/apis/v1/calendars/${calId}?start=${start}&end=${end}`,
+      );
       if (success) return response;
     } catch (e) {
       if (e instanceof HTTPError) {
@@ -51,7 +61,9 @@ export default class CalendarRepo {
 
   async deleteCalendar(calId: number) {
     try {
-      const { response, success } = await API.delete(`/apis/v1/calendars/delete/${calId}`);
+      const {
+        data: { response, success },
+      } = await API.delete<CalendarDTO, ResponseData<number>>(`${baseUrl}/apis/v1/calendars/delete/${calId}`);
       if (success) return response;
     } catch (e) {
       if (e instanceof HTTPError) {
@@ -62,8 +74,10 @@ export default class CalendarRepo {
 
   async updateCalendar(calId: number, dto: CalendarPatchDTO) {
     try {
-      const { response, success } = await API.patch<CalendarPatchDTO, CalendarDTO>(
-        `/apis/v1/calendars/update/${calId}`,
+      const {
+        data: { response, success },
+      } = await API.patch<CalendarPatchDTO, ResponseData<CalendarDTO>>(
+        `${baseUrl}/apis/v1/calendars/update/${calId}`,
         dto,
       );
       if (success) return response;
@@ -76,7 +90,9 @@ export default class CalendarRepo {
 
   async shareCalendar(dto: CalendarShareDTO) {
     try {
-      const { response } = await API.post<CalendarShareDTO, number[]>(`/apis/v1/share/calendar`, dto);
+      const {
+        data: { response },
+      } = await API.post<CalendarShareDTO, ResponseData<CalendarShareDTO>>(`${baseUrl}/apis/v1/share/calendar`, dto);
       return response;
     } catch (e) {
       if (e instanceof HTTPError) {

@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //추가
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //추가
 const Dotenv = require('dotenv-webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const mode = process.env.REACT_APP_MODE || 'development';
@@ -28,12 +29,13 @@ module.exports = env => {
     devServer: {
       historyApiFallback: true,
       static: path.join(__dirname, './public/'),
+      compress: true,
     },
     devtool: dev === 'true' && 'eval-source-map',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].js',
-      publicPath: dev === 'true' ? '/' : '.',
+      publicPath: dev === 'true' ? '/' : '',
     },
     module: {
       rules: [
@@ -84,7 +86,14 @@ module.exports = env => {
           : false,
       }),
       new Dotenv({
-        path: dev === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production',
+        path:
+          dev === 'true' || app === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production',
+      }),
+      new PreloadWebpackPlugin({
+        rel: 'preload',
+        as: 'font',
+        include: 'allAssets',
+        fileWhitelist: [/(.woff2)/i],
       }),
       !dev
         ? new UglifyJSPlugin({

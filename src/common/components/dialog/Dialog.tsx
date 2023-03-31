@@ -116,7 +116,7 @@ export const Dialog = () => {
       case 'refresh':
         return [
           { variant: 'secondary', text: '취소', onClick: onClick[0] },
-          { variant: 'primary', text: '나가기', onClick: onClick[1] },
+          { variant: 'negative', text: '나가기', onClick: onClick[1] },
         ];
       case 'roomSchedule':
         return [

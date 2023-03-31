@@ -41,7 +41,9 @@ export default class EventStore {
   }
 
   async getEventList(start: string, end: string = start) {
-    const { eventList, holidayList } = await this.repo.getEventList(start, end);
+    const utcStart = DateTime.fromISO(start).toUTC().toISODate();
+    const utcEnd = DateTime.fromISO(end).toUTC().toISODate();
+    const { eventList, holidayList } = await this.repo.getEventList(utcStart, utcEnd);
     // TODO: 룸 일정 필터 로직 추후 제거
     const eventListMap = new Map();
     const checkedRoomIdListMap = new Map(
@@ -76,6 +78,7 @@ export default class EventStore {
     const activeStart = this.rootStore.uiStore.mainApi.view.activeStart;
     const activeEnd = this.rootStore.uiStore.mainApi.view.activeEnd;
     const duration = endDate.diff(startDate);
+    activeStart.setDate(activeStart.getDate() - 1);
 
     return rruleObj.between(activeStart, activeEnd).map(day => {
       return new EventModel({

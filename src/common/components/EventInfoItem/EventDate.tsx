@@ -48,7 +48,7 @@ const EventDate = ({
         allDay={allDay}
         onChange={handleEndChange}
         isDateInvalid={start.startOf('day') > end.startOf('day')}
-        isTimeInvalid={start > start.set({ hour: end.hour, minute: end.minute })}
+        isTimeInvalid={start > end && start > start.set({ hour: end.hour, minute: end.minute })}
       />
     </EventDateContainer>
   );
