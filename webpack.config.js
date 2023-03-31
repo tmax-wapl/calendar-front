@@ -35,7 +35,7 @@ module.exports = env => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].js',
-      publicPath: dev === 'true' ? '/' : '.',
+      publicPath: dev === 'true' ? '/' : '',
     },
     module: {
       rules: [
@@ -93,7 +93,7 @@ module.exports = env => {
         rel: 'preload',
         as: 'font',
         include: 'allAssets',
-        fileWhitelist: [/(.woff2?)/i],
+        fileWhitelist: [/(.woff2)/i],
       }),
       !dev
         ? new UglifyJSPlugin({
