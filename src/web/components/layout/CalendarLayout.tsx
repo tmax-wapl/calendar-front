@@ -26,16 +26,18 @@ const CalendarLayout: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+    <>
       {isLoading ? (
-        <Icon.LoadingMotion />
+        <div style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon.LoadingMotion />
+        </div>
       ) : (
-        <>
+        <div style={{ display: 'flex', width: '100%', height: '100%' }}>
           <LNB />
           <Outlet />
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
