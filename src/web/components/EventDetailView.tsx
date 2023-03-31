@@ -3,7 +3,8 @@ import { Observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { useNavigate } from 'react-router-dom';
 import { EventDetailViewContainer, EventDetailContainer, FromInfo, Creator } from './EventDetailView.style';
-import EventBar from './EventBar';
+import { EventModel } from '@/stores';
+import EventBar, { EventBarButton } from './EventBar';
 import EventItem from './EventItem';
 import { Participants, Location, Notifications, Description, Attachments } from '@common/components/EventInfoItem';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -51,6 +52,16 @@ const EventDetailView = () => {
     navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
+  const eventBarButtons = (event: EventModel): EventBarButton[] => {
+    if (event.subEvent || event.shareEvent || event.roomId) return;
+    // if (event.shareEvent) return [{ action: 'delete', onClick: handleDeleteClick }];
+    return [
+      { action: 'share', onClick: handleShareClick },
+      { action: 'edit', onClick: handleEditClick },
+      { action: 'delete', onClick: handleDeleteClick },
+    ];
+  };
+
   const handleDeleteClick = () => {
     if (!eventStore.event.rrule) {
       uiStore.setDialogInfo({
@@ -91,15 +102,15 @@ const EventDetailView = () => {
 
   return (
     <EventDetailViewContainer>
-      <EventBar
-        title={eventStore.event.startDate.toFormat('LL월 dd일 cccc', { locale: 'ko' })}
-        leftSide={[{ action: 'back', onClick: handleBackClick }]}
-        rightSide={[
-          { action: 'share', onClick: handleShareClick },
-          { action: 'edit', onClick: handleEditClick },
-          { action: 'delete', onClick: handleDeleteClick },
-        ]}
-      />
+      <Observer>
+        {() => (
+          <EventBar
+            title={eventStore.event.startDate.toFormat('LL월 dd일 cccc', { locale: 'ko' })}
+            leftSide={[{ action: 'back', onClick: handleBackClick }]}
+            rightSide={eventBarButtons(eventStore.event)}
+          />
+        )}
+      </Observer>
       <EventDetailContainer>
         <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
         <Observer>

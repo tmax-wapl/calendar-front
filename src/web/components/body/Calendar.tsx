@@ -273,19 +273,20 @@ const Calendar: React.FC = observer(() => {
     // 이벤트 렌더 후처리, 현재는 ContextMenu만 제어.
     const target = arg.el;
     const { id, backgroundColor: color, startStr: startdate, endStr: enddate, extendedProps } = arg.event;
-    const type = extendedProps.dto.rrule ? 'repeatEvent' : 'event';
+    const type = extendedProps.dto.shareEvent ? 'shareEvent' : extendedProps.dto.rrule ? 'repeatEvent' : 'event';
 
     target.addEventListener('contextmenu', (e: MouseEvent) => {
       const el = e.target as ContextMenuEventTarget;
       const domRect: DOMRect = el.getBoundingClientRect();
 
       e.preventDefault();
-      if (extendedProps.dto.subEvent) return;
+      if (extendedProps.dto.subEvent || extendedProps.dto.shareEvent || extendedProps.dto.roomId) return;
       uiStore.setContextClickArg({
         target,
         position: { top: domRect.top, left: domRect.right + 3 },
         color,
         type,
+        hideColorPicker: extendedProps.dto.shareEvent,
         id: +id,
         date: {
           startdate,
