@@ -83,6 +83,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mobx-react", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.6.0"],\
             ["mobx-react-lite", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.4.0"],\
             ["moment", "npm:2.29.4"],\
+            ["preload-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.0.0-beta.3"],\
             ["prettier", "npm:2.8.0"],\
             ["react", "npm:17.0.2"],\
             ["react-dom", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:17.0.2"],\
@@ -10659,6 +10660,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mobx-react", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.6.0"],\
             ["mobx-react-lite", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.4.0"],\
             ["moment", "npm:2.29.4"],\
+            ["preload-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.0.0-beta.3"],\
             ["prettier", "npm:2.8.0"],\
             ["react", "npm:17.0.2"],\
             ["react-dom", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:17.0.2"],\
@@ -14058,6 +14060,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["core-js", [\
+        ["npm:2.6.12", {\
+          "packageLocation": "./.yarn/unplugged/core-js-npm-2.6.12-0b93d77d31/node_modules/core-js/",\
+          "packageDependencies": [\
+            ["core-js", "npm:2.6.12"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:3.26.1", {\
           "packageLocation": "./.yarn/unplugged/core-js-npm-3.26.1-42575888f8/node_modules/core-js/",\
           "packageDependencies": [\
@@ -24719,6 +24728,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/postcss-value-parser-npm-4.2.0-3cef602a6a-819ffab0c9.zip/node_modules/postcss-value-parser/",\
           "packageDependencies": [\
             ["postcss-value-parser", "npm:4.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["preload-webpack-plugin", [\
+        ["npm:3.0.0-beta.3", {\
+          "packageLocation": "./.yarn/cache/preload-webpack-plugin-npm-3.0.0-beta.3-42bdfdb653-8e1150833d.zip/node_modules/preload-webpack-plugin/",\
+          "packageDependencies": [\
+            ["preload-webpack-plugin", "npm:3.0.0-beta.3"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.0.0-beta.3", {\
+          "packageLocation": "./.yarn/__virtual__/preload-webpack-plugin-virtual-675a5fe2e3/0/cache/preload-webpack-plugin-npm-3.0.0-beta.3-42bdfdb653-8e1150833d.zip/node_modules/preload-webpack-plugin/",\
+          "packageDependencies": [\
+            ["preload-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.0.0-beta.3"],\
+            ["@types/html-webpack-plugin", null],\
+            ["@types/webpack", null],\
+            ["core-js", "npm:2.6.12"],\
+            ["html-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:5.5.0"],\
+            ["url-parse", "npm:1.5.10"],\
+            ["webpack", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:5.75.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/html-webpack-plugin",\
+            "@types/webpack",\
+            "html-webpack-plugin",\
+            "webpack"\
           ],\
           "linkType": "HARD"\
         }]\
