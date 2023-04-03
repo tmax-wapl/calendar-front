@@ -21,7 +21,7 @@ const EventHeader: React.FC = () => {
       <EventCreateButton onClick={handleCreateClick}>새 일정</EventCreateButton>
 
       {/* <SearchBar type="search" placeholder="캘린더 일정 검색" /> */}
-      <SearchField placeholder="캘린더 일정 검색" variant="filled" width={280} />
+      <SearchField style={{ visibility: 'hidden' }} placeholder="캘린더 일정 검색" variant="filled" width={280} />
     </EventHeaderContainer>
   );
 };
