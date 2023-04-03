@@ -10,10 +10,11 @@
   ],
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --open --hot --env dev=true",
-    "build": "webpack --env dev=false && build.bat",
-    "app:build": "webpack --env dev=false app=true && build.bat",
+    "dev": "webpack-dev-server --open --hot --env dev=true develop=true",
+    "dev:build": "webpack --env dev=false develop=true && build.bat",
+    "stag:build": "webpack --env dev=false qa=false && build.bat",
     "qa:build": "webpack --env dev=false qa=true && build.bat",
+    "app:build": "webpack --env dev=false app=true && build.bat",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

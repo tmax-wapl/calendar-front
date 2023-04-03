@@ -9,11 +9,13 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const mode = process.env.REACT_APP_MODE || 'development';
 
 module.exports = env => {
-  const { dev, qa, app } = env;
+  const { dev, develop, qa, app } = env;
+
+  const envPath = develop === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production';
 
   return {
     mode,
-    entry: dev === 'true' || app === 'true' ? './src/entry.tsx' : './src/index.ts',
+    entry: app === 'true' ? './src/index.ts' : './src/entry.tsx',
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
@@ -86,14 +88,13 @@ module.exports = env => {
           : false,
       }),
       new Dotenv({
-        path:
-          dev === 'true' || app === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production',
+        path: envPath,
       }),
       new PreloadWebpackPlugin({
         rel: 'preload',
         as: 'font',
         include: 'allAssets',
-        fileWhitelist: [/(.woff2)/i],
+        fileWhitelist: [/(.woff?)/i],
       }),
       !dev
         ? new UglifyJSPlugin({
