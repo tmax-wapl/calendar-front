@@ -104,13 +104,13 @@ const Calendar: React.FC = observer(() => {
 
   const DateColor = (content: DayCellContentArg | DayHeaderContentArg, isWeekDay = false) => {
     const date = toDateString(content.date);
-    if (content.dow === 0 || isHoliday(date)) return 'red'; // 공휴일
+    if (content.dow === 0 || (isHoliday(date) && uiStore.isHolidayChecked)) return 'red'; // 공휴일
     else if (date === DateTime.local().toFormat('yyyy-LL-dd') && !isWeekDay) return 'white'; // today
     return 'black'; // 일반 date
   };
 
   const renderDayContent = (content: DayCellContentArg) => (
-    <span style={{ color: DateColor(content) }}>{content.dayNumberText.slice(0, -1)}</span>
+    <Observer>{() => <span style={{ color: DateColor(content) }}>{content.dayNumberText.slice(0, -1)}</span>}</Observer>
   );
 
   const renderAllDayContent = ({ text }: { text: string }) =>
