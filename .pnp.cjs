@@ -66,6 +66,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:0.27.2"],\
             ["babel-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:9.1.0"],\
             ["clean-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.0.0"],\
+            ["cross-env", "npm:7.0.3"],\
             ["css-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:6.7.2"],\
             ["dotenv-webpack", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:8.0.1"],\
             ["eslint", "npm:8.29.0"],\
@@ -10643,6 +10644,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:0.27.2"],\
             ["babel-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:9.1.0"],\
             ["clean-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.0.0"],\
+            ["cross-env", "npm:7.0.3"],\
             ["css-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:6.7.2"],\
             ["dotenv-webpack", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:8.0.1"],\
             ["eslint", "npm:8.29.0"],\
@@ -14196,6 +14198,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ripemd160", "npm:2.0.2"],\
             ["safe-buffer", "npm:5.2.1"],\
             ["sha.js", "npm:2.4.11"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["cross-env", [\
+        ["npm:7.0.3", {\
+          "packageLocation": "./.yarn/cache/cross-env-npm-7.0.3-96d81820f4-26f2f3ea2a.zip/node_modules/cross-env/",\
+          "packageDependencies": [\
+            ["cross-env", "npm:7.0.3"],\
+            ["cross-spawn", "npm:7.0.3"]\
           ],\
           "linkType": "HARD"\
         }]\

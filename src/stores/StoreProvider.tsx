@@ -1,6 +1,5 @@
-import { API } from '@/common/lib/API';
 import { PrivateRoute, ProtectedRoute, UserLoader, ToppingProvider } from '@wapl/core';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 import RootStore from './RootStore';
 
 const rootStore = new RootStore();
@@ -20,7 +19,7 @@ export const WaplShellProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     ORG_API_URL: process.env.REACT_APP_ORG_API_URL,
   };
 
-  return process.env.REACT_APP_MODE === 'local' ? (
+  return process.env.NODE_ENV === 'development' ? (
     <UserLoader config={config}>
       <PrivateRoute>{children}</PrivateRoute>
     </UserLoader>

@@ -1,4 +1,5 @@
 const path = require('path');
+const { DefinePlugin } = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //추가
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //추가
 const Dotenv = require('dotenv-webpack');
@@ -6,15 +7,12 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const mode = process.env.REACT_APP_MODE || 'development';
-
 module.exports = env => {
   const { dev, develop, qa, app } = env;
 
   const envPath = develop === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production';
 
   return {
-    mode,
     entry: app === 'true' ? './src/index.ts' : './src/entry.tsx',
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -90,11 +88,14 @@ module.exports = env => {
       new Dotenv({
         path: envPath,
       }),
+      new DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      }),
       new PreloadWebpackPlugin({
         rel: 'preload',
         as: 'font',
         include: 'allAssets',
-        fileWhitelist: [/(.woff?)/i],
+        fileWhitelist: [/(.woff2)/i],
       }),
       !dev
         ? new UglifyJSPlugin({

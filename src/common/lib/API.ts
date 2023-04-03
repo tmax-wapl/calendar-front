@@ -2,7 +2,7 @@ import { HTTPError } from '@/error';
 import { API as CoreAPI } from '@wapl/core';
 import { ERROR_STATUS } from '../constants';
 
-export const isDevelop = process.env.REACT_APP_MODE === 'local';
+export const isDevelop = process.env.NODE_ENV === 'development';
 export const baseUrl = isDevelop
   ? `${window.parent.env?.REACT_APP_CALENDAR_API_URL ?? 'https://calendar.teespace.net'}`
   : `${window.parent.env?.REACT_APP_CALENDAR_API_URL}`;
