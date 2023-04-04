@@ -70,7 +70,7 @@ export const toISO = (date: DateTime) => {
 };
 
 export const isEqualMonth = (mainCalDate: Date, selectedDate: Date) =>
-  mainCalDate.getMonth() === selectedDate.getMonth();
+  mainCalDate.getFullYear() === selectedDate.getFullYear() && mainCalDate.getMonth() === selectedDate.getMonth();
 
 export const isSameDate = (date1: DateTime, date2: DateTime) => {
   return date1.hasSame(date2, 'day');

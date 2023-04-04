@@ -7,7 +7,7 @@ export default class CalendarRepo {
     try {
       const {
         data: { response },
-      } = await API.post<Partial<CalendarDTO>, ResponseData<CalendarDTO>>('${baseUrl}/apis/v1/calendars/create', dto);
+      } = await API.post<Partial<CalendarDTO>, ResponseData<CalendarDTO>>(`${baseUrl}/apis/v1/calendars/create`, dto);
       return response;
     } catch (e) {
       if (e instanceof HTTPError) {

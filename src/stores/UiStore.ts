@@ -122,7 +122,10 @@ export default class UiStore {
   handleDateClick(date: DateTime, callback?: () => void) {
     if (!this.mainApi) return;
     // 같은 달 내에서 선택 할 때 main calendar render 안하도록.
-    if (isEqualMonth(this.mainApi?.getDate(), date?.toJSDate())) return;
+    if (isEqualMonth(this.mainApi?.getDate(), date?.toJSDate())) {
+      if (callback) callback();
+      return;
+    }
     this.mainApi.changeView(this.mainApi.view.type, date.toJSDate());
     this.changeDateRange();
     if (callback) callback();
