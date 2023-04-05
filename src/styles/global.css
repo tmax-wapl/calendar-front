@@ -90,3 +90,23 @@ body {
   border: 0px;
   opacity: 1;
 }
+
+.splitter-layout {
+  height: calc(100% - 50px);
+}
+
+.layout-splitter {
+  position: relative;
+  background-color: #F8F9FA !important;
+  padding-top: 8px;
+}
+.layout-splitter::before {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 100%;
+  background-color: #DADCE0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}

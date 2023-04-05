@@ -20,7 +20,7 @@ import DatePicker from '@/common/components/DatePicker/DatePicker';
 import { autorun } from 'mobx';
 import { EventModel } from '@/stores/model/EventModel';
 
-type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
+export type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
 
 const DateButton = ({ selected = false, togglePicker }: { selected?: boolean; togglePicker?: () => void }) => {
   const [title, setTitle] = useState<string>('');
