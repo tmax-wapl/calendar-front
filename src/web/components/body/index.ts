@@ -1,3 +1,3 @@
 export * from './Calendar';
 export * from './CalendarDummy';
-export * from './Calendar.style';
+export * from '../../../common/styles/Calendar.style';

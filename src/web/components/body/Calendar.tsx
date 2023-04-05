@@ -30,7 +30,7 @@ import {
   WeekDayHeader,
   EventTitle,
   Today,
-} from './Calendar.style';
+} from '@common/styles/Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';

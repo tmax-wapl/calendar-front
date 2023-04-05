@@ -9,7 +9,7 @@ import Mobile from './mobile';
 import { SettingInstance, isDevelop } from './common';
 
 const App: React.FC = () => {
-  const isMobile = false;
+  const isMobile = true;
   const { selectedPersona, keycloakInstance } = useUserStore();
   const { personaList } = usePersonaStore();
 
