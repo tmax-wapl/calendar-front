@@ -10,6 +10,7 @@ import FullCalendar, {
   EventSegment,
   MoreLinkArg,
   MoreLinkContentArg,
+  ViewApi,
   VUIEvent,
 } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -29,16 +30,27 @@ import {
   EventTitle,
   Today,
 } from './Calendar.style';
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, LEFT, RIGHT, SwipeEventData } from 'react-swipeable';
-import { DateHandleType } from '@/web/components';
+import { CalendarEventDummy, DateHandleType } from '@/web/components';
 
 type SwipeType = typeof LEFT | typeof RIGHT;
 
 const Calendar = () => {
   const { uiStore } = useCalendarStores();
   const calendarRef = useRef(null);
+
+  const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
+
+  const renderEventContent = ({ event }: EventContentArg) => {
+    return (
+      <EventWrapper isHalfLess>
+        <EventTitle isHalfLess>{event.title}</EventTitle>
+      </EventWrapper>
+    );
+  };
+
   const renderDayContent = (content: DayCellContentArg) => <span>{content.dayNumberText.slice(0, -1)}</span>;
 
   const handleSwipe = (eventData: SwipeEventData) => {
@@ -77,9 +89,11 @@ const Calendar = () => {
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           allDayText="종일"
-          events={[]}
+          events={CalendarEventDummy}
+          moreLinkContent={renderMoreLinkContent}
           dayCellContent={renderDayContent}
-          dayMaxEvents={5}
+          eventContent={renderEventContent}
+          dayMaxEvents={4}
           nowIndicator
           eventOrder="-allDay,start,-duration,-regDate"
           editable

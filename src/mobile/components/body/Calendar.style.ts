@@ -49,12 +49,12 @@ export const CalendarContainer = styled.div`
   }
 
   .fc-scrollgrid table {
-    border-bottom-style: hidden;
+    border-bottom-style: 1px solid #e8eaed;
   }
   .fc-col-header-cell-cushion {
     display: flex;
     ${({ theme: { Font } }) => Font.Text.xs.Bold};
-    padding: 12px 0px 7px 13px;
+    padding: 0px 0px 3px 13px;
   }
 
   .fc-timegrid .fc-col-header-cell-cushion {
@@ -63,10 +63,13 @@ export const CalendarContainer = styled.div`
     padding: 12px 6px 7px 8px;
   }
 
+  .fc-daygrid-day-bottom {
+    ${({ theme: { Font } }) => Font.Text.xxxxs.Medium};
+  }
+
   .fc-daygrid-day-number {
     padding: 0px;
     ${({ theme: { Font } }) => Font.Text.xxs.Medium};
-    line-height: 17px;
   }
   .fc-timegrid-divider {
     // 주/일 보기모드 종일/시간영역 분리자
@@ -74,10 +77,11 @@ export const CalendarContainer = styled.div`
   }
   .fc-daygrid-day-frame {
     min-height: 46px;
+    height: 100%;
   }
 
   .fc-daygrid-day-events {
-    margin-top: 23px;
+    margin-top: 5px;
   }
   .fc-daygrid.fc-view {
     // 월 보기모드
@@ -85,7 +89,6 @@ export const CalendarContainer = styled.div`
       // 월 보기모드 날짜 영역
       display: flex;
       justify-content: center;
-      height: 18px;
       margin-top: 8px;
     }
     .fc-day-today {
@@ -353,7 +356,7 @@ export const EventSpan = styled.span`
 
 export const EventTitle = styled.span<{ isHalfLess: boolean }>`
   display: ${({ isHalfLess }) => (isHalfLess ? 'inline' : '-webkit-box')};
-  ${({ theme: { Font } }) => Font.Text.s.Medium};
+  ${({ theme: { Font } }) => Font.Text.xxxs.Regular};
   overflow: hidden;
   text-overflow: ellipsis;
   ${({ isHalfLess }) =>
