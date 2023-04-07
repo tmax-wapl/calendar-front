@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, SwipeEventData } from 'react-swipeable';
 import '@/styles/split.css';
+import { toDateTime } from '@/utils';
 
 const SplitLayout = () => {
   const { uiStore } = useCalendarStores();
@@ -18,6 +19,13 @@ const SplitLayout = () => {
     setBottomPanelHeight(halfHeight);
   };
 
+  const getRow = () => {
+    const { mainApi } = uiStore;
+    const activeStart = toDateTime(mainApi.view.activeStart);
+    const { days } = uiStore.dateDay.diff(activeStart, 'days');
+    return Math.floor(days / 7) + 1;
+  };
+
   const handleSwipe = (eventData: SwipeEventData) => {
     const { dir } = eventData;
     const { mainApi } = uiStore;
@@ -27,12 +35,16 @@ const SplitLayout = () => {
         mainApi.setOption('eventClassNames', 'small-event');
         mainApi.updateSize();
       } else {
-        setTopPanelHeight(LayoutHeight * 0.1);
-        setBottomPanelHeight(LayoutHeight * 0.9);
+        setTopPanelHeight(LayoutHeight * 0.11);
+        setBottomPanelHeight(LayoutHeight * 0.89);
+        mainApi.updateSize();
+        uiStore.setToggleViewRow(getRow());
       }
     } else {
-      if (bottomPanelHeight > halfHeight) setHalfHeight();
-      else {
+      if (bottomPanelHeight > halfHeight) {
+        setHalfHeight();
+        uiStore.setToggleViewRow();
+      } else {
         setTopPanelHeight(LayoutHeight);
         setBottomPanelHeight(0);
         mainApi.setOption('eventClassNames', '');

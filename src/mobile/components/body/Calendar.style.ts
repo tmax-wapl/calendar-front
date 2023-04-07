@@ -1,6 +1,6 @@
 import { styled } from '@wapl/ui';
 
-export const CalendarContainer = styled.div`
+export const CalendarContainer = styled.div<{ isViewRow?: boolean; rowNum?: number }>`
   display: flex;
   width: 100%;
   height: 100%;
@@ -48,13 +48,26 @@ export const CalendarContainer = styled.div`
     border-right: none;
   }
 
+  ${({ isViewRow, rowNum }) =>
+    isViewRow
+      ? `
+    .fc-daygrid-body tr[role='row']:not(:nth-of-type(${rowNum})) {
+      visibility: collapse;
+      opacity: 0;
+      transition: 0.2s ease;
+    }
+  `
+      : ''}
+
   .fc-scrollgrid table {
     border-bottom-style: 1px solid #e8eaed;
+    transition: height 0.5s ease;
   }
   .fc-col-header-cell-cushion {
     display: flex;
     ${({ theme: { Font } }) => Font.Text.xs.Bold};
-    padding: 0px 0px 3px 13px;
+    padding-bottom: 3px;
+    justify-content: center;
   }
 
   .fc-timegrid .fc-col-header-cell-cushion {

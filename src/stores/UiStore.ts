@@ -58,6 +58,9 @@ export default class UiStore {
   isHolidayChecked = true;
   isLunarChecked = true;
 
+  isViewRow = false;
+  rowNum: number = null;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -75,6 +78,8 @@ export default class UiStore {
       setHolidayChecked: action,
       isLunarChecked: observable,
       setLunarChecked: action,
+      isViewRow: observable,
+      rowNum: observable,
     });
   }
 
@@ -105,6 +110,11 @@ export default class UiStore {
 
   setLunarChecked(checked: boolean) {
     this.isLunarChecked = checked;
+  }
+
+  setToggleViewRow(rowNum?: number) {
+    this.isViewRow = !this.isViewRow;
+    if (rowNum) this.rowNum = rowNum;
   }
 
   getApi(): CalendarApi {

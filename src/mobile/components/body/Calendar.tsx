@@ -34,10 +34,14 @@ import { useEffect, useRef } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, LEFT, RIGHT, SwipeEventData } from 'react-swipeable';
 import { CalendarEventDummy, DateHandleType } from '@/web/components';
+import { observer } from 'mobx-react-lite';
+import { toDateTime, toISO } from '@/utils';
+import { VIEW_MODE } from '@/common';
+import { autorun } from 'mobx';
 
 type SwipeType = typeof LEFT | typeof RIGHT;
 
-const Calendar = () => {
+const Calendar = observer(() => {
   const { uiStore } = useCalendarStores();
   const calendarRef = useRef(null);
 
@@ -75,14 +79,25 @@ const Calendar = () => {
     onSwipedRight: handleSwipe,
   });
 
+  const handleDateClick = ({ date }: DateClickArg) => {
+    uiStore.setDateDay(toDateTime(date));
+  };
+
   useEffect(() => {
     if (calendarRef) {
       uiStore.mainApi = calendarRef?.current?.getApi();
     }
   }, []);
 
+  useEffect(() => {
+    const dispose = autorun(() => {
+      uiStore.mainApi?.select(toISO(uiStore.dateDay));
+    });
+    return () => dispose();
+  }, []);
+
   return (
-    <CalendarContainer>
+    <CalendarContainer isViewRow={uiStore.isViewRow} rowNum={uiStore.rowNum}>
       <FullCalendarWrapper {...swipeHandlers} ref={swipeRef}>
         <FullCalendar
           locale="ko"
@@ -93,6 +108,7 @@ const Calendar = () => {
           moreLinkContent={renderMoreLinkContent}
           dayCellContent={renderDayContent}
           eventContent={renderEventContent}
+          dateClick={handleDateClick}
           dayMaxEvents={4}
           nowIndicator
           eventOrder="-allDay,start,-duration,-regDate"
@@ -102,6 +118,6 @@ const Calendar = () => {
       </FullCalendarWrapper>
     </CalendarContainer>
   );
-};
+});
 
 export default Calendar;
