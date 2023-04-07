@@ -15,16 +15,16 @@ const DateSpinnerPicker = ({ date = DateTime.now(), onDateChange, onOutsideClick
   const [year, setYear] = useState<string>(`${date.year}년`);
   const [month, setMonth] = useState<string>(`${date.month}월`);
   const [day, setDay] = useState<string>(`${date.day}일`);
-  const years = Array.from(Array(200), (_, i) => `${i + DateTime.now().year - 100}년`);
-  const months = Array.from(Array(12), (_, i) => `${i + 1}월`);
+  const years = Array.from({ length: 200 }, (_, i) => `${i + DateTime.now().year - 100}년`);
+  const months = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
   const [days, setDays] = useState<string[]>(
-    Array.from(Array(new Date(date.year, date.month, 0).getDate()), (_, i) => `${i + 1}일`),
+    Array.from({ length: new Date(date.year, date.month, 0).getDate() }, (_, i) => `${i + 1}일`),
   );
 
   useDidMountEffect(() => {
     const newDate = new Date(+year.slice(0, -1), +month.slice(0, -1), 0).getDate();
     if (days.length !== newDate) {
-      setDays(Array.from(Array(newDate), (_, i) => `${i + 1}일`));
+      setDays(Array.from({ length: newDate }, (_, i) => `${i + 1}일`));
       if (newDate < +day.slice(0, -1)) setDay(`${newDate}일`);
     }
   }, [year, month]);
