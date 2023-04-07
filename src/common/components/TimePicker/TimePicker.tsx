@@ -17,8 +17,8 @@ const TimePicker = ({ value = DateTime.now(), height = 200, onChange, onOutsideC
   const [hour, setHour] = useState<string>(value.toFormat('h'));
   const [minute, setMinute] = useState<string>(value.toFormat('mm'));
   const ampm = ['오전', '오후'];
-  const hours = ['12', ...Array.from(Array(11), (_, i) => `${i + 1}`)];
-  const minutes = Array.from(Array(60), (_, i) => ('00' + i).slice(-2));
+  const hours = ['12', ...Array.from({ length: 11 }, (_, i) => `${i + 1}`)];
+  const minutes = Array.from({ length: 60 }, (_, i) => ('00' + i).slice(-2));
 
   const handleMeridiemClick = useCallback((meridiem: string) => setMeridiem(meridiem), []);
   const handleHourClick = useCallback((hour: string) => setHour(hour), []);
