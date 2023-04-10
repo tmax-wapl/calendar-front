@@ -44,9 +44,7 @@ export const EventInfoContainer = styled.div<{ isDetail: boolean }>`
   }
 `;
 
-export const EventInfo = styled.span`
-  white-space: nowrap;
-`;
+export const EventInfo = styled.span``;
 
 export const CalendarName = styled.span`
   ${({ theme: { Font } }) => Font.Text.xs.Regular};
