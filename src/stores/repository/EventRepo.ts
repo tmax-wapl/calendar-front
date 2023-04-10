@@ -89,4 +89,19 @@ export default class EventRepo {
       }
     }
   }
+
+  async searchEvent(keyword: string, type: 'T') {
+    try {
+      const {
+        data: { response, success },
+      } = await API.get<EventDTO, ResponseData<EventDTO[]>>(
+        `${baseUrl}/apis/v1/event/search?type=${type}&text=${keyword}`,
+      );
+      if (success) return response;
+    } catch (e) {
+      if (e instanceof HTTPError) {
+        throw Error(JSON.stringify(e));
+      }
+    }
+  }
 }
