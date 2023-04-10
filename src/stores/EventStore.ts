@@ -11,6 +11,7 @@ export default class EventStore {
   rootStore: RootStore;
   repo: EventRepo;
   event: EventModel = new EventModel({});
+  searchKeyword = '';
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -19,11 +20,17 @@ export default class EventStore {
     makeObservable(this, {
       event: observable,
       setEvent: action,
+      searchKeyword: observable,
+      setSearchKeyword: action,
     });
   }
 
   setEvent(event: EventModel) {
     this.event = event;
+  }
+
+  setSearchKeyword(keyword: string) {
+    this.searchKeyword = keyword;
   }
 
   preprocessEvent(event: EventModel) {
@@ -117,5 +124,48 @@ export default class EventStore {
   async shareEvent(dto: EventShareDTO) {
     const res = await this.repo.shareEvent(dto);
     return res;
+  }
+
+  getRepeatEventList(event: EventDTO) {
+    const { rruleObj, startDate, endDate, rrule } = new EventModel(event);
+
+    const end = new Date();
+    const duration = endDate.diff(startDate);
+    end.setFullYear(end.getFullYear() + 1);
+    end.setHours(23);
+    end.setMinutes(59);
+    end.setSeconds(59);
+
+    return rruleObj.between(startDate.minus({ days: 1 }).toJSDate(), end).map(
+      day =>
+        new EventModel({
+          ...event,
+          start: toISO(DateTime.fromJSDate(day).toUTC()),
+          end: toISO(DateTime.fromJSDate(day).plus(duration).toUTC()),
+          ...(rrule.freq === 2 && { rrule: applyWeekdayOffset(rrule, startDate, 'local').toString() }),
+        }),
+    );
+  }
+
+  groupByDate(eventList: EventModel[]) {
+    const eventMap = new Map<string, EventModel[]>();
+    eventList.forEach(event => {
+      const date = event.startDate.toFormat('yyyy-LL-dd');
+      eventMap.set(date, eventMap.has(date) ? [...eventMap.get(date), event] : [event]);
+    });
+    return eventMap;
+  }
+
+  async searchEvent(keyword: string, type: 'T') {
+    const res = await this.repo.searchEvent(keyword, type);
+    const searchEventList = res
+      .map(event =>
+        event.rrule && !event.exceptionEvent
+          ? this.getRepeatEventList(event)
+          : this.preprocessEvent(new EventModel(event)),
+      )
+      .flat()
+      .sort((a, b) => a.startDate.toMillis() - b.startDate.toMillis());
+    return this.groupByDate(searchEventList);
   }
 }
