@@ -1,8 +1,8 @@
 
 .SplitPane { 
-    top: 46px !important; 
-    height: calc(100% - 46px) !important;
-    min-height: calc(100% - 46px) !important;
+    top: 71px !important; 
+    height: calc(100% - 71px) !important;
+    min-height: calc(100% - 71px) !important;
   }
   
   .Resizer {

@@ -8,7 +8,7 @@ export const PickerContainer = styled.div<{ width: number; offsetLeft: number }>
   left: ${({ offsetLeft }) => `${offsetLeft}px`};
   padding: 8px 0px;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   background-color: ${({ theme: { Color } }) => Color.White[100]};
   box-shadow: 0px 0px 8px ${({ theme: { Color } }) => Color.Black[20]};
   border-radius: 12px;

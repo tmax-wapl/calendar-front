@@ -15,9 +15,16 @@ interface DatePickerHeaderProps {
   selectedDate: DateTime;
   titleDate: DateTime;
   setTitleDate: React.Dispatch<React.SetStateAction<DateTime>>;
+  isMobile?: boolean;
 }
 
-const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: DatePickerHeaderProps) => {
+const DatePickerHeader = ({
+  size = 1,
+  selectedDate,
+  titleDate,
+  setTitleDate,
+  isMobile = false,
+}: DatePickerHeaderProps) => {
   const [isPickerOpen, setPickerOpen] = useState<boolean>(false);
   const [isYearClick, setYearClick] = useState<boolean>(false);
   const [isMonthClick, setMonthClick] = useState<boolean>(false);
@@ -68,12 +75,17 @@ const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: D
 
   return (
     <HeaderContainer size={size}>
-      <TitleWrapper>
-        <TextButton id="yearButton" selected={isYearClick} onClick={() => handleTitleClick('year')}>
+      <TitleWrapper isMobile={isMobile}>
+        <TextButton id="yearButton" selected={isYearClick} onClick={() => handleTitleClick('year')} isMobile={isMobile}>
           {titleDate.toFormat('yyyy')}
         </TextButton>
         .
-        <TextButton id="monthButton" selected={isMonthClick} onClick={() => handleTitleClick('month')}>
+        <TextButton
+          id="monthButton"
+          selected={isMonthClick}
+          onClick={() => handleTitleClick('month')}
+          isMobile={isMobile}
+        >
           {titleDate.toFormat('LL')}
         </TextButton>
         <SwitchIcon />
@@ -97,14 +109,16 @@ const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: D
           onOutsideClick={handleOutsideClick('month')}
         />
       )}
-      <CalendarPickerButtonWrapper>
-        <IconButton onClick={handlePrevClick}>
-          <Icon.ArrowBackLine width={18} height={18} />
-        </IconButton>
-        <IconButton onClick={handleNextClick}>
-          <Icon.ArrowFrontLine width={18} height={18} />
-        </IconButton>
-      </CalendarPickerButtonWrapper>
+      {!isMobile && (
+        <CalendarPickerButtonWrapper>
+          <IconButton onClick={handlePrevClick}>
+            <Icon.ArrowBackLine width={18} height={18} />
+          </IconButton>
+          <IconButton onClick={handleNextClick}>
+            <Icon.ArrowFrontLine width={18} height={18} />
+          </IconButton>
+        </CalendarPickerButtonWrapper>
+      )}
     </HeaderContainer>
   );
 };
