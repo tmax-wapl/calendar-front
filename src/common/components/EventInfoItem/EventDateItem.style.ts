@@ -34,10 +34,10 @@ export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   }
 `;
 
-export const DatePickerWrapper = styled.div`
+export const DatePickerWrapper = styled.div<{ allDay?: boolean }>`
   position: absolute;
   top: 100%;
-  right: 0;
+  transform: ${({ allDay }) => (allDay ? 'translate(-60%, 0)' : 'translate(-30%, 0)')};
   z-index: 1;
   margin-top: 8px;
   padding: 16px;

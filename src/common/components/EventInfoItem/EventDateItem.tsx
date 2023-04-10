@@ -54,7 +54,7 @@ const EventDateItem = ({ title, date, allDay, isDateInvalid, isTimeInvalid, onCh
           </DateWrapper>
         </Tooltip>
         {isDatePickerOpen && (
-          <DatePickerWrapper>
+          <DatePickerWrapper allDay={allDay}>
             <DatePicker date={date} onDateClick={onChange} onOutsideClick={handleDateClick} />
           </DatePickerWrapper>
         )}
