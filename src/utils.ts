@@ -29,7 +29,6 @@ export const get12HoursFormat = (date: string | DateTime) => {
 };
 
 export const getEventDuration = (start: DateTime, end: DateTime, isAllDay = false) => {
-  if (start.hasSame(end, 'day')) return `${get12HoursFormat(start)} ~ ${get12HoursFormat(end)}`;
   const now = DateTime.now();
   const isThisYear = now.hasSame(start, 'year') && now.hasSame(end, 'year');
   const dateFormat = `${isThisYear ? '' : 'yyyy.'}LL.dd.`;
@@ -37,6 +36,8 @@ export const getEventDuration = (start: DateTime, end: DateTime, isAllDay = fals
     if (end.diff(start, 'days').toObject().days === 1) return start.toFormat(dateFormat);
     return `${start.toFormat(dateFormat)} ~ ${end.plus({ days: -1 }).toFormat(dateFormat)}`;
   }
+  if (start.hasSame(end, 'day'))
+    return `${start.toFormat(`${dateFormat} a h:mm`, { locale: 'ko' })} ~ ${end.toFormat(`a h:mm`, { locale: 'ko' })}`;
   return `${start.toFormat(`${dateFormat} a h:mm`, { locale: 'ko' })} ~ ${end.toFormat(`${dateFormat} a h:mm`, {
     locale: 'ko',
   })}`;
