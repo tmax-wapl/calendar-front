@@ -97,4 +97,5 @@ export const ViewSelect = styled(Select<string>)`
 
 export const StyledDatePickerWrapper = styled(DatePickerWrapper)`
   z-index: 3;
+  transform: translate(0, 0);
 `;

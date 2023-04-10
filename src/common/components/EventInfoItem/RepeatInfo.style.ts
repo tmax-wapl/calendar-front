@@ -51,7 +51,7 @@ export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
 export const DatePickerWrapper = styled.div`
   position: absolute;
   top: 100%;
-  right: 0;
+  transform: translate(-60%, 0%);
   z-index: 1;
   margin-top: 8px;
   padding: 16px;
