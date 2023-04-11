@@ -18,7 +18,7 @@ const EventListView = () => {
   const { pathname } = useLocation();
 
   const handleClickEvent = useCallback(async (event: EventModel) => {
-    const eventInfo = await eventStore.getEventInfo(+event.id, event.start);
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.start, event.roomId);
     eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   }, []);

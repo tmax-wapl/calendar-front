@@ -18,11 +18,13 @@ export default class EventRepo {
     }
   }
 
-  async getEventInfo(eventId: number, date: string) {
+  async getEventInfo(eventId: number, date: string, roomId?: number) {
     try {
       const {
         data: { response, success },
-      } = await API.get<EventDTO, ResponseData<EventDTO>>(`${baseUrl}/apis/v1/event/${eventId}?date=${date}`);
+      } = await API.get<EventDTO, ResponseData<EventDTO>>(
+        `${baseUrl}/apis/v1/event/${eventId}${roomId ? `?roomId=${roomId}&` : '?'}date=${date}`,
+      );
       if (success) return response;
     } catch (e) {
       if (e instanceof HTTPError) {

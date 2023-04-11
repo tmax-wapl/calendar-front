@@ -246,7 +246,7 @@ const Calendar: React.FC = observer(() => {
 
   const handleEventClick = async ({ event, jsEvent }: EventClickArg) => {
     jsEvent.stopPropagation();
-    const eventInfo = await eventStore.getEventInfo(+event.id, event.startStr);
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.startStr, event.extendedProps.dto.roomId);
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
     if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
@@ -280,7 +280,7 @@ const Calendar: React.FC = observer(() => {
       const domRect: DOMRect = el.getBoundingClientRect();
 
       e.preventDefault();
-      if (extendedProps.dto.subEvent || extendedProps.dto.shareEvent || extendedProps.dto.roomId) return;
+      if (extendedProps.dto.subEvent || extendedProps.dto.roomId) return;
       uiStore.setContextClickArg({
         target,
         position: { top: domRect.top, left: domRect.right + 3 },
