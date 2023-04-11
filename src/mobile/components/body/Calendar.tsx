@@ -162,11 +162,11 @@ const Calendar = observer(() => {
           dayCellContent={renderDayContent}
           eventContent={renderEventContent}
           dateClick={handleDateClick}
+          unselectAuto={false}
           dayMaxEvents={4}
           nowIndicator
           eventOrder="-allDay,start,-duration,-regDate"
           editable
-          selectable
         />
       </FullCalendarWrapper>
     </CalendarContainer>

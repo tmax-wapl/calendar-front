@@ -285,6 +285,7 @@ export const CalendarContainer = styled.div<{ isViewRow?: boolean; rowNum?: numb
   }
   .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
     min-height: unset !important;
+    pointer-events: none;
   }
   .fc-view-harness {
     height: 150px;
