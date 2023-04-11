@@ -41,9 +41,9 @@ export default class EventStore {
     });
   }
 
-  async getEventInfo(eventId: number, start: string) {
+  async getEventInfo(eventId: number, start: string, roomId?: number) {
     const utcStart = DateTime.fromISO(start).toUTC().toISODate();
-    const res = await this.repo.getEventInfo(eventId, utcStart);
+    const res = await this.repo.getEventInfo(eventId, utcStart, roomId);
     return this.preprocessEvent(new EventModel(res));
   }
 
