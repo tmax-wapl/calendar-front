@@ -19,7 +19,7 @@ const MobileApp: React.FC = () => {
         <PageTransitionRoutes Routes={Routes} Route={Route} location={location}>
           <Route path={`main/${ROUTES.CREATE}`} element={<div>handleView</div>} />
           <Route path={`main/${ROUTES.UPDATE}`} element={<div>handleView</div>} />
-          <Route path={`main/${ROUTES.DETAIL}`} element={<div>detailView</div>} />
+          {/* <Route path={`main/${ROUTES.DETAIL}`} element={<div>detailView</div>} /> */}
           <Route path={`main/${ROUTES.SHARE}`} element={<div>shareView</div>} />
         </PageTransitionRoutes>
       </>

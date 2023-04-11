@@ -5,6 +5,7 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, SwipeEventData } from 'react-swipeable';
 import '@/styles/split.css';
 import { toDateTime } from '@/utils';
+import EventListView from '@/mobile/components/EventListView';
 
 const SplitLayout = () => {
   const { uiStore } = useCalendarStores();
@@ -70,7 +71,9 @@ const SplitLayout = () => {
         <div style={{ width: '100%', height: topPanelHeight }}>
           <Calendar />
         </div>
-        <div style={{ height: bottomPanelHeight, background: '#F8F9FA' }}>Panel 2 영역</div>
+        <div style={{ height: bottomPanelHeight }}>
+          <EventListView />
+        </div>
       </SplitPane>
     </div>
   );

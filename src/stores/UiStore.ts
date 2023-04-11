@@ -80,6 +80,7 @@ export default class UiStore {
       setLunarChecked: action,
       isViewRow: observable,
       rowNum: observable,
+      setToggleViewRow: action,
     });
   }
 
