@@ -249,24 +249,35 @@ const Calendar: React.FC = observer(() => {
     const eventInfo = await eventStore.getEventInfo(+event.id, event.startStr, event.extendedProps.dto.roomId);
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
-    if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+    goRoute('detail');
   };
 
-  const handleDoubleClick = ({ jsEvent }: DateClickArg) => {
-    jsEvent.stopPropagation();
-    if (jsEvent.detail % 2 === 0 && !pathname.includes('create'))
-      navigate(`/main/view-mode/${uiStore.viewMode}/create`);
+  const handleDouble = (event: any) => {
+    event.stopPropagation();
+    goRoute('create');
   };
 
-  const handleDateTimeSelect = ({ start, end, jsEvent }: DateSelectArg) => {
+  const handleDateTimeSelect = ({ start, end, jsEvent, startStr, endStr }: DateSelectArg) => {
     if (!jsEvent) return;
-    if (jsEvent.detail % 2 === 0) return;
+    jsEvent.stopPropagation();
+    if (uiStore.viewMode === VIEW_MODE.WEEK) {
+      const { minutes } = diffTime(startStr, endStr);
+      if (minutes > 30) {
+        goRoute('create');
+        setDateTime(start, end);
+        return;
+      }
+    }
 
     if (!pathname.includes('create')) uiStore.setDateDay(toDateTime(start));
     setDateTime(start, end);
 
     if (pathname.includes('create')) return;
-    if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
+    goRoute('date');
+  };
+
+  const goRoute = (routePath: string) => {
+    if (!pathname.includes(routePath)) navigate(`view-mode/${uiStore.viewMode}/${routePath}`);
   };
 
   const handleDidMount = (arg: EventMountArg) => {
@@ -490,7 +501,6 @@ const Calendar: React.FC = observer(() => {
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
           dayHeaderContent={renderHeaderContent}
-          dateClick={handleDoubleClick}
           select={handleDateTimeSelect}
           eventContent={renderEventContent}
           nowIndicator
