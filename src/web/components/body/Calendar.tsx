@@ -30,6 +30,8 @@ import {
   WeekDayHeader,
   EventTitle,
   Today,
+  DayNum,
+  DayNumWrapper,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
@@ -109,9 +111,24 @@ const Calendar: React.FC = observer(() => {
     return 'black'; // 일반 date
   };
 
-  const renderDayContent = (content: DayCellContentArg) => (
-    <Observer>{() => <span style={{ color: DateColor(content) }}>{content.dayNumberText.slice(0, -1)}</span>}</Observer>
-  );
+  const renderDayContent = (content: DayCellContentArg) => {
+    const isOtherMonth = content.view.currentStart.getMonth() !== content.date.getMonth();
+    const isToday = toDateString(content.date) === DateTime.local().toFormat('yyyy-LL-dd');
+
+    return (
+      <Observer>
+        {() => (
+          <DayNumWrapper
+            className={`${isToday ? 'fc-today' : ''}`}
+            color={DateColor(content)}
+            opacity={isOtherMonth ? 0.3 : 1}
+          >
+            <DayNum>{content.dayNumberText.slice(0, -1)}</DayNum>
+          </DayNumWrapper>
+        )}
+      </Observer>
+    );
+  };
 
   const renderAllDayContent = ({ text }: { text: string }) =>
     uiStore.viewMode === VIEW_MODE.WEEK ? (
@@ -252,7 +269,7 @@ const Calendar: React.FC = observer(() => {
     goRoute('detail');
   };
 
-  const handleDouble = (event: any) => {
+  const handleDoubleClick = (event: any) => {
     event.stopPropagation();
     goRoute('create');
   };
@@ -477,6 +494,17 @@ const Calendar: React.FC = observer(() => {
     if (viewMode) uiStore.viewMode = viewMode;
     else uiStore.viewMode = VIEW_MODE.MONTH;
   }, [viewMode]);
+
+  useEffect(() => {
+    const target = document.querySelectorAll('table.fc-scrollgrid-sync-table tbody .fc-daygrid-day-number');
+    document.querySelectorAll('.fc-day-other').forEach(el => el.classList.remove('fc-day-other')); // 더블클릭 이벤트 제어 클래스 제거
+    document.querySelector('.fc-daygrid-day.fc-day-today')?.classList.remove('fc-day-today');
+
+    if (target) Array.from(target).map(el => el.addEventListener('dblclick', handleDoubleClick));
+    return () => {
+      if (target) Array.from(target).map(el => el.removeEventListener('dblclick', handleDoubleClick));
+    };
+  });
 
   return (
     <CalendarContainer>
