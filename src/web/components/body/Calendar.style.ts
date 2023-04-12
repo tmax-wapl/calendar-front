@@ -64,6 +64,10 @@ export const CalendarContainer = styled.div`
     padding: 14px 0px 0px 16px;
     ${({ theme: { Font } }) => Font.Text.xs.Medium};
     line-height: 17px;
+    // selectable 옵션일 경우 calendar에 달리는 이벤트는 다 이 클래스가 가로챔
+    width: 100%;
+    height: 100%;
+    position: absolute;
   }
   .fc-timegrid-divider {
     // 주/일 보기모드 종일/시간영역 분리자
@@ -81,39 +85,36 @@ export const CalendarContainer = styled.div`
       justify-content: left;
       height: 18px;
     }
-    .fc-day-today {
-      // 오늘 daygrid
-      background: inherit;
-      .fc-daygrid-day-top {
-        width: 26px;
-        height: 26px;
-        background-color: ${({ theme: { Color } }) => Color.Scarlet[500]};
-        border-radius: 15px;
-        transform: translate(11px, 11px);
-        justify-content: center;
-      }
-      .fc-daygrid-day-events {
-        margin-top: 15px;
-      }
-
-      .fc-daygrid-day-number {
-        padding: 4px;
-        color: white;
-      }
-      .MuiBox-root {
-        // 날짜 숫자 박스
-        position: relative;
-        top: -3px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        //background-color: #ff6258;
-        color: white;
-      }
+    background: inherit;
+    .fc-today {
+      width: 26px;
+      height: 26px;
+      background-color: ${({ theme: { Color } }) => Color.Scarlet[500]};
+      border-radius: 15px;
+      justify-content: center;
     }
+    .fc-daygrid-day-events {
+      margin-top: 22px;
+    }
+
+    .fc-daygrid-day-number {
+      padding: 4px;
+      color: white;
+    }
+    .MuiBox-root {
+      // 날짜 숫자 박스
+      position: relative;
+      top: -3px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      //background-color: #ff6258;
+      color: white;
+    }
+
     .fc-scroller {
       overflow: hidden !important;
     }
@@ -354,6 +355,18 @@ export const WeekDayHeader = styled.span<{ color: string }>`
   display: flex;
   width: 100%;
   align-items: center;
+`;
+
+export const DayNumWrapper = styled.div<{ color: string; opacity: number }>`
+  color: ${({ color }) => color};
+  opacity: ${({ opacity }) => opacity};
+  margin: 6px 0px 0px 7px;
+`;
+
+export const DayNum = styled.span`
+  position: relative;
+  top: 4px;
+  left: 5px;
 `;
 
 export const Today = styled.span`
