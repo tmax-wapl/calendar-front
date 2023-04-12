@@ -11,8 +11,8 @@ export class FileStore {
     this.repo = new FileRepo();
   }
 
-  async uploadFile(file: File, dto: UploadFileDTO, id: number, name: string) {
-    const res = await this.repo.uploadFile(file, dto, id, name);
+  async uploadFile(file: File, dto: UploadFileDTO) {
+    const res = await this.repo.uploadFile(file, dto);
     return res;
   }
 

@@ -74,7 +74,7 @@ const Attachments = ({ attachments = [], onChange, editable = false }: Props) =>
               roleIds: [5],
               fileSize: file.size,
             };
-            const res = await fileStore.uploadFile(file, dto, userId, 'test');
+            const res = await fileStore.uploadFile(file, dto);
             if (res)
               return {
                 docsFileId: res.documentId,

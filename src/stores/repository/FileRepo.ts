@@ -3,10 +3,8 @@ import { API, docsUrlPath } from '@/common/lib/API';
 import { HTTPError } from '@/error';
 
 export default class FileRepo {
-  async uploadFile(file: File, dto: UploadFileDTO, id: number, name: string) {
+  async uploadFile(file: File, dto: UploadFileDTO) {
     try {
-      API.setHeader('Office-UserId', id);
-      API.setHeader('Office-UserName', encodeURI(name));
       const form = new FormData();
       form.append('file', file);
       const blob = new Blob([JSON.stringify(dto)], { type: 'application/json' });
