@@ -76,6 +76,18 @@ export const Dialog = () => {
           title: '구독 캘린더 추가 실패',
           description: `이미 구독 중입니다.`,
         };
+      case 'selectedFileCount':
+        return {
+          title: '파일 첨부는 한 번에 30개까지 가능합니다.',
+        };
+      case 'selectedFileSize':
+        return {
+          title: '파일 첨부는 한 번에 최대 20GB까지 가능합니다.',
+        };
+      case 'totalFileSize':
+        return {
+          title: '그룹 공간이 부족하여 파일을 첨부할 수 없습니다.',
+        };
       case 'refresh':
         return { subTitle: '변경 사항을 저장하지 않고 나가시겠습니까?' };
       default:
@@ -107,6 +119,9 @@ export const Dialog = () => {
         ];
       case 'subscribeFail':
       case 'subscribeDuplication':
+      case 'selectedFileCount':
+      case 'selectedFileSize':
+      case 'totalFileSize':
         return [{ variant: 'primary', text: '확인', onClick: onClick[0] }];
       case 'repeatEventUpdate':
         return [

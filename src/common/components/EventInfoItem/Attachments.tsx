@@ -14,15 +14,17 @@ import {
 } from './Attachments.style';
 
 interface Props {
+  isUploading?: boolean;
+  setUploading?: React.Dispatch<React.SetStateAction<boolean>>;
   attachments?: AttachmentInfo[];
   onChange?: (value: AttachmentInfo[]) => void;
   editable?: boolean;
 }
 
-const Attachments = ({ attachments = [], onChange, editable = false }: Props) => {
+const Attachments = ({ attachments = [], onChange, editable = false, isUploading, setUploading }: Props) => {
   const { userId } = useContext(CalendarContext);
   const roomStore = useRoomStore();
-  const { fileStore } = useCalendarStores();
+  const { fileStore, uiStore } = useCalendarStores();
   const uploadRef = useRef<HTMLInputElement>(null);
 
   const ExpandIcon = (): JSX.Element => {
@@ -34,19 +36,13 @@ const Attachments = ({ attachments = [], onChange, editable = false }: Props) =>
     const LIMIT = 20 * 1024 ** 3; // 20GB
     const TOTAL_LIMIT = 100 * 1024 ** 3; // 100GB
     if (fileList.length > 30) {
-      return { valid: false, reason: '파일 첨부는 한 번에 30개까지 가능합니다.' };
+      return { valid: false, reason: 'selectedFileCount' };
     }
     if (fileList.some(file => file.size > LIMIT)) {
-      return {
-        valid: false,
-        reason: '파일 첨부는 한 번에 최대 20GB까지 가능합니다.',
-      };
+      return { valid: false, reason: 'selectedFileSize' };
     }
     if (fileList.reduce((a, b) => a + b.size, 0) + attachments.reduce((a, b) => a + b.fileSize, 0) > TOTAL_LIMIT) {
-      return {
-        valid: false,
-        reason: '업로드 할 파일의 총 용량이 100GB를 초과하여 업로드할 수 없습니다.',
-      };
+      return { valid: false, reason: 'totalFileSize' };
     }
     return { valid: true, reason: '' };
   };
@@ -64,31 +60,48 @@ const Attachments = ({ attachments = [], onChange, editable = false }: Props) =>
       if (valid) {
         await roomStore.fetchRoomList();
         const roomId = roomStore.myRoom.id;
+        setUploading(true);
 
         const uploadPromiseList = () =>
           fileList.map(async file => {
-            const dto: UploadFileDTO = {
-              roomId,
-              targetFolderId: null,
-              userIds: [String(userId)],
-              roleIds: [5],
-              fileSize: file.size,
-            };
-            const res = await fileStore.uploadFile(file, dto);
-            if (res)
-              return {
-                docsFileId: res.documentId,
-                fileName: res.documentName,
-                fileSize: res.documentSize,
-                fileExtension: res.documentExtension,
+            try {
+              const dto: UploadFileDTO = {
+                roomId,
+                targetFolderId: null,
+                userIds: [String(userId)],
+                roleIds: [5],
+                fileSize: file.size,
               };
-            return;
+              const res = await fileStore.uploadFile(file, dto);
+              console.log('res', res);
+              if (res)
+                return {
+                  docsFileId: res.documentId,
+                  fileName: res.documentName,
+                  fileSize: res.documentSize,
+                  fileExtension: res.documentExtension,
+                };
+              return;
+            } catch (e) {
+              return;
+            }
           });
-        await Promise.all(uploadPromiseList()).then(fileList => {
-          if (fileList.length) onChange([...attachments, ...fileList.filter(file => file.docsFileId)]);
-        });
+        const resultFileList = await Promise.all(uploadPromiseList())
+          .then(fileList => fileList)
+          .catch(e => {
+            return [];
+          });
+        console.log(
+          'result',
+          resultFileList.filter(file => file.docsFileId),
+        );
+        setUploading(false);
+        if (resultFileList.length) onChange([...attachments, ...resultFileList.filter(file => file.docsFileId)]);
       } else {
-        console.log('reason', reason);
+        uiStore.setDialogInfo({
+          action: reason,
+          onClick: [() => uiStore.setDialogInfo(null)],
+        });
       }
     }
   };
@@ -122,7 +135,13 @@ const Attachments = ({ attachments = [], onChange, editable = false }: Props) =>
         {!editable && <AttachmentsCount>&nbsp;{attachments.length}</AttachmentsCount>}
       </AccordionSummary>
       <AccordionDetails>
-        {attachments?.length ? (
+        {isUploading ? (
+          <div
+            style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Icon.LoadingMotion />
+          </div>
+        ) : attachments?.length ? (
           attachments.map(attachment => (
             <StyledAttachment
               key={attachment.docsFileId}
@@ -137,7 +156,8 @@ const Attachments = ({ attachments = [], onChange, editable = false }: Props) =>
             />
           ))
         ) : (
-          <AttachmentPlaceholder>마우스로 파일을 끌어올 수 있습니다.</AttachmentPlaceholder>
+          <></>
+          // <AttachmentPlaceholder>마우스로 파일을 끌어올 수 있습니다.</AttachmentPlaceholder>
         )}
       </AccordionDetails>
       <input type="file" ref={uploadRef} style={{ display: 'none' }} onChange={handleAttach} multiple />
@@ -145,4 +165,5 @@ const Attachments = ({ attachments = [], onChange, editable = false }: Props) =>
   );
 };
 
-export default React.memo(Attachments, (prev, next) => prev.attachments === next.attachments);
+// export default React.memo(Attachments, (prev, next) => prev.attachments === next.attachments);
+export default Attachments;

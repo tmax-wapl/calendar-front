@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon, Button } from '@wapl/ui';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { EventModel } from '@/stores/model/EventModel';
 import { EventHandleViewContainer, EventHandleContainer, FromInfo, ButtonGroup } from './EventHandleView.style';
 import EventBar from './EventBar';
@@ -28,9 +29,11 @@ interface Props {
 }
 
 const EventHandleView = ({ action }: Props) => {
-  const { calendarStore, eventStore, uiStore } = useCalendarStores();
+  const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { userId } = useContext(CalendarContext);
+  const [isUploading, setUploading] = useState<boolean>(false);
   const [originEvent, setOriginEvent] = useState(new EventModel({ ...eventStore.event.dto }));
 
   const preprocessEvent = (event: EventModel): EventModel => {
@@ -183,6 +186,7 @@ const EventHandleView = ({ action }: Props) => {
 
   const preventRefresh = (e: BeforeUnloadEvent) => {
     if (!isModified()) return;
+    handleUploadFileDelete();
     e.preventDefault();
     e.returnValue = '';
   };
@@ -196,7 +200,25 @@ const EventHandleView = ({ action }: Props) => {
     uiStore.setDialogInfo(null);
   };
 
+  const fileDelete = async (deleteId: number) => {
+    await fileStore.deleteFile({
+      location: 0,
+      objectList: [{ objectId: deleteId, deleted: 1, actionId: 202 }],
+      userId: String(userId),
+    });
+  };
+
+  const handleUploadFileDelete = () => {
+    if (eventStore.event.attachments?.length > 0) {
+      eventStore.event.attachments.map(attachment => {
+        fileDelete(attachment.docsFileId);
+      });
+    }
+    eventStore.event.attachments = [];
+  };
+
   const handleReset = () => {
+    handleUploadFileDelete();
     eventStore.setEvent(new EventModel({ ...originEvent.dto }));
     closeDialog();
   };
@@ -221,6 +243,7 @@ const EventHandleView = ({ action }: Props) => {
       onClick: [
         closeDialog,
         () => {
+          handleUploadFileDelete();
           navigate(`/main/view-mode/${uiStore.viewMode}/date`);
           closeDialog();
         },
@@ -327,6 +350,8 @@ const EventHandleView = ({ action }: Props) => {
         <Observer>
           {() => (
             <Attachments
+              isUploading={isUploading}
+              setUploading={setUploading}
               attachments={eventStore.event.attachments}
               editable
               onChange={value => (eventStore.event.attachments = value)}
@@ -345,7 +370,8 @@ const EventHandleView = ({ action }: Props) => {
                   onClick={handleCreate}
                   disabled={
                     eventStore.event.startDate > eventStore.event.endDate ||
-                    eventStore.event.startDate > eventStore.event.repeatEndDate
+                    eventStore.event.startDate > eventStore.event.repeatEndDate ||
+                    isUploading
                   }
                 >
                   생성
@@ -356,7 +382,8 @@ const EventHandleView = ({ action }: Props) => {
                   onClick={handleUpdate}
                   disabled={
                     eventStore.event.startDate > eventStore.event.endDate ||
-                    eventStore.event.startDate > eventStore.event.repeatEndDate
+                    eventStore.event.startDate > eventStore.event.repeatEndDate ||
+                    isUploading
                   }
                 >
                   수정
