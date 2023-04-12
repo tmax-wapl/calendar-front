@@ -324,7 +324,15 @@ const EventHandleView = ({ action }: Props) => {
             />
           )}
         </Observer>
-        {/* <Attachments attachments={eventStore.event.attachments} editable /> */}
+        <Observer>
+          {() => (
+            <Attachments
+              attachments={eventStore.event.attachments}
+              editable
+              onChange={value => (eventStore.event.attachments = value)}
+            />
+          )}
+        </Observer>
         <Observer>
           {() => (
             <ButtonGroup fullWidth>
