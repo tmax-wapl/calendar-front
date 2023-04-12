@@ -2,7 +2,7 @@ import React, { useRef, ChangeEvent, useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useRoomStore } from '@wapl/core';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
-import { AttachmentInfo, UploadFileDTO } from '@/common/constants/interfaces';
+import { AttachmentInfo, UploadFileDTO, Extension } from '@/common/constants/interfaces';
 import { Icon } from '@wapl/ui';
 import {
   Accordion,
@@ -49,6 +49,12 @@ const Attachments = ({ attachments = [], onChange, editable = false }: Props) =>
       };
     }
     return { valid: true, reason: '' };
+  };
+
+  const checkExtension = (extension: string): Extension => {
+    if (['jpg', 'pdf', 'wav', 'xlsx', 'mk4', 'pptx', 'word', 'zip', 'etc'].includes(extension))
+      return extension as Extension;
+    return 'etc';
   };
 
   const handleAttach = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +129,7 @@ const Attachments = ({ attachments = [], onChange, editable = false }: Props) =>
               label={`${attachment.fileName ? attachment.fileName : ''}${
                 attachment.fileExtension ? `.${attachment.fileExtension}` : ''
               }`}
-              type={attachment.fileExtension}
+              type={checkExtension(attachment.fileExtension)}
               size="medium"
               volume={getByteSize(attachment.fileSize)}
               isMine={editable}

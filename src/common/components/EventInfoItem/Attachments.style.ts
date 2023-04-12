@@ -25,11 +25,11 @@ export const AccordionDetails = styled(Mui.AccordionDetails)`
   overflow: hidden scroll;
 `;
 
-export const StyledAttachment = styled(Attachment)`
+export const StyledAttachment = styled(Attachment)<{ isMine: boolean }>`
   width: 244px;
   box-sizing: border-box;
   & > div > p[class*='-TextEllipsisCss'] {
-    width: 120px;
+    width: ${({ isMine }) => (isMine ? '120px' : '140px')};
     margin: 14px 0px;
   }
 `;

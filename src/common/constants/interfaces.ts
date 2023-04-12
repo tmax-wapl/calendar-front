@@ -178,9 +178,11 @@ export interface DeleteFileDTO {
   userId: string;
 }
 
+export type Extension = 'jpg' | 'pdf' | 'wav' | 'xlsx' | 'mk4' | 'pptx' | 'word' | 'zip' | 'etc';
+
 export interface AttachmentInfo {
   docsFileId: number;
   fileName: string;
   fileSize: number;
-  fileExtension: 'jpg' | 'pdf' | 'wav' | 'xlsx' | 'mk4' | 'pptx' | 'word' | 'zip' | 'etc';
+  fileExtension: Extension;
 }
