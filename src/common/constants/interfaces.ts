@@ -27,7 +27,7 @@ export interface EventDTO {
   subEvent?: boolean;
   shareEvent?: boolean;
   eventMember?: EventMember;
-  attachments?: any[];
+  fileList?: AttachmentInfo[];
   notifications?: any[];
   exDate?: string;
   exceptionEvent?: boolean;
@@ -156,4 +156,33 @@ export interface EventMemberRoom {
 export interface EventListDTO {
   eventList: EventDTO[];
   holidayList: HolidayDTO[];
+}
+
+export interface UploadFileDTO {
+  roomId: number;
+  targetFolderId: number | null;
+  userIds: string[];
+  roleIds: number[];
+  fileSize?: number;
+}
+
+export interface FileObject {
+  objectId: number;
+  deleted: 1; // 1 넣어야한다고 전달받음
+  actionId: 202; // docs쪽에서 정한 규칙 같음
+}
+
+export interface DeleteFileDTO {
+  location: number; // 마이룸 파일일 경우 0, 그 외의 룸일 경우 2
+  objectList: FileObject[];
+  userId: string;
+}
+
+export type Extension = 'jpg' | 'pdf' | 'wav' | 'xlsx' | 'mk4' | 'pptx' | 'word' | 'zip' | 'etc';
+
+export interface AttachmentInfo {
+  docsFileId: number;
+  fileName: string;
+  fileSize: number;
+  fileExtension: Extension;
 }
