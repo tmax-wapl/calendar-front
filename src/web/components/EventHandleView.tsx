@@ -354,7 +354,10 @@ const EventHandleView = ({ action }: Props) => {
               setUploading={setUploading}
               attachments={eventStore.event.attachments}
               editable
-              onChange={value => (eventStore.event.attachments = value)}
+              onFileUpload={value => (eventStore.event.attachments = [...eventStore.event.attachments, ...value])}
+              onFileDelete={id =>
+                (eventStore.event.attachments = eventStore.event.attachments.filter(file => file.docsFileId !== id))
+              }
             />
           )}
         </Observer>
