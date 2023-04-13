@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StoreProvider } from './stores/StoreProvider';
 import { WaplUiProvider } from '@wapl/ui';
 import CalendarProvider from '@contexts/CalendarContext';
@@ -11,15 +11,24 @@ import { SettingInstance, isDevelop } from './common';
 const App: React.FC = () => {
   const isMobile = true;
   const { selectedPersona, keycloakInstance } = useUserStore();
-  const { personaList } = usePersonaStore();
+  const personaStore = usePersonaStore();
 
-  const userId = selectedPersona ? selectedPersona.id : personaList[0]?.id;
+  if (isDevelop) SettingInstance.setToken(keycloakInstance.token, selectedPersona.id);
 
-  if (isDevelop) SettingInstance.setToken(keycloakInstance.token, userId);
+  useEffect(() => {
+    personaStore.getWsClient(selectedPersona.id).setClientQuery({
+      personaId: selectedPersona.id as number,
+      appId: 4,
+    });
+    personaStore.getWsClient(selectedPersona.id).connect();
+    return () => {
+      personaStore.getWsClient(selectedPersona.id).disconnect();
+    };
+  }, [selectedPersona]);
 
   return (
     <WaplUiProvider>
-      <CalendarProvider mode={MODE.FULL} userId={userId}>
+      <CalendarProvider mode={MODE.FULL} userId={selectedPersona.id}>
         <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
       </CalendarProvider>
     </WaplUiProvider>

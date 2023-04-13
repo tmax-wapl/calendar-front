@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
+import { usePersonaStore, useUserStore } from '@wapl/core';
 import CalendarLayout from '@wcomponents/layout/CalendarLayout';
 import Calendar from '@wcomponents/CalendarView';
 import Share from '@wcomponents/ShareView';
@@ -13,7 +15,14 @@ import { ContextMenu } from '@/common/components/ContextMenu';
 import { useCalendarStores } from '@/stores/StoreProvider';
 
 const WebApp: React.FC = () => {
+  const personaStore = usePersonaStore();
+  const { selectedPersona } = useUserStore();
   const { uiStore } = useCalendarStores();
+
+  useEffect(() => {
+    personaStore.getWsClient(selectedPersona.id).addHandler('SHARE_EVENT', () => uiStore.changeDateRange());
+  }, [selectedPersona]);
+
   return (
     <Router basename="/">
       <Routes>
