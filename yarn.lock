@@ -5743,7 +5743,7 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": ^0.4.18
+    "@wapl/core": ^0.4.22
     "@wapl/ui": ^0.2.30
     axios: ^0.27.2
     babel-loader: ^9.0.1
@@ -5784,12 +5784,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:^0.4.18":
-  version: 0.4.18
-  resolution: "@wapl/core@npm:0.4.18"
+"@wapl/core@npm:^0.4.22":
+  version: 0.4.22
+  resolution: "@wapl/core@npm:0.4.22"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
-    "@wapl/ui": ^0.2.28
+    "@wapl/ui": ^0.2.30
     axios: ^0.27.2
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
@@ -5808,7 +5808,7 @@ __metadata:
     swiper: ^8.3.1
     use-long-press: 1.1.2
   peerDependencies:
-    "@wapl/ui": ^0.2.28
+    "@wapl/ui": ^0.2.30
     axios: ^0.26.1
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
@@ -5817,33 +5817,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: 55e5c3e7202f59d2c9e16997a49dcf5f4b2cf302608df50f205ecaa0eea75ce352f86952442be47355d9778f919d629b097247f62d5fc4fabd213449e724d52d
-  languageName: node
-  linkType: hard
-
-"@wapl/ui@npm:^0.2.28":
-  version: 0.2.28
-  resolution: "@wapl/ui@npm:0.2.28"
-  dependencies:
-    "@emotion/react": ^11.7.1
-    "@emotion/styled": ^11.6.0
-    "@mui/material": ^5.4.1
-    emotion-reset: ^3.0.1
-    lodash.clonedeep: ^4.5.0
-    mobx: ^6.3.12
-    mobx-react-lite: ^3.3.0
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-router-dom: ^6.2.1
-    react-scripts: 5.0.0
-    react-spring: ^9.4.2
-  peerDependencies:
-    mobx: ^6.3.12
-    mobx-react-lite: ^3.3.0
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-router-dom: ^6.2.1
-  checksum: 5e194d1d873caf6dafb991d1bbd4daba0a10a19ef02f7ca3b9570e7a8b447730955213b671b3813a589082965310b46ecab66cd78836e10f92ef4ba5235c9225
+  checksum: 2cfd4e1611f3225fd812a7b29374eaeba44bf53f294c2ab27ec4f9ae6a3dcb3ea9d2dc1d8a8b3ff5a0069e26db96d4698befa6516c25dd82ec0501b9136c6748
   languageName: node
   linkType: hard
 
