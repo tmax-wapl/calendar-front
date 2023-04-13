@@ -29,8 +29,9 @@ export const StyledAttachment = styled(Attachment)<{ isMine: boolean }>`
   width: 244px;
   box-sizing: border-box;
   & > div > p[class*='-TextEllipsisCss'] {
-    width: ${({ isMine }) => (isMine ? '120px' : '140px')};
+    width: ${({ isMine }) => (isMine ? '115px' : '140px')};
     margin: 14px 0px;
+    max-width: 120px;
   }
 `;
 
