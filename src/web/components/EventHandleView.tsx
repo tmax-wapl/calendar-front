@@ -329,7 +329,7 @@ const EventHandleView = ({ action }: Props) => {
             />
           )}
         </Observer>
-        <Observer>
+        {/* <Observer>
           {() => (
             <Notifications
               notifications={eventStore.event.notifications}
@@ -337,7 +337,7 @@ const EventHandleView = ({ action }: Props) => {
               editable
             />
           )}
-        </Observer>
+        </Observer> */}
         <Observer>
           {() => (
             <Description
