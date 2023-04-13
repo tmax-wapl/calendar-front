@@ -10,6 +10,7 @@ import {
   AttachmentsCount,
   AccordionDetails,
   StyledAttachment,
+  LoadingAttachment,
   AttachmentPlaceholder,
 } from './Attachments.style';
 
@@ -17,11 +18,19 @@ interface Props {
   isUploading?: boolean;
   setUploading?: React.Dispatch<React.SetStateAction<boolean>>;
   attachments?: AttachmentInfo[];
-  onChange?: (value: AttachmentInfo[]) => void;
+  onFileUpload?: (value: AttachmentInfo[]) => void;
+  onFileDelete?: (id: number) => void;
   editable?: boolean;
 }
 
-const Attachments = ({ attachments = [], onChange, editable = false, isUploading, setUploading }: Props) => {
+const Attachments = ({
+  attachments = [],
+  onFileUpload,
+  onFileDelete,
+  editable = false,
+  isUploading,
+  setUploading,
+}: Props) => {
   const { userId } = useContext(CalendarContext);
   const roomStore = useRoomStore();
   const { fileStore, uiStore } = useCalendarStores();
@@ -60,43 +69,34 @@ const Attachments = ({ attachments = [], onChange, editable = false, isUploading
       if (valid) {
         await roomStore.fetchRoomList();
         const roomId = roomStore.myRoom.id;
-        setUploading(true);
 
-        const uploadPromiseList = () =>
-          fileList.map(async file => {
-            try {
-              const dto: UploadFileDTO = {
-                roomId,
-                targetFolderId: null,
-                userIds: [String(userId)],
-                roleIds: [5],
-                fileSize: file.size,
-              };
-              const res = await fileStore.uploadFile(file, dto);
-              console.log('res', res);
-              if (res)
-                return {
-                  docsFileId: res.documentId,
-                  fileName: res.documentName,
-                  fileSize: res.documentSize,
-                  fileExtension: res.documentExtension,
-                };
-              return;
-            } catch (e) {
-              return;
-            }
-          });
-        const resultFileList = await Promise.all(uploadPromiseList())
-          .then(fileList => fileList)
-          .catch(e => {
-            return [];
-          });
-        console.log(
-          'result',
-          resultFileList.filter(file => file.docsFileId),
-        );
-        setUploading(false);
-        if (resultFileList.length) onChange([...attachments, ...resultFileList.filter(file => file.docsFileId)]);
+        fileList.map(async file => {
+          try {
+            setUploading(prev => !prev);
+            const dto: UploadFileDTO = {
+              roomId,
+              targetFolderId: null,
+              userIds: [String(userId)],
+              roleIds: [5],
+              fileSize: file.size,
+            };
+            await fileStore.uploadFile(file, dto).then(value => {
+              setUploading(prev => !prev);
+              if (value)
+                onFileUpload([
+                  {
+                    docsFileId: value.documentId,
+                    fileName: value.documentName,
+                    fileSize: value.documentSize,
+                    fileExtension: value.documentExtension,
+                  },
+                ]);
+            });
+          } catch (e) {
+            setUploading(prev => !prev);
+            return;
+          }
+        });
       } else {
         uiStore.setDialogInfo({
           action: reason,
@@ -113,7 +113,7 @@ const Attachments = ({ attachments = [], onChange, editable = false, isUploading
       userId: String(userId),
     });
     if (res === 200) {
-      onChange(attachments.filter(file => file.docsFileId !== deleteId));
+      onFileDelete(deleteId);
     }
   };
 
@@ -134,13 +134,7 @@ const Attachments = ({ attachments = [], onChange, editable = false, isUploading
         {!editable && <AttachmentsCount>&nbsp;{attachments.length}</AttachmentsCount>}
       </AccordionSummary>
       <AccordionDetails>
-        {isUploading ? (
-          <div
-            style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
-          >
-            <Icon.LoadingMotion />
-          </div>
-        ) : attachments?.length ? (
+        {attachments?.length ? (
           attachments.map(attachment => (
             <StyledAttachment
               key={attachment.docsFileId}
@@ -158,6 +152,11 @@ const Attachments = ({ attachments = [], onChange, editable = false, isUploading
           <></>
           // <AttachmentPlaceholder>마우스로 파일을 끌어올 수 있습니다.</AttachmentPlaceholder>
         )}
+        {isUploading ? (
+          <LoadingAttachment>
+            <Icon.LoadingMotion />
+          </LoadingAttachment>
+        ) : null}
       </AccordionDetails>
       <input type="file" ref={uploadRef} style={{ display: 'none' }} onChange={handleAttach} multiple />
     </Accordion>

@@ -27,12 +27,25 @@ export const AccordionDetails = styled(Mui.AccordionDetails)`
 
 export const StyledAttachment = styled(Attachment)<{ isMine: boolean }>`
   width: 244px;
+  flex-shrink: 0;
   box-sizing: border-box;
   & > div > p[class*='-TextEllipsisCss'] {
     width: ${({ isMine }) => (isMine ? '115px' : '140px')};
     margin: 14px 0px;
     max-width: 120px;
   }
+`;
+
+export const LoadingAttachment = styled.div`
+  display: flex;
+  width: 242px;
+  height: 42px;
+  flex-shrink: 0;
+  background: ${({ theme: { Color } }) => Color.White[100]};
+  border: 1px solid ${({ theme: { Color } }) => Color.Gray[300]};
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const AttachmentPlaceholder = styled.span`

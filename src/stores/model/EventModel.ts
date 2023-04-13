@@ -182,7 +182,7 @@ export class EventModel {
   }
 
   get attachments(): AttachmentInfo[] {
-    return this.dto.fileList;
+    return this.dto.fileList ?? [];
   }
 
   set attachments(attachments: AttachmentInfo[]) {
