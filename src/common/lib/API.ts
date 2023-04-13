@@ -7,7 +7,7 @@ export const baseUrl = isDevelop
   ? `${window.parent.env?.REACT_APP_CALENDAR_API_URL ?? 'https://calendar.teespace.net'}`
   : `${window.parent.env?.REACT_APP_CALENDAR_API_URL}`;
 
-export const docsUrlPath = process.env?.REACT_APP_OFFICE_API_URL ?? 'http://220.90.208.70:8080/superoffice';
+export const docsUrlPath = window.parent.env?.REACT_APP_OFFICE_API_URL ?? 'http://220.90.208.70:8080/superoffice';
 
 export const SettingInstance = (() => {
   CoreAPI.instance.interceptors.response.use(
