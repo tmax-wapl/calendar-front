@@ -137,6 +137,13 @@ export const CalendarContainer = styled.div`
     }
   }
 
+  .fc-timegrid {
+    .fc-highlight {
+      top: -5px;
+      bottom: 5px;
+    }
+  }
+
   .fc-timeGridWeek-view {
     tr.fc-scrollgrid-section:first-of-type {
       .fc-daygrid-day-top {
