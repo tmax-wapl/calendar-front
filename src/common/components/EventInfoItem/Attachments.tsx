@@ -119,7 +119,7 @@ const Attachments = ({
 
   const getByteSize = (bytes: number) => {
     if (bytes == 0) return '0 Bytes';
-    const k = 1000,
+    const k = 1024,
       dm = 2,
       sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
       i = Math.floor(Math.log(bytes) / Math.log(k));
