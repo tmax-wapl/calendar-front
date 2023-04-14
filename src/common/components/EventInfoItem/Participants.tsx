@@ -17,6 +17,8 @@ interface Props {
   editable?: boolean;
 }
 
+type UniqueKey = { [key: number]: boolean };
+
 const Participants = ({ participants = [], onChange, editable = false }: Props) => {
   const { uiStore, eventStore } = useCalendarStores();
   const ExpandIcon = (): JSX.Element => {
@@ -26,23 +28,67 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
 
   const closeDialog = () => uiStore.setDialogInfo(null);
 
+  const isRoomModel = (roomItem: RoomModel): roomItem is RoomModel => {
+    return 'displayName' in roomItem;
+  };
+
+  const isSearchOrgRes = (searchOrgItem: SearchOrgRes): searchOrgItem is SearchOrgRes => {
+    return !('orgId' in searchOrgItem);
+  };
+
+  const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>) => {
+    switch (true) {
+      case isRoomModel(item as RoomModel):
+        const { id, displayName } = item;
+        return { roomId: id, roomNick: displayName };
+      case isSearchOrgRes(item as SearchOrgRes):
+        const {
+          org: { roomId, orgName },
+        } = item;
+        return { roomId, roomNick: orgName };
+      default:
+        return { roomId: item.roomId, roomNick: item.orgName };
+    }
+  };
+
+  const removeDuplicates = (arr: Partial<EventMemberRoom & EventMemberPersona>[]) => {
+    const uniqueIdList = [];
+    const roomIds = {} as UniqueKey;
+    const personaIds = {} as UniqueKey;
+
+    for (const item of arr) {
+      if (isRoom(item) && !roomIds[item.roomId]) {
+        roomIds[item.roomId] = true;
+        uniqueIdList.push(item);
+      } else if (isPersona(item) && !personaIds[item.personaId]) {
+        personaIds[item.personaId] = true;
+        uniqueIdList.push(item);
+      }
+    }
+    return uniqueIdList;
+  };
+
   const onComplete = (
     personaIdList: Partial<Member>[],
     roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
   ) => {
+    const { eventMember } = eventStore.event;
+
+    const roomList = removeDuplicates([
+      ...eventMember.roomList,
+      ...roomIdList?.map(item => convertRoomObj(item)),
+    ]) as EventMemberRoom[];
+
+    const personaList = removeDuplicates([
+      ...eventMember.personaList,
+      ...personaIdList?.map(item => {
+        return { personaId: item.personaId, personaNick: item.nick };
+      }),
+    ]) as EventMemberPersona[];
+
     onChange({
-      roomList: [
-        ...eventStore.event.eventMember.roomList,
-        ...roomIdList?.map(item => {
-          return { roomId: item.id, roomNick: item.displayName };
-        }),
-      ],
-      personaList: [
-        ...eventStore.event.eventMember.personaList,
-        ...personaIdList?.map(item => {
-          return { personaId: item.personaId, personaNick: item.nick };
-        }),
-      ],
+      roomList,
+      personaList,
     });
   };
 
@@ -57,6 +103,9 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
 
   const isRoom = (item: Partial<EventMemberRoom & EventMemberPersona>): item is EventMemberRoom => {
     return 'roomId' in item;
+  };
+  const isPersona = (item: Partial<EventMemberRoom & EventMemberPersona>): item is EventMemberPersona => {
+    return 'personaId' in item;
   };
 
   const handleDelete = (item: Partial<EventMemberRoom & EventMemberPersona>) => {
@@ -80,7 +129,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
           participants.map(participant => (
             <ParticipantChip
               key={participant.roomId || participant.personaId}
-              label={participant.personaNick || participant.roomNick || participant.roomId} // 현재 roomNick 없어서 임시 처리
+              label={participant.personaNick || participant.roomNick}
               editable={editable}
               {...(editable && { onDelete: () => handleDelete(participant) })}
             />
