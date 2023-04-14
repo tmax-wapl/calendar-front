@@ -139,10 +139,9 @@ export interface CustomRoomDTO extends RoomDTO.Room {
 }
 
 export interface EventMember {
-  personaList?: EventMemberPersona[] | { personaId: number }[];
-  roomList?: EventMemberRoom[] | { roomId: number }[];
+  personaList?: EventMemberPersona[];
+  roomList?: EventMemberRoom[];
 }
-
 export interface EventMemberPersona {
   personaId: number;
   personaNick: string;
