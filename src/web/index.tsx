@@ -17,10 +17,18 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 const WebApp: React.FC = () => {
   const personaStore = usePersonaStore();
   const { selectedPersona } = useUserStore();
-  const { uiStore } = useCalendarStores();
+  const { calendarStore, uiStore } = useCalendarStores();
+
+  const fetchData = async () => {
+    if (!calendarStore.calendarList.find(calendar => calendar.type === 'share')) {
+      const calendarList = await calendarStore.getCalendarList();
+      calendarStore.setCalendarList(calendarList);
+    }
+    uiStore.changeDateRange();
+  };
 
   useEffect(() => {
-    personaStore.getWsClient(selectedPersona.id).addHandler('SHARE_EVENT', () => uiStore.changeDateRange());
+    personaStore.getWsClient(selectedPersona.id).addHandler('SHARE_EVENT', fetchData);
   }, [selectedPersona]);
 
   return (
