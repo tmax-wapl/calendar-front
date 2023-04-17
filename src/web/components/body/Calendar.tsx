@@ -451,11 +451,11 @@ const Calendar: React.FC = observer(() => {
       const startDate = getStartDate(toDateTime(start));
       eventStore.event.startDate = startDate;
       eventStore.event.endDate = startDate.plus({ minute: 30 });
-      eventStore.event.allDay = false;
     } else {
-      eventStore.event.startDate = toDateTime(start);
-      eventStore.event.endDate = isMonth ? toDateTime(end).minus({ minute: 1 }) : toDateTime(end);
-      eventStore.event.allDay = isMonth;
+      eventStore.event.startDate = isMonth ? toDateTime(start).set({ hour: 9, minute: 0 }) : toDateTime(start);
+      eventStore.event.endDate = isMonth
+        ? toDateTime(end).plus({ days: -1 }).set({ hour: 9, minute: 30 })
+        : toDateTime(end);
     }
   };
 
