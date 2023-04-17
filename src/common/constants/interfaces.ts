@@ -31,6 +31,7 @@ export interface EventDTO {
   notifications?: any[];
   exDate?: string;
   exceptionEvent?: boolean;
+  userNick: string;
 }
 
 export interface HolidayDTO {

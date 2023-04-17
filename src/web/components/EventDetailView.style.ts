@@ -18,10 +18,14 @@ export const EventDetailContainer = styled.div`
   overflow-y: auto;
 `;
 
-export const FromInfo = styled.div`
+export const FromInfoContainer = styled.div`
   display: flex;
   height: 44px;
   align-items: center;
+`;
+
+export const FromInfo = styled.div`
+  flex: 1;
 `;
 
 export const Creator = styled.span`
