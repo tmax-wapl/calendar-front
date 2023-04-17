@@ -220,4 +220,8 @@ export class EventModel {
   get shareEvent(): boolean {
     return this.dto.shareEvent;
   }
+
+  get userNick(): string {
+    return this.dto.userNick;
+  }
 }

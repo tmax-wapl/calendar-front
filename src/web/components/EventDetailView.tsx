@@ -3,7 +3,13 @@ import { Observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
 import { useNavigate } from 'react-router-dom';
-import { EventDetailViewContainer, EventDetailContainer, FromInfo, Creator } from './EventDetailView.style';
+import {
+  EventDetailViewContainer,
+  EventDetailContainer,
+  FromInfoContainer,
+  FromInfo,
+  Creator,
+} from './EventDetailView.style';
 import { EventModel } from '@/stores';
 import EventBar, { EventBarButton } from './EventBar';
 import EventItem from './EventItem';
@@ -119,11 +125,13 @@ const EventDetailView = () => {
         <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
         <Observer>
           {() => (
-            <FromInfo>
+            <FromInfoContainer>
               <Icon.CalendarLine className="mr-8" width={20} height={20} />
-              {eventStore.event.calName}
-              <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
-            </FromInfo>
+              <FromInfo>
+                {eventStore.event.calName}
+                <Creator>&nbsp;{`(일정 생성: ${eventStore.event.userNick})`}</Creator>
+              </FromInfo>
+            </FromInfoContainer>
           )}
         </Observer>
         <Observer>
