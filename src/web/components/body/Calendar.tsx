@@ -114,18 +114,30 @@ const Calendar: React.FC = observer(() => {
   const renderDayContent = (content: DayCellContentArg) => {
     const isOtherMonth = content.view.currentStart.getMonth() !== content.date.getMonth();
     const isToday = toDateString(content.date) === DateTime.local().toFormat('yyyy-LL-dd');
+    const isMonth = uiStore.viewMode === VIEW_MODE.MONTH;
 
     return (
       <Observer>
-        {() => (
-          <DayNumWrapper
-            className={`${isToday ? 'fc-today' : ''}`}
-            color={DateColor(content)}
-            opacity={isOtherMonth ? 0.3 : 1}
-          >
-            <DayNum>{content.dayNumberText.slice(0, -1)}</DayNum>
-          </DayNumWrapper>
-        )}
+        {() =>
+          isMonth && (
+            <div style={{ display: 'flex' }}>
+              <DayNumWrapper isToday={isToday} color={DateColor(content)} opacity={isOtherMonth ? 0.3 : 1}>
+                <span className={`${isToday ? 'fc-today' : ''}`}>
+                  <DayNum isToday={isToday}>{content.dayNumberText.slice(0, -1)}</DayNum>
+                </span>
+                {uiStore.isHolidayChecked && holiday(content, isMonth)}
+                {uiStore.isLunarChecked && (
+                  <Lunar
+                    isRed={isHoliday(toDateString(content.date)) && uiStore.isHolidayChecked}
+                    style={{ marginLeft: 'auto', fontSize: '11px' }}
+                  >
+                    {lunar(content.date)}
+                  </Lunar>
+                )}
+              </DayNumWrapper>
+            </div>
+          )
+        }
       </Observer>
     );
   };
@@ -152,12 +164,15 @@ const Calendar: React.FC = observer(() => {
     return `음 ${month}.${day}.`;
   };
 
-  const holiday = (content: DayHeaderContentArg) => {
+  const holiday = (content: DayHeaderContentArg | DayCellContentArg, isMonth = true) => {
     const date = toDateString(content.date);
     const holiday = calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
     return (
       holiday && (
-        <Holiday isRed={holiday.isRed} style={{ marginLeft: '10px' }}>
+        <Holiday
+          isRed={holiday.isRed}
+          style={{ marginLeft: isMonth ? '12px' : '10px', fontSize: isMonth ? '11px' : '' }}
+        >
           {holiday.name}
         </Holiday>
       )
@@ -171,9 +186,12 @@ const Calendar: React.FC = observer(() => {
           <WeekDayHeader color={DateColor(content, true)}>
             {date(content)}
             {getDay(content.dow)}
-            {uiStore.isHolidayChecked && holiday(content)}
+            {uiStore.isHolidayChecked && holiday(content, false)}
             {uiStore.isLunarChecked && (
-              <Lunar isRed={isHoliday(toDateString(content.date))} style={{ marginLeft: 'auto', fontSize: '11px' }}>
+              <Lunar
+                isRed={isHoliday(toDateString(content.date)) && uiStore.isHolidayChecked}
+                style={{ marginLeft: 'auto', fontSize: '11px' }}
+              >
                 {lunar(content.date)}
               </Lunar>
             )}

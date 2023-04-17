@@ -364,16 +364,24 @@ export const WeekDayHeader = styled.span<{ color: string }>`
   align-items: center;
 `;
 
-export const DayNumWrapper = styled.div<{ color: string; opacity: number }>`
+export const DayNumWrapper = styled.div<{ color: string; opacity: number; isToday: boolean }>`
+  display: flex;
+  flex: 1;
   color: ${({ color }) => color};
   opacity: ${({ opacity }) => opacity};
-  margin: 6px 0px 0px 7px;
+  padding: 6px 12px 0px 12px;
+  padding-left: ${({ isToday }) => isToday && '6px'};
+  align-items: center;
 `;
 
-export const DayNum = styled.span`
-  position: relative;
-  top: 4px;
-  left: 5px;
+export const DayNum = styled.span<{ isToday: boolean }>`
+  ${({ isToday }) =>
+    isToday &&
+    `
+    position: relative;
+    top: 4px;
+    left: 5px;
+  `}
 `;
 
 export const Today = styled.span`
