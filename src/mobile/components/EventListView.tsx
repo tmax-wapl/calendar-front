@@ -7,7 +7,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import { getLunar } from 'holiday-kr';
 import { autorun } from 'mobx';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { toISO, toLuxon } from '@/utils';
 import { EventModel } from '@/stores/model/EventModel';
 import { VIEW_MODE } from '@/common/constants';
@@ -15,8 +14,6 @@ import { VIEW_MODE } from '@/common/constants';
 const EventListView = () => {
   const { uiStore, eventStore, calendarStore } = useCalendarStores();
   const [eventList, setEventList] = useState([]);
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const getDateDay = (): string => {
     const { dateDay } = uiStore;
@@ -26,7 +23,7 @@ const EventListView = () => {
   const handleClickEvent = useCallback(async (event: EventModel) => {
     const eventInfo = await eventStore.getEventInfo(+event.id, event.start);
     eventStore.setEvent(eventInfo);
-    if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+    uiStore.pageDialogInfo = 'detail';
   }, []);
 
   useEffect(() => {

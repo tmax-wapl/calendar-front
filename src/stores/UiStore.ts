@@ -61,6 +61,8 @@ export default class UiStore {
   isViewRow = false;
   rowNum: number = null;
 
+  pageDialogInfo: string = null;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -81,6 +83,7 @@ export default class UiStore {
       isViewRow: observable,
       rowNum: observable,
       setToggleViewRow: action,
+      pageDialogInfo: observable,
     });
   }
 
