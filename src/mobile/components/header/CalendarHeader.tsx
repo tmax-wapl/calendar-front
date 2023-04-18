@@ -1,14 +1,25 @@
 import { memo, useEffect, useState } from 'react';
-import { Icon } from '@wapl/ui';
-import { Observer } from 'mobx-react-lite';
+import { Icon, styled } from '@wapl/ui';
 import { DateTime } from 'luxon';
-import DatePickerHeader from '@/common/components/DatePicker/DatePickerHeader';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarHeaderContainer, RightContainer, TodayButton } from './CalendarHeader.style';
+import DateSpinnerPicker from '@/common/components/SpinnerPicker/DateSpinnerPicker';
+import { observer } from 'mobx-react-lite';
+
+export const DateHeader = observer(({ togglePicker }: { togglePicker: () => void }) => {
+  const { uiStore } = useCalendarStores();
+
+  return (
+    <DateHeaderWrapper onClick={togglePicker}>
+      <TextButton>{uiStore.dateRange.view.toFormat('yyyy.LL')}</TextButton>
+    </DateHeaderWrapper>
+  );
+});
 
 const CalendarHeader = () => {
   const { uiStore } = useCalendarStores();
   const [titleDate, setTitleDate] = useState<DateTime>(DateTime.now());
+  const [isDateSpinnerOpen, setIsDateSpinnerOpen] = useState(false);
 
   const BookMarkIcon = memo(() => {
     return (
@@ -33,29 +44,42 @@ const CalendarHeader = () => {
     uiStore.setDateDay(titleDate);
   };
 
+  const togglePicker = () => setIsDateSpinnerOpen(!isDateSpinnerOpen);
+
   useEffect(() => {
     handleDate();
   }, [titleDate]);
 
   return (
     <CalendarHeaderContainer>
-      <Observer>
-        {() => (
-          <DatePickerHeader
-            size={1}
-            selectedDate={titleDate}
-            titleDate={uiStore.dateRange.view}
-            setTitleDate={setTitleDate}
-            isMobile
-          />
-        )}
-      </Observer>
+      <DateHeader togglePicker={togglePicker} />
       <RightContainer>
         <BookMarkIcon />
         <TodayButton onClick={handleToday}>오늘</TodayButton>
       </RightContainer>
+      {isDateSpinnerOpen && (
+        <DateSpinnerPicker
+          date={uiStore.dateRange.view}
+          onDateChange={selectedDate => uiStore.handleDateClick(selectedDate, togglePicker)}
+          onOutsideClick={togglePicker}
+        />
+      )}
     </CalendarHeaderContainer>
   );
 };
 
 export default CalendarHeader;
+
+const DateHeaderWrapper = styled.div`
+  display: flex;
+`;
+
+export const TextButton = styled.div`
+  display: flex;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: 500;
+  height: 18px;
+`;
