@@ -1,8 +1,15 @@
 import { memo, useEffect, useState } from 'react';
-import { Icon, styled } from '@wapl/ui';
+import { Icon } from '@wapl/ui';
 import { DateTime } from 'luxon';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { CalendarHeaderContainer, RightContainer, TodayButton } from './CalendarHeader.style';
+import {
+  CalendarHeaderContainer,
+  DateHeaderWrapper,
+  IconButton,
+  RightContainer,
+  TextButton,
+  TodayButton,
+} from './CalendarHeader.style';
 import DateSpinnerPicker from '@/common/components/SpinnerPicker/DateSpinnerPicker';
 import { observer } from 'mobx-react-lite';
 
@@ -20,15 +27,18 @@ const CalendarHeader = () => {
   const { uiStore } = useCalendarStores();
   const [titleDate, setTitleDate] = useState<DateTime>(DateTime.now());
   const [isDateSpinnerOpen, setIsDateSpinnerOpen] = useState(false);
+  const [importance, setImportance] = useState(false);
 
-  const BookMarkIcon = memo(() => {
+  const BookMarkIcon = memo(({ color, onClick }: { color: string; onClick: () => void }) => {
     return (
-      <Icon.BookmarkFill
-        width={20}
-        height={20}
-        color="#bdc1c6"
-        {...{ style: { minWidth: '20px', margin: '5px 14px 0px 0px' } }}
-      />
+      <IconButton onClick={onClick}>
+        <Icon.BookmarkFill
+          width={20}
+          height={20}
+          color={color}
+          {...{ style: { minWidth: '20px', margin: '5px 14px 0px 0px' } }}
+        />
+      </IconButton>
     );
   });
 
@@ -46,6 +56,11 @@ const CalendarHeader = () => {
 
   const togglePicker = () => setIsDateSpinnerOpen(!isDateSpinnerOpen);
 
+  const toggleImportance = () => {
+    setImportance(!importance);
+    uiStore.setImportanceChecked(!importance);
+  };
+
   useEffect(() => {
     handleDate();
   }, [titleDate]);
@@ -54,7 +69,7 @@ const CalendarHeader = () => {
     <CalendarHeaderContainer>
       <DateHeader togglePicker={togglePicker} />
       <RightContainer>
-        <BookMarkIcon />
+        <BookMarkIcon onClick={toggleImportance} color={importance ? '#fcbb00' : '#bdc1c6'} />
         <TodayButton onClick={handleToday}>오늘</TodayButton>
       </RightContainer>
       {isDateSpinnerOpen && (
@@ -69,17 +84,3 @@ const CalendarHeader = () => {
 };
 
 export default CalendarHeader;
-
-const DateHeaderWrapper = styled.div`
-  display: flex;
-`;
-
-export const TextButton = styled.div`
-  display: flex;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: 18px;
-  line-height: 18px;
-  font-weight: 500;
-  height: 18px;
-`;
