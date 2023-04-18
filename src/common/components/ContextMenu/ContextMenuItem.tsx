@@ -199,6 +199,25 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     eventStore.event.endDate = toLuxon(date.enddate);
   };
 
+  const isRoomModel = (roomItem: RoomModel): roomItem is RoomModel => {
+    return 'displayName' in roomItem;
+  };
+
+  const isSearchOrgRes = (searchOrgItem: SearchOrgRes): searchOrgItem is SearchOrgRes => {
+    return !('orgId' in searchOrgItem);
+  };
+
+  const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>) => {
+    switch (true) {
+      case isRoomModel(item as RoomModel):
+        return item?.id;
+      case isSearchOrgRes(item as SearchOrgRes):
+        return item?.org.roomId;
+      default:
+        return item.roomId;
+    }
+  };
+
   const handleEventShare = async (
     personaIdList: Partial<Member>[],
     roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
@@ -206,9 +225,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     await eventStore.shareEvent({
       eventId: id,
       personaIdList: personaIdList.map(persona => persona.personaId),
-      roomIdList: roomIdList.map(room => room.id),
+      roomIdList: roomIdList.map(room => convertRoomObj(room)),
     });
-    // TODO: 공유 완료 되었다는 팝업
   };
 
   const handleEventShareClick = () => {
