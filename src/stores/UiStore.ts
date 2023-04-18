@@ -125,10 +125,10 @@ export default class UiStore {
     return this.mainApi;
   }
 
-  changeDateRange() {
+  changeDateRange(selectDate?: Date) {
     this.setDateRange({
       start: toDateString(this.mainApi.view.activeStart),
-      view: DateTime.fromJSDate(this.mainApi?.getDate()),
+      view: DateTime.fromJSDate(!selectDate ? this.mainApi?.getDate() : selectDate),
       end: toDateString(this.mainApi.view.activeEnd),
     });
   }
