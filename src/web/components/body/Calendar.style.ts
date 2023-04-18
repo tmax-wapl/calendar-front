@@ -7,6 +7,7 @@ export const CalendarContainer = styled.div`
     // 풀캘린더 전체
     //border-bottom: solid 1px #eeeeee;
     width: 100%;
+    min-width: 993px; // 양옆 padding 포함 1026
   }
   .fc-header-toolbar {
     display: none;
