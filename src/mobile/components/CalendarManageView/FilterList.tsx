@@ -1,7 +1,6 @@
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Checkbox } from '@wapl/ui';
-import { FilterName } from './CalendarManageView.style';
-import { CheckBoxWrapper } from './FilterList.style';
+import { FilterName, CheckBoxWrapper } from './FilterList.style';
 import { observer } from 'mobx-react-lite';
 import { ChangeEvent } from 'react';
 

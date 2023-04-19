@@ -2,6 +2,7 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { useEffect } from 'react';
 import FilterList from './FilterList';
 import MyCalendarList from './MyCalendarList';
+import OtherCalendarList from './OtherCalendarList';
 import { CalendarManageViewContainer, Divider } from './CalendarManageView.style';
 import EventBar from '../EventBar';
 
@@ -28,6 +29,7 @@ const CalendarManageView = () => {
         <Divider />
         <MyCalendarList />
         <Divider />
+        <OtherCalendarList />
       </CalendarManageViewContainer>
     </>
   );
