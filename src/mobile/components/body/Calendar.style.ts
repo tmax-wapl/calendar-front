@@ -119,7 +119,7 @@ export const CalendarContainer = styled.div<{ isViewRow?: boolean; rowNum?: numb
         margin-top: 5px;
       }
       .fc-daygrid-day-events {
-        margin-top: 15px;
+        margin-top: 0px;
       }
 
       .fc-daygrid-day-number {
