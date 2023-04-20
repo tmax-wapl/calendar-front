@@ -1,6 +1,7 @@
 import { Icon } from '@wapl/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { ColorItem } from '@/common';
 import EventBar from '../EventBar';
 import {
   CalendarSettingViewContainer,
@@ -12,9 +13,9 @@ import {
 } from './CalendarSettingView.style';
 
 const CalendarSettingView = () => {
-  const { uiStore } = useCalendarStores();
+  const { uiStore, calendarStore } = useCalendarStores();
   const [isEdit, setEdit] = useState<boolean>(false);
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(calendarStore.calendar.name);
   const inputRef = useRef(null);
 
   const handleOutsideClick = (e: MouseEvent) => {
@@ -29,7 +30,7 @@ const CalendarSettingView = () => {
   });
 
   const handleBackClick = () => {
-    uiStore.pageDialogInfo = null;
+    uiStore.pageDialogInfo = 'calendarManage';
   };
 
   return (
@@ -54,15 +55,15 @@ const CalendarSettingView = () => {
           />
         ) : (
           <CalendarName>
-            길동과 친구들 in 괌
+            {calendarStore.calendar.name}
             <IconButton onClick={() => setEdit(true)}>
               <Icon.EditLine color="#BDC1C6" width={20} height={20} />
             </IconButton>
           </CalendarName>
         )}
         <SettingItem>
-          <Icon.CalendarDotFill color="#3384FF" width={20} height={20} className="mr-8" />
-          파랑
+          <Icon.CalendarDotFill color={calendarStore.calendar.color || ''} width={20} height={20} className="mr-8" />
+          {ColorItem.find(color => color.value === calendarStore.calendar.color).label || ''}
         </SettingItem>
         <Divider />
         <SettingItem>

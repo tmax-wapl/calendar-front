@@ -17,9 +17,9 @@ const MyCalendarList = observer(() => {
         </AddButton>
       </FilterName>
       {calendarStore.calendarList
-        ?.filter((category: CalendarModel) => category.type !== 'url' && category.type !== 'share')
-        .map((category: CalendarModel) => (
-          <Item key={category.id} category={category} />
+        ?.filter((calendar: CalendarModel) => calendar.type !== 'url' && calendar.type !== 'share')
+        .map((calendar: CalendarModel) => (
+          <Item key={calendar.id} calendar={calendar} />
         ))}
     </MyCalendarListContainer>
   );

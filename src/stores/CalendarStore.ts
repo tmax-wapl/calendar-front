@@ -13,6 +13,7 @@ export default class CalendarStore {
   roomCalendarList: CalendarModel[] = [];
   eventList: EventModel[] = [];
   holidayList: HolidayDTO[] = [];
+  calendar: CalendarModel = null;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -120,6 +121,10 @@ export default class CalendarStore {
 
   getCalendarId() {
     return this.calendarList?.find(item => item.mainFlag)?.id;
+  }
+
+  setCalendar(calendar: CalendarModel) {
+    this.calendar = calendar;
   }
 
   async shareCalendar(dto: CalendarShareDTO) {

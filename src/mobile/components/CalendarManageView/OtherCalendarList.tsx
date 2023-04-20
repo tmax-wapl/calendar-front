@@ -34,7 +34,7 @@ const OtherCalendarList = observer(() => {
           <></>
         ) : (
           // <RoomCalendarItem key={calendar.roomId} calendar={calendar} />
-          <Item key={calendar.id} category={calendar} />
+          <Item key={calendar.id} calendar={calendar} />
         ),
       )}
     </OtherCalendarListContainer>
