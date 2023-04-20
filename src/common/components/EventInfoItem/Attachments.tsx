@@ -47,7 +47,7 @@ const Attachments = ({
     if (fileList.length > 30) {
       return { valid: false, reason: 'selectedFileCount' };
     }
-    if (fileList.some(file => file.size > LIMIT)) {
+    if (fileList.reduce((a, b) => a + b.size, 0) > LIMIT) {
       return { valid: false, reason: 'selectedFileSize' };
     }
     if (fileList.reduce((a, b) => a + b.size, 0) + attachments.reduce((a, b) => a + b.fileSize, 0) > TOTAL_LIMIT) {
@@ -80,7 +80,8 @@ const Attachments = ({
               roleIds: [5],
               fileSize: file.size,
             };
-            await fileStore.uploadFile(file, dto).then(value => {
+            const tempId = Math.random().toString(36).substring(2, 16);
+            await fileStore.uploadFile(file, dto, tempId).then(value => {
               setUploading(prev => !prev);
               if (value)
                 onFileUpload([
@@ -94,6 +95,7 @@ const Attachments = ({
             });
           } catch (e) {
             setUploading(prev => !prev);
+            Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
             return;
           }
         });
@@ -103,6 +105,7 @@ const Attachments = ({
           onClick: [() => uiStore.setDialogInfo(null)],
         });
       }
+      e.target.value = '';
     }
   };
 
