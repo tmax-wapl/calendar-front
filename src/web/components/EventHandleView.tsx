@@ -166,6 +166,7 @@ const EventHandleView = ({ action }: Props) => {
 
   const isModified = () => {
     const { event } = eventStore;
+    if (isUploading) return true;
     return (Object.keys(event.dto) as Array<keyof typeof event.dto>).find(key => {
       if ((!event.dto[key] && !originEvent.dto[key]) || key === 'repeatStartDate') return false;
       if (['start', 'end', 'repeatEndDate'].includes(key))
@@ -178,6 +179,7 @@ const EventHandleView = ({ action }: Props) => {
 
   const preventRefresh = (e: BeforeUnloadEvent) => {
     if (!isModified()) return;
+    Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
     handleUploadFileDelete();
     e.preventDefault();
     e.returnValue = '';
@@ -210,6 +212,7 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const handleReset = () => {
+    Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
     handleUploadFileDelete();
     eventStore.setEvent(new EventModel({ ...originEvent.dto }));
     closeDialog();
@@ -235,6 +238,7 @@ const EventHandleView = ({ action }: Props) => {
       onClick: [
         closeDialog,
         () => {
+          Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
           handleUploadFileDelete();
           navigate(`/main/view-mode/${uiStore.viewMode}/date`);
           closeDialog();

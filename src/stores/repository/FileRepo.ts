@@ -1,15 +1,16 @@
 import { UploadFileDTO, DeleteFileDTO } from '@/common/constants/interfaces';
 import { API, docsUrlPath } from '@/common/lib/API';
 import { HTTPError } from '@/error';
+import { CancelToken } from 'axios';
 
 export default class FileRepo {
-  async uploadFile(file: File, dto: UploadFileDTO) {
+  async uploadFile(file: File, dto: UploadFileDTO, cancelToken: CancelToken) {
     try {
       const form = new FormData();
       form.append('file', file);
       const blob = new Blob([JSON.stringify(dto)], { type: 'application/json' });
       form.append('input', blob);
-      const { data } = await API.post(`${docsUrlPath}/document/upload`, form);
+      const { data } = await API.post(`${docsUrlPath}/document/upload`, form, { cancelToken });
       return data;
     } catch (e) {
       if (e instanceof HTTPError) {
