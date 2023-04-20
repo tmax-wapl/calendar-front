@@ -23,7 +23,7 @@ const style = [
 export const ContextMenu = () => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
-  const { target, position, id, color, hideColorPicker, type, date } = uiStore.contextClickArg;
+  const { target, position, id, color, hideColorPicker, type, date, data } = uiStore.contextClickArg;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -60,11 +60,18 @@ export const ContextMenu = () => {
         eventStore.updateEventColor('' + id, color);
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
+      case 'orgCalendar':
       case 'roomCalendar':
-        const newRoomList = calendarStore.roomCalendarList?.map((room: CalendarModel) =>
-          room.roomId === id ? { ...room.dto, color } : room.dto,
-        );
-        calendarStore.setLocalRoomCalendarList(userId, newRoomList);
+        const isContained = calendarStore.roomCalendarList?.some((cal: CalendarModel) => cal.roomId === id);
+        if (isContained) {
+          const newRoomList = calendarStore.roomCalendarList?.map((room: CalendarModel) =>
+            room.roomId === id ? { ...room.dto, color } : room.dto,
+          );
+          calendarStore.setLocalRoomCalendarList(userId, newRoomList);
+        } else {
+          data.dto.color = color;
+          calendarStore.addLocalRoomCalendarItem(userId, data.dto);
+        }
         const roomEventList = calendarStore.eventList.map(event =>
           event.roomId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
         );

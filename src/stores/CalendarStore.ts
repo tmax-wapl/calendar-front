@@ -132,6 +132,12 @@ export default class CalendarStore {
     return res;
   }
 
+  setInitialLocalRoomCalendarList(personaId: number) {
+    const setting = {} as { [key: number]: [] };
+    setting[personaId] = [];
+    localStorage.setItem('RoomCalendarList', JSON.stringify(setting));
+  }
+
   getLocalRoomCalendarList(personaId: number) {
     const setting = JSON.parse(localStorage.getItem('RoomCalendarList'));
     if (!setting) {
@@ -157,5 +163,16 @@ export default class CalendarStore {
     const settingString = JSON.stringify(setting);
     localStorage.setItem('RoomCalendarList', settingString);
     this.setRoomCalendarList(roomList.map(room => new CalendarModel(room)));
+  }
+
+  addLocalRoomCalendarItem(personaId: number, roomItem: Partial<CalendarDTO>) {
+    const roomCalenarList = JSON.parse(localStorage.getItem('RoomCalendarList'));
+    if (roomCalenarList) {
+      roomCalenarList[personaId] = [...roomCalenarList[personaId], roomItem];
+      const settingString = JSON.stringify(roomCalenarList);
+
+      localStorage.setItem('RoomCalendarList', settingString);
+      this.setRoomCalendarList(roomCalenarList[personaId].map((room: CalendarDTO) => new CalendarModel(room)));
+    }
   }
 }

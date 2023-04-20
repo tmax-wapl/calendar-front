@@ -292,6 +292,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const menuItems = (() => {
     switch (type) {
       case 'mainCalendar':
+      case 'orgCalendar':
         return [actions.renameCalendar];
       case 'subCalendar':
         return [actions.renameCalendar, actions.deleteCalendar];
