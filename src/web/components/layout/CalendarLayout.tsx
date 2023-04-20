@@ -16,8 +16,12 @@ const CalendarLayout: React.FC = () => {
   const fetchData = async () => {
     const calendarList = await calendarStore.getCalendarList();
     calendarStore.setCalendarList(calendarList);
+
     const roomCalendarList = calendarStore.getLocalRoomCalendarList(userId);
-    calendarStore.setRoomCalendarList(roomCalendarList?.map((room: Partial<CalendarDTO>) => new CalendarModel(room)));
+    if (roomCalendarList.length === 0) calendarStore.setInitialLocalRoomCalendarList(userId);
+    else
+      calendarStore.setRoomCalendarList(roomCalendarList?.map((room: Partial<CalendarDTO>) => new CalendarModel(room)));
+
     setLoading(false);
   };
 

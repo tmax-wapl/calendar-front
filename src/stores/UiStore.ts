@@ -37,6 +37,7 @@ interface ContextClickArg {
     startdate?: string;
     enddate?: string;
   };
+  data?: any;
 }
 
 export default class UiStore {
