@@ -12,10 +12,15 @@ export const RepeatItemWrapper = styled.div`
   display: flex;
 `;
 
+export const BodyWrapper = styled.div`
+  max-height: 640px;
+  overflow: auto;
+`;
+
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 550px;
+  min-height: 500px;
 `;
 
 export const PickerWrapper = styled.div`
@@ -44,6 +49,7 @@ export const RepeatIntervalInput = styled.input`
 
 export const PickerContainer = styled.div`
   display: flex;
+  position: relative;
   height: 126px;
   padding: 0px 16px;
   background: #f8f9fa;
@@ -61,20 +67,22 @@ export const Selected = styled.span`
   width: calc(100% - 32px);
   position: absolute;
   height: 46px;
-  top: 148px;
+  top: 41px;
   background: ${({ theme: { Color } }) => Color.Black[6]};
   border-radius: 8px;
 `;
 
 export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   display: flex;
-  width: 100px;
+  width: 92px;
+  height: 28px;
   padding: 6px;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   border-radius: 6px;
   ${({ isInvalid, theme: { Color } }) => isInvalid && `border: 1px solid ${Color.Validation.negative}`};
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
   cursor: pointer;
   :hover {
     background: ${({ theme: { Color } }) => Color.Black[6]};
@@ -84,6 +92,7 @@ export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
 export const DatePickerWrapper = styled.div`
   display: flex;
   justify-content: center;
+  overflow: hidden;
 `;
 
 export const RepeatDay = styled.div`

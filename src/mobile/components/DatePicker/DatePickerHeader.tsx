@@ -11,14 +11,13 @@ import {
 import TitlePicker from './TitlePicker';
 
 interface DatePickerHeaderProps {
-  size?: number;
   selectedDate: DateTime;
   titleDate: DateTime;
   setTitleDate: React.Dispatch<React.SetStateAction<DateTime>>;
   isMobile?: boolean;
 }
 
-const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: DatePickerHeaderProps) => {
+const DatePickerHeader = ({ selectedDate, titleDate, setTitleDate }: DatePickerHeaderProps) => {
   const [isPickerOpen, setPickerOpen] = useState<boolean>(false);
   const [isYearClick, setYearClick] = useState<boolean>(false);
   const [isMonthClick, setMonthClick] = useState<boolean>(false);
@@ -68,7 +67,7 @@ const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: D
   };
 
   return (
-    <HeaderContainer size={size}>
+    <HeaderContainer>
       <TitleWrapper>
         <TextButton id="yearButton" selected={isYearClick} onClick={() => handleTitleClick('year')}>
           {titleDate.toFormat('yyyy')}

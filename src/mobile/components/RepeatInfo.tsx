@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import { Options, Weekday } from 'rrule';
-import { Icon, ContextMenu, Button, Switch } from '@wapl/ui';
+import { Icon, ContextMenu, Button, Switch, Tooltip } from '@wapl/ui';
 import {
   RepeatInfoContainer,
   ItemContainer,
-  RepeatIntervalInput,
   PickerContainer,
   DateWrapper,
   DatePickerWrapper,
@@ -17,11 +16,11 @@ import {
   ContentWrapper,
   PickerWrapper,
   ButtonWrapper,
+  BodyWrapper,
 } from './RepeatInfo.style';
-import { getRepeatSummary } from '@/utils';
 import EventBar from './EventBar';
 import SpinnerPickerItem from '@/common/components/SpinnerPicker/SpinnerPickerItem';
-import DatePicker from '@/common/components/DatePicker/DatePicker';
+import DatePicker from './DatePicker/DatePicker';
 
 interface Props {
   rrule?: Partial<Options>;
@@ -111,74 +110,86 @@ const RepeatInfo = ({
       </ItemContainer>
       <ContextMenu open={open} onClose={handleClose}>
         <EventBar title={'반복 설정'} leftSide={[{ action: 'close', onClick: handleClose }]} />
-        <ContentWrapper>
-          <ItemTitleContainer>
-            반복
-            <Switch size="small" checked={repeatToggle} onChange={() => setRepeatToggle(!repeatToggle)} />
-          </ItemTitleContainer>
-          {repeatToggle ? (
-            <>
-              <PickerWrapper>
-                <PickerContainer>
-                  <Selected />
-                  <SpinnerPickerItem
-                    height={126}
-                    itemHeight={42}
-                    item={freqency}
-                    selectedValue={freq}
-                    onValueChange={handleFreqChange}
-                  />
-                  <SpinnerPickerItem
-                    height={126}
-                    itemHeight={42}
-                    item={units}
-                    selectedValue={unit}
-                    onValueChange={handleUnitsChange}
-                  />
-                </PickerContainer>
-                {rrule?.freq === 2 && (
-                  <ItemContainer style={{ padding: '0 48px' }}>
-                    {dayOfWeek.map((day, index) => {
-                      return (
-                        <RepeatDay
-                          key={day}
-                          className={`${byweekday?.includes(index) ? 'select' : ''}`}
-                          onClick={() => handleDayClick(index)}
-                        >
-                          {day}
-                        </RepeatDay>
-                      );
-                    })}
-                  </ItemContainer>
+        <BodyWrapper>
+          <ContentWrapper>
+            <ItemTitleContainer>
+              반복
+              <Switch size="small" checked={repeatToggle} onChange={() => setRepeatToggle(!repeatToggle)} />
+            </ItemTitleContainer>
+            {repeatToggle ? (
+              <>
+                <PickerWrapper>
+                  <PickerContainer>
+                    <Selected />
+                    <SpinnerPickerItem
+                      height={126}
+                      itemHeight={42}
+                      item={freqency}
+                      selectedValue={freq}
+                      onValueChange={handleFreqChange}
+                    />
+                    <SpinnerPickerItem
+                      height={126}
+                      itemHeight={42}
+                      item={units}
+                      selectedValue={unit}
+                      onValueChange={handleUnitsChange}
+                    />
+                  </PickerContainer>
+                  {rrule?.freq === 2 && (
+                    <ItemContainer style={{ padding: '0 48px', maxWidth: '262px', margin: 'auto' }}>
+                      {dayOfWeek.map((day, index) => {
+                        return (
+                          <RepeatDay
+                            key={day}
+                            className={`${byweekday?.includes(index) ? 'select' : ''}`}
+                            onClick={() => handleDayClick(index)}
+                          >
+                            {day}
+                          </RepeatDay>
+                        );
+                      })}
+                    </ItemContainer>
+                  )}
+                </PickerWrapper>
+                <RepeatLabel style={{ marginBottom: '40px' }}>{`일정이 ${freq}${
+                  unit === '월' ? '개월' : unit
+                } 간격 반복됩니다.`}</RepeatLabel>
+                <ItemTitleContainer>
+                  반복 종료
+                  <Switch size="small" checked={!!repeatEndDate} onChange={handleEndDateSwitch} />
+                </ItemTitleContainer>
+                {repeatEndDate && (
+                  <>
+                    <ItemTitleContainer>
+                      종료 날짜
+                      <Tooltip
+                        disableHoverListener={startDate <= repeatEndDate}
+                        placement="top"
+                        title="시작일과 같거나 이후로 설정해 주세요."
+                        sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
+                      >
+                        <DateWrapper isInvalid={startDate > repeatEndDate} onClick={() => console.log('히')}>
+                          {repeatEndDate.toFormat('yyyy.LL.dd')}
+                        </DateWrapper>
+                      </Tooltip>
+                    </ItemTitleContainer>
+                    <DatePickerWrapper>
+                      <DatePicker date={repeatEndDate} onDateClick={handleEndDateChange} backgroundColor="#F8F9FA" />
+                    </DatePickerWrapper>
+                  </>
                 )}
-              </PickerWrapper>
-              <RepeatLabel style={{ marginBottom: '40px' }}>{`일정이 ${freq}${
-                unit === '월' ? '개월' : unit
-              } 간격 반복됩니다.`}</RepeatLabel>
-              <ItemTitleContainer>
-                반복 종료
-                <Switch size="small" checked={!!repeatEndDate} onChange={handleEndDateSwitch} />
-              </ItemTitleContainer>
-              {repeatEndDate && (
-                <DatePickerWrapper>
-                  <DatePicker
-                    size={1.3}
-                    date={repeatEndDate}
-                    onDateClick={handleEndDateChange}
-                    backgroundColor="#F8F9FA"
-                  />
-                </DatePickerWrapper>
-              )}
-            </>
-          ) : (
-            <RepeatLabel>일정 반복이 꺼져있습니다.</RepeatLabel>
-          )}
-        </ContentWrapper>
-        <ButtonWrapper>
-          <Button width="100%" variant={'primary'} onClick={handleClose}>
-            확인
-          </Button>
-        </ButtonWrapper>
+              </>
+            ) : (
+              <RepeatLabel>일정 반복이 꺼져있습니다.</RepeatLabel>
+            )}
+          </ContentWrapper>
+          <ButtonWrapper>
+            <Button width="100%" variant={'primary'} onClick={handleClose}>
+              확인
+            </Button>
+          </ButtonWrapper>
+        </BodyWrapper>
       </ContextMenu>
     </RepeatInfoContainer>
   );

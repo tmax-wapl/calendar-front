@@ -1,10 +1,9 @@
 import { styled, Mui } from '@wapl/ui';
 
-export const HeaderContainer = styled.div<{ size: number }>`
+export const HeaderContainer = styled.div`
   display: flex;
-  width: calc(224px * ${({ size }) => size});
-  height: 18px;
-  padding: 0px 2px;
+  height: 56px;
+  padding: 24px;
   margin-bottom: 12px;
   box-sizing: border-box;
 `;
@@ -14,7 +13,8 @@ export const TitleWrapper = styled.div`
   align-items: center;
   color: ${({ theme: { Color } }) => Color.Gray[900]};
   cursor: pointer;
-  ${({ theme: { Font } }) => Font.Text.m.Medium};
+  font-size: 18px;
+  font-weight: 500;
   svg {
     margin-left: 4px;
   }
@@ -25,7 +25,8 @@ export const TextButton = styled.div<{ selected: boolean }>`
   align-items: center;
   cursor: pointer;
   border-radius: 6px;
-  ${({ theme: { Font } }) => Font.Text.m.Medium};
+  font-size: 18px;
+  font-weight: 500;
   ${({ selected, theme: { Color } }) => selected && { background: Color.Black[6] }}
 `;
 
