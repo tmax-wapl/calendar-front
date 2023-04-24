@@ -100,6 +100,13 @@ const Calendar: React.FC = observer(() => {
     });
   };
 
+  const fetchEvent = () => {
+    if (!uiStore.notiData) return;
+    const event = uiStore.mainApi.getEventById(`${uiStore.notiData.eventId}`);
+    if (event) handleEventClick({ event });
+    uiStore.setNotiData(null);
+  };
+
   const isHoliday = (date: string) => {
     return !!calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
   };
@@ -279,8 +286,8 @@ const Calendar: React.FC = observer(() => {
     setDirection(!direction);
   };
 
-  const handleEventClick = async ({ event, jsEvent }: EventClickArg) => {
-    jsEvent.stopPropagation();
+  const handleEventClick = async ({ event, jsEvent }: Partial<EventClickArg>) => {
+    jsEvent?.stopPropagation();
     const eventInfo = await eventStore.getEventInfo(+event.id, event.startStr, event.extendedProps.dto.roomId);
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
@@ -499,9 +506,10 @@ const Calendar: React.FC = observer(() => {
   }, []);
 
   useEffect(() => {
-    const dispose = autorun(() => {
+    const dispose = autorun(async () => {
       const { start, end } = uiStore.dateRange;
-      fetchData(start, end);
+      await fetchData(start, end);
+      fetchEvent();
     });
     return () => dispose();
   }, []);
@@ -521,6 +529,12 @@ const Calendar: React.FC = observer(() => {
       if (target) Array.from(target).map(el => el.removeEventListener('dblclick', handleDoubleClick));
     };
   });
+
+  useEffect(() => {
+    if (!uiStore.notiData) return;
+    uiStore.mainApi?.gotoDate(uiStore.notiData.start);
+    uiStore.changeDateRange();
+  }, [uiStore.notiData]);
 
   return (
     <CalendarContainer>

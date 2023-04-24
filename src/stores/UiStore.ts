@@ -40,24 +40,23 @@ interface ContextClickArg {
   data?: any;
 }
 
+interface NotiData {
+  eventId: number;
+  start: string;
+}
+
 export default class UiStore {
   rootStore: RootStore;
-
   dateRange: DateRange = { start: '', view: DateTime.now(), end: '' };
-
   mainApi: CalendarApi = null;
-
   viewMode: string;
-
   dateDay: DateTime = DateTime.now().startOf('day');
-
   dialogInfo: DialogInfo = null;
-
   contextClickArg: ContextClickArg = null;
-
   isImportanceChecked = false;
   isHolidayChecked = true;
   isLunarChecked = true;
+  notiData: NotiData = null;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -76,6 +75,8 @@ export default class UiStore {
       setHolidayChecked: action,
       isLunarChecked: observable,
       setLunarChecked: action,
+      notiData: observable,
+      setNotiData: action,
     });
   }
 
@@ -106,6 +107,10 @@ export default class UiStore {
 
   setLunarChecked(checked: boolean) {
     this.isLunarChecked = checked;
+  }
+
+  setNotiData(data: NotiData) {
+    this.notiData = data;
   }
 
   getApi(): CalendarApi {
