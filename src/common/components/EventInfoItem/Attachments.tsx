@@ -68,7 +68,6 @@ const Attachments = ({
     if (fileList) {
       const { valid, reason } = checkValid(fileList, attachments);
       if (valid) {
-        await roomStore.fetchRoomList();
         const roomId = roomStore.myRoom.id;
 
         fileList.map(async file => {
