@@ -14,7 +14,11 @@ import { Dialog } from '@/common/components/Dialog';
 import { ContextMenu } from '@/common/components/ContextMenu';
 import { useCalendarStores } from '@/stores/StoreProvider';
 
-const WebApp: React.FC = () => {
+interface Props {
+  data: { eventId: number; start: string };
+}
+
+const WebApp = ({ data }: Props) => {
   const personaStore = usePersonaStore();
   const { selectedPersona } = useUserStore();
   const { calendarStore, uiStore } = useCalendarStores();
@@ -30,6 +34,11 @@ const WebApp: React.FC = () => {
   useEffect(() => {
     personaStore.getWsClient(selectedPersona.id).addHandler('SHARE_EVENT', fetchData);
   }, [selectedPersona]);
+
+  useEffect(() => {
+    if (!data) return;
+    uiStore.setNotiData(data);
+  }, [data]);
 
   return (
     <Router basename="/">

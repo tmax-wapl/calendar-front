@@ -8,8 +8,12 @@ import Web from './web';
 import Mobile from './mobile';
 import { SettingInstance, isDevelop } from './common';
 
-const App: React.FC = () => {
-  const isMobile = true;
+interface Props {
+  data: { eventId: number; start: string };
+}
+
+const App = ({ data }: Props) => {
+  const isMobile = false;
   const { selectedPersona, keycloakInstance } = useUserStore();
   const personaStore = usePersonaStore();
   const roomStore = useRoomStore();
@@ -31,7 +35,7 @@ const App: React.FC = () => {
   return (
     <WaplUiProvider>
       <CalendarProvider mode={MODE.FULL} userId={selectedPersona.id}>
-        <StoreProvider>{isMobile ? <Mobile /> : <Web />}</StoreProvider>
+        <StoreProvider>{isMobile ? <Mobile /> : <Web data={data} />}</StoreProvider>
       </CalendarProvider>
     </WaplUiProvider>
   );

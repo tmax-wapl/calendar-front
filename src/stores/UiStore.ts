@@ -40,24 +40,23 @@ interface ContextClickArg {
   data?: any;
 }
 
+interface NotiData {
+  eventId: number;
+  start: string;
+}
+
 export default class UiStore {
   rootStore: RootStore;
-
   dateRange: DateRange = { start: '', view: DateTime.now(), end: '' };
-
   mainApi: CalendarApi = null;
-
   viewMode: string;
-
   dateDay: DateTime = DateTime.now().startOf('day');
-
   dialogInfo: DialogInfo = null;
-
   contextClickArg: ContextClickArg = null;
-
   isImportanceChecked = false;
   isHolidayChecked = true;
   isLunarChecked = true;
+  notiData: NotiData = null;
 
   isViewRow = false;
   rowNum: number = null;
@@ -85,6 +84,8 @@ export default class UiStore {
       rowNum: observable,
       setToggleViewRow: action,
       pageDialogInfo: observable,
+      notiData: observable,
+      setNotiData: action,
     });
   }
 
@@ -120,6 +121,10 @@ export default class UiStore {
   setToggleViewRow(rowNum?: number) {
     this.isViewRow = !this.isViewRow;
     if (rowNum) this.rowNum = rowNum;
+  }
+
+  setNotiData(data: NotiData) {
+    this.notiData = data;
   }
 
   getApi(): CalendarApi {
