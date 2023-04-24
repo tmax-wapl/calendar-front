@@ -1,5 +1,5 @@
-import { UploadFileDTO, DeleteFileDTO } from '@/common/constants/interfaces';
-import { API, docsUrlPath } from '@/common/lib/API';
+import { UploadFileDTO, DeleteFileDTO, SyncFileDTO } from '@/common/constants/interfaces';
+import { API, docsUrlPath, OfficeAPI, docsEventUrlPath } from '@/common/lib/API';
 import { HTTPError } from '@/error';
 import { CancelToken } from 'axios';
 
@@ -23,6 +23,23 @@ export default class FileRepo {
     try {
       const { status } = await API.post(`${docsUrlPath}/document/delete`, dto);
       return status;
+    } catch (e) {
+      if (e instanceof HTTPError) {
+        throw e;
+      }
+    }
+  }
+
+  async syncOfficeFile(dto: SyncFileDTO) {
+    try {
+      const common = API.instance.defaults.headers.common;
+      const auth = common.Authorization;
+      const res = await OfficeAPI.post(`${docsEventUrlPath}/events/websockets`, dto, {
+        headers: {
+          authorization: auth,
+        },
+      });
+      return res;
     } catch (e) {
       if (e instanceof HTTPError) {
         throw e;

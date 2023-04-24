@@ -2,7 +2,7 @@ import React, { useRef, ChangeEvent, useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useRoomStore } from '@wapl/core';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
-import { AttachmentInfo, UploadFileDTO, Extension } from '@/common/constants/interfaces';
+import { AttachmentInfo, UploadFileDTO, Extension, SyncFileDTOMsg } from '@/common/constants/interfaces';
 import { Icon } from '@wapl/ui';
 import {
   Accordion,
@@ -13,6 +13,7 @@ import {
   LoadingAttachment,
   AttachmentPlaceholder,
 } from './Attachments.style';
+import { APP_ID } from '@/common/constants';
 
 interface Props {
   isUploading?: boolean;
@@ -92,6 +93,21 @@ const Attachments = ({
                     fileExtension: value.documentExtension,
                   },
                 ]);
+              const SyncFileDTOMsg: SyncFileDTOMsg = {
+                type: 0,
+                objectId: [JSON.stringify(value)],
+                objectType: 1,
+                producerId: 'waplcalendar',
+              };
+              fileStore.syncOfficeFile({
+                appIdFrom: APP_ID.CALENDAR.toString(),
+                appIdTo: [APP_ID.OFFICE.toString()],
+                eventId: 'superdocs',
+                eventType: 'websocket_push',
+                roomId: roomId.toString(),
+                senderId: 'waplcalendar',
+                message: JSON.stringify(SyncFileDTOMsg),
+              });
             });
           } catch (e) {
             setUploading(prev => !prev);

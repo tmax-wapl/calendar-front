@@ -178,6 +178,23 @@ export interface DeleteFileDTO {
   userId: string;
 }
 
+export interface SyncFileDTO {
+  appIdFrom: string;
+  appIdTo: string[];
+  eventId: 'superdocs';
+  eventType: 'websocket_push';
+  roomId: string;
+  senderId: 'waplcalendar';
+  message?: string;
+}
+
+export interface SyncFileDTOMsg {
+  type: 0;
+  objectId: [string];
+  objectType: 1;
+  producerId: 'waplcalendar';
+}
+
 export type Extension = 'jpg' | 'pdf' | 'wav' | 'xlsx' | 'mk4' | 'pptx' | 'word' | 'zip' | 'etc';
 
 export interface AttachmentInfo {
