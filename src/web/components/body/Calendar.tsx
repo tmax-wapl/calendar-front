@@ -103,7 +103,8 @@ const Calendar: React.FC = observer(() => {
   const fetchEvent = () => {
     if (!uiStore.notiData) return;
     const event = uiStore.mainApi.getEventById(`${uiStore.notiData.eventId}`);
-    if (event) handleEventClick({ event });
+    if (!event) return;
+    handleEventClick({ event });
     uiStore.setNotiData(null);
   };
 
