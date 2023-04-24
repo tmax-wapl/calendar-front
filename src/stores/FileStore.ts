@@ -1,6 +1,6 @@
 import RootStore from './RootStore';
 import FileRepo from './repository/FileRepo';
-import { UploadFileDTO, DeleteFileDTO } from '@/common/constants/interfaces';
+import { UploadFileDTO, DeleteFileDTO, SyncFileDTO } from '@/common/constants/interfaces';
 import axios, { CancelTokenSource } from 'axios';
 
 export class FileStore {
@@ -23,6 +23,11 @@ export class FileStore {
 
   async deleteFile(dto: DeleteFileDTO) {
     const res = await this.repo.deleteFile(dto);
+    return res;
+  }
+
+  async syncOfficeFile(dto: SyncFileDTO) {
+    const res = await this.repo.syncOfficeFile(dto);
     return res;
   }
 }
