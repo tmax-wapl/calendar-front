@@ -30,3 +30,8 @@ export const ERROR_STATUS: { [key: number]: string } = {
   404: '리소스를 찾을 수 없습니다.',
   500: '서버에 문제가 발생하였습니다.',
 };
+
+export enum APP_ID {
+  CALENDAR = 4,
+  OFFICE = 21,
+}
