@@ -462,19 +462,17 @@ const Calendar: React.FC = observer(() => {
   };
 
   const setDateTime = (start: Date, end: Date) => {
-    const isMonth = uiStore.viewMode === VIEW_MODE.MONTH;
-    const isToday = toDateString(start) === DateTime.local().toFormat('yyyy-LL-dd');
+    const isKeepTime = uiStore.viewMode === VIEW_MODE.MONTH && pathname.includes('create');
 
-    if (isToday && isMonth) {
-      const startDate = getStartDate(toDateTime(start));
-      eventStore.event.startDate = startDate;
-      eventStore.event.endDate = startDate.plus({ minute: 30 });
-    } else {
-      eventStore.event.startDate = isMonth ? toDateTime(start).set({ hour: 9, minute: 0 }) : toDateTime(start);
-      eventStore.event.endDate = isMonth
-        ? toDateTime(end).plus({ days: -1 }).set({ hour: 9, minute: 30 })
-        : toDateTime(end);
-    }
+    const startDate = toDateTime(start);
+    const endDate = toDateTime(end);
+
+    eventStore.event.startDate = isKeepTime
+      ? startDate.set({ hour: eventStore.event.startDate.hour, minute: eventStore.event.startDate.minute })
+      : startDate;
+    eventStore.event.endDate = isKeepTime
+      ? endDate.plus({ days: -1 }).set({ hour: eventStore.event.endDate.hour, minute: eventStore.event.endDate.minute })
+      : endDate;
   };
 
   const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];
