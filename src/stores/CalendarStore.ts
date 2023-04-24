@@ -128,9 +128,11 @@ export default class CalendarStore {
   }
 
   setInitialLocalRoomCalendarList(personaId: number) {
-    const setting = {} as { [key: number]: [] };
-    setting[personaId] = [];
-    localStorage.setItem('RoomCalendarList', JSON.stringify(setting));
+    const setting = JSON.parse(localStorage.getItem('RoomCalendarList'));
+    if (!setting[personaId]) {
+      setting[personaId] = [];
+      localStorage.setItem('RoomCalendarList', JSON.stringify(setting));
+    }
   }
 
   getLocalRoomCalendarList(personaId: number) {
