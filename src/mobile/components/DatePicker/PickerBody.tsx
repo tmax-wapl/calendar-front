@@ -62,7 +62,6 @@ const PickerBody = ({
     default:
       return (
         <CalendarPicker
-          size={size}
           backgroundColor={backgroundColor}
           date={titleDate}
           startingDay={startingDay}

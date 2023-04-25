@@ -264,9 +264,9 @@ const EventHandleView = ({ action }: Props) => {
               startDate={eventStore.event.startDate}
               defaultEndDate={eventStore.event.startDate?.plus({ years: 1 })}
               repeatEndDate={eventStore.event.repeatEndDate}
-              onRRuleChange={(value: any) => (eventStore.event.rrule = value)}
-              onStartChange={(value: any) => (eventStore.event.repeatStartDate = value)}
-              onEndChange={(value: any) => (eventStore.event.repeatEndDate = value)}
+              onRRuleChange={value => (eventStore.event.rrule = value)}
+              onStartChange={value => (eventStore.event.repeatStartDate = value)}
+              onEndChange={value => (eventStore.event.repeatEndDate = value)}
             />
           )}
         </Observer>

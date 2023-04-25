@@ -21,6 +21,8 @@ import {
 import EventBar from './EventBar';
 import SpinnerPickerItem from '@/common/components/SpinnerPicker/SpinnerPickerItem';
 import DatePicker from './DatePicker/DatePicker';
+import { getRepeatSummary } from '@/utils';
+import { useCalendarStores } from '@/stores/StoreProvider';
 
 interface Props {
   rrule?: Partial<Options>;
@@ -32,6 +34,10 @@ interface Props {
   onEndChange?: (value?: DateTime) => void;
 }
 
+interface FREQ_UNIT {
+  [key: string]: number;
+}
+
 const RepeatInfo = ({
   rrule,
   startDate,
@@ -41,15 +47,17 @@ const RepeatInfo = ({
   onStartChange,
   onEndChange,
 }: Props) => {
+  const { eventStore } = useCalendarStores();
   const [open, setOpen] = useState(false);
   const [repeatToggle, setRepeatToggle] = useState(false);
-  const [freq, setFreq] = useState<string>('2');
-  const [unit, setUnits] = useState<string>('월');
+  const rruleUnits = ['년', '월', '주', '일'];
   const [freqency, setFrequency] = useState<string[]>(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
   const units = ['일', '주', '월', '년'];
+  const freqUnits: FREQ_UNIT = { 일: 3, 주: 2, 월: 1, 년: 0 };
 
   const dayOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
-  const byweekday = (rrule?.byweekday as Weekday[])?.map(({ weekday }) => weekday);
+
+  const byweekday = (eventStore.event.rrule?.byweekday as Weekday[])?.map(({ weekday }) => weekday);
 
   const handleEndDateSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -59,6 +67,11 @@ const RepeatInfo = ({
     else {
       onEndChange();
     }
+  };
+
+  const handleRepeatSwitch = () => {
+    if (repeatToggle) onRRuleChange(undefined);
+    setRepeatToggle(!repeatToggle);
   };
 
   const handleEndDateChange = (selectedDate: DateTime) => {
@@ -79,32 +92,48 @@ const RepeatInfo = ({
 
   const handleOpen = () => setOpen(true);
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    onRRuleChange(undefined);
+  };
 
-  const handleFreqChange = (index: number) => setFreq(freqency[index]);
+  const handleOk = () => setOpen(false);
+
+  const handleFreqChange = (index: number) => {
+    const interval = Number(freqency[index]);
+    onRRuleChange({
+      ...eventStore.event.rrule,
+      interval,
+    });
+  };
 
   const handleUnitsChange = (index: number) => {
-    const freq = index + 1;
-    setUnits(units[index]);
+    const freq = freqUnits[units[index]];
+    if (eventStore.event.rrule?.freq === freq) return;
+
     onRRuleChange({
-      ...(freq > -1 && { interval: 1, freq }),
+      ...(freq > -1 && { interval: eventStore.event.rrule?.interval, freq }),
       ...(freq === 2 && { byweekday: [startDate.weekday - 1] }),
     });
     onStartChange(freq > -1 ? startDate : undefined);
     onEndChange();
   };
 
+  const repeatSummary = () =>
+    rruleUnits[eventStore.event.rrule?.freq] === '월' ? '개월' : rruleUnits[eventStore.event.rrule?.freq];
+
   useEffect(() => {
-    if (unit === '일') setFrequency(Array.from({ length: 999 }, (_, i) => '' + (i + 1)));
+    if (rrule?.freq === 3) setFrequency(Array.from({ length: 999 }, (_, i) => '' + (i + 1)));
     else setFrequency(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
-  }, [unit]);
+  }, [rrule?.freq]);
+
 
   return (
     <RepeatInfoContainer>
       <ItemContainer onClick={handleOpen}>
         <RepeatItemWrapper>
           <Icon.RepeatLine className="mr-8" width={20} height={20} />
-          반복안함
+          {rrule ? getRepeatSummary(rrule) : '반복안함'}
         </RepeatItemWrapper>
         <Icon.ArrowFrontLine width={20} height={20} />
       </ItemContainer>
@@ -114,7 +143,7 @@ const RepeatInfo = ({
           <ContentWrapper>
             <ItemTitleContainer>
               반복
-              <Switch size="small" checked={repeatToggle} onChange={() => setRepeatToggle(!repeatToggle)} />
+              <Switch size="small" checked={repeatToggle} onChange={handleRepeatSwitch} />
             </ItemTitleContainer>
             {repeatToggle ? (
               <>
@@ -125,14 +154,14 @@ const RepeatInfo = ({
                       height={126}
                       itemHeight={42}
                       item={freqency}
-                      selectedValue={freq}
+                      selectedValue={String(eventStore.event.rrule?.interval)}
                       onValueChange={handleFreqChange}
                     />
                     <SpinnerPickerItem
                       height={126}
                       itemHeight={42}
                       item={units}
-                      selectedValue={unit}
+                      selectedValue={rruleUnits[eventStore.event.rrule?.freq]}
                       onValueChange={handleUnitsChange}
                     />
                   </PickerContainer>
@@ -152,9 +181,11 @@ const RepeatInfo = ({
                     </ItemContainer>
                   )}
                 </PickerWrapper>
-                <RepeatLabel style={{ marginBottom: '40px' }}>{`일정이 ${freq}${
-                  unit === '월' ? '개월' : unit
-                } 간격 반복됩니다.`}</RepeatLabel>
+                {eventStore.event.rrule && (
+                  <RepeatLabel style={{ marginBottom: '40px' }}>
+                    {`일정이 ${eventStore.event.rrule?.interval}${repeatSummary()} 간격 반복됩니다.`}
+                  </RepeatLabel>
+                )}
                 <ItemTitleContainer>
                   반복 종료
                   <Switch size="small" checked={!!repeatEndDate} onChange={handleEndDateSwitch} />
@@ -169,7 +200,7 @@ const RepeatInfo = ({
                         title="시작일과 같거나 이후로 설정해 주세요."
                         sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
                       >
-                        <DateWrapper isInvalid={startDate > repeatEndDate} onClick={() => console.log('히')}>
+                        <DateWrapper isInvalid={startDate > repeatEndDate}>
                           {repeatEndDate.toFormat('yyyy.LL.dd')}
                         </DateWrapper>
                       </Tooltip>
@@ -185,7 +216,7 @@ const RepeatInfo = ({
             )}
           </ContentWrapper>
           <ButtonWrapper>
-            <Button width="100%" variant={'primary'} onClick={handleClose}>
+            <Button width="100%" variant={'primary'} onClick={handleOk}>
               확인
             </Button>
           </ButtonWrapper>
