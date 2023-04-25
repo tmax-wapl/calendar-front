@@ -9,8 +9,7 @@ export const baseUrl = isDevelop
   : `${window.parent.env?.REACT_APP_CALENDAR_API_URL}`;
 
 export const docsUrlPath = window.parent.env?.REACT_APP_OFFICE_API_URL ?? 'http://220.90.208.70:8080/superoffice';
-export const docsEventUrlPath =
-  window.parent.env?.REACT_APP_OFFICE_EVENT_URL ?? `http://cms.220.90.208.45.nip.io/apis/v1`;
+export const docsEventUrlPath = window.parent.env?.REACT_APP_OFFICE_EVENT_URL ?? 'http://cms.220.90.208.45.nip.io';
 
 export const SettingInstance = (() => {
   CoreAPI.instance.interceptors.response.use(
