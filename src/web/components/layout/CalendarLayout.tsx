@@ -6,8 +6,9 @@ import { CalendarModel } from '@/stores';
 import LNB from './LNB';
 import { Icon } from '@wapl/ui';
 import { Outlet } from 'react-router-dom';
-import { usePersonaStore, useUserStore } from '@wapl/core';
+import { usePersonaStore, useUserStore, useRoomStore } from '@wapl/core';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toUTC } from '@/utils';
 
 interface JsonMessgae {
   eventId: number;
@@ -19,6 +20,7 @@ const CalendarLayout: React.FC = () => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const [isLoading, setLoading] = useState(true);
   const personaStore = usePersonaStore();
+  const rootStore = useRoomStore();
   const { selectedPersona } = useUserStore();
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -41,6 +43,21 @@ const CalendarLayout: React.FC = () => {
       calendarStore.setCalendarList(calendarList);
     }
     if (calendarStore.eventList.find(event => +event.id === jsonMessage?.eventId)) uiStore.changeDateRange();
+    if (jsonMessage?.roomId && !calendarStore.roomCalendarList.find(room => room.roomId === jsonMessage.roomId)) {
+      const newRoom = rootStore.roomArray.find(room => room.id === jsonMessage.roomId);
+      calendarStore.setLocalRoomCalendarList(userId, [
+        {
+          roomId: newRoom.id,
+          name: newRoom.displayName,
+          checkFlag: true,
+          color: '#A143FF',
+          regDate: toUTC(new Date()),
+          type: 'room',
+        },
+        ...calendarStore.roomCalendarList.map(room => room.dto),
+      ]);
+    }
+    uiStore.changeDateRange();
   };
 
   const handleUpdateWs = async (jsonMessage: JsonMessgae) => {
