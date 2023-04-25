@@ -63,6 +63,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       .map(room => room.dto);
     calendarStore.setLocalRoomCalendarList(userId, newRoomList);
     closeDialog();
+    uiStore.changeDateRange();
   };
 
   const deleteEvent = async () => {
@@ -165,6 +166,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       ...calendarStore.roomCalendarList.map(room => room.dto),
     ]);
     closeDialog();
+    uiStore.changeDateRange();
   };
 
   const handleUrlSubscribe = () => {
