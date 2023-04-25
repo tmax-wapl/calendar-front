@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
-import { usePersonaStore, useUserStore } from '@wapl/core';
 import CalendarLayout from '@wcomponents/layout/CalendarLayout';
 import Calendar from '@wcomponents/CalendarView';
 import Share from '@wcomponents/ShareView';
@@ -19,21 +18,7 @@ interface Props {
 }
 
 const WebApp = ({ data }: Props) => {
-  const personaStore = usePersonaStore();
-  const { selectedPersona } = useUserStore();
-  const { calendarStore, uiStore } = useCalendarStores();
-
-  const fetchData = async () => {
-    if (!calendarStore.calendarList.find(calendar => calendar.type === 'share')) {
-      const calendarList = await calendarStore.getCalendarList();
-      calendarStore.setCalendarList(calendarList);
-    }
-    uiStore.changeDateRange();
-  };
-
-  useEffect(() => {
-    personaStore.getWsClient(selectedPersona.id).addHandler('SHARE_EVENT', fetchData);
-  }, [selectedPersona]);
+  const { uiStore } = useCalendarStores();
 
   useEffect(() => {
     if (!data) return;
