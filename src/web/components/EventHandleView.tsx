@@ -247,6 +247,16 @@ const EventHandleView = ({ action }: Props) => {
     });
   };
 
+  const handleOutsideClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (!!target.closest('.fc-event-main') && isModified()) handleClose();
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  });
+
   return (
     <EventHandleViewContainer>
       <EventBar
