@@ -34,7 +34,7 @@ export default class FileRepo {
     try {
       const common = API.instance.defaults.headers.common;
       const auth = common.Authorization;
-      const res = await OfficeAPI.post(`${docsEventUrlPath}/events/websockets`, dto, {
+      const res = await OfficeAPI.post(`${docsEventUrlPath}/apis/v1/events/websockets`, dto, {
         headers: {
           authorization: auth,
         },
