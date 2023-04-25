@@ -57,6 +57,7 @@ export default class UiStore {
   isHolidayChecked = true;
   isLunarChecked = true;
   notiData: NotiData = null;
+  isDetail = false;
 
   isViewRow = false;
   rowNum: number = null;
@@ -86,6 +87,8 @@ export default class UiStore {
       pageDialogInfo: observable,
       notiData: observable,
       setNotiData: action,
+      isDetail: observable,
+      setIsDetail: action,
     });
   }
 
@@ -125,6 +128,10 @@ export default class UiStore {
 
   setNotiData(data: NotiData) {
     this.notiData = data;
+  }
+
+  setIsDetail(isDetail: boolean) {
+    this.isDetail = isDetail;
   }
 
   getApi(): CalendarApi {
