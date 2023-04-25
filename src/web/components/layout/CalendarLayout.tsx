@@ -62,7 +62,7 @@ const CalendarLayout: React.FC = () => {
 
   const handleUpdateWs = async (jsonMessage: JsonMessgae) => {
     if (calendarStore.eventList.find(event => +event.id === jsonMessage?.eventId)) uiStore.changeDateRange();
-    if (pathname.includes('detail') && +eventStore.event.id === jsonMessage?.eventId) {
+    if (uiStore.isDetail && +eventStore.event.id === jsonMessage?.eventId) {
       const { id, start, roomId } = eventStore.event;
       const eventInfo = await eventStore.getEventInfo(+id, start, roomId);
       eventStore.setEvent(eventInfo);
@@ -71,7 +71,7 @@ const CalendarLayout: React.FC = () => {
 
   const handleDeleteWs = (jsonMessage: JsonMessgae) => {
     if (calendarStore.eventList.find(event => +event.id === jsonMessage?.eventId)) uiStore.changeDateRange();
-    if ((pathname.includes('detail') || pathname.includes('update')) && +eventStore.event.id === jsonMessage?.eventId)
+    if (uiStore.isDetail && +eventStore.event.id === jsonMessage?.eventId)
       navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 

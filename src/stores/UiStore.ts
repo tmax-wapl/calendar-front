@@ -57,6 +57,7 @@ export default class UiStore {
   isHolidayChecked = true;
   isLunarChecked = true;
   notiData: NotiData = null;
+  isDetail = false;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -77,6 +78,8 @@ export default class UiStore {
       setLunarChecked: action,
       notiData: observable,
       setNotiData: action,
+      isDetail: observable,
+      setIsDetail: action,
     });
   }
 
@@ -111,6 +114,10 @@ export default class UiStore {
 
   setNotiData(data: NotiData) {
     this.notiData = data;
+  }
+
+  setIsDetail(isDetail: boolean) {
+    this.isDetail = isDetail;
   }
 
   getApi(): CalendarApi {
