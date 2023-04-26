@@ -299,9 +299,9 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       case 'subCalendar':
         return [actions.renameCalendar, actions.deleteCalendar];
       case 'roomCalendar':
-        return [actions.renameCalendar, actions.deleteRoomCalendar];
+        return [actions.renameCalendar];
       case 'addOther':
-        return [actions.addSubscribe, actions.addRoomCalendar];
+        return [actions.addSubscribe];
       case 'subscribe':
         return [actions.renameCalendar, actions.syncCalendar, actions.deleteCalendar];
       case 'event':
