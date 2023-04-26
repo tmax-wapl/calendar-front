@@ -30,3 +30,17 @@ export const ERROR_STATUS: { [key: number]: string } = {
   404: '리소스를 찾을 수 없습니다.',
   500: '서버에 문제가 발생하였습니다.',
 };
+
+export const ColorItem = [
+  { value: '', color: '', label: '선택 없음' },
+  { value: '#3384FF', color: '#3384FF', label: '파랑' },
+  { value: '#383FCA', color: '#383FCA', label: '남색' },
+  { value: '#00C064', color: '#00C064', label: '초록' },
+  { value: '#00C1B1', color: '#00C1B1', label: '민트' },
+  { value: '#AECB00', color: '#AECB00', label: '연두' },
+  { value: '#FFCF55', color: '#FFCF55', label: '노랑' },
+  { value: '#FF8E3D', color: '#FF8E3D', label: '주황' },
+  { value: '#FF46B5', color: '#FF46B5', label: '분홍' },
+  { value: '#FF5154', color: '#FF5154', label: '빨강' },
+  { value: '#A143FF', color: '#A143FF', label: '보라' },
+];
