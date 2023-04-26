@@ -5,10 +5,11 @@ import InfiniteScrollLoop from './InfiniteScrollLoop';
 
 interface ValueProps {
   value: string;
+  height: number;
 }
 
-const PickerValue = React.memo(({ value }: ValueProps) => {
-  return <PickerValueWrapper>{value}</PickerValueWrapper>;
+const PickerValue = React.memo(({ value, height }: ValueProps) => {
+  return <PickerValueWrapper height={height}>{value}</PickerValueWrapper>;
 });
 
 interface Props {
@@ -29,7 +30,7 @@ const SpinnerPickerItem = observer(({ height, itemHeight = 36, item, selectedVal
       onValueChange={onValueChange}
     >
       {item.map(value => (
-        <PickerValue key={value} value={value} />
+        <PickerValue key={value} value={value} height={itemHeight} />
       ))}
     </InfiniteScrollLoop>
   );

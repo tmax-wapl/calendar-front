@@ -28,3 +28,19 @@ export const TodayButton = styled.div`
 export const RightContainer = styled.div`
   display: flex;
 `;
+
+export const IconButton = styled.div``;
+
+export const DateHeaderWrapper = styled.div`
+  display: flex;
+`;
+
+export const TextButton = styled.div`
+  display: flex;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: 500;
+  height: 18px;
+`;

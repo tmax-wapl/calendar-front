@@ -1,7 +1,7 @@
 import { FullScreenDialog } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import EventDetailView from '../EventDetailView';
-import EventHandleView from '@/web/components/EventHandleView';
+import EventHandleView from '../EventHandleView';
 import CalendarManageView from '../CalendarManageView/CalendarManageView';
 import CalendarSettingView from '../CalendarManageView/CalendarSettingView';
 
@@ -26,7 +26,7 @@ const PageRoutes = () => {
   };
 
   return (
-    <FullScreenDialog open>
+    <FullScreenDialog open sx={{ zIndex: 1100 }}>
       <Page />
     </FullScreenDialog>
   );
