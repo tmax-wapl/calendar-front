@@ -4,25 +4,27 @@ import { Options, Weekday } from 'rrule';
 import { Icon, ContextMenu, Button, Switch, Tooltip } from '@wapl/ui';
 import {
   RepeatInfoContainer,
-  ItemContainer,
   PickerContainer,
   DateWrapper,
   DatePickerWrapper,
   RepeatDay,
-  ItemTitleContainer,
   Selected,
   RepeatLabel,
   RepeatItemWrapper,
-  ContentWrapper,
   PickerWrapper,
-  ButtonWrapper,
-  BodyWrapper,
 } from './RepeatInfo.style';
 import EventBar from './EventBar';
 import SpinnerPickerItem from '@/common/components/SpinnerPicker/SpinnerPickerItem';
 import DatePicker from './DatePicker/DatePicker';
 import { getRepeatSummary } from '@/utils';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import {
+  BodyWrapper,
+  ButtonWrapper,
+  ContentWrapper,
+  ItemContainer,
+  ItemTitleContainer,
+} from './common/styles/common.style';
 
 interface Props {
   rrule?: Partial<Options>;
@@ -126,7 +128,6 @@ const RepeatInfo = ({
     if (rrule?.freq === 3) setFrequency(Array.from({ length: 999 }, (_, i) => '' + (i + 1)));
     else setFrequency(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
   }, [rrule?.freq]);
-
 
   return (
     <RepeatInfoContainer>

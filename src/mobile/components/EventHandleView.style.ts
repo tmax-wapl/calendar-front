@@ -20,7 +20,7 @@ export const EventHandleContainer = styled.div`
 
 export const FromInfo = styled.div`
   display: flex;
-  margin: 12px 0;
+  align-items: center;
 `;
 
 export const ButtonGroup = styled(WButtonGroup)`

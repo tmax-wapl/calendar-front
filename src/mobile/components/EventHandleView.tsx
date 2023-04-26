@@ -16,12 +16,12 @@ import {
   Description,
   Attachments,
 } from '@common/components/EventInfoItem';
-import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@/common/constants';
 import { useDidMountEffect } from '@/common/hooks';
 import { EventMember } from '@/common/constants/interfaces';
 import RepeatInfo from './RepeatInfo';
+import { ColorPicker } from './ColorPicker/ColorPicker';
 
 interface Props {
   action: 'create' | 'update';
@@ -274,13 +274,7 @@ const EventHandleView = ({ action }: Props) => {
           {() => (
             <FromInfo>
               <Icon.CalendarLine className="mr-8" width={20} height={20} />
-              <ColorPicker
-                color={eventStore.event.color}
-                iterationCount={8}
-                rowGap={6}
-                columnGap={8}
-                onClick={color => (eventStore.event.color = color)}
-              />
+              <ColorPicker color={eventStore.event.color} onClick={color => (eventStore.event.color = color)} />
             </FromInfo>
           )}
         </Observer>
