@@ -62,16 +62,9 @@ export const ContextMenu = () => {
         break;
       case 'orgCalendar':
       case 'roomCalendar':
-        const isContained = calendarStore.roomCalendarList?.some((cal: CalendarModel) => cal.roomId === id);
-        if (isContained) {
-          const newRoomList = calendarStore.roomCalendarList?.map((room: CalendarModel) =>
-            room.roomId === id ? { ...room.dto, color } : room.dto,
-          );
-          calendarStore.setLocalRoomCalendarList(userId, newRoomList);
-        } else {
-          data.dto.color = color;
-          calendarStore.addLocalRoomCalendarItem(userId, data.dto);
-        }
+        data.dto.color = color;
+        calendarStore.addLocalRoomCalendarItem(userId, data.dto);
+
         const roomEventList = calendarStore.eventList.map(event =>
           event.roomId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
         );

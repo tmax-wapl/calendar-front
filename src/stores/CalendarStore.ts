@@ -170,11 +170,16 @@ export default class CalendarStore {
   addLocalRoomCalendarItem(personaId: number, roomItem: Partial<CalendarDTO>) {
     const roomCalenarList = JSON.parse(localStorage.getItem('RoomCalendarList'));
     if (roomCalenarList) {
-      roomCalenarList[personaId] = [...roomCalenarList[personaId], roomItem];
+      const isContained = roomCalenarList[personaId]?.some((room: CalendarDTO) => room.id === roomItem.id);
+      if (isContained) {
+        roomCalenarList[personaId] = roomCalenarList[personaId]?.map((room: CalendarDTO) =>
+          room.id === roomItem.id ? roomItem : room,
+        );
+      } else roomCalenarList[personaId] = [...roomCalenarList[personaId], roomItem];
+
       const settingString = JSON.stringify(roomCalenarList);
 
       localStorage.setItem('RoomCalendarList', settingString);
-      this.setRoomCalendarList(roomCalenarList[personaId].map((room: CalendarDTO) => new CalendarModel(room)));
     }
   }
 }

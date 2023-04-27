@@ -41,7 +41,7 @@ const LNB = () => {
       <ScrollListWrapper>
         <CategoryList />
         <Divider />
-        {calendarStore.calendarList.some(cal => cal.type === 'org') ? (
+        {calendarStore.roomCalendarList.some(cal => cal.type === 'org') ? (
           <>
             <OrgCalendarList />
             <Divider />
