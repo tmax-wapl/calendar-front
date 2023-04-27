@@ -43,25 +43,13 @@ const CalendarLayout: React.FC = () => {
   };
 
   const handleShareWs = async (jsonMessage: JsonMessgae) => {
-    if (!calendarStore.calendarList.find(calendar => calendar.type === 'share')) {
-      const calendarList = await calendarStore.getCalendarList();
-      calendarStore.setCalendarList(calendarList);
+    if (!calendarStore.calendarList.find(calendar => calendar.type === 'share')) fetchData();
+    if (calendarStore.eventList.find(event => +event.id === jsonMessage?.eventId)) {
+      uiStore.changeDateRange();
+      return;
     }
-    if (calendarStore.eventList.find(event => +event.id === jsonMessage?.eventId)) uiStore.changeDateRange();
-    if (jsonMessage?.roomId && !calendarStore.roomCalendarList.find(room => room.roomId === jsonMessage.roomId)) {
-      const newRoom = rootStore.roomArray.find(room => room.id === jsonMessage.roomId);
-      calendarStore.setLocalRoomCalendarList(userId, [
-        {
-          roomId: newRoom.id,
-          name: newRoom.displayName,
-          checkFlag: true,
-          color: '#A143FF',
-          regDate: toUTC(new Date()),
-          type: 'room',
-        },
-        ...calendarStore.roomCalendarList.map(room => room.dto),
-      ]);
-    }
+    if (jsonMessage?.roomId && !calendarStore.roomCalendarList.find(room => room.roomId === jsonMessage.roomId))
+      fetchData();
     uiStore.changeDateRange();
   };
 
