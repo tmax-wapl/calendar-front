@@ -229,6 +229,9 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       personaIdList: personaIdList.map(persona => persona.personaId),
       roomIdList: roomIdList.map(room => convertRoomObj(room)),
     });
+    if (+eventStore.event.id !== id || !pathname.includes('detail')) return;
+    const eventInfo = await eventStore.getEventInfo(id, date.startdate);
+    eventStore.setEvent(eventInfo);
   };
 
   const handleEventShareClick = () => {
