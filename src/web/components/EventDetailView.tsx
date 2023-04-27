@@ -113,6 +113,8 @@ const EventDetailView = () => {
       personaIdList: personaIdList.map(persona => persona.personaId),
       roomIdList: roomIdList.map(room => convertRoomObj(room)),
     });
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.start, event.roomId);
+    eventStore.setEvent(eventInfo);
   };
 
   const handleShareClick = () => {
