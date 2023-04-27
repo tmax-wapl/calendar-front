@@ -20,7 +20,6 @@ const CalendarLayout: React.FC = () => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const [isLoading, setLoading] = useState(true);
   const personaStore = usePersonaStore();
-  const rootStore = useRoomStore();
   const { selectedPersona } = useUserStore();
   const navigate = useNavigate();
 
@@ -64,6 +63,7 @@ const CalendarLayout: React.FC = () => {
 
   const handleDeleteWs = (jsonMessage: JsonMessgae) => {
     if (calendarStore.eventList.find(event => +event.id === jsonMessage?.eventId)) uiStore.changeDateRange();
+    if (jsonMessage?.roomId) fetchData();
     if (uiStore.isDetail && +eventStore.event.id === jsonMessage?.eventId)
       navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
