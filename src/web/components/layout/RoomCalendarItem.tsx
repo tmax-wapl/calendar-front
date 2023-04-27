@@ -58,7 +58,7 @@ const RoomCalendarItem = observer(({ calendar }: Props) => {
   };
 
   return (
-    <ItemContainer main={false}>
+    <ItemContainer main={calendar.mainFlag}>
       {calendarStore.renameId === calendar.roomId ? (
         <InputItemContainer calendarcolor={calendar.color}>
           <Checkbox checked={calendar.checkFlag} />
