@@ -21,15 +21,13 @@ const OtherCalendarList = observer(() => {
   };
 
   const sortCalendarList = (): CalendarModel[] => {
-    if (calendarStore.roomCalendarList && calendarStore.calendarList)
-      return [...calendarStore.roomCalendarList, ...calendarStore.calendarList]
-        .filter(
-          (calendar: CalendarModel) => calendar.type === 'url' || calendar.type === 'share' || calendar.type === 'room',
-        )
-        ?.sort((a, b) => {
-          return new Date(b.regDate).getTime() - new Date(a.regDate).getTime();
-        });
-    return [];
+    const filteredCalendars = calendarStore.calendarList
+      ?.concat(calendarStore.roomCalendarList)
+      .filter(({ type }) => ['url', 'share', 'private'].includes(type));
+
+    if (!filteredCalendars.length) return [];
+
+    return filteredCalendars.sort((a, b) => new Date(b.regDate).getTime() - new Date(a.regDate).getTime());
   };
 
   return (
@@ -41,7 +39,7 @@ const OtherCalendarList = observer(() => {
         </AddButton>
       </Title>
       {sortCalendarList().map((calendar: CalendarModel) =>
-        calendar.type === 'room' ? (
+        calendar.type === 'private' ? (
           <RoomCalendarItem key={calendar.roomId} calendar={calendar} />
         ) : (
           <Item key={calendar.id} category={calendar} />

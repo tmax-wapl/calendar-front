@@ -22,18 +22,23 @@ const CalendarLayout: React.FC = () => {
   const personaStore = usePersonaStore();
   const rootStore = useRoomStore();
   const { selectedPersona } = useUserStore();
-  const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const fetchData = async () => {
     const calendarList = await calendarStore.getCalendarList();
-    calendarStore.setCalendarList(calendarList);
+    calendarStore.setCalendarList(calendarList.filter(({ type }) => type !== 'private' && type !== 'org'));
 
-    const roomCalendarList = calendarStore.getLocalRoomCalendarList(userId);
-    if (roomCalendarList.length === 0) calendarStore.setInitialLocalRoomCalendarList(userId);
-    else
-      calendarStore.setRoomCalendarList(roomCalendarList?.map((room: Partial<CalendarDTO>) => new CalendarModel(room)));
+    const roomList = calendarList.filter(({ type }) => type === 'private' || type === 'org');
+    const localRoomMap = new Map(
+      calendarStore.getLocalRoomCalendarList(selectedPersona.id)?.map((room: CalendarDTO) => [room.roomId, room]),
+    );
 
+    const filteredRoomList = roomList.map((room: CalendarModel) =>
+      localRoomMap.get(room.roomId) ? new CalendarModel(localRoomMap.get(room.roomId)) : room,
+    );
+
+    calendarStore.setRoomCalendarList(filteredRoomList);
+    calendarStore.setInitialLocalRoomCalendarList(userId);
     setLoading(false);
   };
 
