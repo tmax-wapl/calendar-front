@@ -38,8 +38,6 @@ const RoomCalendarItem = observer(({ calendar }: Props) => {
     });
   };
 
-  const isContained = calendarStore.roomCalendarList?.some((cal: CalendarModel) => cal.id === calendar.id);
-
   const handleCheckedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     calendar.dto.checkFlag = e.target.checked;
     calendar.checkFlag = e.target.checked;
