@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { HTTPError } from '@/error';
-import EventBar from '../EventBar';
+import EventBar from '../header/EventBar';
 import { UrlSubscribeViewContainer, Input, Description, Footer, AddButton } from './UrlSubscribeView.style';
 
 const UrlSubscribeView = () => {

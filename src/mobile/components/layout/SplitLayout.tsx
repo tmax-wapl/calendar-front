@@ -6,13 +6,14 @@ import { useSwipeable, SwipeEventData } from 'react-swipeable';
 import '@/styles/split.css';
 import { toDateTime } from '@/utils';
 import EventListView from '@/mobile/components/EventListView';
+import { SplitPaneWrapper } from './SplitLayout.style';
 
 const SplitLayout = () => {
   const { uiStore } = useCalendarStores();
   const [topPanelHeight, setTopPanelHeight] = useState<number>();
   const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(0);
   const { innerHeight } = window;
-  const LayoutHeight = innerHeight - 46; // TODO: Header Height
+  const LayoutHeight = innerHeight - (56 + 48);
   const halfHeight = LayoutHeight / 2;
 
   const setHalfHeight = () => {
@@ -66,7 +67,7 @@ const SplitLayout = () => {
   });
 
   return (
-    <div ref={swipeRef} {...swipeHandlers}>
+    <SplitPaneWrapper ref={swipeRef} {...swipeHandlers}>
       <SplitPane split="horizontal" size={topPanelHeight} defaultSize={'100%'} allowResize>
         <div style={{ width: '100%', height: topPanelHeight }}>
           <Calendar />
@@ -75,7 +76,7 @@ const SplitLayout = () => {
           <EventListView />
         </div>
       </SplitPane>
-    </div>
+    </SplitPaneWrapper>
   );
 };
 

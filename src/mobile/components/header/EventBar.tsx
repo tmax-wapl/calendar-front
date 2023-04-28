@@ -2,7 +2,7 @@ import { Icon } from '@wapl/ui';
 import { EventBarContainer, IconButton, EventBarTitle } from './EventBar.style';
 
 export interface EventBarButton {
-  action: 'close' | 'back' | 'share' | 'edit' | 'delete';
+  action: 'close' | 'back' | 'share' | 'edit' | 'delete' | 'search' | 'setting' | 'home';
   onClick: () => void;
 }
 
@@ -14,11 +14,14 @@ interface Props {
 
 const EventBar = ({ title, leftSide = [], rightSide = [] }: Props) => {
   const ButtonIcon = {
-    close: <Icon.CloseLine width={20} height={20} />,
-    back: <Icon.ArrowBackLine width={20} height={20} />,
-    share: <Icon.ShareLine width={20} height={20} />,
-    edit: <Icon.EditLine width={20} height={20} />,
-    delete: <Icon.DeleteLine width={20} height={20} />,
+    close: <Icon.CloseLine width={24} height={24} />,
+    back: <Icon.ArrowBackLine width={24} height={24} />,
+    share: <Icon.ShareLine width={24} height={24} />,
+    edit: <Icon.EditLine width={24} height={24} />,
+    delete: <Icon.DeleteLine width={24} height={24} />,
+    search: <Icon.SearchLine width={24} height={24} />,
+    setting: <Icon.SettingLine width={24} height={24} />,
+    home: <Icon.Home2Fill width={24} height={24} />,
   };
 
   const Buttons = ({ buttons }: { buttons: EventBarButton[] }) => {

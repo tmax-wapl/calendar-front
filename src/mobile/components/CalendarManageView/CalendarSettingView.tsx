@@ -2,7 +2,7 @@ import { Icon } from '@wapl/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { ColorItem } from '@/common';
-import EventBar from '../EventBar';
+import EventBar from '../header/EventBar';
 import {
   CalendarSettingViewContainer,
   CalendarName,

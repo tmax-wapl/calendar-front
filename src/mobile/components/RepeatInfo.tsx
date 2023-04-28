@@ -13,7 +13,7 @@ import {
   RepeatItemWrapper,
   PickerWrapper,
 } from './RepeatInfo.style';
-import EventBar from './EventBar';
+import EventBar from './header/EventBar';
 import SpinnerPickerItem from '@/common/components/SpinnerPicker/SpinnerPickerItem';
 import DatePicker from './DatePicker/DatePicker';
 import { getRepeatSummary } from '@/utils';

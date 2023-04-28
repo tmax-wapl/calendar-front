@@ -4,19 +4,19 @@ export const EventBarContainer = styled.div`
   display: flex;
   flex-shrink: 0;
   width: 100%;
-  height: 62px;
+  height: 56px;
   align-items: center;
   box-sizing: border-box;
-  padding: 0 20px;
+  padding: 0 16px;
 `;
 
 export const IconButton = styled(Mui.IconButton)`
   padding: 0;
-  :not(:last-child) {
-    margin-right: 12px;
-    :first-of-type {
-      margin-right: 8px;
-    }
+  & + span {
+    margin-left: 8px;
+  }
+  & + & {
+    margin-left: 12px;
   }
 `;
 
@@ -27,5 +27,5 @@ export const EventBarTitle = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  ${({ theme: { Font } }) => Font.Text.l.Bold};
+  ${({ theme: { Font } }) => Font.Text.xl.Medium};
 `;

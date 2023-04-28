@@ -3,7 +3,7 @@ import FilterList from './FilterList';
 import MyCalendarList from './MyCalendarList';
 import OtherCalendarList from './OtherCalendarList';
 import { CalendarManageViewContainer, Divider } from './CalendarManageView.style';
-import EventBar from '../EventBar';
+import EventBar from '../header/EventBar';
 
 const CalendarManageView = () => {
   const { uiStore } = useCalendarStores();

@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EventModel } from '@/stores/model/EventModel';
 import { EventHandleViewContainer, EventHandleContainer, FromInfo, ButtonGroup } from './EventHandleView.style';
-import EventBar from './EventBar';
+import EventBar from './header/EventBar';
 import {
   EventTitle,
   EventDate,

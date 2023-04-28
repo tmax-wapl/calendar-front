@@ -10,7 +10,7 @@ import {
   ColorSelected,
 } from './ColorPicker.style';
 import { ColorItem as colors } from '@/common';
-import EventBar from '../EventBar';
+import EventBar from '../header/EventBar';
 import { BodyWrapper, ContentWrapper } from '../common/styles/common.style';
 
 interface Props {

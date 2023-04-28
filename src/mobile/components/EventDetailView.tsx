@@ -5,7 +5,7 @@ import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
 import { useNavigate } from 'react-router-dom';
 import { EventDetailViewContainer, EventDetailContainer, FromInfo, Creator } from './EventDetailView.style';
 import { EventModel } from '@/stores';
-import EventBar, { EventBarButton } from './EventBar';
+import EventBar, { EventBarButton } from './header/EventBar';
 import EventItem from './EventItem';
 import { Participants, Location, Notifications, Description, Attachments } from '@common/components/EventInfoItem';
 import { useCalendarStores } from '@/stores/StoreProvider';
