@@ -19,3 +19,7 @@ export const AddButton = styled(Mui.IconButton)`
   margin-left: auto;
   padding: 0;
 `;
+
+export const MenuContent = styled.div`
+  display: flex;
+`;

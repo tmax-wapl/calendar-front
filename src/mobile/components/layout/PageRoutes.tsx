@@ -4,6 +4,7 @@ import EventDetailView from '../EventDetailView';
 import EventHandleView from '../EventHandleView';
 import CalendarManageView from '../CalendarManageView/CalendarManageView';
 import CalendarSettingView from '../CalendarManageView/CalendarSettingView';
+import UrlSubscribeView from '../CalendarManageView/UrlSubscribeView';
 
 const PageRoutes = () => {
   const { uiStore } = useCalendarStores();
@@ -20,6 +21,8 @@ const PageRoutes = () => {
         return <CalendarManageView />;
       case 'calendarSetting':
         return <CalendarSettingView />;
+      case 'addSubscribe':
+        return <UrlSubscribeView />;
       default:
         return;
     }
