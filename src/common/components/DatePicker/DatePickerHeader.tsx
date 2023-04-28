@@ -15,14 +15,15 @@ interface DatePickerHeaderProps {
   selectedDate: DateTime;
   titleDate: DateTime;
   setTitleDate: React.Dispatch<React.SetStateAction<DateTime>>;
+  isMobile?: boolean;
 }
 
 const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate }: DatePickerHeaderProps) => {
   const [isPickerOpen, setPickerOpen] = useState<boolean>(false);
   const [isYearClick, setYearClick] = useState<boolean>(false);
   const [isMonthClick, setMonthClick] = useState<boolean>(false);
-  const year = Array.from(Array(200), (_, i) => `${i + DateTime.now().year - 100}`);
-  const month = Array.from(Array(12), (_, i) => `00${i + 1}`.slice(-2));
+  const year = Array.from({ length: 200 }, (_, i) => `${i + DateTime.now().year - 100}`);
+  const month = Array.from({ length: 12 }, (_, i) => `00${i + 1}`.slice(-2));
 
   const handleTitleClick = (type: string) => {
     setPickerOpen(true);

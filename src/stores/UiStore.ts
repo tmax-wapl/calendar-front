@@ -58,6 +58,11 @@ export default class UiStore {
   isHolidayChecked = true;
   isLunarChecked = true;
 
+  isViewRow = false;
+  rowNum: number = null;
+
+  pageDialogInfo: string = null;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -75,6 +80,10 @@ export default class UiStore {
       setHolidayChecked: action,
       isLunarChecked: observable,
       setLunarChecked: action,
+      isViewRow: observable,
+      rowNum: observable,
+      setToggleViewRow: action,
+      pageDialogInfo: observable,
     });
   }
 
@@ -107,6 +116,11 @@ export default class UiStore {
     this.isLunarChecked = checked;
   }
 
+  setToggleViewRow(rowNum?: number) {
+    this.isViewRow = !this.isViewRow;
+    if (rowNum) this.rowNum = rowNum;
+  }
+
   getApi(): CalendarApi {
     return this.mainApi;
   }
@@ -121,13 +135,10 @@ export default class UiStore {
 
   handleDateClick(date: DateTime, callback?: () => void) {
     if (!this.mainApi) return;
-    // 같은 달 내에서 선택 할 때 main calendar render 안하도록.
-    if (isEqualMonth(this.mainApi?.getDate(), date?.toJSDate())) {
-      if (callback) callback();
-      return;
-    }
     this.mainApi.changeView(this.mainApi.view.type, date.toJSDate());
     this.changeDateRange();
+    this.setDateDay(date);
+
     if (callback) callback();
   }
 }

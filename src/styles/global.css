@@ -90,3 +90,7 @@ body {
   border: 0px;
   opacity: 1;
 }
+
+.small-event {
+  height: 2px;
+}
