@@ -68,7 +68,7 @@ const EventHandleView = ({ action }: Props) => {
       isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
     );
     uiStore.changeDateRange();
-    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+    uiStore.setPageDialogInfo('detail');
   };
 
   const updateRepeatEvent = async (value: string) => {
@@ -206,7 +206,7 @@ const EventHandleView = ({ action }: Props) => {
 
   const handleClose = () => {
     if (!isModified()) {
-      uiStore.setPageDialogInfo(null);
+      uiStore.setPageDialogInfo(action === 'create' ? null : 'detail');
       return;
     }
     uiStore.setDialogInfo({

@@ -20,7 +20,7 @@ const EventDetailView = () => {
   };
 
   const handleEditClick = () => {
-    navigate(`/main/view-mode/${uiStore.viewMode}/update`);
+    uiStore.setPageDialogInfo('update');
   };
 
   const closeDialog = () => {
