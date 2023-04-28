@@ -55,9 +55,10 @@ const EventHandleView = ({ action }: Props) => {
 
   const handleCreate = async () => {
     if (!eventStore.event.calId) eventStore.event.calId = calendarStore.getCalendarId();
-    await eventStore.createEvent(preprocessEvent(eventStore.event));
+    const event = await eventStore.createEvent(preprocessEvent(eventStore.event));
     uiStore.changeDateRange();
-    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+    eventStore.setEvent(event);
+    uiStore.setPageDialogInfo('detail');
   };
 
   const updateEvent = async (isRepeat = false) => {
@@ -130,25 +131,17 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const isMonth = (): boolean => uiStore.viewMode === VIEW_MODE.MONTH || !eventStore.event.startDate.isValid;
-  const isToday = uiStore.dateDay.startOf('day').equals(DateTime.now().startOf('day'));
-
-  const getTime = () => {
-    const start = isMonth() && isToday ? getStartDate(uiStore.dateDay).toUTC() : eventStore.event.startDate.toUTC();
-    const end = isMonth() && isToday ? start.plus({ minutes: 30 }) : eventStore.event.endDate.toUTC();
-
-    return { start: toISO(start), end: toISO(end) };
-  };
 
   useEffect(() => {
     if (action === 'create') {
+      const start = isMonth() ? getStartDate(uiStore.dateDay).toUTC() : eventStore.event.startDate.toUTC();
       const calId = calendarStore.getCalendarId();
       eventStore.setEvent(
         new EventModel({
           calId: calId,
-          start: getTime().start,
-          end: getTime().end,
+          start: toISO(start),
+          end: toISO(start.plus({ minutes: 30 })),
           alarmList: ['0'],
-          allDay: !isToday && isMonth(),
         }),
       );
       setOriginEvent(new EventModel({ ...eventStore.event.dto }));
@@ -300,7 +293,7 @@ const EventHandleView = ({ action }: Props) => {
             />
           )}
         </Observer>
-        <Observer>
+        {/* <Observer>
           {() => (
             <Notifications
               notifications={eventStore.event.notifications}
@@ -308,7 +301,7 @@ const EventHandleView = ({ action }: Props) => {
               editable
             />
           )}
-        </Observer>
+        </Observer> */}
         <Observer>
           {() => (
             <Description

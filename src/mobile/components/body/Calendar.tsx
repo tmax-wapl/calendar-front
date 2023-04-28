@@ -35,7 +35,7 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, LEFT, RIGHT, SwipeEventData } from 'react-swipeable';
 import { CalendarEventDummy, DateHandleType } from '@/web/components';
 import { observer } from 'mobx-react-lite';
-import { toDateString, toDateTime, toISO } from '@/utils';
+import { getStartDate, toDateString, toDateTime, toISO } from '@/utils';
 import { VIEW_MODE } from '@/common';
 import { autorun, transaction } from 'mobx';
 import { useParams } from 'react-router-dom';
@@ -94,8 +94,18 @@ const Calendar = observer(() => {
     onSwipedRight: handleSwipe,
   });
 
+  const setDateTime = (start: Date) => {
+    const isToday = toDateString(start) === DateTime.local().toFormat('yyyy-LL-dd');
+    const startDate = toDateTime(start);
+    const curDate = getStartDate(startDate);
+
+    eventStore.event.startDate = isToday ? curDate : startDate.set({ hour: 9, minute: 0 });
+    eventStore.event.endDate = isToday ? curDate.plus({ minutes: 30 }) : startDate.set({ hour: 9, minute: 30 });
+  };
+
   const handleDateClick = ({ date }: DateClickArg) => {
     uiStore.setDateDay(toDateTime(date));
+    setDateTime(date);
   };
 
   const createAllDayEvent = (event: EventModel) => {
