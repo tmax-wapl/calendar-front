@@ -50,6 +50,8 @@ const Calendar = observer(() => {
   const { viewMode } = useParams();
 
   const fetchData = async (start: string, end: string) => {
+    const calendarList = await calendarStore.getCalendarList();
+    calendarStore.setCalendarList(calendarList);
     const { eventList, holidayList } = await eventStore.getEventList(start, end);
 
     transaction(() => {

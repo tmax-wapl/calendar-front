@@ -1,5 +1,4 @@
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { useEffect } from 'react';
 import FilterList from './FilterList';
 import MyCalendarList from './MyCalendarList';
 import OtherCalendarList from './OtherCalendarList';
@@ -7,15 +6,7 @@ import { CalendarManageViewContainer, Divider } from './CalendarManageView.style
 import EventBar from '../EventBar';
 
 const CalendarManageView = () => {
-  const { calendarStore, uiStore } = useCalendarStores();
-  const fetchData = async () => {
-    const calendarList = await calendarStore.getCalendarList();
-    calendarStore.setCalendarList(calendarList);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { uiStore } = useCalendarStores();
 
   const handleBackClick = () => {
     uiStore.pageDialogInfo = null;
