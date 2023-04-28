@@ -1,4 +1,4 @@
-import { styled, Mui } from '@wapl/ui';
+import { styled, Mui, Attachment } from '@wapl/ui';
 
 export const Accordion = styled(Mui.Accordion)`
   &:before {
@@ -22,36 +22,34 @@ export const AccordionDetails = styled(Mui.AccordionDetails)`
   padding: 4px;
   background: ${({ theme: { Color } }) => Color.Gray[100]};
   border-radius: 8px;
+  overflow: hidden scroll;
+`;
+
+export const StyledAttachment = styled(Attachment)<{ isMine: boolean }>`
+  width: 244px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  & > div > p[class*='-TextEllipsisCss'] {
+    width: ${({ isMine }) => (isMine ? '115px' : '140px')};
+    margin: 14px 0px;
+    max-width: 120px;
+  }
+`;
+
+export const LoadingAttachment = styled.div`
+  display: flex;
+  width: 242px;
+  height: 42px;
+  flex-shrink: 0;
+  background: ${({ theme: { Color } }) => Color.White[100]};
+  border: 1px solid ${({ theme: { Color } }) => Color.Gray[300]};
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const AttachmentPlaceholder = styled.span`
   margin: auto;
   ${({ theme: { Font } }) => Font.Text.s.Regular};
   color: ${({ theme: { Color } }) => Color.Gray[500]};
-`;
-
-export const AttachmentItem = styled.div`
-  display: flex;
-  height: 44px;
-  align-items: center;
-  padding: 0 12px;
-  background: ${({ theme: { Color } }) => Color.White[100]};
-  border: 1px solid ${({ theme: { Color } }) => Color.Gray[300]};
-  border-radius: 8px;
-  :not(:last-child) {
-    margin-bottom: 4px;
-  }
-`;
-
-export const AttachmentName = styled.span`
-  display: flex;
-  flex: 1;
-`;
-
-export const AttachmentSize = styled.span`
-  ${({ theme: { Font } }) => Font.Text.s.Regular};
-  color: ${({ theme: { Color } }) => Color.Gray[600]};
-  :not(:last-child) {
-    margin-right: 8px;
-  }
 `;

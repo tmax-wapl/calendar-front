@@ -27,10 +27,11 @@ export interface EventDTO {
   subEvent?: boolean;
   shareEvent?: boolean;
   eventMember?: EventMember;
-  attachments?: any[];
+  fileList?: AttachmentInfo[];
   notifications?: any[];
   exDate?: string;
   exceptionEvent?: boolean;
+  userNick: string;
 }
 
 export interface HolidayDTO {
@@ -139,10 +140,9 @@ export interface CustomRoomDTO extends RoomDTO.Room {
 }
 
 export interface EventMember {
-  personaList?: EventMemberPersona[] | { personaId: number }[];
-  roomList?: EventMemberRoom[] | { roomId: number }[];
+  personaList?: EventMemberPersona[];
+  roomList?: EventMemberRoom[];
 }
-
 export interface EventMemberPersona {
   personaId: number;
   personaNick: string;
@@ -156,4 +156,50 @@ export interface EventMemberRoom {
 export interface EventListDTO {
   eventList: EventDTO[];
   holidayList: HolidayDTO[];
+}
+
+export interface UploadFileDTO {
+  roomId: number;
+  targetFolderId: number | null;
+  userIds: string[];
+  roleIds: number[];
+  fileSize?: number;
+}
+
+export interface FileObject {
+  objectId: number;
+  deleted: 1; // 1 넣어야한다고 전달받음
+  actionId: 202; // docs쪽에서 정한 규칙 같음
+}
+
+export interface DeleteFileDTO {
+  location: number; // 마이룸 파일일 경우 0, 그 외의 룸일 경우 2
+  objectList: FileObject[];
+  userId: string;
+}
+
+export interface SyncFileDTO {
+  appIdFrom: string;
+  appIdTo: string[];
+  eventId: 'superdocs';
+  eventType: 'websocket_push';
+  roomId: string;
+  senderId: 'waplcalendar';
+  message?: string;
+}
+
+export interface SyncFileDTOMsg {
+  type: 0;
+  objectId: [string];
+  objectType: 1;
+  producerId: 'waplcalendar';
+}
+
+export type Extension = 'jpg' | 'pdf' | 'wav' | 'xlsx' | 'mk4' | 'pptx' | 'word' | 'zip' | 'etc';
+
+export interface AttachmentInfo {
+  docsFileId: number;
+  fileName: string;
+  fileSize: number;
+  fileExtension: Extension;
 }

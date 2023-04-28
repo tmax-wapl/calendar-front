@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon, Button } from '@wapl/ui';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { EventModel } from '@/stores/model/EventModel';
 import { EventHandleViewContainer, EventHandleContainer, FromInfo, ButtonGroup } from './EventHandleView.style';
 import EventBar from './EventBar';
@@ -28,9 +29,11 @@ interface Props {
 }
 
 const EventHandleView = ({ action }: Props) => {
-  const { calendarStore, eventStore, uiStore } = useCalendarStores();
+  const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { userId } = useContext(CalendarContext);
+  const [isUploading, setUploading] = useState<boolean>(false);
   const [originEvent, setOriginEvent] = useState(new EventModel({ ...eventStore.event.dto }));
 
   const preprocessEvent = (event: EventModel): EventModel => {
@@ -130,25 +133,17 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const isMonth = (): boolean => uiStore.viewMode === VIEW_MODE.MONTH || !eventStore.event.startDate.isValid;
-  const isToday = uiStore.dateDay.startOf('day').equals(DateTime.now().startOf('day'));
-
-  const getTime = () => {
-    const start = isMonth() && isToday ? getStartDate(uiStore.dateDay).toUTC() : eventStore.event.startDate.toUTC();
-    const end = isMonth() && isToday ? start.plus({ minutes: 30 }) : eventStore.event.endDate.toUTC();
-
-    return { start: toISO(start), end: toISO(end) };
-  };
 
   useEffect(() => {
     if (action === 'create') {
+      const start = isMonth() ? getStartDate(uiStore.dateDay).toUTC() : eventStore.event.startDate.toUTC();
       const calId = calendarStore.getCalendarId();
       eventStore.setEvent(
         new EventModel({
           calId: calId,
-          start: getTime().start,
-          end: getTime().end,
+          start: toISO(start),
+          end: toISO(start.plus({ minutes: 30 })),
           alarmList: ['0'],
-          allDay: !isToday && isMonth(),
         }),
       );
       setOriginEvent(new EventModel({ ...eventStore.event.dto }));
@@ -171,6 +166,7 @@ const EventHandleView = ({ action }: Props) => {
 
   const isModified = () => {
     const { event } = eventStore;
+    if (isUploading) return true;
     return (Object.keys(event.dto) as Array<keyof typeof event.dto>).find(key => {
       if ((!event.dto[key] && !originEvent.dto[key]) || key === 'repeatStartDate') return false;
       if (['start', 'end', 'repeatEndDate'].includes(key))
@@ -183,6 +179,8 @@ const EventHandleView = ({ action }: Props) => {
 
   const preventRefresh = (e: BeforeUnloadEvent) => {
     if (!isModified()) return;
+    Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
+    handleUploadFileDelete();
     e.preventDefault();
     e.returnValue = '';
   };
@@ -196,7 +194,26 @@ const EventHandleView = ({ action }: Props) => {
     uiStore.setDialogInfo(null);
   };
 
+  const fileDelete = async (deleteId: number) => {
+    await fileStore.deleteFile({
+      location: 0,
+      objectList: [{ objectId: deleteId, deleted: 1, actionId: 202 }],
+      userId: String(userId),
+    });
+  };
+
+  const handleUploadFileDelete = () => {
+    if (eventStore.event.attachments?.length > 0) {
+      eventStore.event.attachments.map(attachment => {
+        fileDelete(attachment.docsFileId);
+      });
+    }
+    eventStore.event.attachments = [];
+  };
+
   const handleReset = () => {
+    Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
+    handleUploadFileDelete();
     eventStore.setEvent(new EventModel({ ...originEvent.dto }));
     closeDialog();
   };
@@ -221,12 +238,24 @@ const EventHandleView = ({ action }: Props) => {
       onClick: [
         closeDialog,
         () => {
+          Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
+          handleUploadFileDelete();
           navigate(`/main/view-mode/${uiStore.viewMode}/date`);
           closeDialog();
         },
       ],
     });
   };
+
+  const handleOutsideClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (!!target.closest('.fc-event-main') && isModified()) handleClose();
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  });
 
   return (
     <EventHandleViewContainer>
@@ -324,7 +353,20 @@ const EventHandleView = ({ action }: Props) => {
             />
           )}
         </Observer>
-        {/* <Attachments attachments={eventStore.event.attachments} editable /> */}
+        <Observer>
+          {() => (
+            <Attachments
+              isUploading={isUploading}
+              setUploading={setUploading}
+              attachments={eventStore.event.attachments}
+              editable
+              onFileUpload={value => (eventStore.event.attachments = [...eventStore.event.attachments, ...value])}
+              onFileDelete={id =>
+                (eventStore.event.attachments = eventStore.event.attachments.filter(file => file.docsFileId !== id))
+              }
+            />
+          )}
+        </Observer>
         <Observer>
           {() => (
             <ButtonGroup fullWidth>
@@ -337,7 +379,8 @@ const EventHandleView = ({ action }: Props) => {
                   onClick={handleCreate}
                   disabled={
                     eventStore.event.startDate > eventStore.event.endDate ||
-                    eventStore.event.startDate > eventStore.event.repeatEndDate
+                    eventStore.event.startDate > eventStore.event.repeatEndDate ||
+                    isUploading
                   }
                 >
                   생성
@@ -348,7 +391,8 @@ const EventHandleView = ({ action }: Props) => {
                   onClick={handleUpdate}
                   disabled={
                     eventStore.event.startDate > eventStore.event.endDate ||
-                    eventStore.event.startDate > eventStore.event.repeatEndDate
+                    eventStore.event.startDate > eventStore.event.repeatEndDate ||
+                    isUploading
                   }
                 >
                   수정

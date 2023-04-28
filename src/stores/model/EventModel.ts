@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { DateTime } from 'luxon';
 import { rrulestr, RRule, Options, RRuleSet } from 'rrule';
-import { EventDTO, EventMember, ExceptionDTO } from '@constants/interfaces';
+import { AttachmentInfo, EventDTO, EventMember, ExceptionDTO } from '@constants/interfaces';
 import { isRRule, toISO } from '@/utils';
 
 export class EventModel {
@@ -181,8 +181,12 @@ export class EventModel {
     };
   }
 
-  get attachments(): any[] {
-    return this.dto.attachments;
+  get attachments(): AttachmentInfo[] {
+    return this.dto.fileList ?? [];
+  }
+
+  set attachments(attachments: AttachmentInfo[]) {
+    this.dto.fileList = attachments;
   }
 
   get notifications(): string[] {
@@ -215,5 +219,9 @@ export class EventModel {
 
   get shareEvent(): boolean {
     return this.dto.shareEvent;
+  }
+
+  get userNick(): string {
+    return this.dto.userNick;
   }
 }

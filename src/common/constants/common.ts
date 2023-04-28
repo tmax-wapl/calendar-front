@@ -44,3 +44,8 @@ export const ColorItem = [
   { value: '#FF5154', color: '#FF5154', label: '빨강' },
   { value: '#A143FF', color: '#A143FF', label: '보라' },
 ];
+
+export enum APP_ID {
+  CALENDAR = 4,
+  OFFICE = 21,
+}

@@ -34,6 +34,9 @@ export const ParticipantChip = styled(Chip, {
   :not(:last-child) {
     margin: 0px 2px 2px 0px;
   }
+  .MuiChip-label {
+    max-width: ${({ editable }) => (editable ? '188px' : '180px')};
+  }
 `;
 
 export const ParticipantsPlaceholder = styled.span`

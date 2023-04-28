@@ -30,6 +30,8 @@ import {
   WeekDayHeader,
   EventTitle,
   Today,
+  DayNum,
+  DayNumWrapper,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
@@ -98,6 +100,14 @@ const Calendar: React.FC = observer(() => {
     });
   };
 
+  const fetchEvent = () => {
+    if (!uiStore.notiData) return;
+    const event = uiStore.mainApi.getEventById(`${uiStore.notiData.eventId}`);
+    if (!event) return;
+    handleEventClick({ event });
+    uiStore.setNotiData(null);
+  };
+
   const isHoliday = (date: string) => {
     return !!calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
   };
@@ -109,9 +119,36 @@ const Calendar: React.FC = observer(() => {
     return 'black'; // 일반 date
   };
 
-  const renderDayContent = (content: DayCellContentArg) => (
-    <Observer>{() => <span style={{ color: DateColor(content) }}>{content.dayNumberText.slice(0, -1)}</span>}</Observer>
-  );
+  const renderDayContent = (content: DayCellContentArg) => {
+    const isOtherMonth = content.view.currentStart.getMonth() !== content.date.getMonth();
+    const isToday = toDateString(content.date) === DateTime.local().toFormat('yyyy-LL-dd');
+    const isMonth = uiStore.viewMode === VIEW_MODE.MONTH;
+
+    return (
+      <Observer>
+        {() =>
+          isMonth && (
+            <div style={{ display: 'flex' }}>
+              <DayNumWrapper isToday={isToday} color={DateColor(content)} opacity={isOtherMonth ? 0.3 : 1}>
+                <span className={`${isToday ? 'fc-today' : ''}`}>
+                  <DayNum isToday={isToday}>{content.dayNumberText.slice(0, -1)}</DayNum>
+                </span>
+                {uiStore.isHolidayChecked && holiday(content, isMonth)}
+                {uiStore.isLunarChecked && (
+                  <Lunar
+                    isRed={isHoliday(toDateString(content.date)) && uiStore.isHolidayChecked}
+                    style={{ marginLeft: 'auto', fontSize: '11px' }}
+                  >
+                    {lunar(content.date)}
+                  </Lunar>
+                )}
+              </DayNumWrapper>
+            </div>
+          )
+        }
+      </Observer>
+    );
+  };
 
   const renderAllDayContent = ({ text }: { text: string }) =>
     uiStore.viewMode === VIEW_MODE.WEEK ? (
@@ -135,12 +172,15 @@ const Calendar: React.FC = observer(() => {
     return `음 ${month}.${day}.`;
   };
 
-  const holiday = (content: DayHeaderContentArg) => {
+  const holiday = (content: DayHeaderContentArg | DayCellContentArg, isMonth = true) => {
     const date = toDateString(content.date);
     const holiday = calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
     return (
       holiday && (
-        <Holiday isRed={holiday.isRed} style={{ marginLeft: '10px' }}>
+        <Holiday
+          isRed={holiday.isRed}
+          style={{ marginLeft: isMonth ? '12px' : '10px', fontSize: isMonth ? '11px' : '' }}
+        >
           {holiday.name}
         </Holiday>
       )
@@ -154,9 +194,12 @@ const Calendar: React.FC = observer(() => {
           <WeekDayHeader color={DateColor(content, true)}>
             {date(content)}
             {getDay(content.dow)}
-            {uiStore.isHolidayChecked && holiday(content)}
+            {uiStore.isHolidayChecked && holiday(content, false)}
             {uiStore.isLunarChecked && (
-              <Lunar isRed={isHoliday(toDateString(content.date))} style={{ marginLeft: 'auto', fontSize: '11px' }}>
+              <Lunar
+                isRed={isHoliday(toDateString(content.date)) && uiStore.isHolidayChecked}
+                style={{ marginLeft: 'auto', fontSize: '11px' }}
+              >
                 {lunar(content.date)}
               </Lunar>
             )}
@@ -244,29 +287,40 @@ const Calendar: React.FC = observer(() => {
     setDirection(!direction);
   };
 
-  const handleEventClick = async ({ event, jsEvent }: EventClickArg) => {
-    jsEvent.stopPropagation();
+  const handleEventClick = async ({ event, jsEvent }: Partial<EventClickArg>) => {
+    jsEvent?.stopPropagation();
     const eventInfo = await eventStore.getEventInfo(+event.id, event.startStr, event.extendedProps.dto.roomId);
     uiStore.setDateDay(eventInfo.startDate.startOf('day'));
     eventStore.setEvent(eventInfo);
-    if (!pathname.includes('detail')) navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+    goRoute('detail');
   };
 
-  const handleDoubleClick = ({ jsEvent }: DateClickArg) => {
-    jsEvent.stopPropagation();
-    if (jsEvent.detail % 2 === 0 && !pathname.includes('create'))
-      navigate(`/main/view-mode/${uiStore.viewMode}/create`);
+  const handleDoubleClick = (event: any) => {
+    event.stopPropagation();
+    goRoute('create');
   };
 
-  const handleDateTimeSelect = ({ start, end, jsEvent }: DateSelectArg) => {
+  const handleDateTimeSelect = ({ start, end, jsEvent, startStr, endStr }: DateSelectArg) => {
     if (!jsEvent) return;
-    if (jsEvent.detail % 2 === 0) return;
+    jsEvent.stopPropagation();
+    if (uiStore.viewMode === VIEW_MODE.WEEK) {
+      const { minutes } = diffTime(startStr, endStr);
+      if (minutes > 30) {
+        goRoute('create');
+        setDateTime(start, end);
+        return;
+      }
+    }
 
     if (!pathname.includes('create')) uiStore.setDateDay(toDateTime(start));
     setDateTime(start, end);
 
     if (pathname.includes('create')) return;
-    if (!pathname.includes('date')) navigate(`view-mode/${uiStore.viewMode}/date`);
+    goRoute('date');
+  };
+
+  const goRoute = (routePath: string) => {
+    if (!pathname.includes(routePath)) navigate(`view-mode/${uiStore.viewMode}/${routePath}`);
   };
 
   const handleDidMount = (arg: EventMountArg) => {
@@ -416,19 +470,17 @@ const Calendar: React.FC = observer(() => {
   };
 
   const setDateTime = (start: Date, end: Date) => {
-    const isMonth = uiStore.viewMode === VIEW_MODE.MONTH;
-    const isToday = toDateString(start) === DateTime.local().toFormat('yyyy-LL-dd');
+    const isKeepTime = uiStore.viewMode === VIEW_MODE.MONTH && pathname.includes('create');
 
-    if (isToday && isMonth) {
-      const startDate = getStartDate(toDateTime(start));
-      eventStore.event.startDate = startDate;
-      eventStore.event.endDate = startDate.plus({ minute: 30 });
-      eventStore.event.allDay = false;
-    } else {
-      eventStore.event.startDate = toDateTime(start);
-      eventStore.event.endDate = isMonth ? toDateTime(end).minus({ minute: 1 }) : toDateTime(end);
-      eventStore.event.allDay = isMonth;
-    }
+    const startDate = toDateTime(start);
+    const endDate = toDateTime(end);
+
+    eventStore.event.startDate = isKeepTime
+      ? startDate.set({ hour: eventStore.event.startDate.hour, minute: eventStore.event.startDate.minute })
+      : startDate;
+    eventStore.event.endDate = isKeepTime
+      ? endDate.plus({ days: -1 }).set({ hour: eventStore.event.endDate.hour, minute: eventStore.event.endDate.minute })
+      : endDate;
   };
 
   const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];
@@ -455,9 +507,10 @@ const Calendar: React.FC = observer(() => {
   }, []);
 
   useEffect(() => {
-    const dispose = autorun(() => {
+    const dispose = autorun(async () => {
       const { start, end } = uiStore.dateRange;
-      fetchData(start, end);
+      await fetchData(start, end);
+      fetchEvent();
     });
     return () => dispose();
   }, []);
@@ -466,6 +519,23 @@ const Calendar: React.FC = observer(() => {
     if (viewMode) uiStore.viewMode = viewMode;
     else uiStore.viewMode = VIEW_MODE.MONTH;
   }, [viewMode]);
+
+  useEffect(() => {
+    const target = document.querySelectorAll('table.fc-scrollgrid-sync-table tbody .fc-daygrid-day-number');
+    document.querySelectorAll('.fc-day-other').forEach(el => el.classList.remove('fc-day-other')); // 더블클릭 이벤트 제어 클래스 제거
+    document.querySelector('.fc-daygrid-day.fc-day-today')?.classList.remove('fc-day-today');
+
+    if (target) Array.from(target).map(el => el.addEventListener('dblclick', handleDoubleClick));
+    return () => {
+      if (target) Array.from(target).map(el => el.removeEventListener('dblclick', handleDoubleClick));
+    };
+  });
+
+  useEffect(() => {
+    if (!uiStore.notiData) return;
+    uiStore.mainApi?.gotoDate(uiStore.notiData.start);
+    uiStore.changeDateRange();
+  }, [uiStore.notiData]);
 
   return (
     <CalendarContainer>
@@ -490,7 +560,6 @@ const Calendar: React.FC = observer(() => {
           allDayContent={renderAllDayContent}
           moreLinkClick={renderMoreClick}
           dayHeaderContent={renderHeaderContent}
-          dateClick={handleDoubleClick}
           select={handleDateTimeSelect}
           eventContent={renderEventContent}
           nowIndicator

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import CalendarLayout from '@wcomponents/layout/CalendarLayout';
 import Calendar from '@wcomponents/CalendarView';
@@ -12,8 +13,18 @@ import { Dialog } from '@/common/components/Dialog';
 import { ContextMenu } from '@/common/components/ContextMenu';
 import { useCalendarStores } from '@/stores/StoreProvider';
 
-const WebApp: React.FC = () => {
+interface Props {
+  data: { eventId: number; start: string };
+}
+
+const WebApp = ({ data }: Props) => {
   const { uiStore } = useCalendarStores();
+
+  useEffect(() => {
+    if (!data) return;
+    uiStore.setNotiData(data);
+  }, [data]);
+
   return (
     <Router basename="/">
       <Routes>

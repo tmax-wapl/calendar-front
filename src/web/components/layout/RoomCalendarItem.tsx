@@ -33,15 +33,19 @@ const RoomCalendarItem = observer(({ calendar }: Props) => {
       position: { top: e.clientY, left: e.clientX },
       id: calendar.roomId,
       color: calendar.color,
-      type: 'roomCalendar',
+      type: calendar.type === 'private' ? 'roomCalendar' : 'orgCalendar',
+      data: calendar,
     });
   };
 
+  const isContained = calendarStore.roomCalendarList?.some((cal: CalendarModel) => cal.id === calendar.id);
+
   const handleCheckedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newRoomList = calendarStore.roomCalendarList?.map((room: CalendarModel) =>
-      room.roomId === calendar.roomId ? { ...room.dto, checkFlag: e.target.checked } : room.dto,
-    );
-    calendarStore.setLocalRoomCalendarList(userId, newRoomList);
+    calendar.dto.checkFlag = e.target.checked;
+    calendar.checkFlag = e.target.checked;
+    const index = calendarStore.roomCalendarList.findIndex(room => room.id === calendar.id);
+    calendarStore.roomCalendarList[index] = calendar;
+    calendarStore.addLocalRoomCalendarItem(userId, calendar.dto);
     uiStore.changeDateRange();
   };
 
@@ -50,10 +54,8 @@ const RoomCalendarItem = observer(({ calendar }: Props) => {
   };
 
   const handleRename = () => {
-    const newRoomList = calendarStore.roomCalendarList?.map((room: CalendarModel) =>
-      room.roomId === calendar.roomId ? { ...room.dto, name: renameTitle } : room.dto,
-    );
-    calendarStore.setLocalRoomCalendarList(userId, newRoomList);
+    calendar.dto.name = renameTitle;
+    calendarStore.addLocalRoomCalendarItem(userId, calendar.dto);
     calendarStore.setRenameId(null);
   };
 

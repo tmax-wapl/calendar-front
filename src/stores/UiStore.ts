@@ -37,26 +37,27 @@ interface ContextClickArg {
     startdate?: string;
     enddate?: string;
   };
+  data?: any;
+}
+
+interface NotiData {
+  eventId: number;
+  start: string;
 }
 
 export default class UiStore {
   rootStore: RootStore;
-
   dateRange: DateRange = { start: '', view: DateTime.now(), end: '' };
-
   mainApi: CalendarApi = null;
-
   viewMode: string;
-
   dateDay: DateTime = DateTime.now().startOf('day');
-
   dialogInfo: DialogInfo = null;
-
   contextClickArg: ContextClickArg = null;
-
   isImportanceChecked = false;
   isHolidayChecked = true;
   isLunarChecked = true;
+  notiData: NotiData = null;
+  isDetail = false;
 
   isViewRow = false;
   rowNum: number = null;
@@ -84,6 +85,10 @@ export default class UiStore {
       rowNum: observable,
       setToggleViewRow: action,
       pageDialogInfo: observable,
+      notiData: observable,
+      setNotiData: action,
+      isDetail: observable,
+      setIsDetail: action,
     });
   }
 
@@ -121,14 +126,22 @@ export default class UiStore {
     if (rowNum) this.rowNum = rowNum;
   }
 
+  setNotiData(data: NotiData) {
+    this.notiData = data;
+  }
+
+  setIsDetail(isDetail: boolean) {
+    this.isDetail = isDetail;
+  }
+
   getApi(): CalendarApi {
     return this.mainApi;
   }
 
-  changeDateRange() {
+  changeDateRange(selectDate?: Date) {
     this.setDateRange({
       start: toDateString(this.mainApi.view.activeStart),
-      view: DateTime.fromJSDate(this.mainApi?.getDate()),
+      view: DateTime.fromJSDate(!selectDate ? this.mainApi?.getDate() : selectDate),
       end: toDateString(this.mainApi.view.activeEnd),
     });
   }

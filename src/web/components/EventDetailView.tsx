@@ -3,7 +3,13 @@ import { Observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
 import { useNavigate } from 'react-router-dom';
-import { EventDetailViewContainer, EventDetailContainer, FromInfo, Creator } from './EventDetailView.style';
+import {
+  EventDetailViewContainer,
+  EventDetailContainer,
+  FromInfoContainer,
+  FromInfo,
+  Creator,
+} from './EventDetailView.style';
 import { EventModel } from '@/stores';
 import EventBar, { EventBarButton } from './EventBar';
 import EventItem from './EventItem';
@@ -78,6 +84,25 @@ const EventDetailView = () => {
     }
   };
 
+  const isRoomModel = (roomItem: RoomModel): roomItem is RoomModel => {
+    return 'displayName' in roomItem;
+  };
+
+  const isSearchOrgRes = (searchOrgItem: SearchOrgRes): searchOrgItem is SearchOrgRes => {
+    return !('orgId' in searchOrgItem);
+  };
+
+  const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>) => {
+    switch (true) {
+      case isRoomModel(item as RoomModel):
+        return item?.id;
+      case isSearchOrgRes(item as SearchOrgRes):
+        return item?.org.roomId;
+      default:
+        return item.roomId;
+    }
+  };
+
   const shareEvent = async (
     personaIdList: Partial<Member>[],
     roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
@@ -86,9 +111,10 @@ const EventDetailView = () => {
     await eventStore.shareEvent({
       eventId: +event.id,
       personaIdList: personaIdList.map(persona => persona.personaId),
-      roomIdList: roomIdList.map(room => room.id),
+      roomIdList: roomIdList.map(room => convertRoomObj(room)),
     });
-    // TODO: 공유 완료 되었다는 팝업
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.start, event.roomId);
+    eventStore.setEvent(eventInfo);
   };
 
   const handleShareClick = () => {
@@ -101,7 +127,9 @@ const EventDetailView = () => {
   };
 
   useEffect(() => {
+    uiStore.setIsDetail(true);
     if (!eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    return () => uiStore.setIsDetail(false);
   }, []);
 
   return (
@@ -119,11 +147,13 @@ const EventDetailView = () => {
         <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
         <Observer>
           {() => (
-            <FromInfo>
+            <FromInfoContainer>
               <Icon.CalendarLine className="mr-8" width={20} height={20} />
-              {eventStore.event.calName}
-              <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
-            </FromInfo>
+              <FromInfo>
+                {eventStore.event.calName}
+                <Creator>&nbsp;{`(일정 생성: ${eventStore.event.userNick})`}</Creator>
+              </FromInfo>
+            </FromInfoContainer>
           )}
         </Observer>
         <Observer>
@@ -150,7 +180,9 @@ const EventDetailView = () => {
         <Observer>
           {() => (eventStore.event.description ? <Description description={eventStore.event.description} /> : null)}
         </Observer>
-        {/* {eventStore.event.attachments?.length && <Attachments attachments={eventStore.event.attachments} />} */}
+        <Observer>
+          {() => eventStore.event.attachments?.length > 0 && <Attachments attachments={eventStore.event.attachments} />}
+        </Observer>
       </EventDetailContainer>
     </EventDetailViewContainer>
   );
