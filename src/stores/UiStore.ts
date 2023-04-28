@@ -2,14 +2,12 @@ import RootStore from './RootStore';
 import { DateTime } from 'luxon';
 import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable, action } from 'mobx';
-import { isEqualMonth, isSameDate, toDateString } from '@/utils';
+import { isSameDate, toDateString } from '@/utils';
 import { EventModel } from './model/EventModel';
 import { CustomRoomDTO } from '@/common/constants/interfaces';
 import { VIEW_MODE } from '@/common/constants';
 
 type DateRange = { start: string; view?: DateTime; end: string };
-type ShareRoom = (personaIdList: number[], roomIdList: number[]) => void;
-
 export interface DialogInfo {
   action?: string;
   onCloseClick?: () => void;
@@ -85,6 +83,7 @@ export default class UiStore {
       rowNum: observable,
       setToggleViewRow: action,
       pageDialogInfo: observable,
+      setPageDialogInfo: action,
       notiData: observable,
       setNotiData: action,
       isDetail: observable,
@@ -115,6 +114,10 @@ export default class UiStore {
 
   setHolidayChecked(checked: boolean) {
     this.isHolidayChecked = checked;
+  }
+
+  setPageDialogInfo(pageDialogInfo: string) {
+    this.pageDialogInfo = pageDialogInfo;
   }
 
   setLunarChecked(checked: boolean) {

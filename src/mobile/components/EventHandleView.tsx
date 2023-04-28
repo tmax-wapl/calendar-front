@@ -213,7 +213,7 @@ const EventHandleView = ({ action }: Props) => {
 
   const handleClose = () => {
     if (!isModified()) {
-      uiStore.pageDialogInfo = null;
+      uiStore.setPageDialogInfo(null);
       return;
     }
     uiStore.setDialogInfo({
@@ -221,7 +221,7 @@ const EventHandleView = ({ action }: Props) => {
       onClick: [
         closeDialog,
         () => {
-          uiStore.pageDialogInfo = null;
+          uiStore.setPageDialogInfo(null);
           closeDialog();
         },
       ],

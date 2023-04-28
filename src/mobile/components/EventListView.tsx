@@ -23,7 +23,7 @@ const EventListView = () => {
   const handleClickEvent = useCallback(async (event: EventModel) => {
     const eventInfo = await eventStore.getEventInfo(+event.id, event.start);
     eventStore.setEvent(eventInfo);
-    uiStore.pageDialogInfo = 'detail';
+    uiStore.setPageDialogInfo('detail');
   }, []);
 
   useEffect(() => {

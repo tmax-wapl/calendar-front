@@ -9,7 +9,7 @@ const CalendarManageView = () => {
   const { uiStore } = useCalendarStores();
 
   const handleBackClick = () => {
-    uiStore.pageDialogInfo = null;
+    uiStore.setPageDialogInfo(null);
   };
 
   return (

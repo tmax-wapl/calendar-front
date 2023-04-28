@@ -16,7 +16,7 @@ const EventDetailView = () => {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    uiStore.pageDialogInfo = null;
+    uiStore.setPageDialogInfo(null);
   };
 
   const handleEditClick = () => {

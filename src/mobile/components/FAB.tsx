@@ -5,7 +5,7 @@ const FAB = () => {
   const { uiStore } = useCalendarStores();
 
   const handleCreate = () => {
-    uiStore.pageDialogInfo = 'create';
+    uiStore.setPageDialogInfo('create');
   };
 
   return (
