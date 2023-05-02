@@ -77,6 +77,24 @@ const EventDetailView = () => {
       });
     }
   };
+  const isRoomModel = (roomItem: RoomModel): roomItem is RoomModel => {
+    return 'displayName' in roomItem;
+  };
+
+  const isSearchOrgRes = (searchOrgItem: SearchOrgRes): searchOrgItem is SearchOrgRes => {
+    return !('orgId' in searchOrgItem);
+  };
+
+  const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>) => {
+    switch (true) {
+      case isRoomModel(item as RoomModel):
+        return item?.id;
+      case isSearchOrgRes(item as SearchOrgRes):
+        return item?.org.roomId;
+      default:
+        return item.roomId;
+    }
+  };
 
   const shareEvent = async (
     personaIdList: Partial<Member>[],
@@ -86,9 +104,10 @@ const EventDetailView = () => {
     await eventStore.shareEvent({
       eventId: +event.id,
       personaIdList: personaIdList.map(persona => persona.personaId),
-      roomIdList: roomIdList.map(room => room.id),
+      roomIdList: roomIdList.map(room => convertRoomObj(room)),
     });
-    // TODO: 공유 완료 되었다는 팝업
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.start, event.roomId);
+    eventStore.setEvent(eventInfo);
   };
 
   const handleShareClick = () => {

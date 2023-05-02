@@ -70,7 +70,20 @@ const Calendar = observer(() => {
     );
   };
 
-  const renderDayContent = (content: DayCellContentArg) => <span>{content.dayNumberText.slice(0, -1)}</span>;
+  const isHoliday = (date: string) => {
+    return !!calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
+  };
+
+  const DateColor = (content: DayCellContentArg | DayHeaderContentArg, isWeekDay = false) => {
+    const date = toDateString(content.date);
+    if (content.dow === 0 || (isHoliday(date) && uiStore.isHolidayChecked)) return 'red'; // 공휴일
+    else if (date === DateTime.local().toFormat('yyyy-LL-dd') && !isWeekDay) return 'white'; // today
+    return 'black'; // 일반 date
+  };
+
+  const renderDayContent = (content: DayCellContentArg) => (
+    <span style={{ color: DateColor(content) }}>{content.dayNumberText.slice(0, -1)}</span>
+  );
 
   const handleSwipe = (eventData: SwipeEventData) => {
     const { dir } = eventData;
