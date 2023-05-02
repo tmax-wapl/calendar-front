@@ -101,7 +101,7 @@ const Calendar: React.FC = observer(() => {
   };
 
   const fetchEvent = () => {
-    if (!uiStore.notiData) return;
+    if (!uiStore.notiData?.eventId) return;
     const event = uiStore.mainApi.getEventById(`${uiStore.notiData.eventId}`);
     if (!event) return;
     handleEventClick({ event });
@@ -532,7 +532,7 @@ const Calendar: React.FC = observer(() => {
   });
 
   useEffect(() => {
-    if (!uiStore.notiData) return;
+    if (!uiStore.notiData?.start) return;
     uiStore.mainApi?.gotoDate(uiStore.notiData.start);
     uiStore.changeDateRange();
   }, [uiStore.notiData]);
