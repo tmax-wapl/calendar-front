@@ -1,6 +1,7 @@
 import Calendar from '../body/Calendar';
 import SplitPane from 'react-split-pane';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { reaction } from 'mobx';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, SwipeEventData } from 'react-swipeable';
 import '@/styles/split.css';
@@ -40,13 +41,13 @@ const SplitLayout = () => {
     if (bottomPanelHeight === 0) {
       setHalfHeight();
       mainApi.setOption('eventClassNames', 'small-event');
-      mainApi?.setOption('dayMaxEvents', 3);
+      mainApi?.setOption('dayMaxEvents', 2);
       mainApi.updateSize();
     } else {
       if (bottomPanelHeight > halfHeight) return;
       else {
-        setTopPanelHeight(LayoutHeight * 0.115);
-        setBottomPanelHeight(LayoutHeight * 0.885);
+        setTopPanelHeight(LayoutHeight * 0.11);
+        setBottomPanelHeight(LayoutHeight * 0.89);
         mainApi.updateSize();
         uiStore.setToggleViewRow(getRow());
       }
@@ -85,6 +86,27 @@ const SplitLayout = () => {
     onSwipedUp: handleSwipe,
     onSwipedDown: handleSwipe,
   });
+
+  const changeDateClickView = () => {
+    const { mainApi } = uiStore;
+    setHalfHeight();
+    mainApi.setOption('eventClassNames', 'small-event');
+    mainApi?.setOption('dayMaxEvents', 2);
+    mainApi.updateSize();
+  };
+
+  useEffect(() => {
+    const dispose = reaction(
+      () => uiStore.dateDay,
+      (_, previousDateDay) => {
+        if (previousDateDay) {
+          const bottom = bottomRef.current?.clientHeight;
+          if (bottom < halfHeight) changeDateClickView();
+        }
+      },
+    );
+    return () => dispose();
+  }, []);
 
   return (
     <SplitPaneWrapper ref={swipeRef} {...swipeHandlers}>

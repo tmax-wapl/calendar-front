@@ -39,6 +39,7 @@ export const Lunar = styled.span<{ isRed: boolean }>`
 
 export const EventListWrapper = styled.div`
   display: flex;
+  height: 100%;
   flex-direction: column;
   padding: 0 18px 20px;
   overflow-y: auto;
