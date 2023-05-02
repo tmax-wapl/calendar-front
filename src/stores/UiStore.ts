@@ -127,6 +127,7 @@ export default class UiStore {
   setToggleViewRow(rowNum?: number) {
     this.isViewRow = !this.isViewRow;
     if (rowNum) this.rowNum = rowNum;
+    else this.rowNum = undefined;
   }
 
   setNotiData(data: NotiData) {

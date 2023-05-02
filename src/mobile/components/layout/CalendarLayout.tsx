@@ -1,14 +1,16 @@
 import { default as MainHeader, EventBarButton as HeaderButton } from '../header/EventBar';
 import CalendarHeader from '../header/CalendarHeader';
 import SplitLayout from './SplitLayout';
+import { useCalendarStores } from '@/stores/StoreProvider';
 
 const CalendarLayout = () => {
+  const { uiStore } = useCalendarStores();
   const handleSearchClick = () => {
     console.log('search');
   };
 
   const handleSettingClick = () => {
-    console.log('setting');
+    uiStore.setPageDialogInfo('calendarManage');
   };
 
   const handleHomeClick = () => {

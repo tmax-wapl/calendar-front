@@ -10,6 +10,7 @@ import { SplitPaneWrapper } from './SplitLayout.style';
 
 const SplitLayout = () => {
   const { uiStore } = useCalendarStores();
+  const bottomRef = useRef<HTMLDivElement>(null);
   const [topPanelHeight, setTopPanelHeight] = useState<number>();
   const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(0);
   const { innerHeight } = window;
@@ -30,27 +31,46 @@ const SplitLayout = () => {
 
   const handleSwipe = (eventData: SwipeEventData) => {
     const { dir } = eventData;
+    dir === 'Up' ? handleSwipeUp() : handleSwipeDown(eventData);
+  };
+
+  const handleSwipeUp = () => {
     const { mainApi } = uiStore;
-    if (dir === 'Up') {
-      if (bottomPanelHeight === 0) {
-        setHalfHeight();
-        mainApi.setOption('eventClassNames', 'small-event');
-        mainApi.updateSize();
-      } else {
-        setTopPanelHeight(LayoutHeight * 0.11);
-        setBottomPanelHeight(LayoutHeight * 0.89);
+
+    if (bottomPanelHeight === 0) {
+      setHalfHeight();
+      mainApi.setOption('eventClassNames', 'small-event');
+      mainApi?.setOption('dayMaxEvents', 3);
+      mainApi.updateSize();
+    } else {
+      if (bottomPanelHeight > halfHeight) return;
+      else {
+        setTopPanelHeight(LayoutHeight * 0.115);
+        setBottomPanelHeight(LayoutHeight * 0.885);
         mainApi.updateSize();
         uiStore.setToggleViewRow(getRow());
       }
-    } else {
-      if (bottomPanelHeight > halfHeight) {
-        setHalfHeight();
-        uiStore.setToggleViewRow();
-      } else {
-        setTopPanelHeight(LayoutHeight);
-        setBottomPanelHeight(0);
-        mainApi.setOption('eventClassNames', '');
+    }
+  };
+
+  const handleSwipeDown = (eventData: SwipeEventData) => {
+    const { event } = eventData;
+    const { mainApi } = uiStore;
+    const { target } = event;
+
+    if (bottomPanelHeight > halfHeight) {
+      const isScroll = bottomRef.current?.scrollHeight > bottomRef.current?.clientHeight;
+      if (isScroll) {
+        const isListView = (target as Element).closest('.listView');
+        if (isListView) return;
       }
+      setHalfHeight();
+      uiStore.setToggleViewRow();
+    } else {
+      setTopPanelHeight(LayoutHeight);
+      setBottomPanelHeight(0);
+      mainApi.setOption('eventClassNames', '');
+      mainApi?.setOption('dayMaxEvents', 4);
     }
   };
 
@@ -73,7 +93,7 @@ const SplitLayout = () => {
           <Calendar />
         </div>
         <div style={{ height: bottomPanelHeight }}>
-          <EventListView />
+          <EventListView bottomElement={bottomRef} />
         </div>
       </SplitPane>
     </SplitPaneWrapper>

@@ -94,3 +94,7 @@ body {
 .small-event {
   height: 2px;
 }
+
+.small-event .fc-event-main {
+  display: none;
+}

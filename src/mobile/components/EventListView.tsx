@@ -3,7 +3,7 @@ import EventItem from './EventItem';
 import NoResult from '@/web/components/NoResult';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useState } from 'react';
+import { ForwardedRef, useCallback, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import { getLunar } from 'holiday-kr';
 import { autorun } from 'mobx';
@@ -11,7 +11,7 @@ import { toISO, toLuxon } from '@/utils';
 import { EventModel } from '@/stores/model/EventModel';
 import { VIEW_MODE } from '@/common/constants';
 
-const EventListView = () => {
+const EventListView = ({ bottomElement }: { bottomElement: ForwardedRef<HTMLDivElement> }) => {
   const { uiStore, eventStore, calendarStore } = useCalendarStores();
   const [eventList, setEventList] = useState([]);
 
@@ -81,7 +81,7 @@ const EventListView = () => {
         </Observer>
       </DateInfo>
       {eventList.length > 0 ? (
-        <EventListWrapper>
+        <EventListWrapper ref={bottomElement} className={'listView'}>
           {eventList.map((event, index) => (
             <EventItem key={index} event={event} onClick={handleClickEvent} />
           ))}
@@ -92,5 +92,4 @@ const EventListView = () => {
     </EventListViewContainer>
   );
 };
-
 export default EventListView;

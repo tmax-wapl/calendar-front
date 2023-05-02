@@ -5,6 +5,7 @@ export const EventListViewContainer = styled.div`
   flex-shrink: 0;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 `;
 
 export const DateInfo = styled.div`
