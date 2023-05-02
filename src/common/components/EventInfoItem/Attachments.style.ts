@@ -34,6 +34,7 @@ export const StyledAttachment = styled(Attachment)<{ isMine: boolean }>`
     margin: 14px 0px;
     max-width: 120px;
   }
+  cursor: ${({ isMine }) => (isMine ? 'default' : 'pointer')};
 `;
 
 export const LoadingAttachment = styled.div`

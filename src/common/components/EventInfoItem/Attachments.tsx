@@ -124,6 +124,18 @@ const Attachments = ({
     }
   };
 
+  const handleAttachmentClick = () => {
+    const roomId = roomStore.myRoom.id;
+    window.parent.postMessage({
+      type: 'shell:runTopping',
+      appId: APP_ID.OFFICE,
+      options: {
+        runToppingType: 2,
+        roomId,
+      },
+    });
+  };
+
   const handleDeleteClick = async (deleteId: number) => {
     const res = await fileStore.deleteFile({
       location: 0,
@@ -164,6 +176,7 @@ const Attachments = ({
               volume={getByteSize(attachment.fileSize)}
               isMine={editable}
               onDelete={() => handleDeleteClick(attachment.docsFileId)}
+              {...(!editable && { onClick: () => handleAttachmentClick() })}
             />
           ))
         ) : (
