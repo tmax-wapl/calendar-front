@@ -1,14 +1,25 @@
+import { useEffect, useContext, useState } from 'react';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
+import { useCalendarStores } from '@/stores/StoreProvider';
+import { useUserStore } from '@wapl/core';
+import { Icon } from '@wapl/ui';
 import { default as MainHeader, EventBarButton as HeaderButton } from '../header/EventBar';
 import CalendarHeader from '../header/CalendarHeader';
 import SplitLayout from './SplitLayout';
+import { CalendarDTO } from '@/common/constants/interfaces';
+import { CalendarModel } from '@/stores';
 
 const CalendarLayout = () => {
+  const { userId } = useContext(CalendarContext);
+  const { uiStore, calendarStore } = useCalendarStores();
+  const { selectedPersona } = useUserStore();
+  const [isLoading, setLoading] = useState(true);
   const handleSearchClick = () => {
     console.log('search');
   };
 
   const handleSettingClick = () => {
-    console.log('setting');
+    uiStore.pageDialogInfo = 'calendarManage';
   };
 
   const handleHomeClick = () => {
@@ -21,12 +32,42 @@ const CalendarLayout = () => {
     { action: 'home', onClick: handleHomeClick },
   ];
 
+  const fetchData = async () => {
+    const calendarList = await calendarStore.getCalendarList();
+    calendarStore.setCalendarList(calendarList.filter(({ type }) => type !== 'private' && type !== 'org'));
+
+    const roomList = calendarList.filter(({ type }) => type === 'private' || type === 'org');
+    const localRoomMap = new Map(
+      calendarStore.getLocalRoomCalendarList(selectedPersona.id)?.map((room: CalendarDTO) => [room.roomId, room]),
+    );
+
+    const filteredRoomList = roomList.map((room: CalendarModel) =>
+      localRoomMap.get(room.roomId) ? new CalendarModel(localRoomMap.get(room.roomId)) : room,
+    );
+
+    calendarStore.setRoomCalendarList(filteredRoomList);
+    calendarStore.setInitialLocalRoomCalendarList(userId);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <div style={{ height: '100%' }}>
-      <MainHeader title="내 캘린더" rightSide={headerRightSide} />
-      <CalendarHeader />
-      <SplitLayout />
-    </div>
+    <>
+      {isLoading ? (
+        <div style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon.LoadingMotion />
+        </div>
+      ) : (
+        <div style={{ height: '100%' }}>
+          <MainHeader title="내 캘린더" rightSide={headerRightSide} />
+          <CalendarHeader />
+          <SplitLayout />
+        </div>
+      )}
+    </>
   );
 };
 
