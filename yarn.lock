@@ -5744,8 +5744,8 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": 0.4.42
-    "@wapl/ui": ^0.2.30
+    "@wapl/core": 0.4.47
+    "@wapl/ui": 0.2.35
     axios: ^0.27.2
     babel-loader: ^9.0.1
     clean-webpack-plugin: ^4.0.0
@@ -5788,12 +5788,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:0.4.42":
-  version: 0.4.42
-  resolution: "@wapl/core@npm:0.4.42"
+"@wapl/core@npm:0.4.47":
+  version: 0.4.47
+  resolution: "@wapl/core@npm:0.4.47"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
-    "@wapl/ui": ^0.2.30
+    "@wapl/ui": ^0.2.35
     axios: ^0.27.2
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
@@ -5821,13 +5821,13 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: fc7abae3cb951cb074aa8eb261fa708399ae745bbdd1deeba0316f45faf87b64e6f9dce40dffa1bba5877bc62dc991e28e53961d27ffe28c4e587c7ddb23ca95
+  checksum: b2aff44dba5f84e2ae1bc69987374dcc3eff1a17fd2b41f9c652b53f94bcdc360867317ba8d452786a21e756a6adb7961fd5fd2cc116d70f32dc1d4c673dad62
   languageName: node
   linkType: hard
 
-"@wapl/ui@npm:^0.2.30":
-  version: 0.2.30
-  resolution: "@wapl/ui@npm:0.2.30"
+"@wapl/ui@npm:0.2.35, @wapl/ui@npm:^0.2.35":
+  version: 0.2.35
+  resolution: "@wapl/ui@npm:0.2.35"
   dependencies:
     "@emotion/react": ^11.7.1
     "@emotion/styled": ^11.6.0
@@ -5847,7 +5847,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-router-dom: ^6.2.1
-  checksum: bd28a2a454811434b1f98b22e7382fd9f82616ca654f614ccf854c2bbb8873f3877d24846d31835771ee80f89a1b394b5cf6dd79b4aba2df684a11b391cc282e
+  checksum: cad4b9c69ab40b161b1ec13bbdc3d74aa6ef6fc47c4d55e13dfdd7aa80e2d1e7347b8d0c9fb1172cf09abea84e2ade23b10e026dd8e1bf235f3a2ae07cfadc85
   languageName: node
   linkType: hard
 
