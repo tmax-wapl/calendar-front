@@ -3,7 +3,7 @@ import { styled, Mui, Icon } from '@wapl/ui';
 export const ItemContainer = styled.div<{ main: boolean }>`
   display: flex;
   width: 100%;
-  height: 44px;
+  height: 48px;
   box-sizing: border-box;
   align-items: center;
   order: ${({ main }) => (main ? 1 : 2)};
@@ -12,7 +12,7 @@ export const ItemContainer = styled.div<{ main: boolean }>`
 export const CheckBoxWrapper = styled(Mui.FormControlLabel)<{ calendarcolor: string; type: string }>`
   display: flex;
   width: 100%;
-  height: 44px;
+  height: 48px;
   margin: 0px;
   overflow: hidden;
   .MuiFormControlLabel-label {
