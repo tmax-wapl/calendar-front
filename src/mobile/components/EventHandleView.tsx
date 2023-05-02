@@ -76,22 +76,24 @@ const EventHandleView = ({ action }: Props) => {
       case 'one': // 이 일정만 수정
         const originStart = originEvent.startDate.toUTC().toFormat('yyyy-LL-dd');
         const newStart = eventStore.event.startDate.toUTC().toFormat('yyyy-LL-dd');
-        await eventStore.updateEvent(
+        const oneEvent = await eventStore.updateEvent(
           +eventStore.event.id,
           preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
           originStart !== newStart ? originStart : null,
         );
         uiStore.setPageDialogInfo('detail');
+        eventStore.setEvent(oneEvent);
         break;
       case 'after': // 이 일정 및 향후 일정 수정
-        await eventStore.updateEvent(
+        const afterEvent = await eventStore.updateEvent(
           +eventStore.event.id,
           preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
           originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
         );
         uiStore.setPageDialogInfo('detail');
+        eventStore.setEvent(afterEvent);
         break;
       case 'all': // 모든 일정 수정
         updateEvent(true);
