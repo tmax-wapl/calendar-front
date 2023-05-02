@@ -29,7 +29,7 @@ const EventDetailView = () => {
 
   const deleteEvent = async () => {
     await calendarStore.deleteEvent(+eventStore.event.id);
-    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    uiStore.setPageDialogInfo(null);
     closeDialog();
   };
 
@@ -50,7 +50,7 @@ const EventDetailView = () => {
     }
     closeDialog();
     uiStore.changeDateRange();
-    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    uiStore.setPageDialogInfo(null);
   };
 
   const eventBarButtons = (event: EventModel): EventBarButton[] => {

@@ -82,7 +82,7 @@ const EventHandleView = ({ action }: Props) => {
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
           originStart !== newStart ? originStart : null,
         );
-        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+        uiStore.setPageDialogInfo('detail');
         break;
       case 'after': // 이 일정 및 향후 일정 수정
         await eventStore.updateEvent(
@@ -91,7 +91,7 @@ const EventHandleView = ({ action }: Props) => {
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
           originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
         );
-        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+        uiStore.setPageDialogInfo('detail');
         break;
       case 'all': // 모든 일정 수정
         updateEvent(true);
