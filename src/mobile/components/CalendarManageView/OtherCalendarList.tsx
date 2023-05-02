@@ -12,15 +12,13 @@ const OtherCalendarList = observer(() => {
   const [isOpen, setOpen] = useState<boolean>(false);
 
   const sortCalendarList = (): CalendarModel[] => {
-    if (calendarStore.roomCalendarList && calendarStore.calendarList)
-      return [...calendarStore.roomCalendarList, ...calendarStore.calendarList]
-        .filter(
-          (calendar: CalendarModel) => calendar.type === 'url' || calendar.type === 'share' || calendar.type === 'room',
-        )
-        ?.sort((a, b) => {
-          return new Date(b.regDate).getTime() - new Date(a.regDate).getTime();
-        });
-    return [];
+    const filteredCalendars = calendarStore.calendarList
+      ?.concat(calendarStore.roomCalendarList)
+      .filter(({ type }) => ['url', 'share', 'private'].includes(type));
+
+    if (!filteredCalendars.length) return [];
+
+    return filteredCalendars.sort((a, b) => new Date(b.regDate).getTime() - new Date(a.regDate).getTime());
   };
 
   const onContextMenuOpen = () => {
@@ -45,14 +43,9 @@ const OtherCalendarList = observer(() => {
             <Icon.Add2Line width={20} height={20} color="#80868B" />
           </AddButton>
         </FilterName>
-        {sortCalendarList().map((calendar: CalendarModel) =>
-          calendar.type === 'room' ? (
-            <></>
-          ) : (
-            // <RoomCalendarItem key={calendar.roomId} calendar={calendar} />
-            <Item key={calendar.id} calendar={calendar} />
-          ),
-        )}
+        {sortCalendarList().map((calendar: CalendarModel) => (
+          <Item key={calendar.id} calendar={calendar} />
+        ))}
       </OtherCalendarListContainer>
       <ContextMenu open={isOpen} onClose={onContextMenuClose}>
         <ContentMenuHeader>다른 캘린더 추가</ContentMenuHeader>
