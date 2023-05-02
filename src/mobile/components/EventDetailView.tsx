@@ -141,7 +141,7 @@ const EventDetailView = () => {
             <FromInfo>
               <Icon.CalendarLine className="mr-8" width={20} height={20} />
               {eventStore.event.calName}
-              <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
+              <Creator>&nbsp;{`(일정 생성: ${eventStore.event.userNick})`}</Creator>
             </FromInfo>
           )}
         </Observer>

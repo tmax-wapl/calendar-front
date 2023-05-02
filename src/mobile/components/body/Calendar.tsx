@@ -34,7 +34,7 @@ import { useEffect, useRef } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, LEFT, RIGHT, SwipeEventData } from 'react-swipeable';
 import { CalendarEventDummy, DateHandleType } from '@/web/components';
-import { observer } from 'mobx-react-lite';
+import { Observer, observer } from 'mobx-react-lite';
 import { getStartDate, toDateString, toDateTime, toISO } from '@/utils';
 import { VIEW_MODE } from '@/common';
 import { autorun, transaction } from 'mobx';
@@ -82,7 +82,13 @@ const Calendar = observer(() => {
   };
 
   const renderDayContent = (content: DayCellContentArg) => (
-    <span style={{ color: DateColor(content) }}>{content.dayNumberText.slice(0, -1)}</span>
+    <Observer>
+      {() => (
+        <span style={{ color: uiStore.isHolidayChecked ? DateColor(content) : '' }}>
+          {content.dayNumberText.slice(0, -1)}
+        </span>
+      )}
+    </Observer>
   );
 
   const handleSwipe = (eventData: SwipeEventData) => {
