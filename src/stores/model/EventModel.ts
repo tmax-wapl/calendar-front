@@ -123,7 +123,7 @@ export class EventModel {
   }
 
   set rrule(rrule: Partial<Options>) {
-    this.dto.rrule = new RRule(rrule).toString();
+    this.dto.rrule = !!rrule ? new RRule(rrule).toString() : undefined;
   }
 
   get rruleObj(): RRule | RRuleSet {
