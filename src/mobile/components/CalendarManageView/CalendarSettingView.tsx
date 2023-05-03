@@ -30,7 +30,7 @@ const CalendarSettingView = () => {
   });
 
   const handleBackClick = () => {
-    uiStore.pageDialogInfo = 'calendarManage';
+    uiStore.setPageDialogInfo('calendarManage');
   };
 
   return (

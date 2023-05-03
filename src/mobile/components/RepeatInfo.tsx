@@ -51,7 +51,7 @@ const RepeatInfo = ({
 }: Props) => {
   const { eventStore } = useCalendarStores();
   const [open, setOpen] = useState(false);
-  const [repeatToggle, setRepeatToggle] = useState(false);
+  const [repeatToggle, setRepeatToggle] = useState(rrule ? true : false);
   const rruleUnits = ['년', '월', '주', '일'];
   const [freqency, setFrequency] = useState<string[]>(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
   const units = ['일', '주', '월', '년'];
@@ -94,10 +94,7 @@ const RepeatInfo = ({
 
   const handleOpen = () => setOpen(true);
 
-  const handleClose = () => {
-    setOpen(false);
-    onRRuleChange(undefined);
-  };
+  const handleClose = () => setOpen(false);
 
   const handleOk = () => setOpen(false);
 

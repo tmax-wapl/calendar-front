@@ -3,6 +3,7 @@ import { styled } from '@wapl/ui';
 export const LocationContainer = styled.div`
   display: flex;
   height: 44px;
+  min-height: 44px;
   align-items: center;
 `;
 

@@ -21,7 +21,7 @@ const Item = observer(({ calendar }: Props) => {
 
   const handleCalendarClick = (calendar: CalendarModel) => {
     calendarStore.setCalendar(calendar);
-    uiStore.pageDialogInfo = 'calendarSetting';
+    uiStore.setPageDialogInfo('calendarSetting');
   };
 
   return (

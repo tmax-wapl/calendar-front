@@ -5,6 +5,7 @@ export const EventListViewContainer = styled.div`
   flex-shrink: 0;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 `;
 
 export const DateInfo = styled.div`
@@ -38,6 +39,7 @@ export const Lunar = styled.span<{ isRed: boolean }>`
 
 export const EventListWrapper = styled.div`
   display: flex;
+  height: 100%;
   flex-direction: column;
   padding: 0 18px 20px;
   overflow-y: auto;

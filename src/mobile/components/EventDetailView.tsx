@@ -16,11 +16,11 @@ const EventDetailView = () => {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    uiStore.pageDialogInfo = null;
+    uiStore.setPageDialogInfo(null);
   };
 
   const handleEditClick = () => {
-    navigate(`/main/view-mode/${uiStore.viewMode}/update`);
+    uiStore.setPageDialogInfo('update');
   };
 
   const closeDialog = () => {
@@ -29,7 +29,7 @@ const EventDetailView = () => {
 
   const deleteEvent = async () => {
     await calendarStore.deleteEvent(+eventStore.event.id);
-    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    uiStore.setPageDialogInfo(null);
     closeDialog();
   };
 
@@ -50,7 +50,7 @@ const EventDetailView = () => {
     }
     closeDialog();
     uiStore.changeDateRange();
-    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    uiStore.setPageDialogInfo(null);
   };
 
   const eventBarButtons = (event: EventModel): EventBarButton[] => {
@@ -77,6 +77,24 @@ const EventDetailView = () => {
       });
     }
   };
+  const isRoomModel = (roomItem: RoomModel): roomItem is RoomModel => {
+    return 'displayName' in roomItem;
+  };
+
+  const isSearchOrgRes = (searchOrgItem: SearchOrgRes): searchOrgItem is SearchOrgRes => {
+    return !('orgId' in searchOrgItem);
+  };
+
+  const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>) => {
+    switch (true) {
+      case isRoomModel(item as RoomModel):
+        return item?.id;
+      case isSearchOrgRes(item as SearchOrgRes):
+        return item?.org.roomId;
+      default:
+        return item.roomId;
+    }
+  };
 
   const shareEvent = async (
     personaIdList: Partial<Member>[],
@@ -86,9 +104,10 @@ const EventDetailView = () => {
     await eventStore.shareEvent({
       eventId: +event.id,
       personaIdList: personaIdList.map(persona => persona.personaId),
-      roomIdList: roomIdList.map(room => room.id),
+      roomIdList: roomIdList.map(room => convertRoomObj(room)),
     });
-    // TODO: 공유 완료 되었다는 팝업
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.start, event.roomId);
+    eventStore.setEvent(eventInfo);
   };
 
   const handleShareClick = () => {
@@ -122,7 +141,7 @@ const EventDetailView = () => {
             <FromInfo>
               <Icon.CalendarLine className="mr-8" width={20} height={20} />
               {eventStore.event.calName}
-              <Creator>&nbsp;{`(일정 생성: ${eventStore.event.regUserId})`}</Creator>
+              <Creator>&nbsp;{`(일정 생성: ${eventStore.event.userNick})`}</Creator>
             </FromInfo>
           )}
         </Observer>
