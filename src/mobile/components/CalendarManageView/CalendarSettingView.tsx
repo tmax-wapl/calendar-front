@@ -1,7 +1,7 @@
 import { Icon } from '@wapl/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { ColorItem } from '@/common';
+import { ColorItem as colors } from '@/common';
 import EventBar from '../header/EventBar';
 import {
   CalendarSettingViewContainer,
@@ -14,8 +14,10 @@ import {
 
 const CalendarSettingView = () => {
   const { uiStore, calendarStore } = useCalendarStores();
+  const { name, type, mainFlag, color: calColor } = calendarStore.calendar;
+  // const calColor = calendarStore.calendar.color;
   const [isEdit, setEdit] = useState<boolean>(false);
-  const [value, setValue] = useState<string>(calendarStore.calendar.name);
+  const [value, setValue] = useState<string>(name);
   const inputRef = useRef(null);
 
   const handleOutsideClick = (e: MouseEvent) => {
@@ -55,25 +57,31 @@ const CalendarSettingView = () => {
           />
         ) : (
           <CalendarName>
-            {calendarStore.calendar.name}
-            <IconButton onClick={() => setEdit(true)}>
-              <Icon.EditLine color="#BDC1C6" width={20} height={20} />
-            </IconButton>
+            {name}
+            {!['share', 'org'].includes(type) && (
+              <IconButton onClick={() => setEdit(true)}>
+                <Icon.EditLine color="#BDC1C6" width={20} height={20} />
+              </IconButton>
+            )}
           </CalendarName>
         )}
         <SettingItem>
-          <Icon.CalendarDotFill color={calendarStore.calendar.color || ''} width={20} height={20} className="mr-8" />
-          {ColorItem.find(color => color.value === calendarStore.calendar.color).label || ''}
+          <Icon.CalendarDotFill color={calColor || ''} width={20} height={20} className="mr-8" />
+          {colors.find(color => color.value === calColor).label || ''}
         </SettingItem>
         <Divider />
-        <SettingItem>
-          <Icon.RenewLine width={20} height={20} className="mr-8" />
-          캘린더 동기화
-        </SettingItem>
-        <SettingItem>
-          <Icon.DeleteLine width={20} height={20} className="mr-8" />
-          캘린더 삭제
-        </SettingItem>
+        {type === 'url' && (
+          <SettingItem>
+            <Icon.RenewLine width={20} height={20} className="mr-8" />
+            캘린더 동기화
+          </SettingItem>
+        )}
+        {!(mainFlag || ['share', 'org'].includes(type)) && (
+          <SettingItem>
+            <Icon.DeleteLine width={20} height={20} className="mr-8" />
+            캘린더 삭제
+          </SettingItem>
+        )}
       </CalendarSettingViewContainer>
     </>
   );
