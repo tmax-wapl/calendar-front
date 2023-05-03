@@ -1,6 +1,7 @@
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { CalendarModel } from '@/stores/model/CalendarModel';
 import { Checkbox, Icon, Tooltip } from '@wapl/ui';
 import { ItemContainer, CheckBoxWrapper, ButtonWarpper, ErrorIcon } from './Item.style';
@@ -10,12 +11,20 @@ interface Props {
 }
 
 const Item = observer(({ calendar }: Props) => {
+  const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore } = useCalendarStores();
 
   const handleCheckedChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    await calendarStore.updateCalendar(calendar.id, { checkFlag: checked });
-    calendarStore.updateCalendarChecked(calendar.id, checked);
+    if (calendar.type === 'org' || calendar.type === 'private') {
+      calendar.checkFlag = e.target.checked;
+      const index = calendarStore.roomCalendarList.findIndex(room => room.id === calendar.id);
+      calendarStore.roomCalendarList[index] = calendar;
+      calendarStore.addLocalRoomCalendarItem(userId, calendar.dto);
+    } else {
+      const checked = e.target.checked;
+      await calendarStore.updateCalendar(calendar.id, { checkFlag: checked });
+      calendarStore.updateCalendarChecked(calendar.id, checked);
+    }
     uiStore.changeDateRange();
   };
 
