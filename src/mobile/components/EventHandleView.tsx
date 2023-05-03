@@ -55,9 +55,8 @@ const EventHandleView = ({ action }: Props) => {
 
   const handleCreate = async () => {
     if (!eventStore.event.calId) eventStore.event.calId = calendarStore.getCalendarId();
-    const event = await eventStore.createEvent(preprocessEvent(eventStore.event));
+    await eventStore.createEvent(preprocessEvent(eventStore.event));
     uiStore.changeDateRange();
-    eventStore.setEvent(event);
     uiStore.setPageDialogInfo('detail');
   };
 
@@ -76,24 +75,22 @@ const EventHandleView = ({ action }: Props) => {
       case 'one': // 이 일정만 수정
         const originStart = originEvent.startDate.toUTC().toFormat('yyyy-LL-dd');
         const newStart = eventStore.event.startDate.toUTC().toFormat('yyyy-LL-dd');
-        const oneEvent = await eventStore.updateEvent(
+        await eventStore.updateEvent(
           +eventStore.event.id,
           preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
           originStart !== newStart ? originStart : null,
         );
         uiStore.setPageDialogInfo('detail');
-        eventStore.setEvent(oneEvent);
         break;
       case 'after': // 이 일정 및 향후 일정 수정
-        const afterEvent = await eventStore.updateEvent(
+        await eventStore.updateEvent(
           +eventStore.event.id,
           preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
           originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
         );
         uiStore.setPageDialogInfo('detail');
-        eventStore.setEvent(afterEvent);
         break;
       case 'all': // 모든 일정 수정
         updateEvent(true);

@@ -114,12 +114,9 @@ const Calendar = observer(() => {
   });
 
   const setDateTime = (start: Date) => {
-    const isToday = toDateString(start) === DateTime.local().toFormat('yyyy-LL-dd');
-    const startDate = toDateTime(start);
-    const curDate = getStartDate(startDate);
-
-    eventStore.event.startDate = isToday ? curDate : startDate.set({ hour: 9, minute: 0 });
-    eventStore.event.endDate = isToday ? curDate.plus({ minutes: 30 }) : startDate.set({ hour: 9, minute: 30 });
+    const startDate = getStartDate(toDateTime(start));
+    eventStore.event.startDate = startDate;
+    eventStore.event.endDate = startDate.plus({ minutes: 30 });
   };
 
   const handleDateClick = ({ date }: DateClickArg) => {
