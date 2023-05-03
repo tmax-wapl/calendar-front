@@ -13,7 +13,7 @@ interface Props {
 }
 
 const App = ({ data }: Props) => {
-  const isMobile = false;
+  const isMobile = process.env.IS_MOBILE ?? false;
   const { selectedPersona, keycloakInstance } = useUserStore();
   const personaStore = usePersonaStore();
   const roomStore = useRoomStore();
