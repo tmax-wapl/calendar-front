@@ -42,15 +42,7 @@ const Item = observer(({ calendar }: Props) => {
         type={calendar.type}
       />
       {calendar.type === 'url' && (
-        <>
-          {calendar.subscribeStatus !== 'success' && (
-            <Tooltip
-              title={calendar.subscribeStatus === 'fail' ? '원본이 삭제된 캘린더입니다.' : '잠시 후 시도해 주세요.'}
-            >
-              <ErrorIcon width={20} height={20} color=" #F44336" />
-            </Tooltip>
-          )}
-        </>
+        <>{calendar.subscribeStatus !== 'success' && <ErrorIcon width={20} height={20} color=" #F44336" />}</>
       )}
       <ButtonWarpper onClick={() => handleCalendarClick(calendar)}>
         <Icon.ArrowFrontLine width={20} height={20} color="#BDC1C6" />

@@ -1,13 +1,15 @@
-import { Icon, ContextMenu } from '@wapl/ui';
+import { Icon, ContextMenu, useWaplUiStore, Mui } from '@wapl/ui';
 import { useEffect, useRef, useState, memo, useContext } from 'react';
+import { observer } from 'mobx-react-lite';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { ColorItem as colors } from '@/common';
+import { HTTPError } from '@/error';
 import EventBar from '../header/EventBar';
 import {
   CalendarSettingViewContainer,
   CalendarName,
-  IconButton,
+  IconWrapper,
   Input,
   SettingItem,
   Divider,
@@ -17,12 +19,15 @@ import {
   ColorItemWrapper,
   ColorSelected,
 } from './CalendarSettingView.style';
-import { EventModel } from '@/stores';
+import { CalendarModel, EventModel } from '@/stores';
 
-const CalendarSettingView = () => {
+const CalendarSettingView = observer(() => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore } = useCalendarStores();
-  const { id, roomId, name, type, mainFlag, color: calColor } = calendarStore.calendar;
+  const {
+    toast: { notify },
+  } = useWaplUiStore();
+  const { id, roomId, name, type, mainFlag, color: calColor, subscribeStatus } = calendarStore.calendar;
   const [isEdit, setEdit] = useState<boolean>(false);
   const [isColorPickerOpen, setColorPickerOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>(name);
@@ -85,6 +90,30 @@ const CalendarSettingView = () => {
     handleColorPickerClose();
   };
 
+  const handleCalendarSync = async () => {
+    try {
+      const { start, end } = uiStore.dateRange;
+      const iCalendar = await calendarStore.syncCalendar(id, start, end);
+      if (iCalendar.subscribeStatus === 'success') notify(`${iCalendar.name} 캘린더 동기화가 성공하였습니다.`);
+      else if (iCalendar.subscribeStatus === 'fail') {
+        calendarStore.setCalendar(new CalendarModel(iCalendar));
+        uiStore.setDialogInfo({
+          action: 'deletedSubscribe',
+          onClick: [closeDialog],
+        });
+      }
+      uiStore.changeDateRange();
+    } catch (e) {
+      if (e instanceof HTTPError && e.status === 500) calendarStore.updateCalendarDTO(id, 'subscribeStatus', 'wait');
+      uiStore.setDialogInfo({
+        action: 'syncFail',
+        onClick: [closeDialog],
+      });
+    }
+  };
+
+  const closeDialog = () => uiStore.setDialogInfo(null);
+
   return (
     <>
       <EventBar title="캘린더 설정" leftSide={[{ action: 'back', onClick: handleBackClick }]} />
@@ -108,11 +137,16 @@ const CalendarSettingView = () => {
         ) : (
           <CalendarName>
             {name}
-            {!['share', 'org'].includes(type) && (
-              <IconButton onClick={() => setEdit(true)}>
-                <Icon.EditLine color="#BDC1C6" width={20} height={20} />
-              </IconButton>
-            )}
+            <IconWrapper>
+              {type === 'url' && (
+                <>{subscribeStatus !== 'success' && <Icon.ErrorLine width={20} height={20} color=" #F44336" />}</>
+              )}
+              {!['share', 'org'].includes(type) && (
+                <Mui.IconButton onClick={() => setEdit(true)}>
+                  <Icon.EditLine color="#BDC1C6" width={20} height={20} />
+                </Mui.IconButton>
+              )}
+            </IconWrapper>
           </CalendarName>
         )}
         <SettingItem onClick={handleColorPickerOpen}>
@@ -121,7 +155,7 @@ const CalendarSettingView = () => {
         </SettingItem>
         <Divider />
         {type === 'url' && (
-          <SettingItem>
+          <SettingItem onClick={handleCalendarSync}>
             <Icon.RenewLine width={20} height={20} className="mr-8" />
             캘린더 동기화
           </SettingItem>
@@ -148,6 +182,6 @@ const CalendarSettingView = () => {
       </ContextMenu>
     </>
   );
-};
+});
 
 export default CalendarSettingView;

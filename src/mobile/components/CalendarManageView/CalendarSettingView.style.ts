@@ -14,7 +14,9 @@ export const CalendarName = styled.div`
   color: ${({ theme: { Color } }) => Color.Gray[600]};
 `;
 
-export const IconButton = styled(Mui.IconButton)`
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
   margin-left: auto;
 `;
 
