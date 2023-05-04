@@ -57,9 +57,6 @@ export default class UiStore {
   notiData: NotiData = null;
   isDetail = false;
 
-  isViewRow = false;
-  rowNum: number = null;
-
   pageDialogInfo: string = null;
 
   constructor(rootStore: RootStore) {
@@ -79,9 +76,6 @@ export default class UiStore {
       setHolidayChecked: action,
       isLunarChecked: observable,
       setLunarChecked: action,
-      isViewRow: observable,
-      rowNum: observable,
-      setToggleViewRow: action,
       pageDialogInfo: observable,
       setPageDialogInfo: action,
       notiData: observable,
@@ -122,12 +116,6 @@ export default class UiStore {
 
   setLunarChecked(checked: boolean) {
     this.isLunarChecked = checked;
-  }
-
-  setToggleViewRow(rowNum?: number) {
-    this.isViewRow = !this.isViewRow;
-    if (rowNum) this.rowNum = rowNum;
-    else this.rowNum = undefined;
   }
 
   setNotiData(data: NotiData) {

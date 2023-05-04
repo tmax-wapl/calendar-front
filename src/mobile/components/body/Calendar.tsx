@@ -1,39 +1,17 @@
 import FullCalendar, {
-  DateSelectArg,
   DayCellContentArg,
   DayHeaderContentArg,
-  EventApi,
-  EventClickArg,
   EventContentArg,
-  EventDropArg,
-  EventMountArg,
-  EventSegment,
-  MoreLinkArg,
   MoreLinkContentArg,
-  ViewApi,
-  VUIEvent,
 } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
-import {
-  AllDayText,
-  AllDayWrapper,
-  ArrowButton,
-  CalendarContainer,
-  EventSpan,
-  EventWrapper,
-  WeekEventWrapper,
-  CalendarColor,
-  FullCalendarWrapper,
-  WeekDayHeader,
-  EventTitle,
-  Today,
-} from './Calendar.style';
+import { CalendarContainer, EventWrapper, FullCalendarWrapper, EventTitle } from './Calendar.style';
 import { useEffect, useRef } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, LEFT, RIGHT, SwipeEventData } from 'react-swipeable';
-import { CalendarEventDummy, DateHandleType } from '@/web/components';
+import { DateHandleType } from '@/web/components';
 import { Observer, observer } from 'mobx-react-lite';
 import { getStartDate, toDateString, toDateTime, toISO } from '@/utils';
 import { VIEW_MODE } from '@/common';
@@ -85,11 +63,17 @@ const Calendar = observer(() => {
     <Observer>
       {() => (
         <span style={{ color: uiStore.isHolidayChecked ? DateColor(content) : '' }}>
-          {content.dayNumberText.slice(0, -1)}
+          {content.dayNumberText ? content.dayNumberText.slice(0, -1) : content.date.getDate()}
         </span>
       )}
     </Observer>
   );
+
+  const renderHeaderContent = (content: DayHeaderContentArg) => {
+    const reg = /\((.*?)\)/;
+    const match = reg.exec(content.text);
+    return match ? match[1] : content.text;
+  };
 
   const handleSwipe = (eventData: SwipeEventData) => {
     const { dir } = eventData;
@@ -172,7 +156,7 @@ const Calendar = observer(() => {
   }, [viewMode]);
 
   return (
-    <CalendarContainer isViewRow={uiStore.isViewRow} rowNum={uiStore.rowNum}>
+    <CalendarContainer>
       <FullCalendarWrapper {...swipeHandlers} ref={swipeRef}>
         <FullCalendar
           locale="ko"
@@ -187,6 +171,7 @@ const Calendar = observer(() => {
                   .map(event => createAllDayEvent(event))
           }
           moreLinkContent={renderMoreLinkContent}
+          dayHeaderContent={renderHeaderContent}
           dayCellContent={renderDayContent}
           eventContent={renderEventContent}
           dateClick={handleDateClick}

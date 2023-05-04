@@ -48,8 +48,8 @@ const SplitLayout = () => {
       else {
         setTopPanelHeight(LayoutHeight * 0.11);
         setBottomPanelHeight(LayoutHeight * 0.89);
+        mainApi?.changeView('dayGridWeek', uiStore.dateDay.toJSDate());
         mainApi.updateSize();
-        uiStore.setToggleViewRow(getRow());
       }
     }
   };
@@ -66,7 +66,7 @@ const SplitLayout = () => {
         if (isListView) return;
       }
       setHalfHeight();
-      uiStore.setToggleViewRow();
+      mainApi?.changeView('dayGridMonth');
     } else {
       setTopPanelHeight(LayoutHeight);
       setBottomPanelHeight(0);
@@ -101,7 +101,8 @@ const SplitLayout = () => {
       (_, previousDateDay) => {
         if (previousDateDay) {
           const bottom = bottomRef.current?.clientHeight;
-          if (bottom < halfHeight) changeDateClickView();
+          const bottomHeader = 56;
+          if (bottom + bottomHeader < halfHeight) changeDateClickView();
         }
       },
     );
