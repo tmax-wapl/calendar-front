@@ -86,9 +86,14 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
       }),
     ]) as EventMemberPersona[];
 
+    const filteredRoomIdList = roomList.map(room => room.roomId);
+    const filteredPersonaIdList = personaList.map(persona => persona.personaId);
+
     onChange({
       roomList,
       personaList,
+      roomIdList: filteredRoomIdList,
+      personaIdList: filteredPersonaIdList,
     });
   };
 

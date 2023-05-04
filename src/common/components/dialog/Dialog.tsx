@@ -14,7 +14,7 @@ export interface DialogButton {
 }
 
 export const Dialog = () => {
-  const { uiStore } = useCalendarStores();
+  const { uiStore, eventStore } = useCalendarStores();
   const { action, onCloseClick, onClick, data, type, onComplete } = uiStore.dialogInfo;
 
   const title = ((): { title?: string; subTitle?: string; description?: string } => {
@@ -172,6 +172,9 @@ export const Dialog = () => {
             tabs={['org', 'room']}
             confirmBtnText={'공유'}
             onComplete={onComplete}
+            chipListText={'공유할 멤버를 선택하세요.\n 공유 최대 멤버는 200명입니다.'}
+            disabledPersonaList={eventStore.event?.eventMember?.personaIdList}
+            disabledRoomList={eventStore.event?.eventMember?.roomIdList}
           />
         );
       default:

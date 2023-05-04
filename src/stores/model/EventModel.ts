@@ -171,13 +171,15 @@ export class EventModel {
   }
 
   get eventMember(): EventMember {
-    return this.dto.eventMember ?? { personaList: [], roomList: [] };
+    return this.dto.eventMember ?? { personaList: [], roomList: [], personaIdList: [], roomIdList: [] };
   }
 
   set eventMember(eventMember: EventMember) {
     this.dto.eventMember = {
       personaList: eventMember.personaList,
       roomList: eventMember.roomList,
+      personaIdList: eventMember.personaIdList,
+      roomIdList: eventMember.roomIdList,
     };
   }
 
