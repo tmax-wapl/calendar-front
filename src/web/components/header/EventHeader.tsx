@@ -21,7 +21,7 @@ const EventHeader: React.FC = () => {
 
   const handleSearch = (value: string) => {
     if (!value.trim()) return;
-    eventStore.setSearchKeyword(value);
+    eventStore.setSearchKeyword(value.trim());
     navigate(`view-mode/${uiStore.viewMode}/search`);
   };
 

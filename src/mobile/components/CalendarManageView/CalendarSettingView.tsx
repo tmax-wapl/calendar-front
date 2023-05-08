@@ -45,7 +45,7 @@ const CalendarSettingView = observer(() => {
   });
 
   const handleBack = () => {
-    uiStore.pageDialogInfo = 'calendarManage';
+    uiStore.setPageDialogInfo('calendarManage');
   };
 
   const handleColorPickerOpen = () => setColorPickerOpen(true);

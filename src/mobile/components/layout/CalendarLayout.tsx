@@ -1,4 +1,5 @@
 import { useEffect, useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useUserStore } from '@wapl/core';
@@ -13,18 +14,17 @@ const CalendarLayout = () => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore } = useCalendarStores();
   const { selectedPersona } = useUserStore();
+  const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
   const handleSearchClick = () => {
-    console.log('search');
+    navigate('/search');
   };
 
   const handleSettingClick = () => {
-    uiStore.pageDialogInfo = 'calendarManage';
+    uiStore.setPageDialogInfo('calendarManage');
   };
 
-  const handleHomeClick = () => {
-    console.log('home');
-  };
+  const handleHomeClick = () => window.parent.postMessage({ type: 'shell:openDrawer' });
 
   const headerRightSide: HeaderButton[] = [
     { action: 'search', onClick: handleSearchClick },

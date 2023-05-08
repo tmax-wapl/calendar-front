@@ -57,7 +57,7 @@ const EventHandleView = ({ action }: Props) => {
     if (!eventStore.event.calId) eventStore.event.calId = calendarStore.getCalendarId();
     await eventStore.createEvent(preprocessEvent(eventStore.event));
     uiStore.changeDateRange();
-    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+    uiStore.setPageDialogInfo('detail');
   };
 
   const updateEvent = async (isRepeat = false) => {
@@ -67,7 +67,7 @@ const EventHandleView = ({ action }: Props) => {
       isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
     );
     uiStore.changeDateRange();
-    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+    uiStore.setPageDialogInfo('detail');
   };
 
   const updateRepeatEvent = async (value: string) => {
@@ -81,7 +81,7 @@ const EventHandleView = ({ action }: Props) => {
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
           originStart !== newStart ? originStart : null,
         );
-        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+        uiStore.setPageDialogInfo('detail');
         break;
       case 'after': // 이 일정 및 향후 일정 수정
         await eventStore.updateEvent(
@@ -90,7 +90,7 @@ const EventHandleView = ({ action }: Props) => {
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
           originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
         );
-        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
+        uiStore.setPageDialogInfo('detail');
         break;
       case 'all': // 모든 일정 수정
         updateEvent(true);
@@ -130,25 +130,17 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const isMonth = (): boolean => uiStore.viewMode === VIEW_MODE.MONTH || !eventStore.event.startDate.isValid;
-  const isToday = uiStore.dateDay.startOf('day').equals(DateTime.now().startOf('day'));
-
-  const getTime = () => {
-    const start = isMonth() && isToday ? getStartDate(uiStore.dateDay).toUTC() : eventStore.event.startDate.toUTC();
-    const end = isMonth() && isToday ? start.plus({ minutes: 30 }) : eventStore.event.endDate.toUTC();
-
-    return { start: toISO(start), end: toISO(end) };
-  };
 
   useEffect(() => {
     if (action === 'create') {
+      const start = isMonth() ? getStartDate(uiStore.dateDay).toUTC() : eventStore.event.startDate.toUTC();
       const calId = calendarStore.getCalendarId();
       eventStore.setEvent(
         new EventModel({
           calId: calId,
-          start: getTime().start,
-          end: getTime().end,
+          start: toISO(start),
+          end: toISO(start.plus({ minutes: 30 })),
           alarmList: ['0'],
-          allDay: !isToday && isMonth(),
         }),
       );
       setOriginEvent(new EventModel({ ...eventStore.event.dto }));
@@ -213,7 +205,7 @@ const EventHandleView = ({ action }: Props) => {
 
   const handleClose = () => {
     if (!isModified()) {
-      uiStore.pageDialogInfo = null;
+      uiStore.setPageDialogInfo(action === 'create' ? null : 'detail');
       return;
     }
     uiStore.setDialogInfo({
@@ -221,7 +213,7 @@ const EventHandleView = ({ action }: Props) => {
       onClick: [
         closeDialog,
         () => {
-          uiStore.pageDialogInfo = null;
+          uiStore.setPageDialogInfo(null);
           closeDialog();
         },
       ],
@@ -300,7 +292,7 @@ const EventHandleView = ({ action }: Props) => {
             />
           )}
         </Observer>
-        <Observer>
+        {/* <Observer>
           {() => (
             <Notifications
               notifications={eventStore.event.notifications}
@@ -308,7 +300,7 @@ const EventHandleView = ({ action }: Props) => {
               editable
             />
           )}
-        </Observer>
+        </Observer> */}
         <Observer>
           {() => (
             <Description

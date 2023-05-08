@@ -1,6 +1,6 @@
 import { styled } from '@wapl/ui';
 
-export const CalendarContainer = styled.div<{ isViewRow?: boolean; rowNum?: number }>`
+export const CalendarContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
@@ -47,17 +47,6 @@ export const CalendarContainer = styled.div<{ isViewRow?: boolean; rowNum?: numb
     // 월 보기모드 week cell
     border-right: none;
   }
-
-  ${({ isViewRow, rowNum }) =>
-    isViewRow
-      ? `
-    .fc-daygrid-body tr[role='row']:not(:nth-of-type(${rowNum})) {
-      visibility: collapse;
-      opacity: 0;
-      transition: 0.2s ease;
-    }
-  `
-      : ''}
 
   .fc-scrollgrid table {
     border-bottom-style: 1px solid #e8eaed;

@@ -30,7 +30,7 @@ const OtherCalendarList = observer(() => {
   };
 
   const handleUrlSubscribe = () => {
-    uiStore.pageDialogInfo = 'addSubscribe';
+    uiStore.setPageDialogInfo('addSubscribe');
     setOpen(false);
   };
 

@@ -13,7 +13,7 @@ const UrlSubscribeView = () => {
   };
 
   const handleBackClick = () => {
-    uiStore.pageDialogInfo = 'calendarManage';
+    uiStore.setPageDialogInfo('calendarManage');
   };
 
   const handleSubscribe = async () => {

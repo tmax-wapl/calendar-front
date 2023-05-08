@@ -22,6 +22,7 @@ interface Props {
   onFileUpload?: (value: AttachmentInfo[]) => void;
   onFileDelete?: (id: number) => void;
   editable?: boolean;
+  roomId?: number;
 }
 
 const Attachments = ({
@@ -31,6 +32,7 @@ const Attachments = ({
   editable = false,
   isUploading,
   setUploading,
+  roomId,
 }: Props) => {
   const { userId } = useContext(CalendarContext);
   const roomStore = useRoomStore();
@@ -68,13 +70,13 @@ const Attachments = ({
     if (fileList) {
       const { valid, reason } = checkValid(fileList, attachments);
       if (valid) {
-        const roomId = roomStore.myRoom.id;
+        const myRoomId = roomStore.myRoom.id;
 
         fileList.map(async file => {
           try {
             setUploading(prev => !prev);
             const dto: UploadFileDTO = {
-              roomId,
+              roomId: myRoomId,
               targetFolderId: null,
               userIds: [String(userId)],
               roleIds: [5],
@@ -103,7 +105,7 @@ const Attachments = ({
                 appIdTo: [APP_ID.OFFICE.toString()],
                 eventId: 'superdocs',
                 eventType: 'websocket_push',
-                roomId: roomId.toString(),
+                roomId: myRoomId.toString(),
                 senderId: 'waplcalendar',
                 message: JSON.stringify(SyncFileDTOMsg),
               });
@@ -125,13 +127,13 @@ const Attachments = ({
   };
 
   const handleAttachmentClick = () => {
-    const roomId = roomStore.myRoom.id;
+    const myRoomId = roomStore.myRoom.id;
     window.parent.postMessage({
       type: 'shell:runTopping',
       appId: APP_ID.OFFICE,
       options: {
         runToppingType: 2,
-        roomId,
+        roomId: roomId || myRoomId,
       },
     });
   };

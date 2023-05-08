@@ -181,7 +181,11 @@ const EventDetailView = () => {
           {() => (eventStore.event.description ? <Description description={eventStore.event.description} /> : null)}
         </Observer>
         <Observer>
-          {() => eventStore.event.attachments?.length > 0 && <Attachments attachments={eventStore.event.attachments} />}
+          {() =>
+            eventStore.event.attachments?.length > 0 && (
+              <Attachments attachments={eventStore.event.attachments} roomId={eventStore.event.roomId} />
+            )
+          }
         </Observer>
       </EventDetailContainer>
     </EventDetailViewContainer>

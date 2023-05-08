@@ -2,14 +2,12 @@ import RootStore from './RootStore';
 import { DateTime } from 'luxon';
 import { CalendarApi } from '@fullcalendar/react';
 import { makeObservable, observable, action } from 'mobx';
-import { isEqualMonth, isSameDate, toDateString } from '@/utils';
+import { isSameDate, toDateString } from '@/utils';
 import { EventModel } from './model/EventModel';
 import { CustomRoomDTO } from '@/common/constants/interfaces';
 import { VIEW_MODE } from '@/common/constants';
 
 type DateRange = { start: string; view?: DateTime; end: string };
-type ShareRoom = (personaIdList: number[], roomIdList: number[]) => void;
-
 export interface DialogInfo {
   action?: string;
   onCloseClick?: () => void;
@@ -59,9 +57,6 @@ export default class UiStore {
   notiData: NotiData = null;
   isDetail = false;
 
-  isViewRow = false;
-  rowNum: number = null;
-
   pageDialogInfo: string = null;
 
   constructor(rootStore: RootStore) {
@@ -81,10 +76,8 @@ export default class UiStore {
       setHolidayChecked: action,
       isLunarChecked: observable,
       setLunarChecked: action,
-      isViewRow: observable,
-      rowNum: observable,
-      setToggleViewRow: action,
       pageDialogInfo: observable,
+      setPageDialogInfo: action,
       notiData: observable,
       setNotiData: action,
       isDetail: observable,
@@ -97,7 +90,8 @@ export default class UiStore {
   }
 
   setDateDay(date: DateTime) {
-    if (isSameDate(this.dateDay, date) && this.viewMode === VIEW_MODE.MONTH) return;
+    const isMobile = process.env.IS_MOBILE ?? false;
+    if (!isMobile && isSameDate(this.dateDay, date) && this.viewMode === VIEW_MODE.MONTH) return;
     this.dateDay = date;
   }
 
@@ -117,13 +111,12 @@ export default class UiStore {
     this.isHolidayChecked = checked;
   }
 
-  setLunarChecked(checked: boolean) {
-    this.isLunarChecked = checked;
+  setPageDialogInfo(pageDialogInfo: string) {
+    this.pageDialogInfo = pageDialogInfo;
   }
 
-  setToggleViewRow(rowNum?: number) {
-    this.isViewRow = !this.isViewRow;
-    if (rowNum) this.rowNum = rowNum;
+  setLunarChecked(checked: boolean) {
+    this.isLunarChecked = checked;
   }
 
   setNotiData(data: NotiData) {

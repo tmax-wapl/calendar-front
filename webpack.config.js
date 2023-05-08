@@ -90,6 +90,7 @@ module.exports = env => {
       }),
       new DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+        'process.env.IS_MOBILE': JSON.stringify(process.env.IS_MOBILE),
       }),
       new PreloadWebpackPlugin({
         rel: 'preload',
