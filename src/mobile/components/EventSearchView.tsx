@@ -51,7 +51,6 @@ const EventSearchView = () => {
     setIsLoading(true);
     const res = await eventStore.searchEvent(value.trim(), 'T');
     setSearchEventMap(groupByMonth(res));
-    console.log(Array.from(groupByMonth(res)));
     setIsLoading(false);
   };
 
@@ -71,7 +70,7 @@ const EventSearchView = () => {
   const handleEventClick = useCallback(async (event: EventModel) => {
     const eventInfo = await eventStore.getEventInfo(+event.id, event.start);
     eventStore.setEvent(eventInfo);
-    uiStore.pageDialogInfo = 'detail';
+    uiStore.setPageDialogInfo('detail');
   }, []);
 
   return (
