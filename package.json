@@ -17,6 +17,7 @@
     "qa:build": "cross-env NODE_ENV=production webpack --env dev=false qa=true && build.bat qa",
     "app:build": "cross-env NODE_ENV=production webpack --env dev=false app=true && build.bat",
     "all:build": "yarn dev:build && yarn stag:build && yarn qa:build",
+    "stag:mobile" : "cross-env NODE_ENV=production IS_MOBILE=true webpack --env dev=false qa=false && build.bat stag_mobile",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
