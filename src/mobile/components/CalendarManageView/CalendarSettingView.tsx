@@ -79,7 +79,6 @@ const CalendarSettingView = () => {
           );
           calendarStore.setEventList(eventList);
         }
-        uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
     }
     handleColorPickerClose();
