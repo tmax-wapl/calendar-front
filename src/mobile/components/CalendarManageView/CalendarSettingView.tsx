@@ -44,7 +44,7 @@ const CalendarSettingView = observer(() => {
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   });
 
-  const handleBackClick = () => {
+  const handleBack = () => {
     uiStore.pageDialogInfo = 'calendarManage';
   };
 
@@ -112,11 +112,41 @@ const CalendarSettingView = observer(() => {
     }
   };
 
+  const deleteCalendar = async () => {
+    await calendarStore.deleteCalendar(id);
+    closeDialog();
+    handleBack();
+  };
+
+  const handleCalendarDelete = () => {
+    uiStore.setDialogInfo({
+      action: type === 'url' ? 'subscriptionDelete' : 'calendarDelete',
+      onClick: [closeDialog, deleteCalendar],
+    });
+  };
+
+  const deleteRoomCalendar = async () => {
+    const newRoomList = calendarStore.roomCalendarList
+      ?.filter((room: CalendarModel) => room.roomId !== roomId)
+      .map(room => room.dto);
+    calendarStore.setLocalRoomCalendarList(userId, newRoomList);
+    closeDialog();
+    handleBack();
+    uiStore.changeDateRange();
+  };
+
+  const handleRoomCalendarDelete = () => {
+    uiStore.setDialogInfo({
+      action: 'roomCalendarDelete',
+      onClick: [closeDialog, deleteRoomCalendar],
+    });
+  };
+
   const closeDialog = () => uiStore.setDialogInfo(null);
 
   return (
     <>
-      <EventBar title="캘린더 설정" leftSide={[{ action: 'back', onClick: handleBackClick }]} />
+      <EventBar title="캘린더 설정" leftSide={[{ action: 'back', onClick: handleBack }]} />
       <CalendarSettingViewContainer>
         {isEdit ? (
           <Input
@@ -161,7 +191,7 @@ const CalendarSettingView = observer(() => {
           </SettingItem>
         )}
         {!(mainFlag || ['share', 'org'].includes(type)) && (
-          <SettingItem>
+          <SettingItem onClick={type === 'private' ? handleRoomCalendarDelete : handleCalendarDelete}>
             <Icon.DeleteLine width={20} height={20} className="mr-8" />
             캘린더 삭제
           </SettingItem>
