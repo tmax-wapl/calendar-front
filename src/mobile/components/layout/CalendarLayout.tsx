@@ -16,9 +16,7 @@ const CalendarLayout = () => {
     uiStore.setPageDialogInfo('calendarManage');
   };
 
-  const handleHomeClick = () => {
-    console.log('home');
-  };
+  const handleHomeClick = () => window.parent.postMessage({ type: 'shell:openDrawer' });
 
   const headerRightSide: HeaderButton[] = [
     { action: 'search', onClick: handleSearchClick },
