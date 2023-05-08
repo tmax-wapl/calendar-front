@@ -190,8 +190,8 @@ const CalendarSettingView = observer(() => {
             캘린더 동기화
           </SettingItem>
         )}
-        {!(mainFlag || ['share', 'org'].includes(type)) && (
-          <SettingItem onClick={type === 'private' ? handleRoomCalendarDelete : handleCalendarDelete}>
+        {type === 'url' && (
+          <SettingItem onClick={handleCalendarDelete}>
             <Icon.DeleteLine width={20} height={20} className="mr-8" />
             캘린더 삭제
           </SettingItem>
