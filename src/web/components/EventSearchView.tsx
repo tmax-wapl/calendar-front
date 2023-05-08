@@ -13,7 +13,7 @@ import NoResult from './NoResult';
 
 const EventSearchView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [eventMap, setEventMap] = useState<Map<string, EventModel[]>>(null);
+  const [searchEventMap, setSearchEventMap] = useState<Map<string, EventModel[]>>(null);
   const { eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
 
@@ -28,6 +28,15 @@ const EventSearchView = () => {
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   }, []);
 
+  const groupByDate = (eventList: EventModel[]) => {
+    const eventMap = new Map<string, EventModel[]>();
+    eventList.forEach(event => {
+      const date = event.startDate.toFormat('yyyy-LL-dd');
+      eventMap.set(date, eventMap.has(date) ? [...eventMap.get(date), event] : [event]);
+    });
+    return eventMap;
+  };
+
   useEffect(() => {
     if (!eventStore.searchKeyword) {
       navigate(`/main/view-mode/${uiStore.viewMode}/date`);
@@ -36,7 +45,7 @@ const EventSearchView = () => {
     const dispose = autorun(async () => {
       setIsLoading(true);
       const res = await eventStore.searchEvent(eventStore.searchKeyword, 'T');
-      setEventMap(res);
+      setSearchEventMap(groupByDate(res));
       setIsLoading(false);
     });
     return () => {
@@ -51,7 +60,7 @@ const EventSearchView = () => {
         <LoadingSpinner />
       ) : (
         <>
-          {Array.from(eventMap).map(([date, eventList], index) => (
+          {Array.from(searchEventMap).map(([date, eventList], index) => (
             <React.Fragment key={index}>
               <DateInfo date={DateTime.fromISO(date)} highlightToday={isToday(DateTime.fromISO(date))} />
               <EventListWrapper>
@@ -61,7 +70,7 @@ const EventSearchView = () => {
               </EventListWrapper>
             </React.Fragment>
           ))}
-          {!eventMap?.size && <NoResult type={'search'} subtitle={eventStore.searchKeyword} />}
+          {!searchEventMap?.size && <NoResult type={'search'} subtitle={eventStore.searchKeyword} />}
         </>
       )}
     </EventSearchViewContainer>

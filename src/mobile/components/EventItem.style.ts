@@ -1,6 +1,6 @@
 import { styled } from '@wapl/ui';
 
-export const EventItemContainer = styled.div<{ isDetail: boolean }>`
+export const EventItemContainer = styled.li<{ isDetail: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -13,10 +13,10 @@ export const ItemTitleContainer = styled.div<{ isDetail: boolean }>`
   display: flex;
   align-items: center;
   :not(:last-of-type) {
-    margin-bottom: ${({ isDetail }) => (isDetail ? '14px' : '5px')};
+    margin-bottom: 4px;
   }
   > svg:first-of-type {
-    margin-right: 10px !important;
+    margin-right: 8px !important;
   }
 `;
 
@@ -34,12 +34,9 @@ export const EventInfoContainer = styled.div<{ isDetail: boolean }>`
   flex-direction: column;
   ${({ theme: { Font } }) => Font.Text.xs.Regular};
   color: ${({ theme: { Color } }) => Color.Gray[600]};
-  margin-left: 28px;
+  margin-left: 24px;
   > :not(:last-of-type) {
-    margin-bottom: ${({ isDetail }) => (isDetail ? '4px' : '2px')};
-  }
-  > :last-of-type {
-    margin-bottom: ${({ isDetail }) => (isDetail ? '2px' : '0px')};
+    margin-bottom: 2px;
   }
 `;
 
@@ -50,5 +47,5 @@ export const EventInfo = styled.span`
 export const CalendarName = styled.span`
   ${({ theme: { Font } }) => Font.Text.xs.Regular};
   color: ${({ theme: { Color } }) => Color.Gray[800]};
-  margin-left: 28px;
+  margin-left: 24px;
 `;

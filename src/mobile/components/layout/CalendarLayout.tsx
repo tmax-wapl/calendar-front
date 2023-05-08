@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { default as MainHeader, EventBarButton as HeaderButton } from '../header/EventBar';
 import CalendarHeader from '../header/CalendarHeader';
 import SplitLayout from './SplitLayout';
@@ -5,8 +6,10 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 
 const CalendarLayout = () => {
   const { uiStore } = useCalendarStores();
+  const navigate = useNavigate();
+
   const handleSearchClick = () => {
-    console.log('search');
+    navigate('/search');
   };
 
   const handleSettingClick = () => {

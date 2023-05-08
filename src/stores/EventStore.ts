@@ -147,15 +147,6 @@ export default class EventStore {
     );
   }
 
-  groupByDate(eventList: EventModel[]) {
-    const eventMap = new Map<string, EventModel[]>();
-    eventList.forEach(event => {
-      const date = event.startDate.toFormat('yyyy-LL-dd');
-      eventMap.set(date, eventMap.has(date) ? [...eventMap.get(date), event] : [event]);
-    });
-    return eventMap;
-  }
-
   async searchEvent(keyword: string, type: 'T') {
     const res = await this.repo.searchEvent(keyword, type);
     const searchEventList = res
@@ -165,6 +156,6 @@ export default class EventStore {
           : this.preprocessEvent(new EventModel(event)),
       )
       .sort((a, b) => a.startDate.toMillis() - b.startDate.toMillis());
-    return this.groupByDate(searchEventList);
+    return searchEventList;
   }
 }
