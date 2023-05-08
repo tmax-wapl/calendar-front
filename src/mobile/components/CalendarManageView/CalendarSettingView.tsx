@@ -30,8 +30,19 @@ const CalendarSettingView = () => {
 
   const handleOutsideClick = (e: MouseEvent) => {
     if (inputRef.current && !inputRef.current.contains(e.target)) {
-      setEdit(false);
+      handleRename();
     }
+  };
+
+  const handleRename = async () => {
+    if (['private', 'org'].includes(type)) {
+      calendarStore.calendar.name = value;
+      calendarStore.addLocalRoomCalendarItem(userId, calendarStore.calendar.dto);
+    } else {
+      await calendarStore.updateCalendar(id, { name: value });
+      calendarStore.updateCalendarDTO(id, 'name', value);
+    }
+    setEdit(false);
   };
 
   useEffect(() => {
@@ -55,31 +66,27 @@ const CalendarSettingView = () => {
   ));
 
   const handleColorClick = async (color: string) => {
-    switch (type) {
-      case 'org':
-      case 'private':
-        calendarStore.calendar.color = color;
-        calendarStore.addLocalRoomCalendarItem(userId, calendarStore.calendar.dto);
-        const roomEventList = calendarStore.eventList.map(event =>
-          event.roomId === roomId ? new EventModel({ ...event.dto, calColor: color }) : event,
+    if (['private', 'org'].includes(type)) {
+      calendarStore.calendar.color = color;
+      calendarStore.addLocalRoomCalendarItem(userId, calendarStore.calendar.dto);
+      const roomEventList = calendarStore.eventList.map(event =>
+        event.roomId === roomId ? new EventModel({ ...event.dto, calColor: color }) : event,
+      );
+      calendarStore.setEventList(roomEventList);
+    } else {
+      await calendarStore.updateCalendar(id, { color });
+      calendarStore.updateCalendarDTO(id, 'color', color);
+      if (type === 'share') {
+        const sharedEventList = calendarStore.eventList.map(event =>
+          event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor: color }) : event,
         );
-        calendarStore.setEventList(roomEventList);
-        break;
-      default:
-        await calendarStore.updateCalendar(id, { color });
-        calendarStore.updateCalendarDTO(id, 'color', color);
-        if (type === 'share') {
-          const sharedEventList = calendarStore.eventList.map(event =>
-            event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor: color }) : event,
-          );
-          calendarStore.setEventList(sharedEventList);
-        } else {
-          const eventList = calendarStore.eventList.map(event =>
-            event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
-          );
-          calendarStore.setEventList(eventList);
-        }
-        break;
+        calendarStore.setEventList(sharedEventList);
+      } else {
+        const eventList = calendarStore.eventList.map(event =>
+          event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
+        );
+        calendarStore.setEventList(eventList);
+      }
     }
     handleColorPickerClose();
   };
@@ -102,6 +109,9 @@ const CalendarSettingView = () => {
             onClear={() => {
               setValue('');
               document.getElementById('input').focus(); // inputRef로 focus 처리하는 방법을 모르겠음..
+            }}
+            onKeyPress={e => {
+              if (e.key === 'Enter') handleRename();
             }}
           />
         ) : (
