@@ -87,7 +87,9 @@ const EventListView = ({ bottomElement }: { bottomElement: ForwardedRef<HTMLDivE
           ))}
         </EventListWrapper>
       ) : (
-        <NoResult />
+        <div ref={bottomElement} style={{ height: '100%' }}>
+          <NoResult />
+        </div>
       )}
     </EventListViewContainer>
   );
