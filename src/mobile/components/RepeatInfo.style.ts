@@ -66,9 +66,7 @@ export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   ${({ isInvalid, theme: { Color } }) => isInvalid && `border: 1px solid ${Color.Validation.negative}`};
   ${({ theme: { Font } }) => Font.Text.s.Regular};
   cursor: pointer;
-  :hover {
-    background: ${({ theme: { Color } }) => Color.Black[6]};
-  }
+  background: ${({ theme: { Color } }) => Color.Black[6]};
 `;
 
 export const DatePickerWrapper = styled.div`
@@ -114,7 +112,7 @@ export const RepeatDay = styled.div`
 `;
 
 export const RepeatLabel = styled.span`
-  ${({ theme: { Font } }) => Font.Text.xxs.Medium};
-  ${({ theme: { Color } }) => Color.Gray[600]};
+  ${({ theme: { Font } }) => Font.Text.xxs.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[600]};
   padding: 0 16px;
 `;
