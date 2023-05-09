@@ -21,7 +21,7 @@ const EventBar = ({ title, leftSide = [], rightSide = [] }: Props) => {
     delete: <Icon.DeleteLine width={24} height={24} />,
     search: <Icon.SearchLine width={24} height={24} />,
     setting: <Icon.SettingLine width={24} height={24} />,
-    home: <Icon.Home2Fill width={24} height={24} />,
+    home: <Icon.HomeLine width={20} height={20} />,
   };
 
   const Buttons = ({ buttons }: { buttons: EventBarButton[] }) => {

@@ -16,17 +16,25 @@ const CalendarLayout = () => {
     uiStore.setPageDialogInfo('calendarManage');
   };
 
-  const handleHomeClick = () => window.parent.postMessage({ type: 'shell:openDrawer' });
+  const handleHomeClick = () =>
+    window.parent.postMessage(
+      {
+        type: 'shell:runTopping',
+        appId: 'home',
+      },
+      '*',
+    );
+
+  const headerLeftSide: HeaderButton[] = [{ action: 'home', onClick: handleHomeClick }];
 
   const headerRightSide: HeaderButton[] = [
     { action: 'search', onClick: handleSearchClick },
     { action: 'setting', onClick: handleSettingClick },
-    { action: 'home', onClick: handleHomeClick },
   ];
 
   return (
     <div style={{ height: '100%' }}>
-      <MainHeader title="내 캘린더" rightSide={headerRightSide} />
+      <MainHeader title="내 캘린더" leftSide={headerLeftSide} rightSide={headerRightSide} />
       <CalendarHeader />
       <SplitLayout />
     </div>
