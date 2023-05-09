@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { LoadingSpinner, SearchField } from '@wapl/ui';
@@ -95,17 +95,17 @@ const EventSearchView = () => {
       ) : (
         <SearchEventList>
           {Array.from(searchEventMap).map(([month, eventMap]) => (
-            <>
+            <Fragment key={month}>
               <MonthInfo>{getMonthInfo(DateTime.fromISO(month))}</MonthInfo>
               {Array.from(eventMap).map(([date, eventList]) => (
-                <>
+                <Fragment key={date}>
                   <DateInfo>{DateTime.fromISO(date).toFormat('dd일 cccc', { locale: 'ko' })}</DateInfo>
                   {eventList.map(event => (
                     <EventItem key={event.id} event={event} onClick={handleEventClick} />
                   ))}
-                </>
+                </Fragment>
               ))}
-            </>
+            </Fragment>
           ))}
         </SearchEventList>
       )}
