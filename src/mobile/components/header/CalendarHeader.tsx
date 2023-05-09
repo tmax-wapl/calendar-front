@@ -19,6 +19,7 @@ export const DateHeader = observer(({ togglePicker }: { togglePicker: () => void
   return (
     <DateHeaderWrapper onClick={togglePicker}>
       <TextButton>{uiStore.dateRange.view.toFormat('yyyy.LL')}</TextButton>
+      <Icon.ArrowBottomLine width={20} height={20} />
     </DateHeaderWrapper>
   );
 });
