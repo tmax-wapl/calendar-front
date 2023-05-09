@@ -1,5 +1,6 @@
 import { useState, memo, useContext, MouseEvent, Dispatch } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { CalendarModel } from '@/stores/model/CalendarModel';
@@ -20,7 +21,9 @@ interface Props {
 
 const RoomCalendarItem = observer(({ calendar }: Props) => {
   const { userId } = useContext(CalendarContext);
-  const { uiStore, calendarStore } = useCalendarStores();
+  const { uiStore, calendarStore, eventStore } = useCalendarStores();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [renameTitle, setRenameTitle] = useState(calendar.name);
 
   const onContextMenuOpen = (e: MouseEvent, calendar: CalendarModel) => {
@@ -39,12 +42,19 @@ const RoomCalendarItem = observer(({ calendar }: Props) => {
   };
 
   const handleCheckedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    calendar.dto.checkFlag = e.target.checked;
-    calendar.checkFlag = e.target.checked;
+    const checked = e.target.checked;
+    calendar.dto.checkFlag = checked;
+    calendar.checkFlag = checked;
     const index = calendarStore.roomCalendarList.findIndex(room => room.id === calendar.id);
     calendarStore.roomCalendarList[index] = calendar;
     calendarStore.addLocalRoomCalendarItem(userId, calendar.dto);
     uiStore.changeDateRange();
+    if (
+      !checked &&
+      (pathname.includes('detail') || pathname.includes('update')) &&
+      calendar.roomId === eventStore.event.roomId
+    )
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

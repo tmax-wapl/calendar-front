@@ -58,7 +58,8 @@ const Item = observer(({ category }: Props) => {
     if (
       !checked &&
       (pathname.includes('detail') || pathname.includes('update')) &&
-      category.id === eventStore.event.calId
+      (category.id === eventStore.event.calId ||
+        (category.type === 'share' && eventStore.event.roomId === null && eventStore.event.shareEvent))
     )
       navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
