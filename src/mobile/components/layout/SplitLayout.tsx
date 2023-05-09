@@ -23,13 +23,6 @@ const SplitLayout = () => {
     setBottomPanelHeight(halfHeight);
   };
 
-  const getRow = () => {
-    const { mainApi } = uiStore;
-    const activeStart = toDateTime(mainApi.view.activeStart);
-    const { days } = uiStore.dateDay.diff(activeStart, 'days');
-    return Math.floor(days / 7) + 1;
-  };
-
   const handleSwipe = (eventData: SwipeEventData) => {
     const { dir } = eventData;
     dir === 'Up' ? handleSwipeUp() : handleSwipeDown(eventData);
@@ -67,6 +60,7 @@ const SplitLayout = () => {
       }
       setHalfHeight();
       mainApi?.changeView('dayGridMonth');
+      uiStore.changeDateRange();
     } else {
       setTopPanelHeight(LayoutHeight);
       setBottomPanelHeight(0);

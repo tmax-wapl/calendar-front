@@ -92,7 +92,8 @@ export default class UiStore {
   }
 
   setDateDay(date: DateTime) {
-    if (isSameDate(this.dateDay, date) && this.viewMode === VIEW_MODE.MONTH) return;
+    const isMobile = process.env.IS_MOBILE ?? false;
+    if (!isMobile && isSameDate(this.dateDay, date) && this.viewMode === VIEW_MODE.MONTH) return;
     this.dateDay = date;
   }
 
