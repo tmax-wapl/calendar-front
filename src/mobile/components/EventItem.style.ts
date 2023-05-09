@@ -6,7 +6,8 @@ export const EventItemContainer = styled.li<{ isDetail: boolean }>`
   width: 100%;
   height: fit-content;
   box-sizing: border-box;
-  ${({ isDetail }) => !isDetail && 'padding: 10px 0 7px; cursor: pointer;'}
+  padding-bottom: 7px;
+  ${({ isDetail }) => !isDetail && 'padding-top: 10px;'}
 `;
 
 export const ItemTitleContainer = styled.div<{ isDetail: boolean }>`

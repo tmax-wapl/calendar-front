@@ -29,10 +29,9 @@ const EventItem = ({ event, isDetail = false, onClick }: Props) => {
       </ItemTitleContainer>
       <EventInfoContainer isDetail={isDetail}>
         <EventInfo>{getEventDuration(event.startDate, event.endDate, event.allDay)}</EventInfo>
-        {event.rrule && <EventInfo>{getRepeatSummary(event.rrule)}</EventInfo>}
+        {isDetail && event.rrule && <EventInfo>{getRepeatSummary(event.rrule)}</EventInfo>}
         {isDetail && event.repeatEndDate && <EventInfo>{event.repeatEndDate.toFormat('yyyy. LL. dd. 종료')}</EventInfo>}
       </EventInfoContainer>
-      {isDetail && <CalendarName>{event.calName}</CalendarName>}
     </EventItemContainer>
   );
 };
