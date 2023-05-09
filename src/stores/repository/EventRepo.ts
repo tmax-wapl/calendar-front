@@ -97,7 +97,7 @@ export default class EventRepo {
       const {
         data: { response, success },
       } = await API.get<EventDTO, ResponseData<EventDTO[]>>(
-        `${baseUrl}/apis/v1/event/search?type=${type}&text=${keyword}`,
+        `${baseUrl}/apis/v1/event/search?type=${type}&text=${encodeURIComponent(keyword)}`,
       );
       if (success) return response;
     } catch (e) {
