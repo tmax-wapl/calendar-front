@@ -15,12 +15,12 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { DateTime } from 'luxon';
 import { DATE_EVENT, VIEW_MODE } from '@constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { getStartDate, isEqualMonth, toDateString, toISO } from '@/utils';
+import { getStartDate, toISO } from '@/utils';
 import DatePicker from '@/common/components/DatePicker/DatePicker';
 import { autorun } from 'mobx';
 import { EventModel } from '@/stores/model/EventModel';
 
-type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
+export type DateHandleType = DATE_EVENT.PREV | DATE_EVENT.NEXT | DATE_EVENT.TODAY;
 
 const DateButton = ({ selected = false, togglePicker }: { selected?: boolean; togglePicker?: () => void }) => {
   const [title, setTitle] = useState<string>('');

@@ -5292,7 +5292,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*, @types/prop-types@npm:^15.7.5":
+"@types/prop-types@npm:*, @types/prop-types@npm:^15, @types/prop-types@npm:^15.7.5":
   version: 15.7.5
   resolution: "@types/prop-types@npm:15.7.5"
   checksum: 5b43b8b15415e1f298243165f1d44390403bb2bd42e662bca3b5b5633fdd39c938e91b7fce3a9483699db0f7a715d08cef220c121f723a634972fdf596aec980
@@ -5738,6 +5738,7 @@ __metadata:
     "@storybook/testing-library": ^0.0.13
     "@svgr/webpack": ^6.5.1
     "@types/luxon": ^3
+    "@types/prop-types": ^15
     "@types/react": ^17.0.19
     "@types/react-dom": ^17.0.11
     "@types/webpack-bundle-analyzer": ^4
@@ -5768,9 +5769,12 @@ __metadata:
     moment: ^2.29.4
     preload-webpack-plugin: 3.0.0-beta.3
     prettier: ^2.7.1
+    prop-types: ^15.8.1
     react: ^17.0.2
     react-dom: ^17.0.2
     react-router-dom: ^6.4.3
+    react-split-pane: ^0.1.92
+    react-swipeable: ^7.0.0
     rrule: ^2.7.1
     style-loader: ^3.3.1
     ts-loader: ^9.4.1
@@ -17065,7 +17069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.4, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -17480,6 +17484,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-lifecycles-compat@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "react-lifecycles-compat@npm:3.0.4"
+  checksum: a904b0fc0a8eeb15a148c9feb7bc17cec7ef96e71188280061fc340043fd6d8ee3ff233381f0e8f95c1cf926210b2c4a31f38182c8f35ac55057e453d6df204f
+  languageName: node
+  linkType: hard
+
 "react-merge-refs@npm:^1.0.0":
   version: 1.1.0
   resolution: "react-merge-refs@npm:1.1.0"
@@ -17585,6 +17596,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-split-pane@npm:^0.1.92":
+  version: 0.1.92
+  resolution: "react-split-pane@npm:0.1.92"
+  dependencies:
+    prop-types: ^15.7.2
+    react-lifecycles-compat: ^3.0.4
+    react-style-proptype: ^3.2.2
+  peerDependencies:
+    react: ^16.0.0-0
+    react-dom: ^16.0.0-0
+  checksum: 4890f172636baeb4bb197195e8d896297ef8eec3c9887331e4a3854da6cf66b2f7758132c3e05f4b38eed595710f678ae1399cb0ca82e9811db06ad95410eee6
+  languageName: node
+  linkType: hard
+
 "react-spring@npm:^9.4.2":
   version: 9.5.5
   resolution: "react-spring@npm:9.5.5"
@@ -17599,6 +17624,24 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: ea04c04aca1dc50ab68933b541fbde9e36e7bd185f923431868428d6225c01105db9b574b1c1bf0a35817fa30978bff325c4ce9308dfb597189068bfac7bdd2f
+  languageName: node
+  linkType: hard
+
+"react-style-proptype@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "react-style-proptype@npm:3.2.2"
+  dependencies:
+    prop-types: ^15.5.4
+  checksum: f0e646e1488a18849a2a0fcff459a3769869d62be5729ff578dc6d37d0c0617706075efe09a15ff9372ba35419e31af5b0df154bc9487d1381cdc80d3dab6d7c
+  languageName: node
+  linkType: hard
+
+"react-swipeable@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "react-swipeable@npm:7.0.0"
+  peerDependencies:
+    react: ^16.8.3 || ^17 || ^18
+  checksum: 54d15933483f7aea8f69e6a9930e220fb3bd98f314cae89a8b797e8a3bb959b68e777fe199cd7729edfe65edfcb5d933c7312ea08626f1613a6fd5d30e646598
   languageName: node
   linkType: hard
 

@@ -10,6 +10,6 @@ export enum ROUTES {
   UPDATE = 'view-mode/:viewMode/update',
   DAY = 'view-mode/:viewMode/date',
   DETAIL = 'view-mode/:viewMode/detail',
-  SEARCH = 'view-mode/:viewMode/search',
+  SEARCH = 'search',
   SHARE = 'share',
 }

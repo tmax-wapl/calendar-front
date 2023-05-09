@@ -59,6 +59,8 @@ export default class UiStore {
   notiData: NotiData = null;
   isDetail = false;
 
+  pageDialogInfo: string = null;
+
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -74,6 +76,8 @@ export default class UiStore {
       setImportanceChecked: action,
       isHolidayChecked: observable,
       setHolidayChecked: action,
+      pageDialogInfo: observable,
+      setPageDialogInfo: action,
       isLunarChecked: observable,
       setLunarChecked: action,
       notiData: observable,
@@ -106,6 +110,10 @@ export default class UiStore {
 
   setHolidayChecked(checked: boolean) {
     this.isHolidayChecked = checked;
+  }
+
+  setPageDialogInfo(pageDialogInfo: string) {
+    this.pageDialogInfo = pageDialogInfo;
   }
 
   setLunarChecked(checked: boolean) {
