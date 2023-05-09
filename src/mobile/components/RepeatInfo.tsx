@@ -178,7 +178,7 @@ const RepeatInfo = ({
                   )}
                 </PickerWrapper>
                 {eventStore.event.rrule && (
-                  <RepeatLabel style={{ marginBottom: '40px' }}>
+                  <RepeatLabel style={{ marginBottom: '24px' }}>
                     {`일정이 ${eventStore.event.rrule?.interval}${repeatSummary()} 간격 반복됩니다.`}
                   </RepeatLabel>
                 )}
