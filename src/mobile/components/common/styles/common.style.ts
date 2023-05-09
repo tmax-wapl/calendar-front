@@ -20,9 +20,13 @@ export const ItemContainer = styled.div<{ height?: string }>`
 
 export const ItemTitleContainer = styled.div`
   display: flex;
-  height: 44px;
+  align-items: center;
+  height: 48px;
   justify-content: space-between;
   padding: 0 16px;
+  :first-of-type {
+    margin-top: 16px;
+  }
 `;
 
 export const ButtonWrapper = styled.div`
