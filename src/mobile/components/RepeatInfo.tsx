@@ -53,12 +53,10 @@ const RepeatInfo = ({
   const [open, setOpen] = useState(false);
   const [repeatToggle, setRepeatToggle] = useState(rrule ? true : false);
   const rruleUnits = ['년', '월', '주', '일'];
-  const [freqency, setFrequency] = useState<string[]>(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
+  const [intervals, setIntervals] = useState<string[]>(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
   const units = ['일', '주', '월', '년'];
   const freqUnits: FREQ_UNIT = { 일: 3, 주: 2, 월: 1, 년: 0 };
-
   const dayOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
-
   const byweekday = (eventStore.event.rrule?.byweekday as Weekday[])?.map(({ weekday }) => weekday);
 
   const handleEndDateSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,8 +96,8 @@ const RepeatInfo = ({
 
   const handleOk = () => setOpen(false);
 
-  const handleFreqChange = (index: number) => {
-    const interval = Number(freqency[index]);
+  const handleIntervalChange = (index: number) => {
+    const interval = Number(intervals[index]);
     onRRuleChange({
       ...eventStore.event.rrule,
       interval,
@@ -122,8 +120,8 @@ const RepeatInfo = ({
     rruleUnits[eventStore.event.rrule?.freq] === '월' ? '개월' : rruleUnits[eventStore.event.rrule?.freq];
 
   useEffect(() => {
-    if (rrule?.freq === 3) setFrequency(Array.from({ length: 999 }, (_, i) => '' + (i + 1)));
-    else setFrequency(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
+    if (rrule?.freq === 3) setIntervals(Array.from({ length: 999 }, (_, i) => '' + (i + 1)));
+    else setIntervals(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
   }, [rrule?.freq]);
 
   return (
@@ -151,9 +149,9 @@ const RepeatInfo = ({
                     <SpinnerPickerItem
                       height={126}
                       itemHeight={42}
-                      item={freqency}
-                      selectedValue={String(eventStore.event.rrule?.interval)}
-                      onValueChange={handleFreqChange}
+                      item={intervals}
+                      selectedValue={String(eventStore.event.rrule?.interval || 1)}
+                      onValueChange={handleIntervalChange}
                     />
                     <SpinnerPickerItem
                       height={126}
