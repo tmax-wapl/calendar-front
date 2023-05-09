@@ -13,12 +13,9 @@ import {
   Input,
   SettingItem,
   Divider,
-  BodyWrapper,
-  ContentWrapper,
-  ColorItemContent,
-  ColorItemWrapper,
-  ColorSelected,
 } from './CalendarSettingView.style';
+import { BodyWrapper, ContentWrapper } from '../common/styles/common.style';
+import { ColorItemContent, ColorItemWrapper, ColorSelected } from '../ColorPicker/ColorPicker.style';
 import { CalendarModel, EventModel } from '@/stores';
 
 const CalendarSettingView = observer(() => {
@@ -40,6 +37,11 @@ const CalendarSettingView = observer(() => {
   };
 
   const handleRename = async () => {
+    if (!value.trim()) {
+      setValue(name);
+      setEdit(false);
+      return;
+    }
     if (['private', 'org'].includes(type)) {
       calendarStore.calendar.name = value;
       calendarStore.addLocalRoomCalendarItem(userId, calendarStore.calendar.dto);
