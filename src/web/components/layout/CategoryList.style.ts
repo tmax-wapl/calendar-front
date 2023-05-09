@@ -13,6 +13,7 @@ export const Title = styled.div`
   border-radius: 8px;
   align-items: center;
   box-sizing: border-box;
+  cursor: default;
   ${({ theme: { Font } }) => Font.Text.m.Regular};
 `;
 

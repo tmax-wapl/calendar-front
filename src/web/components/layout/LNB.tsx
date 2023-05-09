@@ -7,10 +7,9 @@ import FilterList from './FilterList';
 import CategoryList from './CategoryList';
 import OtherCalendarList from './OtherCalendarList';
 import { Observer } from 'mobx-react-lite';
-import OrgCalendarList from './OrgCalendarList';
 
 const LNB = () => {
-  const { uiStore, calendarStore } = useCalendarStores();
+  const { uiStore } = useCalendarStores();
 
   return (
     <LNBContainer id="lnb">
@@ -41,12 +40,6 @@ const LNB = () => {
       <ScrollListWrapper>
         <CategoryList />
         <Divider />
-        {calendarStore.roomCalendarList.some(cal => cal.type === 'org') ? (
-          <>
-            <OrgCalendarList />
-            <Divider />
-          </>
-        ) : null}
         <OtherCalendarList />
       </ScrollListWrapper>
     </LNBContainer>
