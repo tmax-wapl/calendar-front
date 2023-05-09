@@ -12,12 +12,12 @@ const MyCalendarList = observer(() => {
     <MyCalendarListContainer>
       <FilterName>
         내 캘린더
-        <AddButton>
+        {/* <AddButton>
           <Icon.Add2Line width={20} height={20} color="#80868B" />
-        </AddButton>
+        </AddButton> */}
       </FilterName>
       {calendarStore.calendarList
-        ?.filter((calendar: CalendarModel) => calendar.type !== 'url' && calendar.type !== 'share')
+        ?.filter((calendar: CalendarModel) => calendar.type === null)
         .map((calendar: CalendarModel) => (
           <Item key={calendar.id} calendar={calendar} />
         ))}

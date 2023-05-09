@@ -1,28 +1,35 @@
 import { useCalendarStores } from '@/stores/StoreProvider';
 import FilterList from './FilterList';
 import MyCalendarList from './MyCalendarList';
+import OrgCalendarList from './OrgCalendarList';
 import OtherCalendarList from './OtherCalendarList';
-import { CalendarManageViewContainer, Divider } from './CalendarManageView.style';
+import { CalendarManageViewContainer, ContentContainer, Divider } from './CalendarManageView.style';
 import EventBar from '../header/EventBar';
 
 const CalendarManageView = () => {
-  const { uiStore } = useCalendarStores();
+  const { uiStore, calendarStore } = useCalendarStores();
 
   const handleBackClick = () => {
     uiStore.setPageDialogInfo(null);
   };
 
   return (
-    <>
+    <CalendarManageViewContainer>
       <EventBar title="캘린더 관리" leftSide={[{ action: 'close', onClick: handleBackClick }]} />
-      <CalendarManageViewContainer>
+      <ContentContainer>
         <FilterList />
         <Divider />
         <MyCalendarList />
         <Divider />
+        {calendarStore.roomCalendarList.some(cal => cal.type === 'org') ? (
+          <>
+            <OrgCalendarList />
+            <Divider />
+          </>
+        ) : null}
         <OtherCalendarList />
-      </CalendarManageViewContainer>
-    </>
+      </ContentContainer>
+    </CalendarManageViewContainer>
   );
 };
 

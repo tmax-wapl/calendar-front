@@ -77,6 +77,16 @@ export const Dialog = () => {
           title: '구독 캘린더 추가 실패',
           description: `이미 구독 중입니다.`,
         };
+      case 'syncFail':
+        return {
+          title: '캘린더 동기화 실패',
+          description: `잠시 후 시도해 주세요.`,
+        };
+      case 'deletedSubscribe':
+        return {
+          title: '캘린더 동기화 실패',
+          description: `원본이 삭제된 캘린더입니다.`,
+        };
       case 'selectedFileCount':
         return {
           title: '파일 첨부는 한 번에 30개까지 가능합니다.',
@@ -120,6 +130,8 @@ export const Dialog = () => {
         ];
       case 'subscribeFail':
       case 'subscribeDuplication':
+      case 'syncFail':
+      case 'deletedSubscribe':
       case 'selectedFileCount':
       case 'selectedFileSize':
       case 'totalFileSize':

@@ -19,6 +19,7 @@ const UrlSubscribeView = () => {
   const handleSubscribe = async () => {
     try {
       await calendarStore.createCalendar({ url: input, type: 'url' });
+      handleBackClick();
     } catch (e) {
       if (e instanceof HTTPError && e.status === 400) {
         uiStore.setDialogInfo({
