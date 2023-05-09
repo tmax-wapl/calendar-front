@@ -20,12 +20,13 @@ export const EventDetailContainer = styled.div`
 
 export const FromInfoContainer = styled.div`
   display: flex;
-  height: 44px;
+  height: 52px;
   align-items: center;
 `;
 
 export const FromInfo = styled.div`
-  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Creator = styled.span`
