@@ -5,7 +5,6 @@ import { reaction } from 'mobx';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, SwipeEventData } from 'react-swipeable';
 import '@/styles/split.css';
-import { toDateTime } from '@/utils';
 import EventListView from '@/mobile/components/EventListView';
 import { SplitPaneWrapper } from './SplitLayout.style';
 
@@ -14,8 +13,9 @@ const SplitLayout = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [topPanelHeight, setTopPanelHeight] = useState<number>();
   const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(0);
-  const { innerHeight } = window;
-  const LayoutHeight = innerHeight - (56 + 48);
+
+  const innerHeight = useRef(window.innerHeight);
+  const LayoutHeight = innerHeight.current - (56 + 48);
   const halfHeight = LayoutHeight / 2;
 
   const setHalfHeight = () => {
@@ -102,6 +102,10 @@ const SplitLayout = () => {
     );
     return () => dispose();
   }, []);
+
+  useEffect(() => {
+    innerHeight.current = window.innerHeight;
+  }, [window.innerHeight]);
 
   return (
     <SplitPaneWrapper ref={swipeRef} {...swipeHandlers}>
