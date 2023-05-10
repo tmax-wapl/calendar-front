@@ -1,17 +1,17 @@
-export enum ROUTES {
-  HOME = '/',
-  PATH_MAIN = '/main',
-  PATH_CREATE = '/main/create',
-  PATH_DAY_DETAIL = '/main/view-mode/:viewMode',
-  PATH_DETAIL = '/main/detail',
-  PATH_SHARE = '/share',
-  PATH_SEARCH = '/search',
-  MAIN = 'main',
-  CREATE = 'view-mode/:viewMode/create',
-  UPDATE = 'view-mode/:viewMode/update',
-  DAY = 'view-mode/:viewMode/date',
-  DETAIL = 'view-mode/:viewMode/detail',
-  // SEARCH = 'view-mode/:viewMode/search',
-  SHARE = 'share',
-  SEARCH = 'search',
-}
+export const ROUTES = {
+  WEB: {
+    PATH_MAIN: '/main',
+    MAIN: 'main',
+    CREATE: 'view-mode/:viewMode/create',
+    UPDATE: 'view-mode/:viewMode/update',
+    DAY: 'view-mode/:viewMode/date',
+    DETAIL: 'view-mode/:viewMode/detail',
+    SEARCH: 'view-mode/:viewMode/search',
+    SHARE: 'share',
+  },
+  MOBILE: {
+    PATH_MAIN: '/main',
+    MAIN: 'main',
+    SEARCH: 'search',
+  },
+};

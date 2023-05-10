@@ -1,6 +1,6 @@
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
-import { ROUTES } from '@common/constants/routes';
+import { ROUTES } from '@constants/routes';
 import { Dialog } from '..';
 import { Observer } from 'mobx-react-lite';
 import CalendarLayout from '@mcomponents/layout/CalendarLayout';
@@ -14,9 +14,9 @@ const MobileApp: React.FC = () => {
   return (
     <Router basename="/">
       <Routes>
-        <Route path={ROUTES.MAIN} element={<CalendarLayout />} />
-        <Route path="*" element={<Navigate to={ROUTES.PATH_MAIN} replace />} />
-        <Route path={ROUTES.SEARCH} element={<EventSearchView />} />
+        <Route path={ROUTES.MOBILE.MAIN} element={<CalendarLayout />} />
+        <Route path="*" element={<Navigate to={ROUTES.MOBILE.PATH_MAIN} replace />} />
+        <Route path={ROUTES.MOBILE.SEARCH} element={<EventSearchView />} />
       </Routes>
       <Observer>{() => (uiStore.pageDialogInfo ? <PageRoutes /> : <FAB />)}</Observer>
       <Observer>{() => uiStore.dialogInfo && <Dialog />}</Observer>
