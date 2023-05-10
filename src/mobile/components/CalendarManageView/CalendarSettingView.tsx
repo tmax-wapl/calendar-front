@@ -19,7 +19,7 @@ import { EventModel } from '@/stores';
 const CalendarSettingView = () => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore } = useCalendarStores();
-  const { id, roomId, name, type, mainFlag, color: calColor } = calendarStore.calendar;
+  const { id, roomId, name, type, color: calColor } = calendarStore.calendar;
   const [isEdit, setEdit] = useState<boolean>(false);
   const [isColorPickerOpen, setColorPickerOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>(name);
@@ -130,19 +130,7 @@ const CalendarSettingView = () => {
           <Icon.CalendarDotFill color={calColor || ''} width={20} height={20} className="mr-8" />
           {colors.find(color => color.value === calColor).label || ''}
         </SettingItem>
-        <Divider />
-        {type === 'url' && (
-          <SettingItem>
-            <Icon.RenewLine width={20} height={20} className="mr-8" />
-            캘린더 동기화
-          </SettingItem>
-        )}
-        {!(mainFlag || ['share', 'org'].includes(type)) && (
-          <SettingItem>
-            <Icon.DeleteLine width={20} height={20} className="mr-8" />
-            캘린더 삭제
-          </SettingItem>
-        )}
+        {/* <Divider /> */}
       </CalendarSettingViewContainer>
       <ContextMenu open={isColorPickerOpen} onClose={handleColorPickerClose}>
         <EventBar title="캘린더 색상" leftSide={[{ action: 'close', onClick: handleColorPickerClose }]} />
