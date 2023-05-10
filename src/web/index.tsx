@@ -29,15 +29,15 @@ const WebApp = ({ data }: Props) => {
     <Router basename="/">
       <Routes>
         <Route element={<CalendarLayout />}>
-          <Route path="*" element={<Navigate to={ROUTES.PATH_MAIN} replace />} />
-          <Route path={ROUTES.MAIN} element={<Calendar />}>
-            <Route path={ROUTES.DAY} element={<EventList />} />
-            <Route path={ROUTES.CREATE} element={<EventHandleView action={'create'} />} />
-            <Route path={ROUTES.UPDATE} element={<EventHandleView action={'update'} />} />
-            <Route path={ROUTES.DETAIL} element={<Detail />} />
-            <Route path={ROUTES.SEARCH} element={<EventSearchView />} />
+          <Route path="*" element={<Navigate to={ROUTES.WEB.PATH_MAIN} replace />} />
+          <Route path={ROUTES.WEB.MAIN} element={<Calendar />}>
+            <Route path={ROUTES.WEB.DAY} element={<EventList />} />
+            <Route path={ROUTES.WEB.CREATE} element={<EventHandleView action={'create'} />} />
+            <Route path={ROUTES.WEB.UPDATE} element={<EventHandleView action={'update'} />} />
+            <Route path={ROUTES.WEB.DETAIL} element={<Detail />} />
+            <Route path={ROUTES.WEB.SEARCH} element={<EventSearchView />} />
           </Route>
-          <Route path={ROUTES.SHARE} element={<Share />} />
+          <Route path={ROUTES.WEB.SHARE} element={<Share />} />
         </Route>
       </Routes>
       <Observer>{() => uiStore.dialogInfo && <Dialog />}</Observer>

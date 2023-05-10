@@ -4,7 +4,7 @@ import { CalendarViewContainter, CalendarViewBody, RPanelWrapper } from './Calen
 import Header from '@wcomponents/header/Header';
 import Calendar from '@wcomponents/body/Calendar';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { ROUTES } from '@/common/constants';
+import { ROUTES } from '@constants/routes';
 
 const CalendarView: React.FC = () => {
   const { uiStore } = useCalendarStores();
@@ -12,7 +12,7 @@ const CalendarView: React.FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (pathname === ROUTES.PATH_MAIN) navigate(`view-mode/${uiStore.viewMode}/date`);
+    if (pathname === ROUTES.WEB.PATH_MAIN) navigate(`view-mode/${uiStore.viewMode}/date`);
   }, []);
 
   return (
