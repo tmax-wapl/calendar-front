@@ -54,6 +54,11 @@ const RoomCalendarItem = observer(({ calendar }: Props) => {
   };
 
   const handleRename = () => {
+    if (!renameTitle.trim()) {
+      setRenameTitle(calendar.name);
+      calendarStore.setRenameId(null);
+      return;
+    }
     calendar.dto.name = renameTitle;
     calendarStore.addLocalRoomCalendarItem(userId, calendar.dto);
     calendarStore.setRenameId(null);
