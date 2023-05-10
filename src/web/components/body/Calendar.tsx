@@ -32,6 +32,8 @@ import {
   Today,
   DayNum,
   DayNumWrapper,
+  Holiday,
+  Lunar,
 } from './Calendar.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Popover from '@common/components/Popover/Popover';
@@ -41,7 +43,6 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { diffTime, toDateString, toISO, toDateTime, toUTC, getStartDate } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
-import { Holiday, Lunar } from '../EventListView.style';
 import { getLunar } from 'holiday-kr';
 import { EventModel } from '@/stores/model/EventModel';
 import { RRule, Weekday } from 'rrule';
@@ -135,10 +136,7 @@ const Calendar: React.FC = observer(() => {
                 </span>
                 {uiStore.isHolidayChecked && holiday(content, isMonth)}
                 {uiStore.isLunarChecked && (
-                  <Lunar
-                    isRed={isHoliday(toDateString(content.date)) && uiStore.isHolidayChecked}
-                    style={{ marginLeft: 'auto', fontSize: '11px' }}
-                  >
+                  <Lunar isRed={isHoliday(toDateString(content.date)) && uiStore.isHolidayChecked}>
                     {lunar(content.date)}
                   </Lunar>
                 )}
@@ -177,10 +175,7 @@ const Calendar: React.FC = observer(() => {
     const holiday = calendarStore.holidayList.find(item => item.dateDay === date && item.isRed);
     return (
       holiday && (
-        <Holiday
-          isRed={holiday.isRed}
-          style={{ marginLeft: isMonth ? '12px' : '10px', fontSize: isMonth ? '11px' : '' }}
-        >
+        <Holiday isRed={holiday.isRed} style={{ marginLeft: isMonth ? '12px' : '10px' }}>
           {holiday.name}
         </Holiday>
       )
@@ -196,10 +191,7 @@ const Calendar: React.FC = observer(() => {
             {getDay(content.dow)}
             {uiStore.isHolidayChecked && holiday(content, false)}
             {uiStore.isLunarChecked && (
-              <Lunar
-                isRed={isHoliday(toDateString(content.date)) && uiStore.isHolidayChecked}
-                style={{ marginLeft: 'auto', fontSize: '11px' }}
-              >
+              <Lunar isRed={isHoliday(toDateString(content.date)) && uiStore.isHolidayChecked}>
                 {lunar(content.date)}
               </Lunar>
             )}
