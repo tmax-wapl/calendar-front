@@ -4,7 +4,7 @@ import { ROUTES } from '@common/constants/routes';
 import { Dialog } from '..';
 import { Observer } from 'mobx-react-lite';
 import CalendarLayout from '@mcomponents/layout/CalendarLayout';
-import EventSearchView from '@mcomponents/EventSearchView';
+import EventSearchView from '@mcomponents/Search/EventSearchView';
 import FAB from './components/FAB';
 import PageRoutes from './components/layout/PageRoutes';
 
