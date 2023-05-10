@@ -390,3 +390,14 @@ export const Today = styled.span`
   border-radius: 15px;
   margin-right: 4px;
 `;
+
+export const Holiday = styled.span<{ isRed: boolean }>`
+  ${({ theme: { Font } }) => Font.Text.xxs.Medium};
+  color: ${({ isRed, theme: { Color } }) => (isRed ? Color.Validation.negative : Color.Gray[900])};
+`;
+
+export const Lunar = styled.span<{ isRed: boolean }>`
+  ${({ theme: { Font } }) => Font.Text.xxs.Regular};
+  color: ${({ isRed, theme: { Color } }) => (isRed ? Color.Validation.negative : Color.Gray[500])};
+  margin-left: auto;
+`;
