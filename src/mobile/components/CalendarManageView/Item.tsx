@@ -53,7 +53,7 @@ const Item = observer(({ calendar }: Props) => {
         </>
       )}
       <ButtonWarpper onClick={() => handleCalendarClick(calendar)}>
-        <Icon.ArrowFrontLine width={20} height={20} color="#BDC1C6" />
+        <Icon.MoreLine width={20} height={20} color="#BDC1C6" />
       </ButtonWarpper>
     </ItemContainer>
   );

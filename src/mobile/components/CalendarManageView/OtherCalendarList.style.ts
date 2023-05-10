@@ -5,21 +5,21 @@ export const OtherCalendarListContainer = styled.div`
   flex-direction: column;
 `;
 
-export const FilterName = styled.div`
+export const Title = styled.div`
   display: flex;
   height: 28px;
   align-items: center;
   ${({ theme: { Font } }) => Font.Text.s.Medium};
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
+`;
+
+export const FilterName = styled(Title)`
   color: ${({ theme: { Color } }) => Color.Gray[600]};
 `;
 
-export const AddButton = styled(Mui.IconButton)`
+export const IconButton = styled(Mui.IconButton)`
   width: 28px;
   height: 28px;
   margin-left: auto;
   padding: 0;
-`;
-
-export const MenuContent = styled.div`
-  display: flex;
 `;
