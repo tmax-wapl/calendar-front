@@ -143,7 +143,6 @@ const EventHandleView = ({ action }: Props) => {
           calId: calId,
           start: toISO(start),
           end: toISO(start.plus({ minutes: 30 })),
-          alarmList: ['0'],
         }),
       );
       setOriginEvent(new EventModel({ ...eventStore.event.dto }));
