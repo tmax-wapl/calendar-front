@@ -70,6 +70,11 @@ const Item = observer(({ category }: Props) => {
   };
 
   const handleRename = async () => {
+    if (!renameTitle.trim()) {
+      setRenameTitle(category.name);
+      calendarStore.setRenameId(null);
+      return;
+    }
     await calendarStore.updateCalendar(category.id, { name: renameTitle });
     calendarStore.updateCalendarDTO(category.id, 'name', renameTitle);
     calendarStore.setRenameId(null);
