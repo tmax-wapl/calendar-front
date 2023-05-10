@@ -12,9 +12,11 @@ const RoomCalendarList = observer(({ title, roomType }: { title: string; roomTyp
 
   const sortCalendarList = useMemo(
     (): CalendarModel[] =>
-      calendarStore.roomCalendarList
-        ?.filter(({ type }) => type === roomType)
-        ?.sort((a, b) => new Date(b.regDate).getTime() - new Date(a.regDate).getTime()),
+      roomType === 'private'
+        ? calendarStore.roomCalendarList
+            ?.filter(({ type }) => type === roomType)
+            ?.sort((a, b) => new Date(b.regDate).getTime() - new Date(a.regDate).getTime())
+        : calendarStore.roomCalendarList?.filter(({ type }) => type === roomType),
     [roomType, calendarStore.roomCalendarList],
   );
 
