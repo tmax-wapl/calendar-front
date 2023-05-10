@@ -1,6 +1,5 @@
 import { useState, useCallback, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DateTime } from 'luxon';
 import { LoadingSpinner, SearchField } from '@wapl/ui';
 import { EventModel } from '@/stores';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -8,17 +7,20 @@ import {
   EventSearchViewContainer,
   SearchFieldContainer,
   SearchFieldWrapper,
-  SearchEventList,
   TextButton,
-  MonthInfo,
-  DateInfo,
 } from './EventSearchView.style';
-import EventItem from './EventItem';
+import SearchEventList from './SearchEventList';
+
+interface SearchResult {
+  eventMap: Map<string, Map<string, EventModel[]>>;
+  isEmpty: boolean;
+  keyword: string;
+}
 
 const EventSearchView = () => {
   const [keyword, setKeyword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [searchEventMap, setSearchEventMap] = useState<Map<string, Map<string, EventModel[]>>>(new Map());
+  const [searchResult, setSearchResult] = useState<SearchResult>(null);
   const navigate = useNavigate();
   const { eventStore, uiStore } = useCalendarStores();
 
@@ -50,7 +52,8 @@ const EventSearchView = () => {
     if (!value.trim()) return;
     setIsLoading(true);
     const res = await eventStore.searchEvent(value.trim(), 'T');
-    setSearchEventMap(groupByMonth(res));
+    const eventMap = groupByMonth(res);
+    setSearchResult({ eventMap, isEmpty: eventMap.size === 0, keyword });
     setIsLoading(false);
   };
 
@@ -60,11 +63,6 @@ const EventSearchView = () => {
 
   const handleCancelClick = () => {
     navigate(-1);
-  };
-
-  const getMonthInfo = (date: DateTime) => {
-    const isThisYear = DateTime.now().hasSame(date, 'year');
-    return isThisYear ? date.toFormat('LLL', { locale: 'ko' }) : date.toFormat('yyyy년 LLL', { locale: 'ko' });
   };
 
   const handleEventClick = useCallback(async (event: EventModel) => {
@@ -93,21 +91,12 @@ const EventSearchView = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <SearchEventList>
-          {Array.from(searchEventMap).map(([month, eventMap]) => (
-            <Fragment key={month}>
-              <MonthInfo>{getMonthInfo(DateTime.fromISO(month))}</MonthInfo>
-              {Array.from(eventMap).map(([date, eventList]) => (
-                <Fragment key={date}>
-                  <DateInfo>{DateTime.fromISO(date).toFormat('dd일 cccc', { locale: 'ko' })}</DateInfo>
-                  {eventList.map(event => (
-                    <EventItem key={event.id} event={event} onClick={handleEventClick} />
-                  ))}
-                </Fragment>
-              ))}
-            </Fragment>
-          ))}
-        </SearchEventList>
+        <SearchEventList
+          searchEventMap={searchResult?.eventMap || new Map()}
+          onEventClick={handleEventClick}
+          isEmpty={searchResult?.isEmpty}
+          keyword={searchResult?.keyword}
+        />
       )}
     </EventSearchViewContainer>
   );
