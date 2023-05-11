@@ -106,6 +106,7 @@ const CalendarSettingView = () => {
             limit={50}
             value={value}
             onChange={e => {
+              if (e.target.value.length > 50) return;
               setValue(e.target.value);
             }}
             onClear={() => {

@@ -58,6 +58,7 @@ const RoomCalendarItem = observer(({ calendar }: Props) => {
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > 50) return;
     setRenameTitle(e.target.value);
   };
 
