@@ -4,6 +4,7 @@ import { Icon, Button } from '@wapl/ui';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { useRoomStore } from '@wapl/core';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { EventModel } from '@/stores/model/EventModel';
 import { EventHandleViewContainer, EventHandleContainer, FromInfo, ButtonGroup } from './EventHandleView.style';
@@ -20,9 +21,10 @@ import {
 } from '@common/components/EventInfoItem';
 import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
-import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@/common/constants';
+import { EVENT_UPDATE_OPTION, VIEW_MODE, APP_ID } from '@/common/constants';
 import { useDidMountEffect } from '@/common/hooks';
 import { EventMember } from '@/common/constants/interfaces';
+import { UploadFileDTO, SyncFileDTOMsg, FileInfo } from '@/common/constants/interfaces';
 
 interface Props {
   action: 'create' | 'update';
@@ -30,13 +32,67 @@ interface Props {
 
 const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
+  const roomStore = useRoomStore();
   const navigate = useNavigate();
   const { state } = useLocation();
   const { userId } = useContext(CalendarContext);
   const [isUploading, setUploading] = useState<boolean>(false);
   const [originEvent, setOriginEvent] = useState(new EventModel({ ...eventStore.event.dto }));
 
-  const preprocessEvent = (event: EventModel): EventModel => {
+  const uploadFile = async (file: FileInfo) => {
+    try {
+      const myRoomId = roomStore.myRoom.id;
+      const { fileInfo } = file;
+      const dto: UploadFileDTO = {
+        roomId: myRoomId,
+        targetFolderId: null,
+        userIds: [String(userId)],
+        roleIds: [5],
+        fileSize: fileInfo.size,
+      };
+      const tempId = Math.random().toString(36).substring(2, 16);
+      const res = await fileStore.uploadFile(fileInfo, dto, tempId).then(value => {
+        if (value) {
+          const SyncFileDTOMsg: SyncFileDTOMsg = {
+            type: 0,
+            objectId: [JSON.stringify(value)],
+            objectType: 1,
+            producerId: 'waplcalendar',
+          };
+          fileStore.syncOfficeFile({
+            appIdFrom: APP_ID.CALENDAR.toString(),
+            appIdTo: [APP_ID.OFFICE.toString()],
+            eventId: 'superdocs',
+            eventType: 'websocket_push',
+            roomId: myRoomId.toString(),
+            senderId: 'waplcalendar',
+            message: JSON.stringify(SyncFileDTOMsg),
+          });
+          return {
+            docsFileId: value.documentId,
+            fileName: value.documentName,
+            fileSize: value.documentSize,
+            fileExtension: value.documentExtension,
+          };
+        }
+      });
+      return res;
+    } catch (e) {
+      Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
+      return {};
+    }
+  };
+
+  const preprocessFile = async () => {
+    const filePromiseList = eventStore.fileList.map(file => {
+      return uploadFile(file);
+    });
+    const res = await Promise.all(filePromiseList.map(promise => promise.catch(err => null)));
+    eventStore.setFileList([]);
+    return res;
+  };
+
+  const preprocessEvent = async (event: EventModel): Promise<EventModel> => {
     const startDate = event.allDay ? event.startDate.startOf('day') : event.startDate;
     return new EventModel({
       ...event.dto,
@@ -53,12 +109,13 @@ const EventHandleView = ({ action }: Props) => {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
         }),
       }),
+      ...(eventStore.fileList.length > 0 && { fileList: await preprocessFile() }),
     });
   };
 
   const handleCreate = async () => {
     if (!eventStore.event.calId) eventStore.event.calId = calendarStore.getCalendarId();
-    await eventStore.createEvent(preprocessEvent(eventStore.event));
+    await eventStore.createEvent(await preprocessEvent(eventStore.event));
     uiStore.changeDateRange();
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
@@ -66,7 +123,7 @@ const EventHandleView = ({ action }: Props) => {
   const updateEvent = async (isRepeat = false) => {
     await eventStore.updateEvent(
       +eventStore.event.id,
-      preprocessEvent(eventStore.event),
+      await preprocessEvent(eventStore.event),
       isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
     );
     uiStore.changeDateRange();
@@ -80,7 +137,7 @@ const EventHandleView = ({ action }: Props) => {
         const newStart = eventStore.event.startDate.toUTC().toFormat('yyyy-LL-dd');
         await eventStore.updateEvent(
           +eventStore.event.id,
-          preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
+          await preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
           originStart !== newStart ? originStart : null,
         );
@@ -89,7 +146,7 @@ const EventHandleView = ({ action }: Props) => {
       case 'after': // 이 일정 및 향후 일정 수정
         await eventStore.updateEvent(
           +eventStore.event.id,
-          preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
+          await preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
           originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
         );
@@ -179,7 +236,7 @@ const EventHandleView = ({ action }: Props) => {
   const preventRefresh = (e: BeforeUnloadEvent) => {
     if (!isModified()) return;
     Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
-    handleUploadFileDelete();
+    // handleUploadFileDelete();
     e.preventDefault();
     e.returnValue = '';
   };
@@ -212,7 +269,7 @@ const EventHandleView = ({ action }: Props) => {
 
   const handleReset = () => {
     Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
-    handleUploadFileDelete();
+    // handleUploadFileDelete();
     eventStore.setEvent(new EventModel({ ...originEvent.dto }));
     closeDialog();
   };
@@ -238,7 +295,7 @@ const EventHandleView = ({ action }: Props) => {
         closeDialog,
         () => {
           Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
-          handleUploadFileDelete();
+          // handleUploadFileDelete();
           navigate(`/main/view-mode/${uiStore.viewMode}/date`);
           closeDialog();
         },
@@ -359,10 +416,12 @@ const EventHandleView = ({ action }: Props) => {
               setUploading={setUploading}
               attachments={eventStore.event.attachments}
               editable
+              setFileInfo={list => eventStore.setFileList([...eventStore.fileList, ...list])}
               onFileUpload={value => (eventStore.event.attachments = [...eventStore.event.attachments, ...value])}
-              onFileDelete={id =>
-                (eventStore.event.attachments = eventStore.event.attachments.filter(file => file.docsFileId !== id))
-              }
+              onFileDelete={id => {
+                eventStore.event.attachments = eventStore.event.attachments.filter(file => file.docsFileId !== id);
+                eventStore.setFileList(eventStore.fileList.filter(file => file.fileId === id));
+              }}
             />
           )}
         </Observer>
