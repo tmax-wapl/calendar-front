@@ -100,7 +100,7 @@ const SplitLayout = () => {
       () => uiStore.dateDay,
       (_, previousDateDay) => {
         if (previousDateDay) {
-          const bottom = bottomRef.current?.clientHeight;
+          const bottom = bottomRef.current?.clientHeight ?? 0; // 매우 간헐적으로 undefined 값 반환 예외처리
           const bottomHeader = 56;
           if (bottom + bottomHeader < halfHeight) changeDateClickView();
         }
