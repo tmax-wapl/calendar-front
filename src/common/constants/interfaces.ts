@@ -197,11 +197,16 @@ export interface SyncFileDTOMsg {
 
 export type Extension = 'jpg' | 'pdf' | 'wav' | 'xlsx' | 'mk4' | 'pptx' | 'word' | 'zip' | 'etc';
 
+export interface FileInfo {
+  fileId: number;
+  fileInfo: File;
+}
+
 export interface AttachmentInfo {
   docsFileId: number;
   fileName: string;
   fileSize: number;
-  fileExtension: Extension;
+  fileExtension: Extension | '';
 }
 
 export interface EventSearchDTO {
