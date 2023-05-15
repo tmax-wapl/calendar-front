@@ -271,6 +271,7 @@ export const CalendarContainer = styled.div`
   .fc-daygrid-body,
   .fc-scrollgrid-sync-table {
     width: 100% !important;
+    height: 100% !important;
   }
   .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
     min-height: unset !important;
@@ -360,6 +361,15 @@ export const EventSpan = styled.span`
 export const EventTitle = styled.span<{ isHalfLess: boolean }>`
   display: ${({ isHalfLess }) => (isHalfLess ? 'inline' : '-webkit-box')};
   ${({ theme: { Font } }) => Font.Text.xxxs.Regular};
+
+  @media (min-height: 500px) and (max-height: 599px) {
+    line-height: 10px;
+  }
+
+  @media (min-height: 600px) and (max-height: 699px) {
+    line-height: 12px;
+  }
+
   overflow: hidden;
   text-overflow: ellipsis;
   ${({ isHalfLess }) =>

@@ -17,7 +17,12 @@ const SplitLayout = () => {
   const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   const LayoutHeight = innerHeight - (56 + 48);
   const halfHeight = LayoutHeight / 2;
-  const isRotate = LayoutHeight < 360;
+  const {
+    screen: {
+      orientation: { angle },
+    },
+  } = window;
+  const [isRotate, setIsRotate] = useState(angle === 90 || angle === 270);
 
   const wrapperRef = useRef<HTMLDivElement>();
 
@@ -51,7 +56,6 @@ const SplitLayout = () => {
 
   const handleSwipeDown = (eventData: SwipeEventData) => {
     const { event } = eventData;
-    const { mainApi } = uiStore;
     const { target } = event;
 
     if (bottomPanelHeight > halfHeight) {
@@ -61,8 +65,7 @@ const SplitLayout = () => {
         if (isListView) return;
       }
       setHalfHeight();
-      mainApi?.changeView('dayGridMonth');
-      uiStore.changeDateRange();
+      changeGridMonth();
     } else initialView();
   };
 
@@ -81,8 +84,16 @@ const SplitLayout = () => {
     smallEventView();
   };
 
+  const changeGridMonth = () => {
+    const { mainApi } = uiStore;
+    mainApi?.changeView('dayGridMonth');
+    uiStore.changeDateRange();
+  };
+
   const changeSplitterView = () => {
-    if (innerHeight <= 360 && isRotate) {
+    if (isRotate) {
+      const { mainApi } = uiStore;
+      if (mainApi.view.type === 'dayGridWeek') changeGridMonth();
       const LayoutHeight = window.innerWidth / 2;
       setTopPanelHeight(LayoutHeight);
       setBottomPanelHeight(LayoutHeight);
@@ -95,7 +106,7 @@ const SplitLayout = () => {
     setTopPanelHeight(LayoutHeight);
     setBottomPanelHeight(0);
     mainApi.setOption('eventClassNames', '');
-    mainApi.setOption('dayMaxEvents', 4);
+    mainApi.setOption('dayMaxEvents', handleMaxEvents());
   };
 
   const smallEventView = () => {
@@ -103,6 +114,25 @@ const SplitLayout = () => {
     mainApi.setOption('eventClassNames', 'small-event');
     mainApi.setOption('dayMaxEvents', 2);
     mainApi.updateSize();
+  };
+
+  const handleRotate = () => {
+    const { screen } = window;
+    const {
+      orientation: { angle },
+    } = screen;
+
+    setTimeout(() => {
+      // 비동기를 넣어 rotate 완료된 후 view포트를 가져온다.
+      setInnerHeight(window.innerHeight);
+      setIsRotate(angle === 90 || angle === 270);
+    }, 100);
+  };
+
+  const handleMaxEvents = () => {
+    if (600 <= innerHeight && innerHeight < 700) return 3;
+    else if (innerHeight >= 700) return 4;
+    else return 2;
   };
 
   useEffect(() => {
@@ -119,15 +149,9 @@ const SplitLayout = () => {
     return () => dispose();
   }, []);
 
-  const handleRotate = () => {
-    setTimeout(() => {
-      setInnerHeight(window.innerHeight); // 비동기를 넣어 rotate 완료된 후 view포트를 가져온다.
-    }, 100);
-  };
-
   useEffect(() => {
     changeSplitterView();
-  }, [innerHeight]);
+  }, [isRotate]);
 
   useEffect(() => {
     window.addEventListener('orientationchange', handleRotate);
