@@ -1,5 +1,5 @@
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
-import { EventDTO, EventListDTO, EventShareDTO, ResponseData } from '@/common/constants/interfaces';
+import { EventDTO, EventListDTO, EventShareDTO, EventSearchDTO, ResponseData } from '@/common/constants/interfaces';
 import { HTTPError } from '@/error';
 import { AxiosError } from 'axios';
 import { API, baseUrl } from '../../common/lib/API';
@@ -92,12 +92,12 @@ export default class EventRepo {
     }
   }
 
-  async searchEvent(keyword: string, type: 'T') {
+  async searchEvent(keyword: string, type: 'T', page = 0, size = 100) {
     try {
       const {
         data: { response, success },
-      } = await API.get<EventDTO, ResponseData<EventDTO[]>>(
-        `${baseUrl}/apis/v1/event/search?type=${type}&text=${encodeURIComponent(keyword)}`,
+      } = await API.get<EventDTO, ResponseData<EventSearchDTO>>(
+        `${baseUrl}/apis/v1/event/search?page=${page}&size=${size}&type=${type}&text=${encodeURIComponent(keyword)}`,
       );
       if (success) return response;
     } catch (e) {

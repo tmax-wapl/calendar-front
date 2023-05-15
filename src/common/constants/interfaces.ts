@@ -205,3 +205,8 @@ export interface AttachmentInfo {
   fileSize: number;
   fileExtension: Extension;
 }
+
+export interface EventSearchDTO {
+  content: EventDTO[];
+  last: boolean;
+}
