@@ -34,8 +34,23 @@ module.exports = env => {
     devtool: dev === 'true' && 'eval-source-map',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: '[name].js',
+      filename: '[name].[chunkhash].js',
       publicPath: dev === 'true' ? '/' : '',
+    },
+    optimization: {
+      minimize: true,
+      splitChunks: {
+        cacheGroups: {
+          waplVendor: {
+            test: /[\\/]node_modules[\\/]@wapl[\\/]/,
+            name: 'wapl-vendors',
+            chunks: 'all',
+          },
+        },
+        name: 'vendors',
+        chunks: 'all',
+      },
+      usedExports: true,
     },
     module: {
       rules: [
