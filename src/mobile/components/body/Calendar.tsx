@@ -80,6 +80,7 @@ const Calendar = observer(() => {
       Left: 'next',
       Right: 'prev',
     };
+    calendarStore.setEventList([]); // re-paint
     mainApi?.[type[dir as SwipeType] as DateHandleType]();
     uiStore.changeDateRange();
   };
