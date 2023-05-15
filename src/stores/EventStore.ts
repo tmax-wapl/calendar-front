@@ -149,7 +149,7 @@ export default class EventStore {
 
   async searchEvent(keyword: string, type: 'T') {
     const res = await this.repo.searchEvent(keyword, type);
-    const searchEventList = res
+    const searchEventList = res.content
       .flatMap(event =>
         event.rrule && !event.exceptionEvent
           ? this.getRepeatEventList(event)
