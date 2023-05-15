@@ -14,9 +14,15 @@ const SplitLayout = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [topPanelHeight, setTopPanelHeight] = useState<number>();
   const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(0);
-  const { innerHeight } = window;
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   const LayoutHeight = innerHeight - (56 + 48);
   const halfHeight = LayoutHeight / 2;
+  const {
+    screen: {
+      orientation: { angle },
+    },
+  } = window;
+  const [isRotate, setIsRotate] = useState(angle === 90 || angle === 270);
 
   const setHalfHeight = () => {
     setTopPanelHeight(halfHeight);
@@ -56,7 +62,6 @@ const SplitLayout = () => {
 
   const handleSwipeDown = (eventData: SwipeEventData) => {
     const { event } = eventData;
-    const { mainApi } = uiStore;
     const { target } = event;
 
     if (bottomPanelHeight > halfHeight) {
@@ -66,20 +71,8 @@ const SplitLayout = () => {
         if (isListView) return;
       }
       setHalfHeight();
-      mainApi?.changeView('dayGridMonth');
-    } else {
-      setTopPanelHeight(LayoutHeight);
-      setBottomPanelHeight(0);
-      mainApi.setOption('eventClassNames', '');
-      mainApi?.setOption('dayMaxEvents', 4);
-    }
-  };
-
-  const wrapperRef = useRef<HTMLDivElement>();
-
-  const swipeRef = (el: HTMLDivElement) => {
-    swipeHandlers.ref(el);
-    wrapperRef.current = el;
+      changeGridMonth();
+    } else initialView();
   };
 
   const swipeHandlers = useSwipeable({
@@ -88,11 +81,60 @@ const SplitLayout = () => {
   });
 
   const changeDateClickView = () => {
+    setHalfHeight();
+    smallEventView();
+  };
+
+  const changeGridMonth = () => {
+    const { mainApi } = uiStore;
+    mainApi?.changeView('dayGridMonth');
+    uiStore.changeDateRange();
+  };
+
+  const changeSplitterView = () => {
+    if (isRotate) {
+      const { mainApi } = uiStore;
+      if (mainApi.view.type === 'dayGridWeek') changeGridMonth();
+      const LayoutHeight = window.innerWidth / 2;
+      setTopPanelHeight(LayoutHeight);
+      setBottomPanelHeight(LayoutHeight);
+      smallEventView();
+    } else initialView();
+  };
+
+  const initialView = () => {
+    const { mainApi } = uiStore;
+    setTopPanelHeight(LayoutHeight);
+    setBottomPanelHeight(0);
+    mainApi.setOption('eventClassNames', '');
+    mainApi.setOption('dayMaxEvents', handleMaxEvents());
+  };
+
+  const smallEventView = () => {
     const { mainApi } = uiStore;
     setHalfHeight();
     mainApi.setOption('eventClassNames', 'small-event');
     mainApi?.setOption('dayMaxEvents', 2);
     mainApi.updateSize();
+  };
+
+  const handleRotate = () => {
+    const { screen } = window;
+    const {
+      orientation: { angle },
+    } = screen;
+
+    setTimeout(() => {
+      // 비동기를 넣어 rotate 완료된 후 view포트를 가져온다.
+      setInnerHeight(window.innerHeight);
+      setIsRotate(angle === 90 || angle === 270);
+    }, 100);
+  };
+
+  const handleMaxEvents = () => {
+    if (600 <= innerHeight && innerHeight < 700) return 3;
+    else if (innerHeight >= 700) return 4;
+    else return 2;
   };
 
   useEffect(() => {
@@ -107,6 +149,15 @@ const SplitLayout = () => {
       },
     );
     return () => dispose();
+  }, []);
+
+  useEffect(() => {
+    changeSplitterView();
+  }, [isRotate]);
+
+  useEffect(() => {
+    window.addEventListener('orientationchange', handleRotate);
+    return () => window.removeEventListener('orientationchange', handleRotate);
   }, []);
 
   return (
