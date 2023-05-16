@@ -168,14 +168,14 @@ export interface UploadFileDTO {
 
 export interface FileObject {
   objectId: number;
-  deleted: 1; // 1 넣어야한다고 전달받음
-  actionId: 202; // docs쪽에서 정한 규칙 같음
+  objectName: string;
+  objectExtension?: string;
 }
 
 export interface DeleteFileDTO {
-  location: number; // 마이룸 파일일 경우 0, 그 외의 룸일 경우 2
+  deleted: number; // 1 넣어야한다고 전달받음
   objectList: FileObject[];
-  userId: string;
+  roomId: number;
 }
 
 export interface SyncFileDTO {
