@@ -115,12 +115,13 @@ const EventHandleView = ({ action }: Props) => {
     const uploadPromiseList = eventStore.fileList.map(file => {
       return uploadFile(file);
     });
-    const deletePromiseList = originEvent.attachments.map(originFile => {
-      return deleteFile(originFile);
-    });
-    const res = await Promise.all(
-      [...uploadPromiseList, ...deletePromiseList].map(promise => promise.catch(err => null)),
-    );
+    // const deletePromiseList = originEvent.attachments.map(originFile => {
+    //   return deleteFile(originFile);
+    // });
+    // const res = await Promise.all(
+    //   [...uploadPromiseList, ...deletePromiseList].map(promise => promise.catch(err => null)),
+    // );
+    const res = await Promise.all(uploadPromiseList.map(promise => promise.catch(err => null)));
     eventStore.setFileList([]);
     return res.filter(file => file !== null);
   };
