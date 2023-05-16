@@ -5744,7 +5744,7 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": 0.4.75
+    "@wapl/core": 0.4.78
     "@wapl/ui": 0.2.35
     axios: ^0.27.2
     babel-loader: ^9.0.1
@@ -5788,9 +5788,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:0.4.75":
-  version: 0.4.75
-  resolution: "@wapl/core@npm:0.4.75"
+"@wapl/core@npm:0.4.78":
+  version: 0.4.78
+  resolution: "@wapl/core@npm:0.4.78"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
     "@wapl/ui": ^0.2.35
@@ -5810,7 +5810,7 @@ __metadata:
     react-virtuoso: ^2.12.1
     socket.io-client: ^4.6.1
     swiper: ^8.3.1
-    use-long-press: 1.1.2
+    use-long-press: 1.2.0
   peerDependencies:
     "@wapl/ui": ^0.2.35
     axios: ^0.26.1
@@ -5821,7 +5821,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: 05587f3f61dd332d033c61c892685694f8c78084bd9eb2c96ef468b62c8cfd52f5f17a16c29a8ba22e546822129d67c5d4a4f296644e685607ae8087729a3261
+  checksum: 4b28af57190a7305e9dc320dba4b5ef7a208bcbb9aa855ddc21d213bd7359f63cf646de029cbd8219531ad27d5204b4e1e70a113ddca0eb914a3e104e473869f
   languageName: node
   linkType: hard
 
@@ -20569,12 +20569,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-long-press@npm:1.1.2":
-  version: 1.1.2
-  resolution: "use-long-press@npm:1.1.2"
+"use-long-press@npm:1.2.0":
+  version: 1.2.0
+  resolution: "use-long-press@npm:1.2.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
-  checksum: 7eb81e9e7a8341b123b9926ac50a7ececc8d1faea837f45df964664ec19724e6e8c45b455c2dda192373d0052a1359510926de6284a9e674ff8043188bd4c660
+  checksum: 0ebb74f7c98b07181115138d9e404e653e755fa0fd0cd98853ddef25a20555c9f1b02a647077cea85bf84bac5f117c5e79a0639498b3d5385d786b8ada8df604
   languageName: node
   linkType: hard
 
