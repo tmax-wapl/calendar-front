@@ -23,7 +23,7 @@ import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION, VIEW_MODE, APP_ID } from '@/common/constants';
 import { useDidMountEffect } from '@/common/hooks';
-import { EventMember } from '@/common/constants/interfaces';
+import { AttachmentInfo, EventMember } from '@/common/constants/interfaces';
 import { UploadFileDTO, SyncFileDTOMsg, FileInfo } from '@/common/constants/interfaces';
 
 interface Props {
@@ -83,13 +83,46 @@ const EventHandleView = ({ action }: Props) => {
     }
   };
 
+  const deleteFile = async (originFile: AttachmentInfo) => {
+    try {
+      if (!eventStore.event.attachments.some(file => file.docsFileId === originFile.docsFileId)) {
+        const myRoomId = roomStore.myRoom.id;
+        const res = await fileStore.deleteFile({
+          deleted: 1,
+          objectList: [
+            {
+              objectId: originFile.docsFileId,
+              objectName: originFile.fileName,
+              objectExtension: originFile.fileExtension,
+            },
+          ],
+          roomId: eventStore.event.roomId || myRoomId,
+        });
+        if (res !== 200) {
+          console.log('파일 삭제 실패', res);
+          return originFile;
+        }
+        return null;
+      }
+      return originFile;
+    } catch (e) {
+      console.log('파일 삭제 실패', e);
+      return originFile;
+    }
+  };
+
   const preprocessFile = async () => {
-    const filePromiseList = eventStore.fileList.map(file => {
+    const uploadPromiseList = eventStore.fileList.map(file => {
       return uploadFile(file);
     });
-    const res = await Promise.all(filePromiseList.map(promise => promise.catch(err => null)));
+    const deletePromiseList = originEvent.attachments.map(originFile => {
+      return deleteFile(originFile);
+    });
+    const res = await Promise.all(
+      [...uploadPromiseList, ...deletePromiseList].map(promise => promise.catch(err => null)),
+    );
     eventStore.setFileList([]);
-    return res;
+    return res.filter(file => file !== null);
   };
 
   const preprocessEvent = async (event: EventModel): Promise<EventModel> => {
@@ -109,7 +142,7 @@ const EventHandleView = ({ action }: Props) => {
           repeatEndDate: toISO(event.allDay ? event.repeatEndDate.startOf('day').toUTC() : event.repeatEndDate.toUTC()),
         }),
       }),
-      ...(eventStore.fileList.length > 0 && { fileList: await preprocessFile() }),
+      ...{ fileList: await preprocessFile() },
     });
   };
 
@@ -250,21 +283,13 @@ const EventHandleView = ({ action }: Props) => {
     uiStore.setDialogInfo(null);
   };
 
-  const fileDelete = async (deleteId: number) => {
-    await fileStore.deleteFile({
-      location: 0,
-      objectList: [{ objectId: deleteId, deleted: 1, actionId: 202 }],
-      userId: String(userId),
-    });
-  };
-
   const handleUploadFileDelete = () => {
-    if (eventStore.event.attachments?.length > 0) {
-      eventStore.event.attachments.map(attachment => {
-        fileDelete(attachment.docsFileId);
-      });
-    }
-    eventStore.event.attachments = [];
+    // if (eventStore.event.attachments?.length > 0) {
+    //   eventStore.event.attachments.map(attachment => {
+    //     fileDelete(attachment.docsFileId);
+    //   });
+    // }
+    // eventStore.event.attachments = [];
   };
 
   const handleReset = () => {
@@ -420,7 +445,7 @@ const EventHandleView = ({ action }: Props) => {
               onFileUpload={value => (eventStore.event.attachments = [...eventStore.event.attachments, ...value])}
               onFileDelete={id => {
                 eventStore.event.attachments = eventStore.event.attachments.filter(file => file.docsFileId !== id);
-                eventStore.setFileList(eventStore.fileList.filter(file => file.fileId === id));
+                eventStore.setFileList(eventStore.fileList.filter(file => file.fileId !== id));
               }}
             />
           )}
