@@ -117,6 +117,9 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const preprocessFile = async () => {
+    const originFileList = originEvent.attachments.map(originFile =>
+      eventStore.event.attachments.some(file => file.docsFileId === originFile.docsFileId) ? originFile : {},
+    );
     const uploadPromiseList = eventStore.fileList.map(file => {
       return uploadFile(file);
     });
@@ -128,7 +131,7 @@ const EventHandleView = ({ action }: Props) => {
     // );
     const res = await Promise.all(uploadPromiseList.map(promise => promise.catch(err => null)));
     eventStore.setFileList([]);
-    return res.filter(file => file !== null);
+    return [...res, ...originFileList].filter(file => file !== null);
   };
 
   const preprocessEvent = async (event: EventModel): Promise<EventModel> => {
