@@ -2,13 +2,15 @@ import { useEffect } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes, useUserStore } from '@wapl/core';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
   EventDetailViewContainer,
   EventDetailContainer,
   FromInfoContainer,
   FromInfo,
   Creator,
+  Loading,
+  LoadingDescription,
 } from './EventDetailView.style';
 import { EventModel } from '@/stores';
 import EventBar, { EventBarButton } from './EventBar';
@@ -17,10 +19,16 @@ import { Participants, Location, Notifications, Description, Attachments } from 
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EVENT_UPDATE_OPTION } from '@common/constants';
 
+interface OutletProps {
+  isEventUpdating: boolean;
+  setEventUpdating: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const EventDetailView = () => {
-  const { calendarStore, eventStore, uiStore } = useCalendarStores();
+  const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
   const { isGuest } = useUserStore();
   const navigate = useNavigate();
+  const { isEventUpdating, setEventUpdating } = useOutletContext<OutletProps>();
 
   const handleBackClick = () => {
     navigate(`/main/view-mode/${uiStore.viewMode}/date`);
@@ -61,7 +69,7 @@ const EventDetailView = () => {
   };
 
   const eventBarButtons = (event: EventModel): EventBarButton[] => {
-    if (event.subEvent || event.roomId) return;
+    if (isEventUpdating || event.subEvent || event.roomId) return;
     if (event.shareEvent) return [{ action: 'delete', onClick: handleDeleteClick }];
     return [
       { ...(!isGuest && { action: 'share', onClick: handleShareClick }) },
@@ -127,14 +135,43 @@ const EventDetailView = () => {
     });
   };
 
+  const preventRefresh = (e: BeforeUnloadEvent) => {
+    if (!isEventUpdating) return;
+    Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
+    e.preventDefault();
+    e.returnValue = '';
+    eventStore.setFileList([]);
+    setEventUpdating(false);
+    navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+  };
+
   useEffect(() => {
     uiStore.setIsDetail(true);
-    if (!eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}/date`);
-    return () => uiStore.setIsDetail(false);
+    window.addEventListener('beforeunload', preventRefresh, {});
+    document.addEventListener('mousedown', handleOutsideClick);
+    if (!isEventUpdating && !eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    return () => {
+      uiStore.setIsDetail(false);
+      window.removeEventListener('beforeunload', preventRefresh);
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
   }, []);
 
+  const handleOutsideClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (
+      !(target.closest('#eventDetailView') || target.closest('#dateHandleButton') || target.closest('#todayButton')) &&
+      isEventUpdating
+    ) {
+      uiStore.setDialogInfo({
+        action: 'isEventUpdating',
+        onClick: [() => uiStore.setDialogInfo(null)],
+      });
+    }
+  };
+
   return (
-    <EventDetailViewContainer>
+    <EventDetailViewContainer id="eventDetailView">
       <Observer>
         {() => (
           <EventBar
@@ -144,51 +181,65 @@ const EventDetailView = () => {
           />
         )}
       </Observer>
-      <EventDetailContainer>
-        <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
-        <Observer>
-          {() => (
-            <FromInfoContainer>
-              <Icon.CalendarLine className="mr-8" width={20} height={20} />
-              <FromInfo>
-                {eventStore.event.calName}
-                <Creator>{`일정 생성: ${eventStore.event.userNick}`}</Creator>
-              </FromInfo>
-            </FromInfoContainer>
-          )}
-        </Observer>
-        <Observer>
-          {() =>
-            eventStore.event.eventMember?.personaList.length > 0 ||
-            eventStore.event.eventMember?.roomList.length > 0 ? (
-              <Participants
-                participants={[...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]}
-                editable={false}
-              />
-            ) : null
-          }
-        </Observer>
-        <Observer>
-          {() => (eventStore.event.location ? <Location location={eventStore.event.location} /> : null)}
-        </Observer>
-        {/* <Observer>
+      {isEventUpdating ? (
+        <Loading>
+          <Icon.LoadingMotion color="#8e8e8e" width={24} height={24} />
+          <LoadingDescription>
+            일정 생성 및 수정이 완료될 때까지,
+            <br />
+            잠시 기다려 주세요.
+          </LoadingDescription>
+        </Loading>
+      ) : (
+        <EventDetailContainer>
+          <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>
+          <Observer>
+            {() => (
+              <FromInfoContainer>
+                <Icon.CalendarLine className="mr-8" width={20} height={20} />
+                <FromInfo>
+                  {eventStore.event.calName}
+                  <Creator>{`일정 생성: ${eventStore.event.userNick}`}</Creator>
+                </FromInfo>
+              </FromInfoContainer>
+            )}
+          </Observer>
+          <Observer>
+            {() =>
+              eventStore.event.eventMember?.personaList.length > 0 ||
+              eventStore.event.eventMember?.roomList.length > 0 ? (
+                <Participants
+                  participants={[
+                    ...eventStore.event.eventMember?.personaList,
+                    ...eventStore.event.eventMember?.roomList,
+                  ]}
+                  editable={false}
+                />
+              ) : null
+            }
+          </Observer>
+          <Observer>
+            {() => (eventStore.event.location ? <Location location={eventStore.event.location} /> : null)}
+          </Observer>
+          {/* <Observer>
           {() =>
             eventStore.event.notifications?.length > 0 && (
               <Notifications notifications={eventStore.event.notifications} />
             )
           }
         </Observer> */}
-        <Observer>
-          {() => (eventStore.event.description ? <Description description={eventStore.event.description} /> : null)}
-        </Observer>
-        <Observer>
-          {() =>
-            eventStore.event.attachments?.length > 0 && (
-              <Attachments attachments={eventStore.event.attachments} roomId={eventStore.event.roomId} />
-            )
-          }
-        </Observer>
-      </EventDetailContainer>
+          <Observer>
+            {() => (eventStore.event.description ? <Description description={eventStore.event.description} /> : null)}
+          </Observer>
+          <Observer>
+            {() =>
+              eventStore.event.attachments?.length > 0 && (
+                <Attachments attachments={eventStore.event.attachments} roomId={eventStore.event.roomId} />
+              )
+            }
+          </Observer>
+        </EventDetailContainer>
+      )}
     </EventDetailViewContainer>
   );
 };

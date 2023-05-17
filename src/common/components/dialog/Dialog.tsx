@@ -91,6 +91,10 @@ export const Dialog = () => {
         };
       case 'refresh':
         return { subTitle: '변경 사항을 저장하지 않고 나가시겠습니까?' };
+      case 'isEventUpdating':
+        return {
+          subTitle: `일정 생성 및 수정 중입니다.\n완료 후 시도해 주세요.`,
+        };
       default:
         return {};
     }
@@ -123,6 +127,7 @@ export const Dialog = () => {
       case 'selectedFileCount':
       case 'selectedFileSize':
       case 'totalFileSize':
+      case 'isEventUpdating':
         return [{ variant: 'primary', text: '확인', onClick: onClick[0] }];
       case 'repeatEventUpdate':
         return [

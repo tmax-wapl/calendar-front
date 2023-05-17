@@ -1,8 +1,7 @@
-import React, { useRef, ChangeEvent, useContext } from 'react';
+import React, { useRef, ChangeEvent } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useRoomStore } from '@wapl/core';
-import { CalendarContext } from '@/common/contexts/CalendarContext';
-import { AttachmentInfo, UploadFileDTO, Extension, SyncFileDTOMsg } from '@/common/constants/interfaces';
+import { AttachmentInfo, Extension, FileInfo } from '@/common/constants/interfaces';
 import { Icon } from '@wapl/ui';
 import {
   Accordion,
@@ -10,15 +9,13 @@ import {
   AttachmentsCount,
   AccordionDetails,
   StyledAttachment,
-  LoadingAttachment,
   AttachmentPlaceholder,
 } from './Attachments.style';
 import { APP_ID } from '@/common/constants';
 
 interface Props {
-  isUploading?: boolean;
-  setUploading?: React.Dispatch<React.SetStateAction<boolean>>;
   attachments?: AttachmentInfo[];
+  setFileInfo?: (list: FileInfo[]) => void;
   onFileUpload?: (value: AttachmentInfo[]) => void;
   onFileDelete?: (id: number) => void;
   editable?: boolean;
@@ -27,16 +24,14 @@ interface Props {
 
 const Attachments = ({
   attachments = [],
+  setFileInfo,
   onFileUpload,
   onFileDelete,
   editable = false,
-  isUploading,
-  setUploading,
   roomId,
 }: Props) => {
-  const { userId } = useContext(CalendarContext);
   const roomStore = useRoomStore();
-  const { fileStore, uiStore } = useCalendarStores();
+  const { uiStore } = useCalendarStores();
   const uploadRef = useRef<HTMLInputElement>(null);
 
   const ExpandIcon = (): JSX.Element => {
@@ -59,10 +54,8 @@ const Attachments = ({
     return { valid: true, reason: '' };
   };
 
-  const checkExtension = (extension: string): Extension => {
-    if (['jpg', 'pdf', 'wav', 'xlsx', 'mk4', 'pptx', 'word', 'zip', 'etc'].includes(extension))
-      return extension as Extension;
-    return 'etc';
+  const checkExtension = (extension: string) => {
+    return ['jpg', 'pdf', 'wav', 'xlsx', 'mk4', 'pptx', 'word', 'zip', 'etc'].includes(extension);
   };
 
   const handleAttach = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,52 +63,20 @@ const Attachments = ({
     if (fileList) {
       const { valid, reason } = checkValid(fileList, attachments);
       if (valid) {
-        const myRoomId = roomStore.myRoom.id;
-
-        fileList.map(async file => {
-          try {
-            setUploading(prev => !prev);
-            const dto: UploadFileDTO = {
-              roomId: myRoomId,
-              targetFolderId: null,
-              userIds: [String(userId)],
-              roleIds: [5],
+        const fileInfoList = fileList.map(file => {
+          const tempFileId = new Date().getTime() + Math.random();
+          const extension = file.name.split('.').pop();
+          onFileUpload([
+            {
+              docsFileId: tempFileId,
+              fileName: file.name,
               fileSize: file.size,
-            };
-            const tempId = Math.random().toString(36).substring(2, 16);
-            await fileStore.uploadFile(file, dto, tempId).then(value => {
-              setUploading(prev => !prev);
-              if (value)
-                onFileUpload([
-                  {
-                    docsFileId: value.documentId,
-                    fileName: value.documentName,
-                    fileSize: value.documentSize,
-                    fileExtension: value.documentExtension,
-                  },
-                ]);
-              const SyncFileDTOMsg: SyncFileDTOMsg = {
-                type: 0,
-                objectId: [JSON.stringify(value)],
-                objectType: 1,
-                producerId: 'waplcalendar',
-              };
-              fileStore.syncOfficeFile({
-                appIdFrom: APP_ID.CALENDAR.toString(),
-                appIdTo: [APP_ID.OFFICE.toString()],
-                eventId: 'superdocs',
-                eventType: 'websocket_push',
-                roomId: myRoomId.toString(),
-                senderId: 'waplcalendar',
-                message: JSON.stringify(SyncFileDTOMsg),
-              });
-            });
-          } catch (e) {
-            setUploading(prev => !prev);
-            Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
-            return;
-          }
+              fileExtension: checkExtension(extension) ? (extension as Extension) : '',
+            },
+          ]);
+          return { fileId: tempFileId, fileInfo: file };
         });
+        setFileInfo(fileInfoList);
       } else {
         uiStore.setDialogInfo({
           action: reason,
@@ -136,17 +97,6 @@ const Attachments = ({
         roomId: roomId || myRoomId,
       },
     });
-  };
-
-  const handleDeleteClick = async (deleteId: number) => {
-    const res = await fileStore.deleteFile({
-      location: 0,
-      objectList: [{ objectId: deleteId, deleted: 1, actionId: 202 }],
-      userId: String(userId),
-    });
-    if (res === 200) {
-      onFileDelete(deleteId);
-    }
   };
 
   const getByteSize = (bytes: number) => {
@@ -173,11 +123,11 @@ const Attachments = ({
               label={`${attachment.fileName ? attachment.fileName : ''}${
                 attachment.fileExtension ? `.${attachment.fileExtension}` : ''
               }`}
-              type={checkExtension(attachment.fileExtension)}
+              type={checkExtension(attachment.fileExtension) ? (attachment.fileExtension as Extension) : 'etc'}
               size="medium"
               volume={getByteSize(attachment.fileSize)}
               isMine={editable}
-              onDelete={() => handleDeleteClick(attachment.docsFileId)}
+              onDelete={() => onFileDelete(attachment.docsFileId)}
               {...(!editable && { onClick: () => handleAttachmentClick() })}
             />
           ))
@@ -185,11 +135,6 @@ const Attachments = ({
           <></>
           // <AttachmentPlaceholder>마우스로 파일을 끌어올 수 있습니다.</AttachmentPlaceholder>
         )}
-        {isUploading ? (
-          <LoadingAttachment>
-            <Icon.LoadingMotion />
-          </LoadingAttachment>
-        ) : null}
       </AccordionDetails>
       <input type="file" ref={uploadRef} style={{ display: 'none' }} onChange={handleAttach} multiple />
     </Accordion>

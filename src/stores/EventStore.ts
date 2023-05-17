@@ -2,7 +2,7 @@ import { makeObservable, observable, action } from 'mobx';
 import RootStore from './RootStore';
 import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
-import { EventDTO, EventShareDTO } from '@/common/constants/interfaces';
+import { EventDTO, EventShareDTO, FileInfo } from '@/common/constants/interfaces';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { toISO, applyWeekdayOffset } from '@/utils';
 import { DateTime } from 'luxon';
@@ -12,6 +12,7 @@ export default class EventStore {
   repo: EventRepo;
   event: EventModel = new EventModel({});
   searchKeyword = '';
+  fileList: FileInfo[] = [];
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -22,6 +23,8 @@ export default class EventStore {
       setEvent: action,
       searchKeyword: observable,
       setSearchKeyword: action,
+      fileList: observable,
+      setFileList: action,
     });
   }
 
@@ -165,5 +168,9 @@ export default class EventStore {
       )
       .sort((a, b) => a.startDate.toMillis() - b.startDate.toMillis());
     return searchEventList;
+  }
+
+  setFileList(list: FileInfo[]) {
+    this.fileList = list;
   }
 }
