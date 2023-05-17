@@ -6,11 +6,7 @@ const WaplShellApp: React.FC = () => {
   const [data, setData] = useState<{ eventId: number; start: string }>(null);
 
   const handleRouting = ({ data: messageData }: MessageEvent) => {
-    if (
-      messageData.type !== 'shell:runTopping' ||
-      (messageData.options?.from !== 'noti' && messageData.options?.from !== 'search')
-    )
-      return;
+    if (messageData.type !== 'shell:runTopping' || messageData.options?.from !== 'noti') return;
     setData(messageData.options);
   };
 
