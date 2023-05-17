@@ -159,20 +159,30 @@ const EventHandleView = ({ action }: Props) => {
     setEventUpdating(prev => !prev);
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
     if (!eventStore.event.calId) eventStore.event.calId = calendarStore.getCalendarId();
-    await eventStore.createEvent(await preprocessEvent(eventStore.event));
-    setEventUpdating(prev => !prev);
+    try {
+      await eventStore.createEvent(await preprocessEvent(eventStore.event));
+    } catch (e) {
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    } finally {
+      setEventUpdating(prev => !prev);
+    }
     uiStore.changeDateRange();
   };
 
   const updateEvent = async (isRepeat = false) => {
     setEventUpdating(prev => !prev);
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
-    await eventStore.updateEvent(
-      +eventStore.event.id,
-      await preprocessEvent(eventStore.event),
-      isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
-    );
-    setEventUpdating(prev => !prev);
+    try {
+      await eventStore.updateEvent(
+        +eventStore.event.id,
+        await preprocessEvent(eventStore.event),
+        isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
+      );
+    } catch (e) {
+      navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    } finally {
+      setEventUpdating(prev => !prev);
+    }
     uiStore.changeDateRange();
   };
 
@@ -183,21 +193,33 @@ const EventHandleView = ({ action }: Props) => {
         const originStart = originEvent.startDate.toUTC().toFormat('yyyy-LL-dd');
         const newStart = eventStore.event.startDate.toUTC().toFormat('yyyy-LL-dd');
         navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
-        await eventStore.updateEvent(
-          +eventStore.event.id,
-          await preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
-          EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
-          originStart !== newStart ? originStart : null,
-        );
+        try {
+          await eventStore.updateEvent(
+            +eventStore.event.id,
+            await preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
+            EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
+            originStart !== newStart ? originStart : null,
+          );
+        } catch (e) {
+          navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+        } finally {
+          setEventUpdating(prev => !prev);
+        }
         break;
       case 'after': // 이 일정 및 향후 일정 수정
         navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
-        await eventStore.updateEvent(
-          +eventStore.event.id,
-          await preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
-          EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
-          originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
-        );
+        try {
+          await eventStore.updateEvent(
+            +eventStore.event.id,
+            await preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
+            EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
+            originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
+          );
+        } catch (e) {
+          navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+        } finally {
+          setEventUpdating(prev => !prev);
+        }
         break;
       case 'all': // 모든 일정 수정
         updateEvent(true);

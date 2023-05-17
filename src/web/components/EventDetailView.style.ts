@@ -42,4 +42,11 @@ export const Loading = styled.div`
   justify-content: center;
   position: absolute;
   z-index: 1;
+  flex-direction: column;
+  color: ${({ theme: { Color } }) => Color.Gray[700]};
+`;
+
+export const LoadingDescription = styled.div`
+  text-align: center;
+  margin-top: 20px;
 `;

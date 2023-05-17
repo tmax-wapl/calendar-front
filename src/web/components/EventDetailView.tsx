@@ -10,6 +10,7 @@ import {
   FromInfo,
   Creator,
   Loading,
+  LoadingDescription,
 } from './EventDetailView.style';
 import { EventModel } from '@/stores';
 import EventBar, { EventBarButton } from './EventBar';
@@ -147,15 +148,30 @@ const EventDetailView = () => {
   useEffect(() => {
     uiStore.setIsDetail(true);
     window.addEventListener('beforeunload', preventRefresh, {});
+    document.addEventListener('mousedown', handleOutsideClick);
     if (!isEventUpdating && !eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}/date`);
     return () => {
       uiStore.setIsDetail(false);
       window.removeEventListener('beforeunload', preventRefresh);
+      document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, []);
 
+  const handleOutsideClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (
+      !(target.closest('#eventDetailView') || target.closest('#dateHandleButton') || target.closest('#todayButton')) &&
+      isEventUpdating
+    ) {
+      uiStore.setDialogInfo({
+        action: 'isEventUpdating',
+        onClick: [() => uiStore.setDialogInfo(null)],
+      });
+    }
+  };
+
   return (
-    <EventDetailViewContainer>
+    <EventDetailViewContainer id="eventDetailView">
       <Observer>
         {() => (
           <EventBar
@@ -167,7 +183,12 @@ const EventDetailView = () => {
       </Observer>
       {isEventUpdating ? (
         <Loading>
-          <Icon.LoadingMotion />
+          <Icon.LoadingMotion color="#8e8e8e" width={24} height={24} />
+          <LoadingDescription>
+            일정 생성 및 수정이 완료될 때까지,
+            <br />
+            잠시 기다려 주세요.
+          </LoadingDescription>
         </Loading>
       ) : (
         <EventDetailContainer>

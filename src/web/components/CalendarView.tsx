@@ -20,7 +20,7 @@ const CalendarView: React.FC = () => {
     <CalendarViewContainter>
       <Header />
       <CalendarViewBody>
-        <Calendar />
+        <Calendar isEventUpdating={isEventUpdating} />
         <RPanelWrapper>
           <Outlet context={{ isEventUpdating, setEventUpdating }} />
         </RPanelWrapper>

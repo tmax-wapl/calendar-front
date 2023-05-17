@@ -109,11 +109,13 @@ const CalendarHeader: React.FC = () => {
             />
           </StyledDatePickerWrapper>
         )}
-        <ButtonWrapper>
+        <ButtonWrapper id="dateHandleButton">
           <PrevButton onClick={() => handleDate(DATE_EVENT.PREV)} />
           <NextButton onClick={() => handleDate(DATE_EVENT.NEXT)} />
         </ButtonWrapper>
-        <TodayButton onClick={() => handleDate(DATE_EVENT.TODAY)}>오늘</TodayButton>
+        <TodayButton id="todayButton" onClick={() => handleDate(DATE_EVENT.TODAY)}>
+          오늘
+        </TodayButton>
       </LeftContainer>
       <RightContainer>
         <ViewSelect
