@@ -187,11 +187,11 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const updateRepeatEvent = async (value: string) => {
-    setEventUpdating(prev => !prev);
     switch (value) {
       case 'one': // 이 일정만 수정
         const originStart = originEvent.startDate.toUTC().toFormat('yyyy-LL-dd');
         const newStart = eventStore.event.startDate.toUTC().toFormat('yyyy-LL-dd');
+        setEventUpdating(prev => !prev);
         navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         try {
           await eventStore.updateEvent(
@@ -207,6 +207,7 @@ const EventHandleView = ({ action }: Props) => {
         }
         break;
       case 'after': // 이 일정 및 향후 일정 수정
+        setEventUpdating(prev => !prev);
         navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         try {
           await eventStore.updateEvent(
@@ -228,7 +229,6 @@ const EventHandleView = ({ action }: Props) => {
         break;
     }
     uiStore.setDialogInfo(null);
-    setEventUpdating(prev => !prev);
     uiStore.changeDateRange();
   };
 
