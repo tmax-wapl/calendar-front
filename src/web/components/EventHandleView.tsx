@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon, Button } from '@wapl/ui';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useRoomStore } from '@wapl/core';
@@ -30,13 +30,17 @@ interface Props {
   action: 'create' | 'update';
 }
 
+interface OutletProps {
+  setEventUpdating: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
   const roomStore = useRoomStore();
   const navigate = useNavigate();
   const { state } = useLocation();
   const { userId } = useContext(CalendarContext);
-  const [isUploading, setUploading] = useState<boolean>(false);
+  const { setEventUpdating } = useOutletContext<OutletProps>();
   const [originEvent, setOriginEvent] = useState(new EventModel({ ...eventStore.event.dto }));
 
   const uploadFile = async (file: FileInfo) => {
@@ -148,43 +152,48 @@ const EventHandleView = ({ action }: Props) => {
   };
 
   const handleCreate = async () => {
+    setEventUpdating(prev => !prev);
+    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
     if (!eventStore.event.calId) eventStore.event.calId = calendarStore.getCalendarId();
     await eventStore.createEvent(await preprocessEvent(eventStore.event));
+    setEventUpdating(prev => !prev);
     uiStore.changeDateRange();
-    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
   const updateEvent = async (isRepeat = false) => {
+    setEventUpdating(prev => !prev);
+    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
     await eventStore.updateEvent(
       +eventStore.event.id,
       await preprocessEvent(eventStore.event),
       isRepeat ? EVENT_UPDATE_OPTION.ALL_REPEAT_EVENT : EVENT_UPDATE_OPTION.DEFAULT,
     );
+    setEventUpdating(prev => !prev);
     uiStore.changeDateRange();
-    navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
   };
 
   const updateRepeatEvent = async (value: string) => {
+    setEventUpdating(prev => !prev);
     switch (value) {
       case 'one': // 이 일정만 수정
         const originStart = originEvent.startDate.toUTC().toFormat('yyyy-LL-dd');
         const newStart = eventStore.event.startDate.toUTC().toFormat('yyyy-LL-dd');
+        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         await eventStore.updateEvent(
           +eventStore.event.id,
           await preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
           originStart !== newStart ? originStart : null,
         );
-        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         break;
       case 'after': // 이 일정 및 향후 일정 수정
+        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         await eventStore.updateEvent(
           +eventStore.event.id,
           await preprocessEvent(new EventModel({ ...eventStore.event.dto, id: null })),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
           originEvent.startDate.toUTC().toFormat('yyyy-LL-dd'),
         );
-        navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
         break;
       case 'all': // 모든 일정 수정
         updateEvent(true);
@@ -193,6 +202,7 @@ const EventHandleView = ({ action }: Props) => {
         break;
     }
     uiStore.setDialogInfo(null);
+    setEventUpdating(prev => !prev);
     uiStore.changeDateRange();
   };
 
@@ -256,7 +266,6 @@ const EventHandleView = ({ action }: Props) => {
 
   const isModified = () => {
     const { event } = eventStore;
-    if (isUploading) return true;
     return (Object.keys(event.dto) as Array<keyof typeof event.dto>).find(key => {
       if ((!event.dto[key] && !originEvent.dto[key]) || key === 'repeatStartDate') return false;
       if (['start', 'end', 'repeatEndDate'].includes(key))
@@ -321,6 +330,7 @@ const EventHandleView = ({ action }: Props) => {
         closeDialog,
         () => {
           Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
+          eventStore.setFileList([]);
           // handleUploadFileDelete();
           navigate(`/main/view-mode/${uiStore.viewMode}/date`);
           closeDialog();
@@ -438,8 +448,6 @@ const EventHandleView = ({ action }: Props) => {
         <Observer>
           {() => (
             <Attachments
-              isUploading={isUploading}
-              setUploading={setUploading}
               attachments={eventStore.event.attachments}
               editable
               setFileInfo={list => eventStore.setFileList([...eventStore.fileList, ...list])}
@@ -463,8 +471,7 @@ const EventHandleView = ({ action }: Props) => {
                   onClick={handleCreate}
                   disabled={
                     eventStore.event.startDate > eventStore.event.endDate ||
-                    eventStore.event.startDate > eventStore.event.repeatEndDate ||
-                    isUploading
+                    eventStore.event.startDate > eventStore.event.repeatEndDate
                   }
                 >
                   생성
@@ -475,8 +482,7 @@ const EventHandleView = ({ action }: Props) => {
                   onClick={handleUpdate}
                   disabled={
                     eventStore.event.startDate > eventStore.event.endDate ||
-                    eventStore.event.startDate > eventStore.event.repeatEndDate ||
-                    isUploading
+                    eventStore.event.startDate > eventStore.event.repeatEndDate
                   }
                 >
                   수정
