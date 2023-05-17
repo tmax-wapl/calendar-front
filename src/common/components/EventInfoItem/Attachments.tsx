@@ -9,14 +9,11 @@ import {
   AttachmentsCount,
   AccordionDetails,
   StyledAttachment,
-  LoadingAttachment,
   AttachmentPlaceholder,
 } from './Attachments.style';
 import { APP_ID } from '@/common/constants';
 
 interface Props {
-  isUploading?: boolean;
-  setUploading?: React.Dispatch<React.SetStateAction<boolean>>;
   attachments?: AttachmentInfo[];
   setFileInfo?: (list: FileInfo[]) => void;
   onFileUpload?: (value: AttachmentInfo[]) => void;
@@ -31,7 +28,6 @@ const Attachments = ({
   onFileUpload,
   onFileDelete,
   editable = false,
-  isUploading,
   roomId,
 }: Props) => {
   const roomStore = useRoomStore();
@@ -139,11 +135,6 @@ const Attachments = ({
           <></>
           // <AttachmentPlaceholder>마우스로 파일을 끌어올 수 있습니다.</AttachmentPlaceholder>
         )}
-        {isUploading ? (
-          <LoadingAttachment>
-            <Icon.LoadingMotion />
-          </LoadingAttachment>
-        ) : null}
       </AccordionDetails>
       <input type="file" ref={uploadRef} style={{ display: 'none' }} onChange={handleAttach} multiple />
     </Accordion>
