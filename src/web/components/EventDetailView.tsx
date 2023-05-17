@@ -147,13 +147,9 @@ const EventDetailView = () => {
 
   useEffect(() => {
     uiStore.setIsDetail(true);
-    window.addEventListener('beforeunload', preventRefresh, {});
-    document.addEventListener('mousedown', handleOutsideClick);
     if (!isEventUpdating && !eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}/date`);
     return () => {
       uiStore.setIsDetail(false);
-      window.removeEventListener('beforeunload', preventRefresh);
-      document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, []);
 
@@ -169,6 +165,15 @@ const EventDetailView = () => {
       });
     }
   };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', preventRefresh, {});
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      window.removeEventListener('beforeunload', preventRefresh);
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [isEventUpdating]);
 
   return (
     <EventDetailViewContainer id="eventDetailView">
