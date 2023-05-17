@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
-import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
+import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes, useUserStore } from '@wapl/core';
 import { useNavigate } from 'react-router-dom';
 import {
   EventDetailViewContainer,
@@ -19,6 +19,7 @@ import { EVENT_UPDATE_OPTION } from '@common/constants';
 
 const EventDetailView = () => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
+  const { isGuest } = useUserStore();
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -63,7 +64,7 @@ const EventDetailView = () => {
     if (event.subEvent || event.roomId) return;
     if (event.shareEvent) return [{ action: 'delete', onClick: handleDeleteClick }];
     return [
-      { action: 'share', onClick: handleShareClick },
+      { ...(!isGuest && { action: 'share', onClick: handleShareClick }) },
       { action: 'edit', onClick: handleEditClick },
       { action: 'delete', onClick: handleDeleteClick },
     ];
