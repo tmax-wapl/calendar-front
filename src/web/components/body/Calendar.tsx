@@ -73,7 +73,7 @@ interface DragElement {
   newEvent: EventApi | null;
 }
 
-const Calendar: React.FC = observer(() => {
+const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) => {
   const { calendarStore, eventStore } = useCalendarStores();
   const calendarRef = useRef<FullCalendar>(null);
   const { uiStore } = useCalendarStores();
@@ -295,6 +295,7 @@ const Calendar: React.FC = observer(() => {
   const handleDateTimeSelect = ({ start, end, jsEvent, startStr, endStr }: DateSelectArg) => {
     if (!jsEvent) return;
     jsEvent.stopPropagation();
+    if (isEventUpdating) return;
     if (uiStore.viewMode === VIEW_MODE.WEEK) {
       const { minutes } = diffTime(startStr, endStr);
       if (minutes > 30) {
