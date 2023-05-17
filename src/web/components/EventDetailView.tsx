@@ -20,13 +20,14 @@ import { EVENT_UPDATE_OPTION } from '@common/constants';
 
 interface OutletProps {
   isEventUpdating: boolean;
+  setEventUpdating: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EventDetailView = () => {
   const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
   const { isGuest } = useUserStore();
   const navigate = useNavigate();
-  const { isEventUpdating } = useOutletContext<OutletProps>();
+  const { isEventUpdating, setEventUpdating } = useOutletContext<OutletProps>();
 
   const handleBackClick = () => {
     navigate(`/main/view-mode/${uiStore.viewMode}/date`);
@@ -138,6 +139,8 @@ const EventDetailView = () => {
     Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
     e.preventDefault();
     e.returnValue = '';
+    eventStore.setFileList([]);
+    setEventUpdating(false);
     navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
