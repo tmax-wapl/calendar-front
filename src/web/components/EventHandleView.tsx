@@ -280,8 +280,6 @@ const EventHandleView = ({ action }: Props) => {
 
   const preventRefresh = (e: BeforeUnloadEvent) => {
     if (!isModified()) return;
-    Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
-    // handleUploadFileDelete();
     e.preventDefault();
     e.returnValue = '';
   };
@@ -295,18 +293,7 @@ const EventHandleView = ({ action }: Props) => {
     uiStore.setDialogInfo(null);
   };
 
-  const handleUploadFileDelete = () => {
-    // if (eventStore.event.attachments?.length > 0) {
-    //   eventStore.event.attachments.map(attachment => {
-    //     fileDelete(attachment.docsFileId);
-    //   });
-    // }
-    // eventStore.event.attachments = [];
-  };
-
   const handleReset = () => {
-    Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
-    // handleUploadFileDelete();
     eventStore.setEvent(new EventModel({ ...originEvent.dto }));
     closeDialog();
   };
@@ -331,9 +318,7 @@ const EventHandleView = ({ action }: Props) => {
       onClick: [
         closeDialog,
         () => {
-          Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
           eventStore.setFileList([]);
-          // handleUploadFileDelete();
           navigate(`/main/view-mode/${uiStore.viewMode}/date`);
           closeDialog();
         },
