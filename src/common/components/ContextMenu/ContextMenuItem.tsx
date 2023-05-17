@@ -1,5 +1,5 @@
 import { Icon, Mui, styled, useWaplUiStore } from '@wapl/ui';
-import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
+import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes, useUserStore } from '@wapl/core';
 import { useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -39,6 +39,7 @@ interface Props {
 export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
+  const { isGuest } = useUserStore();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -309,6 +310,7 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         return [actions.renameCalendar, actions.syncCalendar, actions.deleteCalendar];
       case 'event':
       case 'repeatEvent':
+        if (isGuest) return [actions.updateEvent, actions.deleteEvent];
         return [actions.updateEvent, actions.shareEvent, actions.deleteEvent];
       case 'shareEvent':
         return [actions.deleteEvent];

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
-import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
+import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes, useUserStore } from '@wapl/core';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
   EventDetailViewContainer,
@@ -26,6 +26,7 @@ interface OutletProps {
 
 const EventDetailView = () => {
   const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
+  const { isGuest } = useUserStore();
   const navigate = useNavigate();
   const { isEventUpdating, setEventUpdating } = useOutletContext<OutletProps>();
 
@@ -71,7 +72,7 @@ const EventDetailView = () => {
     if (isEventUpdating || event.subEvent || event.roomId) return;
     if (event.shareEvent) return [{ action: 'delete', onClick: handleDeleteClick }];
     return [
-      { action: 'share', onClick: handleShareClick },
+      { ...(!isGuest && { action: 'share', onClick: handleShareClick }) },
       { action: 'edit', onClick: handleEditClick },
       { action: 'delete', onClick: handleDeleteClick },
     ];

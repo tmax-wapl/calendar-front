@@ -463,27 +463,17 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
   };
 
   const setDateTime = (start: Date, end: Date) => {
+    const isKeepTime = uiStore.viewMode === VIEW_MODE.MONTH && pathname.includes('create');
+
     const startDate = toDateTime(start);
     const endDate = toDateTime(end);
-    const isMonth = uiStore.viewMode === VIEW_MODE.MONTH && pathname.includes('create');
-    const isNDaysSelected = endDate.diff(startDate, 'days').toObject().days > 1;
 
-    if (isMonth) {
-      eventStore.event.startDate = isNDaysSelected
-        ? startDate
-        : startDate.set({
-            hour: eventStore.event.startDate.hour,
-            minute: eventStore.event.startDate.minute,
-          });
-      eventStore.event.endDate = isNDaysSelected
-        ? endDate.plus({ minutes: -1 })
-        : endDate
-            .plus({ days: -1 })
-            .set({ hour: eventStore.event.endDate.hour, minute: eventStore.event.endDate.minute });
-    } else {
-      eventStore.event.startDate = startDate;
-      eventStore.event.endDate = endDate;
-    }
+    eventStore.event.startDate = isKeepTime
+      ? startDate.set({ hour: eventStore.event.startDate.hour, minute: eventStore.event.startDate.minute })
+      : startDate;
+    eventStore.event.endDate = isKeepTime
+      ? endDate.plus({ days: -1 }).set({ hour: eventStore.event.endDate.hour, minute: eventStore.event.endDate.minute })
+      : endDate;
   };
 
   const getDay = (dayDate: number) => ['일', '월', '화', '수', '목', '금', '토'][dayDate];

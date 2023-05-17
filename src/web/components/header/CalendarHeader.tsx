@@ -89,6 +89,7 @@ const CalendarHeader: React.FC = () => {
   };
 
   const handleDate = (type: DateHandleType) => {
+    calendarStore.setEventList([]); // re-paint
     const mainApi = uiStore.getApi();
     mainApi?.[type]();
     uiStore.changeDateRange();

@@ -23,8 +23,8 @@ import { ColorPicker } from '@common/components/ContextMenu';
 import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION, VIEW_MODE, APP_ID } from '@/common/constants';
 import { useDidMountEffect } from '@/common/hooks';
-import { AttachmentInfo, EventMember } from '@/common/constants/interfaces';
-import { UploadFileDTO, SyncFileDTOMsg, FileInfo } from '@/common/constants/interfaces';
+import { AttachmentInfo, EventMember, UploadFileDTO, SyncFileDTOMsg, FileInfo } from '@/common/constants/interfaces';
+import { useUserStore } from '@wapl/core';
 
 interface Props {
   action: 'create' | 'update';
@@ -37,6 +37,7 @@ interface OutletProps {
 const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
   const roomStore = useRoomStore();
+  const { isGuest } = useUserStore();
   const navigate = useNavigate();
   const { state } = useLocation();
   const { userId } = useContext(CalendarContext);
@@ -415,19 +416,21 @@ const EventHandleView = ({ action }: Props) => {
             </FromInfo>
           )}
         </Observer>
-        <Observer>
-          {() => (
-            <Participants
-              participants={
-                eventStore.event.eventMember
-                  ? [...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]
-                  : []
-              }
-              onChange={(value: EventMember) => (eventStore.event.eventMember = value)}
-              editable
-            />
-          )}
-        </Observer>
+        {!isGuest && (
+          <Observer>
+            {() => (
+              <Participants
+                participants={
+                  eventStore.event.eventMember
+                    ? [...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]
+                    : []
+                }
+                onChange={(value: EventMember) => (eventStore.event.eventMember = value)}
+                editable
+              />
+            )}
+          </Observer>
+        )}
         <Observer>
           {() => (
             <Location
