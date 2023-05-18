@@ -11,14 +11,14 @@ interface Props {
 }
 
 export const ColorPicker = ({ color = '', iterationCount = 4, columnGap = 12, rowGap = 8, onClick }: Props) => {
-  const [selected, setSelected] = useState(color ?? '');
+  const [selected, setSelected] = useState(ColorItem.some(item => item.color === color) ? color : '');
 
   const handleSelect = (color: string) => {
     if (onClick) onClick(color);
   };
 
   useEffect(() => {
-    setSelected(color ?? '');
+    setSelected(ColorItem.some(item => item.color === color) ? color : '');
   }, [color]);
 
   return (

@@ -68,6 +68,11 @@ const CalendarLayout: React.FC = () => {
       navigate(`/main/view-mode/${uiStore.viewMode}/date`);
   };
 
+  const setDefaultCalendarColor = async () => {
+    const personaInfo = personaStore.getPersona(selectedPersona.id);
+    calendarStore.setDefaultColor(personaInfo.color);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -76,6 +81,7 @@ const CalendarLayout: React.FC = () => {
     personaStore.getWsClient(selectedPersona.id).addHandler('SHARE_EVENT', handleShareWs);
     personaStore.getWsClient(selectedPersona.id).addHandler('UPDATE_EVENT', handleUpdateWs);
     personaStore.getWsClient(selectedPersona.id).addHandler('DELETE_EVENT', handleDeleteWs);
+    setDefaultCalendarColor();
   }, [selectedPersona]);
 
   return (

@@ -14,6 +14,7 @@ export default class CalendarStore {
   eventList: EventModel[] = [];
   holidayList: HolidayDTO[] = [];
   calendar: CalendarModel = null;
+  defaultColor: string = null;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -132,6 +133,10 @@ export default class CalendarStore {
   async shareCalendar(dto: CalendarShareDTO) {
     const res = await this.repo.shareCalendar(dto);
     return res;
+  }
+
+  setDefaultColor(color: string) {
+    this.defaultColor = color;
   }
 
   setInitialLocalRoomCalendarList(personaId: number) {
