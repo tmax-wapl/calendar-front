@@ -226,13 +226,13 @@ const EventDetailView = () => {
           <Observer>
             {() => (eventStore.event.location ? <Location location={eventStore.event.location} /> : null)}
           </Observer>
-          <Observer>
+          {/* <Observer>
             {() =>
               eventStore.event.notifications?.length > 0 && (
                 <Notifications notifications={eventStore.event.notifications} />
               )
             }
-          </Observer>
+          </Observer> */}
           <Observer>
             {() => (eventStore.event.description ? <Description description={eventStore.event.description} /> : null)}
           </Observer>
