@@ -270,6 +270,7 @@ const EventHandleView = ({ action }: Props) => {
           calId: calId,
           start: toISO(start),
           end: toISO(start.plus({ minutes: 30 })),
+          alarmList: ['0'],
         }),
       );
       setOriginEvent(new EventModel({ ...eventStore.event.dto }));
@@ -440,7 +441,7 @@ const EventHandleView = ({ action }: Props) => {
             />
           )}
         </Observer>
-        {/* <Observer>
+        <Observer>
           {() => (
             <Notifications
               notifications={eventStore.event.notifications}
@@ -448,7 +449,7 @@ const EventHandleView = ({ action }: Props) => {
               editable
             />
           )}
-        </Observer> */}
+        </Observer>
         <Observer>
           {() => (
             <Description
