@@ -5,6 +5,7 @@ import EventHandleView from '../EventHandleView';
 import CalendarManageView from '../CalendarManageView/CalendarManageView';
 import CalendarSettingView from '../CalendarManageView/CalendarSettingView';
 import UrlSubscribeView from '../CalendarManageView/UrlSubscribeView';
+import { useEffect } from 'react';
 
 const PageRoutes = () => {
   const { uiStore } = useCalendarStores();
@@ -27,6 +28,13 @@ const PageRoutes = () => {
         return;
     }
   };
+
+  const handleHistoryBack = () => uiStore.setPageDialogInfo(null);
+
+  useEffect(() => {
+    window.addEventListener('popstate', handleHistoryBack);
+    return () => window.removeEventListener('popstate', handleHistoryBack);
+  }, []);
 
   return (
     <FullScreenDialog open sx={{ zIndex: 1100 }}>
