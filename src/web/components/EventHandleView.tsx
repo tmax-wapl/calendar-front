@@ -84,7 +84,7 @@ const EventHandleView = ({ action }: Props) => {
       return res;
     } catch (e) {
       Array.from(fileStore.uploadInfo.values()).map(info => info.cancelSource.cancel());
-      return {};
+      return null;
     }
   };
 
