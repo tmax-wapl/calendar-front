@@ -16,7 +16,7 @@ import FullCalendar, {
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
-import { Icon } from '@wapl/ui';
+import { Icon, useWaplUiStore } from '@wapl/ui';
 import {
   AllDayText,
   AllDayWrapper,
@@ -91,6 +91,9 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
     oldEvent: null,
     newEvent: null,
   };
+  const {
+    toast: { notify },
+  } = useWaplUiStore();
 
   const fetchData = async (start: string, end: string) => {
     const { eventList, holidayList } = await eventStore.getEventList(start, end);
@@ -347,11 +350,12 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
     const { event, revert, oldEvent } = args;
     const {
       extendedProps: {
-        dto: { rrule, subEvent },
+        dto: { rrule, subEvent, shareEvent },
       },
     } = event;
-    if (subEvent) {
-      revert(); // 외부 일정인 경우 드롭 안되게
+    if (subEvent || shareEvent) {
+      notify('공유 받은 일정은 수정할 수 없습니다.');
+      revert(); // 외부 일정 및 공유 받은 일정인 경우 드롭 안되게
       return;
     }
 
