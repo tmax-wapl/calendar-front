@@ -13,7 +13,7 @@ export const EventBarContainer = styled.div`
 export const IconButton = styled(Mui.IconButton)`
   padding: 0;
   & + span {
-    margin-left: 8px;
+    margin-left: 12px;
   }
   & + & {
     margin-left: 12px;

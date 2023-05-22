@@ -71,7 +71,7 @@ const CalendarLayout = () => {
         </div>
       ) : (
         <div style={{ height: '100%' }}>
-          <MainHeader title="내 캘린더" leftSide={headerLeftSide} rightSide={headerRightSide} />
+          <MainHeader title="캘린더" leftSide={headerLeftSide} rightSide={headerRightSide} />
           <CalendarHeader />
           <SplitLayout />
         </div>
