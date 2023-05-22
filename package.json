@@ -19,7 +19,8 @@
     "all:build": "yarn dev:build && yarn stag:build && yarn qa:build",
     "stag:mobile" : "cross-env NODE_ENV=production IS_MOBILE=true webpack --env dev=false qa=false && build.bat stag_mobile",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "build": "rollup -c"
   },
   "dependencies": {
     "@fullcalendar/daygrid": "^5.11.3",
