@@ -1,4 +1,5 @@
-import { Icon } from '@wapl/ui';
+import { Icon, Badge } from '@wapl/ui';
+import { useCoreStore } from '@wapl/core';
 import { EventBarContainer, IconButton, EventBarTitle } from './EventBar.style';
 
 export interface EventBarButton {
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const EventBar = ({ title, leftSide = [], rightSide = [] }: Props) => {
+  const { notiStore } = useCoreStore();
+
   const ButtonIcon = {
     close: <Icon.CloseLine width={24} height={24} />,
     back: <Icon.ArrowBackLine width={24} height={24} />,
@@ -21,7 +24,15 @@ const EventBar = ({ title, leftSide = [], rightSide = [] }: Props) => {
     delete: <Icon.DeleteLine width={24} height={24} />,
     search: <Icon.SearchLine width={24} height={24} />,
     setting: <Icon.SettingLine width={24} height={24} />,
+<<<<<<< HEAD
     home: <Icon.Home2Fill width={24} height={24} />,
+=======
+    home: (
+      <Badge badgeContent={notiStore.unreadCount} variant="dot" size={4} right={-4}>
+        <Icon.HomeLine width={24} height={24} />
+      </Badge>
+    ),
+>>>>>>> 5ce3472... feat(calendar): 읽지 않은 알림 메시지 존재 시 왼쪽 상단 홈 버튼에 존재 여부 빨간 점으로 표시
   };
 
   const Buttons = ({ buttons }: { buttons: EventBarButton[] }) => {

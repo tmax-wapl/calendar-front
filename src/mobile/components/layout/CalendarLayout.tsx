@@ -62,7 +62,11 @@ const CalendarLayout = () => {
         </div>
       ) : (
         <div style={{ height: '100%' }}>
+<<<<<<< HEAD
           <MainHeader title="내 캘린더" rightSide={headerRightSide} />
+=======
+          <MainHeader title="캘린더" leftSide={headerLeftSide} rightSide={headerRightSide} />
+>>>>>>> 5ce3472... feat(calendar): 읽지 않은 알림 메시지 존재 시 왼쪽 상단 홈 버튼에 존재 여부 빨간 점으로 표시
           <CalendarHeader />
           <SplitLayout />
         </div>
