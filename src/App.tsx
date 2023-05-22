@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { StoreProvider } from './stores/StoreProvider';
-import { WaplUiProvider } from '@wapl/ui';
 import CalendarProvider from '@contexts/CalendarContext';
 import { MODE } from './common/constants/common';
 import { useUserStore, usePersonaStore, useRoomStore } from '@wapl/core';
@@ -33,11 +32,9 @@ const App = ({ data }: Props) => {
   }, [selectedPersona]);
 
   return (
-    <WaplUiProvider>
-      <CalendarProvider mode={MODE.FULL} userId={selectedPersona.id}>
-        <StoreProvider>{isMobile ? <Mobile /> : <Web data={data} />}</StoreProvider>
-      </CalendarProvider>
-    </WaplUiProvider>
+    <CalendarProvider mode={MODE.FULL} userId={selectedPersona.id}>
+      <StoreProvider>{isMobile ? <Mobile /> : <Web data={data} />}</StoreProvider>
+    </CalendarProvider>
   );
 };
 
