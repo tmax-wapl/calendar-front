@@ -181,7 +181,6 @@ export const Dialog = () => {
             chipListText={'공유할 멤버를 선택하세요.\n 공유 최대 멤버는 200명입니다.'}
             disabledPersonaList={eventStore.event?.eventMember?.personaIdList}
             disabledRoomList={eventStore.event?.eventMember?.roomIdList}
-            disableOrgSelect
           />
         ) : (
           <MobileRoom.MemberSelectorDialog
