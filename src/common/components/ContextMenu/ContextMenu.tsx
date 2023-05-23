@@ -1,6 +1,7 @@
 import { Mui } from '@wapl/ui';
 import { useContext, useEffect, useState } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { useLocation } from 'react-router-dom';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { ColorPicker, ContextMenuItem } from './index';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
@@ -23,6 +24,7 @@ const style = [
 export const ContextMenu = () => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
+  const { pathname } = useLocation();
   const { target, position, id, color, hideColorPicker, type, date, data } = uiStore.contextClickArg;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -51,6 +53,7 @@ export const ContextMenu = () => {
           );
           calendarStore.setEventList(eventList);
         }
+        if (pathname.includes('detail')) eventStore.setEvent(new EventModel({ ...eventStore.event.dto, calColor }));
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
       case 'repeatEvent':
