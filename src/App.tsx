@@ -33,7 +33,7 @@ const App = ({ data }: Props) => {
 
   return (
     <CalendarProvider mode={MODE.FULL} userId={selectedPersona.id}>
-      <StoreProvider>{isMobile ? <Mobile /> : <Web data={data} />}</StoreProvider>
+      <StoreProvider>{isMobile ? <Mobile data={data} /> : <Web data={data} />}</StoreProvider>
     </CalendarProvider>
   );
 };
