@@ -12,7 +12,6 @@ import {
   EventDate,
   Participants,
   Location,
-  Notifications,
   Description,
   Attachments,
 } from '@common/components/EventInfoItem';
@@ -21,6 +20,7 @@ import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@/common/constants';
 import { useDidMountEffect } from '@/common/hooks';
 import { EventMember } from '@/common/constants/interfaces';
 import RepeatInfo from './RepeatInfo';
+import Notifications from './Notification/Notifications';
 import { ColorPicker } from './ColorPicker/ColorPicker';
 
 interface Props {
