@@ -9,7 +9,6 @@ export const ItemContainer = styled.div`
 
 export const NotificationWrapper = styled.div`
   display: flex;
-  flex: 1;
 `;
 
 export const ItemWrapper = styled.div`
