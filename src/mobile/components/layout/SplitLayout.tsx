@@ -5,7 +5,6 @@ import { reaction } from 'mobx';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, SwipeEventData } from 'react-swipeable';
 import '@/styles/split.css';
-import { toDateTime } from '@/utils';
 import EventListView from '@/mobile/components/EventListView';
 import { SplitPaneWrapper } from './SplitLayout.style';
 
@@ -14,6 +13,7 @@ const SplitLayout = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [topPanelHeight, setTopPanelHeight] = useState<number>();
   const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(0);
+
   const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   const LayoutHeight = innerHeight - (56 + 48);
   const halfHeight = LayoutHeight / 2;
@@ -24,20 +24,16 @@ const SplitLayout = () => {
   } = window;
   const [isRotate, setIsRotate] = useState(angle === 90 || angle === 270);
 
-  const setHalfHeight = () => {
-    setTopPanelHeight(halfHeight);
-    setBottomPanelHeight(halfHeight);
-  };
+  const wrapperRef = useRef<HTMLDivElement>();
 
-  const getRow = () => {
-    const { mainApi } = uiStore;
-    const activeStart = toDateTime(mainApi.view.activeStart);
-    const { days } = uiStore.dateDay.diff(activeStart, 'days');
-    return Math.floor(days / 7) + 1;
+  const swipeRef = (el: HTMLDivElement) => {
+    swipeHandlers.ref(el);
+    wrapperRef.current = el;
   };
 
   const handleSwipe = (eventData: SwipeEventData) => {
     const { dir } = eventData;
+    if (isRotate) return;
     dir === 'Up' ? handleSwipeUp() : handleSwipeDown(eventData);
   };
 
@@ -46,9 +42,7 @@ const SplitLayout = () => {
 
     if (bottomPanelHeight === 0) {
       setHalfHeight();
-      mainApi.setOption('eventClassNames', 'small-event');
-      mainApi?.setOption('dayMaxEvents', 2);
-      mainApi.updateSize();
+      smallEventView();
     } else {
       if (bottomPanelHeight > halfHeight) return;
       else {
@@ -79,6 +73,11 @@ const SplitLayout = () => {
     onSwipedUp: handleSwipe,
     onSwipedDown: handleSwipe,
   });
+
+  const setHalfHeight = () => {
+    setTopPanelHeight(halfHeight);
+    setBottomPanelHeight(halfHeight);
+  };
 
   const changeDateClickView = () => {
     setHalfHeight();
@@ -112,9 +111,8 @@ const SplitLayout = () => {
 
   const smallEventView = () => {
     const { mainApi } = uiStore;
-    setHalfHeight();
     mainApi.setOption('eventClassNames', 'small-event');
-    mainApi?.setOption('dayMaxEvents', 2);
+    mainApi.setOption('dayMaxEvents', 2);
     mainApi.updateSize();
   };
 
@@ -162,7 +160,13 @@ const SplitLayout = () => {
 
   return (
     <SplitPaneWrapper ref={swipeRef} {...swipeHandlers}>
-      <SplitPane split="horizontal" size={topPanelHeight} defaultSize={'100%'} allowResize>
+      <SplitPane
+        size={topPanelHeight}
+        defaultSize={'100%'}
+        allowResize
+        split={isRotate ? 'vertical' : 'horizontal'}
+        style={{ overflowY: isRotate ? 'scroll' : 'hidden' }}
+      >
         <div style={{ width: '100%', height: topPanelHeight }}>
           <Calendar />
         </div>
