@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import { Icon, Badge } from '@wapl/ui';
 import { useCoreStore } from '@wapl/core';
 import { EventBarContainer, IconButton, EventBarTitle } from './EventBar.style';
@@ -13,7 +14,7 @@ interface Props {
   rightSide?: EventBarButton[];
 }
 
-const EventBar = ({ title, leftSide = [], rightSide = [] }: Props) => {
+const EventBar = observer(({ title, leftSide = [], rightSide = [] }: Props) => {
   const { notiStore } = useCoreStore();
 
   const ButtonIcon = {
@@ -50,6 +51,6 @@ const EventBar = ({ title, leftSide = [], rightSide = [] }: Props) => {
       <Buttons buttons={rightSide} />
     </EventBarContainer>
   );
-};
+});
 
 export default EventBar;
