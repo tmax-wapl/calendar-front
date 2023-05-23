@@ -17,7 +17,7 @@
     "qa:build": "cross-env NODE_ENV=production webpack --env dev=false qa=true && build.bat qa",
     "app:build": "cross-env NODE_ENV=production webpack --env dev=false app=true && build.bat",
     "all:build": "yarn dev:build && yarn stag:build && yarn qa:build",
-    "stag:mobile" : "cross-env NODE_ENV=production IS_MOBILE=true webpack --env dev=false qa=false && build.bat stag_mobile",
+    "stag:mobile": "cross-env NODE_ENV=production IS_MOBILE=true webpack --env dev=false qa=false && build.bat stag_mobile",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build": "rollup -c"
@@ -29,7 +29,7 @@
     "@fullcalendar/timegrid": "^5.11.3",
     "@mui/system": "^5.10.14",
     "@mui/x-date-pickers": "^5.0.8",
-    "@wapl/core": "0.4.47",
+    "@wapl/core": "0.4.81",
     "@wapl/ui": "0.2.35",
     "axios": "^0.27.2",
     "fullcalendar": "^5.11.3",
