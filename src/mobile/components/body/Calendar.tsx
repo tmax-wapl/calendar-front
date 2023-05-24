@@ -36,6 +36,17 @@ const Calendar = observer(() => {
     });
   };
 
+  const fetchEvent = async () => {
+    if (!uiStore.notiData?.eventId) return;
+    const event = uiStore.mainApi.getEventById(`${uiStore.notiData.eventId}`);
+    if (!event) return;
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.startStr, event.extendedProps.dto.roomId);
+    uiStore.setDateDay(eventInfo.startDate.startOf('day'));
+    eventStore.setEvent(eventInfo);
+    uiStore.setPageDialogInfo('detail');
+    uiStore.setNotiData(null);
+  };
+
   const renderMoreLinkContent = (args: MoreLinkContentArg) => `+ ${args.num}`;
 
   const renderEventContent = ({ event }: EventContentArg) => {
@@ -142,9 +153,10 @@ const Calendar = observer(() => {
   }, []);
 
   useEffect(() => {
-    const dispose = autorun(() => {
+    const dispose = autorun(async () => {
       const { start, end } = uiStore.dateRange;
-      fetchData(start, end);
+      await fetchData(start, end);
+      fetchEvent();
     });
     return () => dispose();
   }, []);
@@ -153,6 +165,12 @@ const Calendar = observer(() => {
     if (viewMode) uiStore.viewMode = viewMode;
     else uiStore.viewMode = VIEW_MODE.MONTH;
   }, [viewMode]);
+
+  useEffect(() => {
+    if (!uiStore.notiData?.start) return;
+    uiStore.mainApi?.gotoDate(uiStore.notiData.start);
+    uiStore.changeDateRange();
+  }, [uiStore.notiData]);
 
   return (
     <CalendarContainer>
