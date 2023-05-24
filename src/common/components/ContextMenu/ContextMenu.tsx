@@ -72,6 +72,7 @@ export const ContextMenu = () => {
           event.roomId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
         );
         calendarStore.setEventList(roomEventList);
+        if (pathname.includes('detail')) eventStore.setEvent(new EventModel({ ...eventStore.event.dto, calColor }));
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
       default:
