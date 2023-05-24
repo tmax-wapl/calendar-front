@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useUserStore } from '@wapl/core';
-import { Icon } from '@wapl/ui';
+import { Icon, styled } from '@wapl/ui';
 import { default as MainHeader, EventBarButton as HeaderButton } from '../header/EventBar';
 import CalendarHeader from '../header/CalendarHeader';
 import SplitLayout from './SplitLayout';
 import { CalendarDTO } from '@/common/constants/interfaces';
 import { CalendarModel } from '@/stores';
+import { Observer } from 'mobx-react-lite';
+import PageRoutes from './PageRoutes';
+import FAB from '../FAB';
 
 const CalendarLayout = () => {
   const { userId } = useContext(CalendarContext);
@@ -66,18 +69,31 @@ const CalendarLayout = () => {
   return (
     <>
       {isLoading ? (
-        <div style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+        <LoadingWrapper>
           <Icon.LoadingMotion />
-        </div>
+        </LoadingWrapper>
       ) : (
-        <div style={{ height: '100%' }}>
+        <ContentWrapper>
           <MainHeader title="캘린더" leftSide={headerLeftSide} rightSide={headerRightSide} />
           <CalendarHeader />
           <SplitLayout />
-        </div>
+          <Observer>{() => (uiStore.pageDialogInfo ? <PageRoutes /> : <FAB />)}</Observer>
+        </ContentWrapper>
       )}
     </>
   );
 };
 
 export default CalendarLayout;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ContentWrapper = styled.div`
+  height: 100%;
+`;
