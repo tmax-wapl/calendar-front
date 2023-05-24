@@ -41,7 +41,12 @@ export default class EventStore {
     return new EventModel({
       ...dto,
       ...(rrule?.freq === 2 && { rrule: applyWeekdayOffset(rrule, startDate, 'local').toString() }),
-      ...{ calColor: dto.calColor || this.rootStore.calendarStore.defaultColor },
+      ...{
+        calColor:
+          (dto.roomId
+            ? this.rootStore.calendarStore.roomCalendarList.find(room => room.roomId === dto.roomId).color
+            : dto.calColor) || this.rootStore.calendarStore.defaultColor,
+      },
     });
   }
 
