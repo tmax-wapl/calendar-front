@@ -30,7 +30,7 @@
     "@fullcalendar/timegrid": "^5.11.3",
     "@mui/system": "^5.10.14",
     "@mui/x-date-pickers": "^5.0.8",
-    "@wapl/core": "0.4.85",
+    "@wapl/core": "0.4.88",
     "@wapl/ui": "0.2.35",
     "axios": "^0.27.2",
     "fullcalendar": "^5.11.3",
