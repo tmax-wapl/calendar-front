@@ -70,7 +70,10 @@ export default class CalendarStore {
 
   async getCalendarList() {
     const data = await this.repo.getCalendarList();
-    return data.map((dto: CalendarDTO) => new CalendarModel(dto));
+    return data.map(
+      (dto: CalendarDTO) =>
+        new CalendarModel({ ...dto, color: dto.color || this.rootStore.calendarStore.defaultColor }),
+    );
   }
 
   async syncCalendar(calId: number, start: string, end: string) {
