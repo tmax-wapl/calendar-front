@@ -93,7 +93,7 @@ const RepeatInfo = ({
     <RepeatInfoContainer>
       <ItemContainer>
         <Icon.RepeatLine className="mr-8" width={20} height={20} />
-        <Select value={rrule?.freq || -1} items={repeatItems} onChange={handleSelectChange} />
+        <Select value={rrule?.freq ?? -1} items={repeatItems} onChange={handleSelectChange} />
       </ItemContainer>
       {rrule?.freq > -1 && (
         <>

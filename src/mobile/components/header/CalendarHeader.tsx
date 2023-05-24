@@ -11,7 +11,7 @@ import {
   TodayButton,
 } from './CalendarHeader.style';
 import DateSpinnerPicker from '@/common/components/SpinnerPicker/DateSpinnerPicker';
-import { observer } from 'mobx-react-lite';
+import { Observer, observer } from 'mobx-react-lite';
 
 export const DateHeader = observer(({ togglePicker }: { togglePicker: () => void }) => {
   const { uiStore } = useCalendarStores();
@@ -28,7 +28,6 @@ const CalendarHeader = () => {
   const { uiStore } = useCalendarStores();
   const [titleDate, setTitleDate] = useState<DateTime>(DateTime.now());
   const [isDateSpinnerOpen, setIsDateSpinnerOpen] = useState(false);
-  const [importance, setImportance] = useState(false);
 
   const BookMarkIcon = memo(({ color, onClick }: { color: string; onClick: () => void }) => {
     return (
@@ -57,10 +56,7 @@ const CalendarHeader = () => {
 
   const togglePicker = () => setIsDateSpinnerOpen(!isDateSpinnerOpen);
 
-  const toggleImportance = () => {
-    setImportance(!importance);
-    uiStore.setImportanceChecked(!importance);
-  };
+  const toggleImportance = () => uiStore.setImportanceChecked(!uiStore.isImportanceChecked);
 
   useEffect(() => {
     handleDate();
@@ -70,7 +66,11 @@ const CalendarHeader = () => {
     <CalendarHeaderContainer>
       <DateHeader togglePicker={togglePicker} />
       <RightContainer>
-        <BookMarkIcon onClick={toggleImportance} color={importance ? '#fcbb00' : '#bdc1c6'} />
+        <Observer>
+          {() => (
+            <BookMarkIcon onClick={toggleImportance} color={uiStore.isImportanceChecked ? '#fcbb00' : '#bdc1c6'} />
+          )}
+        </Observer>
         <TodayButton onClick={handleToday}>오늘</TodayButton>
       </RightContainer>
       {isDateSpinnerOpen && (

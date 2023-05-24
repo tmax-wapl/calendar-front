@@ -2,7 +2,7 @@ import { makeObservable, observable, action } from 'mobx';
 import RootStore from './RootStore';
 import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
-import { EventDTO, EventShareDTO } from '@/common/constants/interfaces';
+import { EventDTO, EventShareDTO, FileInfo } from '@/common/constants/interfaces';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { toISO, applyWeekdayOffset } from '@/utils';
 import { DateTime } from 'luxon';
@@ -12,6 +12,7 @@ export default class EventStore {
   repo: EventRepo;
   event: EventModel = new EventModel({});
   searchKeyword = '';
+  fileList: FileInfo[] = [];
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -22,6 +23,8 @@ export default class EventStore {
       setEvent: action,
       searchKeyword: observable,
       setSearchKeyword: action,
+      fileList: observable,
+      setFileList: action,
     });
   }
 
@@ -57,29 +60,7 @@ export default class EventStore {
     const utcStart = DateTime.fromISO(start).toUTC().toISODate();
     const utcEnd = DateTime.fromISO(end).toUTC().toISODate();
     const { eventList, holidayList } = await this.repo.getEventList(utcStart, utcEnd);
-    // TODO: 룸 일정 필터 로직 추후 제거
-    const eventListMap = new Map();
-    const checkedRoomIdListMap = new Map(
-      this.rootStore.calendarStore.roomCalendarList
-        ?.filter(room => room.checkFlag)
-        .map((room, index) => [
-          room.roomId,
-          { index, calendarColor: room.color || this.rootStore.calendarStore.defaultColor },
-        ]),
-    );
-
-    eventList.map(event => {
-      const eventInfo = eventListMap.get(event.id);
-      const calColor = event.calColor || this.rootStore.calendarStore.defaultColor;
-      if (event.roomId === null) eventListMap.set(event.id, { ...event, calColor });
-      if (eventInfo) {
-        if (checkedRoomIdListMap.get(event.roomId) === undefined) return;
-        else if (checkedRoomIdListMap.get(eventInfo.roomId).index > checkedRoomIdListMap.get(event.roomId).index)
-          eventListMap.set(event.id, { ...event, calColor: checkedRoomIdListMap.get(event.roomId).calendarColor });
-      } else if (event.roomId === null) eventListMap.set(event.id, { ...event, calColor });
-      else if (checkedRoomIdListMap.has(event.roomId))
-        eventListMap.set(event.id, { ...event, calColor: checkedRoomIdListMap.get(event.roomId).calendarColor });
-    });
+    const eventListMap = this.roomFilteredEventMap(eventList); // TODO: 룸 일정 필터 로직 추후 제거
 
     const arr: EventModel[] = [];
     Array.from(eventListMap.values()).map(event => {
@@ -105,6 +86,34 @@ export default class EventStore {
         ...(rrule.freq === 2 && { rrule: applyWeekdayOffset(rrule, startDate, 'local').toString() }),
       });
     });
+  }
+
+  roomFilteredEventMap(eventList: EventDTO[]) {
+    const eventListMap = new Map();
+    const defaultCalendarColor = this.rootStore.calendarStore.defaultColor;
+    const checkedRoomIdListMap = this.rootStore.calendarStore.roomCalendarList?.reduce(
+      (map, { roomId, color, checkFlag }, index) => {
+        if (checkFlag) map.set(roomId, { index, calendarColor: color || defaultCalendarColor });
+        return map;
+      },
+      new Map(),
+    );
+
+    for (const event of eventList) {
+      const calColor = event.calColor || defaultCalendarColor;
+      if (event.roomId === null) {
+        eventListMap.set(event.id, { ...event, calColor });
+      } else {
+        const checkedRoom = checkedRoomIdListMap?.get(event.roomId);
+        const eventInfo = eventListMap.get(event.id);
+
+        if (checkedRoom && (!eventInfo || checkedRoom.index < checkedRoomIdListMap.get(eventInfo.roomId)?.index)) {
+          eventListMap.set(event.id, { ...event, calColor: checkedRoom.calendarColor });
+        }
+      }
+    }
+
+    return eventListMap;
   }
 
   async createEvent({ dto }: EventModel) {
@@ -159,7 +168,7 @@ export default class EventStore {
 
   async searchEvent(keyword: string, type: 'T') {
     const res = await this.repo.searchEvent(keyword, type);
-    const searchEventList = res
+    const searchEventList = res.content
       .flatMap(event =>
         event.rrule && !event.exceptionEvent
           ? this.getRepeatEventList(event)
@@ -167,5 +176,9 @@ export default class EventStore {
       )
       .sort((a, b) => a.startDate.toMillis() - b.startDate.toMillis());
     return searchEventList;
+  }
+
+  setFileList(list: FileInfo[]) {
+    this.fileList = list;
   }
 }

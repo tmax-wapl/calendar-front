@@ -6,6 +6,7 @@ export const EventDetailViewContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
+  position: relative;
 `;
 
 export const EventDetailContainer = styled.div`
@@ -31,4 +32,21 @@ export const FromInfo = styled.div`
 
 export const Creator = styled.span`
   color: ${({ theme: { Color } }) => Color.Gray[600]};
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 1;
+  flex-direction: column;
+  color: ${({ theme: { Color } }) => Color.Gray[700]};
+`;
+
+export const LoadingDescription = styled.div`
+  text-align: center;
+  margin-top: 20px;
 `;
