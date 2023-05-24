@@ -190,4 +190,20 @@ export default class CalendarStore {
       localStorage.setItem('RoomCalendarList', settingString);
     }
   }
+
+  async fetchCalendarList(personaId: number, userId: number) {
+    const calendarList = await this.getCalendarList();
+    this.setCalendarList(calendarList.filter(({ type }) => type !== 'private' && type !== 'org'));
+
+    const roomList = calendarList.filter(({ type }) => type === 'private' || type === 'org');
+    const localRoomMap = new Map(
+      this.getLocalRoomCalendarList(personaId)?.map((room: CalendarDTO) => [room.roomId, room]),
+    );
+
+    const filteredRoomList = roomList.map((room: CalendarModel) =>
+      localRoomMap.get(room.roomId) ? new CalendarModel(localRoomMap.get(room.roomId)) : room,
+    );
+    this.setRoomCalendarList(filteredRoomList);
+    this.setInitialLocalRoomCalendarList(userId);
+  }
 }
