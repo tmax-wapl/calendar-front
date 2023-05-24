@@ -51,6 +51,11 @@ const CalendarLayout = () => {
     personaStore.getWsClient(userStore.selectedPersona.id).addHandler('SHARE_EVENT', handleShareWs);
     personaStore.getWsClient(userStore.selectedPersona.id).addHandler('UPDATE_EVENT', handleUpdateWs);
     personaStore.getWsClient(userStore.selectedPersona.id).addHandler('DELETE_EVENT', handleDeleteWs);
+    return () => {
+      personaStore.getWsClient(userStore.selectedPersona.id).removeHandler('SHARE_EVENT');
+      personaStore.getWsClient(userStore.selectedPersona.id).removeHandler('UPDATE_EVENT');
+      personaStore.getWsClient(userStore.selectedPersona.id).removeHandler('DELETE_EVENT');
+    };
   }, [userStore.selectedPersona.id]);
 
   return (
