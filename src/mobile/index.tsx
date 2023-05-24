@@ -6,8 +6,6 @@ import { Dialog } from '..';
 import { Observer } from 'mobx-react-lite';
 import CalendarLayout from '@mcomponents/layout/CalendarLayout';
 import EventSearchView from '@mcomponents/Search/EventSearchView';
-import FAB from './components/FAB';
-import PageRoutes from './components/layout/PageRoutes';
 
 interface Props {
   data: { eventId: number; start: string };
@@ -28,7 +26,6 @@ const MobileApp = ({ data }: Props) => {
         <Route path="*" element={<Navigate to={ROUTES.MOBILE.PATH_MAIN} replace />} />
         <Route path={ROUTES.MOBILE.SEARCH} element={<EventSearchView />} />
       </Routes>
-      <Observer>{() => (uiStore.pageDialogInfo ? <PageRoutes /> : <FAB />)}</Observer>
       <Observer>{() => uiStore.dialogInfo && <Dialog />}</Observer>
     </Router>
   );

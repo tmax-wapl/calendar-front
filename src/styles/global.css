@@ -73,6 +73,9 @@ body {
 .mr-8 {
   margin-right: 8px;
 }
+.mt-14 {
+  margin-top: 14px;
+}
 
 .selected {
   background: rgba(0, 0, 0, 0.06);

@@ -2,6 +2,7 @@ import Calendar from '../body/Calendar';
 import SplitPane from 'react-split-pane';
 import { useEffect, useRef, useState } from 'react';
 import { reaction } from 'mobx';
+import { styled } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useSwipeable, SwipeEventData } from 'react-swipeable';
 import '@/styles/split.css';
@@ -167,15 +168,24 @@ const SplitLayout = () => {
         split={isRotate ? 'vertical' : 'horizontal'}
         style={{ overflowY: isRotate ? 'scroll' : 'hidden' }}
       >
-        <div style={{ width: '100%', height: topPanelHeight }}>
+        <TopPanel height={topPanelHeight}>
           <Calendar />
-        </div>
-        <div style={{ height: bottomPanelHeight }}>
+        </TopPanel>
+        <BottomPanel height={bottomPanelHeight}>
           <EventListView bottomElement={bottomRef} />
-        </div>
+        </BottomPanel>
       </SplitPane>
     </SplitPaneWrapper>
   );
 };
 
 export default SplitLayout;
+
+const TopPanel = styled.div<{ height: number }>`
+  width: 100%;
+  height: ${({ height }) => height}px;
+`;
+
+const BottomPanel = styled.div<{ height: number }>`
+  height: ${({ height }) => height}px;
+`;
