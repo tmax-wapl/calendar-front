@@ -126,7 +126,11 @@ const EventDetailView = () => {
   };
 
   useEffect(() => {
+    uiStore.setIsDetail(true);
     if (!eventStore.event.id) navigate(`/main/view-mode/${uiStore.viewMode}/date`);
+    return () => {
+      uiStore.setIsDetail(false);
+    };
   }, []);
 
   return (

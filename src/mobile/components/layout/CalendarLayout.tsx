@@ -1,21 +1,21 @@
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useContext, useState } from 'react';
-import { CalendarContext } from '@/common/contexts/CalendarContext';
-import { useUserStore } from '@wapl/core';
+import { useCoreStore } from '@wapl/core';
 import { Icon } from '@wapl/ui';
 import { default as MainHeader, EventBarButton as HeaderButton } from '../header/EventBar';
 import CalendarHeader from '../header/CalendarHeader';
 import SplitLayout from './SplitLayout';
+import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { CalendarDTO } from '@/common/constants/interfaces';
-import { CalendarModel } from '@/stores';
+import { useWebSocket } from '@common/hooks';
 
 const CalendarLayout = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { userId } = useContext(CalendarContext);
-  const { uiStore, calendarStore } = useCalendarStores();
-  const { selectedPersona } = useUserStore();
-  const [isLoading, setLoading] = useState(true);
+  const { calendarStore, uiStore } = useCalendarStores();
+  const { personaStore, userStore } = useCoreStore();
   const navigate = useNavigate();
+  const { handleShareWs, handleUpdateWs, handleDeleteWs } = useWebSocket(true);
 
   const handleSearchClick = () => {
     navigate('/search');
@@ -41,27 +41,17 @@ const CalendarLayout = () => {
     { action: 'setting', onClick: handleSettingClick },
   ];
 
-  const fetchData = async () => {
-    const calendarList = await calendarStore.getCalendarList();
-    calendarStore.setCalendarList(calendarList.filter(({ type }) => type !== 'private' && type !== 'org'));
-
-    const roomList = calendarList.filter(({ type }) => type === 'private' || type === 'org');
-    const localRoomMap = new Map(
-      calendarStore.getLocalRoomCalendarList(selectedPersona.id)?.map((room: CalendarDTO) => [room.roomId, room]),
-    );
-
-    const filteredRoomList = roomList.map((room: CalendarModel) =>
-      localRoomMap.get(room.roomId) ? new CalendarModel(localRoomMap.get(room.roomId)) : room,
-    );
-
-    calendarStore.setRoomCalendarList(filteredRoomList);
-    calendarStore.setInitialLocalRoomCalendarList(userId);
-    setLoading(false);
-  };
-
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchCalendarList = async () => {
+      setIsLoading(true);
+      await calendarStore.fetchCalendarList(userStore.selectedPersona.id, userId);
+      setIsLoading(false);
+    };
+    fetchCalendarList();
+    personaStore.getWsClient(userStore.selectedPersona.id).addHandler('SHARE_EVENT', handleShareWs);
+    personaStore.getWsClient(userStore.selectedPersona.id).addHandler('UPDATE_EVENT', handleUpdateWs);
+    personaStore.getWsClient(userStore.selectedPersona.id).addHandler('DELETE_EVENT', handleDeleteWs);
+  }, [userStore.selectedPersona.id]);
 
   return (
     <>
