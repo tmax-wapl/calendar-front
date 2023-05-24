@@ -42,7 +42,7 @@ export const ContextMenu = () => {
       case 'subscribe':
       case 'sharedEventCalendar':
         await calendarStore.updateCalendar(id, { color });
-        calendarStore.updateCalendarDTO(id, 'color', color);
+        calendarStore.updateCalendarDTO(id, 'color', calColor);
         if (type === 'sharedEventCalendar') {
           const sharedEventList = calendarStore.eventList.map(event =>
             event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor }) : event,
@@ -66,7 +66,7 @@ export const ContextMenu = () => {
         break;
       case 'orgCalendar':
       case 'roomCalendar':
-        data.dto.color = color;
+        data.dto.color = calColor;
         calendarStore.addLocalRoomCalendarItem(userId, data.dto);
 
         const roomEventList = calendarStore.eventList.map(event =>
