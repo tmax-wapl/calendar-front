@@ -22,6 +22,7 @@ import { EventMember } from '@/common/constants/interfaces';
 import RepeatInfo from './RepeatInfo';
 import Notifications from './Notification/Notifications';
 import { ColorPicker } from './ColorPicker/ColorPicker';
+import { useUserStore } from '@wapl/core';
 
 interface Props {
   action: 'create' | 'update';
@@ -29,6 +30,7 @@ interface Props {
 
 const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
+  const { isGuest } = useUserStore();
   const navigate = useNavigate();
   const { state } = useLocation();
   const [originEvent, setOriginEvent] = useState(new EventModel({ ...eventStore.event.dto }));
@@ -269,19 +271,21 @@ const EventHandleView = ({ action }: Props) => {
             </FromInfo>
           )}
         </Observer>
-        <Observer>
-          {() => (
-            <Participants
-              participants={
-                eventStore.event.eventMember
-                  ? [...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]
-                  : []
-              }
-              onChange={(value: EventMember) => (eventStore.event.eventMember = value)}
-              editable
-            />
-          )}
-        </Observer>
+        {!isGuest && (
+          <Observer>
+            {() => (
+              <Participants
+                participants={
+                  eventStore.event.eventMember
+                    ? [...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]
+                    : []
+                }
+                onChange={(value: EventMember) => (eventStore.event.eventMember = value)}
+                editable
+              />
+            )}
+          </Observer>
+        )}
         <Observer>
           {() => (
             <Location
