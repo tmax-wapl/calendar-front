@@ -5,6 +5,7 @@ import { Dialog } from '..';
 import { Observer } from 'mobx-react-lite';
 import CalendarLayout from '@mcomponents/layout/CalendarLayout';
 import EventSearchView from '@mcomponents/Search/EventSearchView';
+import PageRoutes from './components/layout/PageRoutes';
 
 const MobileApp: React.FC = () => {
   const { uiStore } = useCalendarStores();
@@ -16,6 +17,7 @@ const MobileApp: React.FC = () => {
         <Route path="*" element={<Navigate to={ROUTES.MOBILE.PATH_MAIN} replace />} />
         <Route path={ROUTES.MOBILE.SEARCH} element={<EventSearchView />} />
       </Routes>
+      <Observer>{() => uiStore.pageDialogInfo && <PageRoutes />}</Observer>
       <Observer>{() => uiStore.dialogInfo && <Dialog />}</Observer>
     </Router>
   );
