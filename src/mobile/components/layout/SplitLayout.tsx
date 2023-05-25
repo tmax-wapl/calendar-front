@@ -164,7 +164,6 @@ const SplitLayout = () => {
       <SplitPane
         size={topPanelHeight}
         defaultSize={'100%'}
-        allowResize
         split={isRotate ? 'vertical' : 'horizontal'}
         style={{ overflowY: isRotate ? 'scroll' : 'hidden' }}
       >
