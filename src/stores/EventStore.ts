@@ -41,6 +41,12 @@ export default class EventStore {
     return new EventModel({
       ...dto,
       ...(rrule?.freq === 2 && { rrule: applyWeekdayOffset(rrule, startDate, 'local').toString() }),
+      ...{
+        calColor:
+          (dto.roomId
+            ? this.rootStore.calendarStore.roomCalendarList.find(room => room.roomId === dto.roomId).color
+            : dto.calColor) || this.rootStore.calendarStore.defaultColor,
+      },
     });
   }
 
@@ -84,17 +90,19 @@ export default class EventStore {
 
   roomFilteredEventMap(eventList: EventDTO[]) {
     const eventListMap = new Map();
+    const defaultCalendarColor = this.rootStore.calendarStore.defaultColor;
     const checkedRoomIdListMap = this.rootStore.calendarStore.roomCalendarList?.reduce(
       (map, { roomId, color, checkFlag }, index) => {
-        if (checkFlag) map.set(roomId, { index, calendarColor: color });
+        if (checkFlag) map.set(roomId, { index, calendarColor: color || defaultCalendarColor });
         return map;
       },
       new Map(),
     );
 
     for (const event of eventList) {
+      const calColor = event.calColor || defaultCalendarColor;
       if (event.roomId === null) {
-        eventListMap.set(event.id, event);
+        eventListMap.set(event.id, { ...event, calColor });
       } else {
         const checkedRoom = checkedRoomIdListMap?.get(event.roomId);
         const eventInfo = eventListMap.get(event.id);

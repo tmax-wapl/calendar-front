@@ -1,6 +1,7 @@
 import { Mui } from '@wapl/ui';
 import { useContext, useEffect, useState } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { useLocation } from 'react-router-dom';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { ColorPicker, ContextMenuItem } from './index';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
@@ -23,6 +24,7 @@ const style = [
 export const ContextMenu = () => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
+  const { pathname } = useLocation();
   const { target, position, id, color, hideColorPicker, type, date, data } = uiStore.contextClickArg;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -33,24 +35,26 @@ export const ContextMenu = () => {
   };
 
   const handleColorClick = async (color: string) => {
+    const calColor = color || calendarStore.defaultColor;
     switch (type) {
       case 'mainCalendar':
       case 'subCalendar':
       case 'subscribe':
       case 'sharedEventCalendar':
         await calendarStore.updateCalendar(id, { color });
-        calendarStore.updateCalendarDTO(id, 'color', color);
+        calendarStore.updateCalendarDTO(id, 'color', calColor);
         if (type === 'sharedEventCalendar') {
           const sharedEventList = calendarStore.eventList.map(event =>
-            event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor: color }) : event,
+            event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor }) : event,
           );
           calendarStore.setEventList(sharedEventList);
         } else {
           const eventList = calendarStore.eventList.map(event =>
-            event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
+            event.calId === id ? new EventModel({ ...event.dto, calColor }) : event,
           );
           calendarStore.setEventList(eventList);
         }
+        if (pathname.includes('detail')) eventStore.setEvent(new EventModel({ ...eventStore.event.dto, calColor }));
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
       case 'repeatEvent':
@@ -62,13 +66,14 @@ export const ContextMenu = () => {
         break;
       case 'orgCalendar':
       case 'roomCalendar':
-        data.dto.color = color;
+        data.dto.color = calColor;
         calendarStore.addLocalRoomCalendarItem(userId, data.dto);
 
         const roomEventList = calendarStore.eventList.map(event =>
-          event.roomId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
+          event.roomId === id ? new EventModel({ ...event.dto, calColor }) : event,
         );
         calendarStore.setEventList(roomEventList);
+        if (pathname.includes('detail')) eventStore.setEvent(new EventModel({ ...eventStore.event.dto, calColor }));
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
       default:
