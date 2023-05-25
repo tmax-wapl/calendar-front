@@ -1,4 +1,4 @@
-import { useState, useCallback, Fragment } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoadingSpinner, SearchField } from '@wapl/ui';
 import { EventModel } from '@/stores';

@@ -72,7 +72,7 @@ const CalendarLayout = () => {
           <MainHeader title="캘린더" leftSide={headerLeftSide} rightSide={headerRightSide} />
           <CalendarHeader />
           <SplitLayout />
-          <Observer>{() => (uiStore.pageDialogInfo ? <PageRoutes /> : <FAB />)}</Observer>
+          <Observer>{() => !uiStore.pageDialogInfo && <FAB />}</Observer>
         </ContentWrapper>
       )}
     </>
