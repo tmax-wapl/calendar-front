@@ -80,7 +80,7 @@ const CalendarSettingView = () => {
       calendarStore.setEventList(roomEventList);
     } else {
       await calendarStore.updateCalendar(id, { color });
-      calendarStore.updateCalendarDTO(id, 'color', color);
+      calendarStore.updateCalendarDTO(id, 'color', calColor);
       if (type === 'share') {
         const sharedEventList = calendarStore.eventList.map(event =>
           event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor }) : event,
