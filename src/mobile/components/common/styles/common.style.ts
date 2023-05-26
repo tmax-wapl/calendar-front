@@ -11,6 +11,30 @@ export const ContentWrapper = styled.div`
   min-height: 500px;
 `;
 
+export const Selected = styled.span<{ selected: boolean }>`
+  display: ${({ selected }) => (selected ? 'flex' : 'none')};
+  width: 14px;
+  height: 1.5px;
+  transform: rotate(137deg);
+  background: #ff6258;
+  &::after {
+    content: '';
+    left: 69%;
+    top: 247%;
+    width: 7px;
+    height: 1.5px;
+    transform: rotate(95deg);
+    position: absolute;
+    background: #ff6258;
+  }
+`;
+
+export const ItemWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const ItemContainer = styled.div<{ height?: string }>`
   display: flex;
   height: ${({ height }) => height || '44'}px;

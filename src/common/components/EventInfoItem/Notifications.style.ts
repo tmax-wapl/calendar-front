@@ -1,4 +1,4 @@
-import { styled, Mui } from '@wapl/ui';
+import { styled } from '@wapl/ui';
 
 export const NotificationsContainer = styled.div`
   display: flex;
@@ -21,14 +21,9 @@ export const NotificationItem = styled.div`
   align-items: center;
 `;
 
-export const IconButton = styled(Mui.IconButton)`
-  padding: 0;
-  margin-left: auto;
-`;
-
 export const NotificationAddItem = styled.div<{ isEmpty: boolean }>`
   display: flex;
-  height: ${({ isEmpty }) => (isEmpty ? '44px' : '32px')};
+  height: ${({ isEmpty }) => (isEmpty ? 44 : 32)}px;
   align-items: center;
   color: ${({ theme: { Color } }) => Color.Gray[500]};
   cursor: pointer;
@@ -42,3 +37,12 @@ export const NotificationsTitle = styled.span`
   height: 44px;
   align-items: center;
 `;
+
+export const ItemContent = styled.div`
+  display: flex;
+  gap: 10px;
+  height: 48px;
+  align-items: center;
+`;
+
+export const Label = styled.span``;

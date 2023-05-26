@@ -7,11 +7,10 @@ import {
   CurrentColor,
   ColorLabel,
   ColorItemContent,
-  ColorSelected,
 } from './ColorPicker.style';
 import { ColorItem as colors } from '@/common';
 import EventBar from '../header/EventBar';
-import { BodyWrapper, ContentWrapper } from '../common/styles/common.style';
+import { BodyWrapper, ContentWrapper, Selected } from '../common/styles/common.style';
 
 interface Props {
   color?: string;
@@ -60,7 +59,7 @@ export const ColorPicker = ({ color = '', onClick }: Props) => {
             {colors.map(({ color, value, label }: { color: string; value: string; label: string }) => (
               <ColorItemWrapper key={value} onClick={() => handleSelect(color)}>
                 <ColorItem color={color} label={label} />
-                <ColorSelected selected={color === selected} />
+                <Selected selected={color === selected} />
               </ColorItemWrapper>
             ))}
           </ContentWrapper>

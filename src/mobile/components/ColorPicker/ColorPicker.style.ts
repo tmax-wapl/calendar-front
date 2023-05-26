@@ -65,21 +65,3 @@ export const ColorItemContent = styled.div`
 `;
 
 export const ColorLabel = styled.span``;
-
-export const ColorSelected = styled.span<{ selected: boolean }>`
-  display: ${({ selected }) => (selected ? 'flex' : 'none')};
-  width: 14px;
-  height: 1.5px;
-  transform: rotate(137deg);
-  background: #ff6258;
-  &::after {
-    content: '';
-    left: 69%;
-    top: 247%;
-    width: 7px;
-    height: 1.5px;
-    transform: rotate(95deg);
-    position: absolute;
-    background: #ff6258;
-  }
-`;
