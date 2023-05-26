@@ -48,8 +48,8 @@ export const ColorPicker = ({ color = '', onClick }: Props) => {
     <ColorWrapper>
       <ItemContainer onClick={handleOpen}>
         일정 색상
-        <CurrentColor isNoneColor={color === ''} onClick={() => handleSelect(color)}>
-          <Icon.CalendarDotFill color={color} width={20} height={20} />
+        <CurrentColor isNoneColor={!color} onClick={() => handleSelect(color)}>
+          <Icon.CalendarDotFill color={color || ''} width={20} height={20} />
         </CurrentColor>
       </ItemContainer>
 

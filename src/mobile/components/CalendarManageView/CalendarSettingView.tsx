@@ -13,6 +13,7 @@ import {
   Input,
   SettingItem,
   Divider,
+  DotIcon,
 } from './CalendarSettingView.style';
 import { BodyWrapper, ContentWrapper } from '../common/styles/common.style';
 import { ColorItemContent, ColorItemWrapper, ColorSelected } from '../ColorPicker/ColorPicker.style';
@@ -24,7 +25,8 @@ const CalendarSettingView = observer(() => {
   const {
     toast: { notify },
   } = useWaplUiStore();
-  const { id, roomId, name, type, mainFlag, color: calColor, subscribeStatus } = calendarStore.calendar;
+  const { id, roomId, name, type, mainFlag, color, subscribeStatus } = calendarStore.calendar;
+  const calColor = colors.some(item => item.color === color) ? color : '';
   const [isEdit, setEdit] = useState<boolean>(false);
   const [isColorPickerOpen, setColorPickerOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>(name);
@@ -73,11 +75,12 @@ const CalendarSettingView = observer(() => {
   ));
 
   const handleColorClick = async (color: string) => {
+    const calColor = color || calendarStore.defaultColor;
     if (['private', 'org'].includes(type)) {
-      calendarStore.calendar.color = color;
+      calendarStore.calendar.color = calColor;
       calendarStore.addLocalRoomCalendarItem(userId, calendarStore.calendar.dto);
       const roomEventList = calendarStore.eventList.map(event =>
-        event.roomId === roomId ? new EventModel({ ...event.dto, calColor: color }) : event,
+        event.roomId === roomId ? new EventModel({ ...event.dto, calColor }) : event,
       );
       calendarStore.setEventList(roomEventList);
     } else {
@@ -85,12 +88,12 @@ const CalendarSettingView = observer(() => {
       calendarStore.updateCalendarDTO(id, 'color', color);
       if (type === 'share') {
         const sharedEventList = calendarStore.eventList.map(event =>
-          event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor: color }) : event,
+          event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor }) : event,
         );
         calendarStore.setEventList(sharedEventList);
       } else {
         const eventList = calendarStore.eventList.map(event =>
-          event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
+          event.calId === id ? new EventModel({ ...event.dto, calColor }) : event,
         );
         calendarStore.setEventList(eventList);
       }
@@ -192,8 +195,8 @@ const CalendarSettingView = observer(() => {
           </CalendarName>
         )}
         <SettingItem onClick={handleColorPickerOpen}>
-          <Icon.CalendarDotFill color={calColor || ''} width={20} height={20} className="mr-8" />
-          {colors.find(color => color.value === calColor).label || ''}
+          <DotIcon color={calColor || ''} width={20} height={20} className="mr-8" />
+          {colors.find(color => color.value === calColor).label}
         </SettingItem>
         <Divider />
         {type === 'url' && (
