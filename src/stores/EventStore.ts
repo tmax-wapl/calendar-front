@@ -90,16 +90,17 @@ export default class EventStore {
 
   roomFilteredEventMap(eventList: EventDTO[]) {
     const eventListMap = new Map();
+    const defaultCalendarColor = this.rootStore.calendarStore.defaultColor;
     const checkedRoomIdListMap = this.rootStore.calendarStore.roomCalendarList?.reduce(
       (map, { roomId, color, checkFlag }, index) => {
-        if (checkFlag) map.set(roomId, { index, calendarColor: color || this.rootStore.calendarStore.defaultColor });
+        if (checkFlag) map.set(roomId, { index, calendarColor: color || defaultCalendarColor });
         return map;
       },
       new Map(),
     );
 
     for (const event of eventList) {
-      const calColor = event.calColor || this.rootStore.calendarStore.defaultColor;
+      const calColor = event.calColor || defaultCalendarColor;
       if (event.roomId === null) {
         eventListMap.set(event.id, { ...event, calColor });
       } else {

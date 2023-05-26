@@ -1,4 +1,4 @@
-import { styled, Mui, TextField } from '@wapl/ui';
+import { styled, Mui, TextField, Icon } from '@wapl/ui';
 
 export const CalendarSettingViewContainer = styled.div`
   display: flex;
@@ -46,4 +46,13 @@ export const Divider = styled.span`
   height: 1px;
   background: ${({ theme: { Color } }) => Color.Gray[200]};
   border-radius: 1px;
+`;
+
+export const DotIcon = styled(Icon.CalendarDotFill)<{ color: string }>`
+  path {
+    stroke: ${({ theme: { Color }, color }) => !color && Color.Gray[900]};
+    stroke-width: 1;
+    stroke-dasharray: 3, 4;
+    stroke-linecap: round;
+  }
 `;
