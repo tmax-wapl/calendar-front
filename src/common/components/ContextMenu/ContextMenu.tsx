@@ -35,6 +35,7 @@ export const ContextMenu = () => {
   };
 
   const handleColorClick = async (color: string) => {
+    const calColor = color || calendarStore.defaultColor;
     switch (type) {
       case 'mainCalendar':
       case 'subCalendar':
@@ -44,12 +45,12 @@ export const ContextMenu = () => {
         calendarStore.updateCalendarDTO(id, 'color', calColor);
         if (type === 'sharedEventCalendar') {
           const sharedEventList = calendarStore.eventList.map(event =>
-            event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor: color }) : event,
+            event.roomId === null && event.shareEvent ? new EventModel({ ...event.dto, calColor }) : event,
           );
           calendarStore.setEventList(sharedEventList);
         } else {
           const eventList = calendarStore.eventList.map(event =>
-            event.calId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
+            event.calId === id ? new EventModel({ ...event.dto, calColor }) : event,
           );
           calendarStore.setEventList(eventList);
         }
@@ -69,7 +70,7 @@ export const ContextMenu = () => {
         calendarStore.addLocalRoomCalendarItem(userId, data.dto);
 
         const roomEventList = calendarStore.eventList.map(event =>
-          event.roomId === id ? new EventModel({ ...event.dto, calColor: color }) : event,
+          event.roomId === id ? new EventModel({ ...event.dto, calColor }) : event,
         );
         calendarStore.setEventList(roomEventList);
         if (pathname.includes('detail')) eventStore.setEvent(new EventModel({ ...eventStore.event.dto, calColor }));

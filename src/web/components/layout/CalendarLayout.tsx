@@ -25,6 +25,7 @@ const CalendarLayout: React.FC = () => {
     personaStore.getWsClient(selectedPersona.id).addHandler('SHARE_EVENT', handleShareWs);
     personaStore.getWsClient(selectedPersona.id).addHandler('UPDATE_EVENT', handleUpdateWs);
     personaStore.getWsClient(selectedPersona.id).addHandler('DELETE_EVENT', handleDeleteWs);
+    calendarStore.setDefaultColor(selectedPersona.color);
     return () => {
       personaStore.getWsClient(selectedPersona.id).removeHandler('SHARE_EVENT');
       personaStore.getWsClient(selectedPersona.id).removeHandler('UPDATE_EVENT');
