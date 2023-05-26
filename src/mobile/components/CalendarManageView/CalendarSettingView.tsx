@@ -13,8 +13,8 @@ import {
   Divider,
   DotIcon,
 } from './CalendarSettingView.style';
-import { BodyWrapper, ContentWrapper } from '../common/styles/common.style';
-import { ColorItemContent, ColorItemWrapper, ColorSelected } from '../ColorPicker/ColorPicker.style';
+import { BodyWrapper, ContentWrapper, Selected } from '../common/styles/common.style';
+import { ColorItemContent, ColorItemWrapper } from '../ColorPicker/ColorPicker.style';
 import { EventModel } from '@/stores';
 
 const CalendarSettingView = () => {
@@ -143,7 +143,7 @@ const CalendarSettingView = () => {
             {colors.map(({ color, value, label }: { color: string; value: string; label: string }) => (
               <ColorItemWrapper key={value} onClick={() => handleColorClick(color)}>
                 <ColorItem color={color} label={label} />
-                <ColorSelected selected={color === calColor} />
+                <Selected selected={color === calColor} />
               </ColorItemWrapper>
             ))}
           </ContentWrapper>
