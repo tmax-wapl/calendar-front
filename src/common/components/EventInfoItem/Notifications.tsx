@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { ContextMenu, Icon } from '@wapl/ui';
+import { Icon } from '@wapl/ui';
 import {
   NotificationsContainer,
   ItemContainer,
@@ -9,9 +9,8 @@ import {
   ItemContent,
 } from './Notifications.style';
 import NotificationItem from './NotificationItem';
-import EventBar from '@/mobile/components/header/EventBar';
-import { BodyWrapper, ContentWrapper, ItemWrapper, Selected } from '@/mobile/components/common/styles/common.style';
 import { NotificationItems } from '@/common/constants';
+import { ContextMenu } from '@/mobile/components/ContextMenu';
 
 interface Props {
   notifications?: string[];
@@ -63,7 +62,7 @@ const Notifications = ({ notifications = [], onChange, editable = false, isMobil
     setPickerToggle(false);
   };
 
-  const NotificationLabel = memo(({ label }: { label: string }) => (
+  const NotificationLabel = memo(({ label }: { label?: string }) => (
     <ItemContent>
       <Label>{label}</Label>
     </ItemContent>
@@ -108,19 +107,16 @@ const Notifications = ({ notifications = [], onChange, editable = false, isMobil
       )}
 
       {isMobile && (
-        <ContextMenu open={pickerToggle} onClose={handleClose}>
-          <EventBar title={'미리 알림'} leftSide={[{ action: 'close', onClick: handleClose }]} />
-          <BodyWrapper>
-            <ContentWrapper style={{ padding: '0 18px', minHeight: '575px' }}>
-              {NotificationItems.map(({ value, label }: { value: string; label: string }) => (
-                <ItemWrapper key={value} onClick={() => handleItemClick(value)}>
-                  <NotificationLabel label={label} />
-                  <Selected selected={value === selected} />
-                </ItemWrapper>
-              ))}
-            </ContentWrapper>
-          </BodyWrapper>
-        </ContextMenu>
+        <ContextMenu
+          open={pickerToggle}
+          selected={selected}
+          title="일정 색상"
+          items={NotificationItems}
+          onClose={handleClose}
+          onClick={handleItemClick}
+          Component={NotificationLabel}
+          isColor
+        />
       )}
     </NotificationsContainer>
   );

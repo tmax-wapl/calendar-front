@@ -29,10 +29,21 @@ export const Selected = styled.span<{ selected: boolean }>`
   }
 `;
 
-export const ItemWrapper = styled.div`
+export const ItemWrapper = styled.div<{ isColor: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  ${({ isColor, theme: { Color } }) =>
+    isColor &&
+    `
+    :first-of-type {
+      path {
+        stroke: ${Color.Gray[900]};
+        stroke-width: 1;
+        stroke-dasharray: 3, 4;
+        stroke-linecap: round;
+      }
+    }`}
 `;
 
 export const ItemContainer = styled.div<{ height?: string }>`

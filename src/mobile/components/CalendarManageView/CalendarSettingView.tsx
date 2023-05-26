@@ -1,4 +1,4 @@
-import { Icon, ContextMenu, useWaplUiStore, Mui } from '@wapl/ui';
+import { Icon, useWaplUiStore, Mui } from '@wapl/ui';
 import { useEffect, useRef, useState, memo, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -15,9 +15,9 @@ import {
   Divider,
   DotIcon,
 } from './CalendarSettingView.style';
-import { BodyWrapper, ContentWrapper, Selected } from '../common/styles/common.style';
-import { ColorItemContent, ColorItemWrapper } from '../ColorPicker/ColorPicker.style';
+import { ColorItemContent } from '../ColorPicker/ColorPicker.style';
 import { CalendarModel, EventModel } from '@/stores';
+import { ContextMenu } from '../ContextMenu';
 
 const CalendarSettingView = observer(() => {
   const { userId } = useContext(CalendarContext);
@@ -67,7 +67,7 @@ const CalendarSettingView = observer(() => {
 
   const handleColorPickerClose = () => setColorPickerOpen(false);
 
-  const ColorItem = memo(({ color, label }: { color: string; label: string }) => (
+  const ColorItem = memo(({ color, label }: { color?: string; label?: string }) => (
     <ColorItemContent>
       <Icon.CalendarDotFill color={color} width={20} height={20} />
       <span>{label}</span>
@@ -212,19 +212,16 @@ const CalendarSettingView = observer(() => {
           </SettingItem>
         )}
       </CalendarSettingViewContainer>
-      <ContextMenu open={isColorPickerOpen} onClose={handleColorPickerClose}>
-        <EventBar title="캘린더 색상" leftSide={[{ action: 'close', onClick: handleColorPickerClose }]} />
-        <BodyWrapper>
-          <ContentWrapper style={{ padding: '0 18px', minHeight: '575px' }}>
-            {colors.map(({ color, value, label }: { color: string; value: string; label: string }) => (
-              <ColorItemWrapper key={value} onClick={() => handleColorClick(color)}>
-                <ColorItem color={color} label={label} />
-                <Selected selected={color === calColor} />
-              </ColorItemWrapper>
-            ))}
-          </ContentWrapper>
-        </BodyWrapper>
-      </ContextMenu>
+      <ContextMenu
+        open={isColorPickerOpen}
+        selected={calColor}
+        title="캘린더 색상"
+        items={colors}
+        onClose={handleColorPickerClose}
+        onClick={handleColorClick}
+        Component={ColorItem}
+        isColor
+      />
     </>
   );
 });

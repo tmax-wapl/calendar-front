@@ -1,16 +1,8 @@
 import { memo, useEffect, useState } from 'react';
-import { Icon, ContextMenu } from '@wapl/ui';
-import {
-  ColorWrapper,
-  ColorItemWrapper,
-  ItemContainer,
-  CurrentColor,
-  ColorLabel,
-  ColorItemContent,
-} from './ColorPicker.style';
+import { Icon } from '@wapl/ui';
+import { ColorWrapper, ItemContainer, CurrentColor, ColorLabel, ColorItemContent } from './ColorPicker.style';
 import { ColorItem as colors } from '@/common';
-import EventBar from '../header/EventBar';
-import { BodyWrapper, ContentWrapper, Selected } from '../common/styles/common.style';
+import { ContextMenu } from '../ContextMenu';
 
 interface Props {
   color?: string;
@@ -36,7 +28,7 @@ export const ColorPicker = ({ color = '', onClick }: Props) => {
     setSelected(color ?? '');
   }, [color]);
 
-  const ColorItem = memo(({ color, label }: { color: string; label: string }) => (
+  const ColorItem = memo(({ color, label }: { color?: string; label?: string }) => (
     <ColorItemContent>
       <Icon.CalendarDotFill color={color} width={20} height={20} />
       <ColorLabel>{label}</ColorLabel>
@@ -52,19 +44,16 @@ export const ColorPicker = ({ color = '', onClick }: Props) => {
         </CurrentColor>
       </ItemContainer>
 
-      <ContextMenu open={pickerToggle} onClose={handleClose}>
-        <EventBar title={'일정 색상'} leftSide={[{ action: 'close', onClick: handleClose }]} />
-        <BodyWrapper>
-          <ContentWrapper style={{ padding: '0 18px', minHeight: '575px' }}>
-            {colors.map(({ color, value, label }: { color: string; value: string; label: string }) => (
-              <ColorItemWrapper key={value} onClick={() => handleSelect(color)}>
-                <ColorItem color={color} label={label} />
-                <Selected selected={color === selected} />
-              </ColorItemWrapper>
-            ))}
-          </ContentWrapper>
-        </BodyWrapper>
-      </ContextMenu>
+      <ContextMenu
+        open={pickerToggle}
+        selected={selected}
+        title="일정 색상"
+        items={colors}
+        onClose={handleClose}
+        onClick={handleSelect}
+        Component={ColorItem}
+        isColor
+      />
     </ColorWrapper>
   );
 };

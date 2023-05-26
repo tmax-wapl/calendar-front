@@ -298,6 +298,7 @@ const EventHandleView = ({ action }: Props) => {
               notifications={eventStore.event.notifications}
               onChange={value => (eventStore.event.notifications = value)}
               editable
+              isMobile
             />
           )}
         </Observer> */}
