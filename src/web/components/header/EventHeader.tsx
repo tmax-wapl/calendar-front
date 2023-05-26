@@ -49,7 +49,7 @@ const EventHeader: React.FC = () => {
         onClear={() => setKeyword('')}
         onSearch={handleSearch}
         onKeyPress={e => {
-          if (e.code === 'Enter') handleSearch(keyword);
+          if (e.code === 'Enter' || e.code === 'NumpadEnter') handleSearch(keyword);
         }}
       />
     </EventHeaderContainer>
