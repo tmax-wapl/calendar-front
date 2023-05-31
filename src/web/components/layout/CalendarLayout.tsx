@@ -13,7 +13,7 @@ const CalendarLayout: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const personaStore = usePersonaStore();
   const { selectedPersona } = useUserStore();
-  const { handleShareWs, handleUpdateWs, handleDeleteWs } = useWebSocket();
+  const { handleShareWs, handleCreateWs, handleUpdateWs, handleDeleteWs } = useWebSocket();
 
   useEffect(() => {
     const fetchCalendarList = async () => {
@@ -23,11 +23,13 @@ const CalendarLayout: React.FC = () => {
     };
     fetchCalendarList();
     personaStore.getWsClient(selectedPersona.id).addHandler('SHARE_EVENT', handleShareWs);
+    personaStore.getWsClient(selectedPersona.id).addHandler('CREATE_EVENT', handleCreateWs);
     personaStore.getWsClient(selectedPersona.id).addHandler('UPDATE_EVENT', handleUpdateWs);
     personaStore.getWsClient(selectedPersona.id).addHandler('DELETE_EVENT', handleDeleteWs);
     calendarStore.setDefaultColor(selectedPersona.color);
     return () => {
       personaStore.getWsClient(selectedPersona.id).removeHandler('SHARE_EVENT');
+      personaStore.getWsClient(selectedPersona.id).removeHandler('CREATE_EVENT');
       personaStore.getWsClient(selectedPersona.id).removeHandler('UPDATE_EVENT');
       personaStore.getWsClient(selectedPersona.id).removeHandler('DELETE_EVENT');
     };

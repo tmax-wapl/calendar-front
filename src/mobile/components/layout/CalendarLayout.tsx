@@ -18,7 +18,7 @@ const CalendarLayout = () => {
   const { calendarStore, uiStore } = useCalendarStores();
   const { personaStore, userStore } = useCoreStore();
   const navigate = useNavigate();
-  const { handleShareWs, handleUpdateWs, handleDeleteWs } = useWebSocket(true);
+  const { handleShareWs, handleCreateWs, handleUpdateWs, handleDeleteWs } = useWebSocket(true);
 
   const handleSearchClick = () => {
     navigate('/search');
@@ -53,11 +53,13 @@ const CalendarLayout = () => {
     };
     fetchCalendarList();
     personaStore.getWsClient(userStore.selectedPersona.id).addHandler('SHARE_EVENT', handleShareWs);
+    personaStore.getWsClient(userStore.selectedPersona.id).addHandler('CREATE_EVENT', handleCreateWs);
     personaStore.getWsClient(userStore.selectedPersona.id).addHandler('UPDATE_EVENT', handleUpdateWs);
     personaStore.getWsClient(userStore.selectedPersona.id).addHandler('DELETE_EVENT', handleDeleteWs);
     calendarStore.setDefaultColor(userStore.selectedPersona.color);
     return () => {
       personaStore.getWsClient(userStore.selectedPersona.id).removeHandler('SHARE_EVENT');
+      personaStore.getWsClient(userStore.selectedPersona.id).removeHandler('CREATE_EVENT');
       personaStore.getWsClient(userStore.selectedPersona.id).removeHandler('UPDATE_EVENT');
       personaStore.getWsClient(userStore.selectedPersona.id).removeHandler('DELETE_EVENT');
     };

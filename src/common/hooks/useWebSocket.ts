@@ -24,6 +24,10 @@ export const useWebSocket = (isMobile = false) => {
     uiStore.changeDateRange();
   };
 
+  const handleCreateWs = (jsonMessage: JsonMessage) => {
+    uiStore.changeDateRange();
+  };
+
   const handleUpdateWs = async (jsonMessage: JsonMessage) => {
     if (calendarStore.eventList.find(event => +event.id === jsonMessage?.eventId)) uiStore.changeDateRange();
     if (uiStore.isDetail && +eventStore.event.id === jsonMessage?.eventId) {
@@ -44,6 +48,7 @@ export const useWebSocket = (isMobile = false) => {
 
   return {
     handleShareWs,
+    handleCreateWs,
     handleUpdateWs,
     handleDeleteWs,
   };
