@@ -36,9 +36,7 @@ const InfiniteScrollLoop = ({
       clearTimeout(isScrolling);
       isScrolling = setTimeout(() => {
         onValueChange(
-          Math.floor(
-            ((scrollRef.current.scrollTop + Math.floor(visibleCount / 2) * itemHeight) / itemHeight) % itemCount,
-          ),
+          Math.floor(((scrollRef.current.scrollTop + (visibleCount * itemHeight) / 2) / itemHeight) % itemCount),
         );
       }, 200);
     }
