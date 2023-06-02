@@ -124,6 +124,10 @@ const RepeatInfo = ({
     else setIntervals(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
   }, [rrule?.freq]);
 
+  useEffect(() => {
+    setRepeatToggle(rrule ? true : false);
+  }, [rrule]);
+
   return (
     <RepeatInfoContainer>
       <ItemContainer onClick={handleOpen}>
