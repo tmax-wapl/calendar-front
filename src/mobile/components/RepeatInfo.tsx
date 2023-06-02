@@ -71,6 +71,7 @@ const RepeatInfo = ({
 
   const handleRepeatSwitch = () => {
     if (repeatToggle) onRRuleChange(undefined);
+    else onRRuleChange({ interval: 1, freq: 2, byweekday: [startDate.weekday - 1] });
     setRepeatToggle(!repeatToggle);
   };
 
