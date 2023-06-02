@@ -5744,7 +5744,7 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": 0.4.93
+    "@wapl/core": 0.4.96
     "@wapl/ui": 0.2.35
     axios: ^0.27.2
     babel-loader: ^9.0.1
@@ -5777,6 +5777,7 @@ __metadata:
     react-swipeable: ^7.0.0
     rrule: ^2.7.1
     style-loader: ^3.3.1
+    swiper: ^9.3.2
     ts-loader: ^9.4.1
     tsconfig-paths-webpack-plugin: ^4.0.0
     typescript: ^4.8.4
@@ -5788,9 +5789,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:0.4.93":
-  version: 0.4.93
-  resolution: "@wapl/core@npm:0.4.93"
+"@wapl/core@npm:0.4.96":
+  version: 0.4.96
+  resolution: "@wapl/core@npm:0.4.96"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
     "@wapl/ui": ^0.2.35
@@ -5822,7 +5823,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: f420700f2938241b5912cde2a292e1d6137afc1bbb0221685463e3c1853eb73ea0f69f1494c442c1b3af8e370c331c3be7dba36840ada1e59506d87a3509b821
+  checksum: e0536cf8d4a827a0dd22c02e77dc872f90085d3151fb1b62646f66a281e6ae880e680a248c6e8b2121a5953880e956035f0eee8c48e9407549e8c066fa2b93ce
   languageName: node
   linkType: hard
 
@@ -19596,6 +19597,15 @@ __metadata:
     dom7: ^4.0.4
     ssr-window: ^4.0.2
   checksum: 7b790b897c4aeb616cae02517a1137dc3f8d552bcc3ecb2942ddf8e4ae75f2efeb28816d3d4e648248c3a24eb3611f2700f555372c15f7163cc2434da3ef8317
+  languageName: node
+  linkType: hard
+
+"swiper@npm:^9.3.2":
+  version: 9.3.2
+  resolution: "swiper@npm:9.3.2"
+  dependencies:
+    ssr-window: ^4.0.2
+  checksum: 9ccb6a0ef67d71ac780d7d1f3b2c2daf6f1846d3df8810aff6dcb8501c87b7769540a869cdd83eb902e5278396e5379cb32d9ed397234f7700ef55f0209f4592
   languageName: node
   linkType: hard
 
