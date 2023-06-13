@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoadingSpinner, SearchField } from '@wapl/ui';
+import { SearchField } from '@wapl/ui';
 import { EventModel } from '@/stores';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import {
@@ -10,6 +10,7 @@ import {
   TextButton,
 } from './EventSearchView.style';
 import SearchEventList from './SearchEventList';
+import { Loader } from '@/common/components/Loader';
 
 interface SearchResult {
   eventMap: Map<string, Map<string, EventModel[]>>;
@@ -89,7 +90,7 @@ const EventSearchView = () => {
         <TextButton onClick={handleCancelClick}>취소</TextButton>
       </SearchFieldContainer>
       {isLoading ? (
-        <LoadingSpinner />
+        <Loader />
       ) : (
         <SearchEventList
           searchEventMap={searchResult?.eventMap || new Map()}

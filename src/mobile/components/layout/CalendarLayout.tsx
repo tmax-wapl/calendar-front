@@ -11,6 +11,7 @@ import { useWebSocket } from '@common/hooks';
 import { Observer } from 'mobx-react-lite';
 import PageRoutes from './PageRoutes';
 import FAB from '../FAB';
+import { Loader } from '@/common/components/Loader';
 
 const CalendarLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -68,9 +69,7 @@ const CalendarLayout = () => {
   return (
     <>
       {isLoading ? (
-        <LoadingWrapper>
-          <Icon.LoadingMotion />
-        </LoadingWrapper>
+        <Loader />
       ) : (
         <ContentWrapper>
           <MainHeader title="캘린더" leftSide={headerLeftSide} rightSide={headerRightSide} />
@@ -84,14 +83,6 @@ const CalendarLayout = () => {
 };
 
 export default CalendarLayout;
-
-const LoadingWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-`;
 
 const ContentWrapper = styled.div`
   height: 100%;

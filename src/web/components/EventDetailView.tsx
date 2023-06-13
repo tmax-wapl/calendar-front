@@ -9,7 +9,6 @@ import {
   FromInfoContainer,
   FromInfo,
   Creator,
-  Loading,
   LoadingDescription,
 } from './EventDetailView.style';
 import { EventModel } from '@/stores';
@@ -18,6 +17,7 @@ import EventItem from './EventItem';
 import { Participants, Location, Notifications, Description, Attachments } from '@common/components/EventInfoItem';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EVENT_UPDATE_OPTION } from '@common/constants';
+import { Loader } from '@/common/components/Loader';
 
 interface OutletProps {
   isEventUpdating: boolean;
@@ -187,14 +187,13 @@ const EventDetailView = () => {
         )}
       </Observer>
       {isEventUpdating ? (
-        <Loading>
-          <Icon.LoadingMotion color="#8e8e8e" width={24} height={24} />
+        <Loader>
           <LoadingDescription>
             일정 생성 및 수정이 완료될 때까지,
             <br />
             잠시 기다려 주세요.
           </LoadingDescription>
-        </Loading>
+        </Loader>
       ) : (
         <EventDetailContainer>
           <Observer>{() => <EventItem event={eventStore.event} isDetail />}</Observer>

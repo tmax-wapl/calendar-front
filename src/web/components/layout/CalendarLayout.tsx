@@ -6,6 +6,7 @@ import { Icon } from '@wapl/ui';
 import { Outlet } from 'react-router-dom';
 import { usePersonaStore, useUserStore } from '@wapl/core';
 import { useWebSocket } from '@common/hooks';
+import { Loader } from '@/common/components/Loader';
 
 const CalendarLayout: React.FC = () => {
   const { userId } = useContext(CalendarContext);
@@ -38,9 +39,7 @@ const CalendarLayout: React.FC = () => {
   return (
     <>
       {isLoading ? (
-        <div style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-          <Icon.LoadingMotion />
-        </div>
+        <Loader />
       ) : (
         <div style={{ display: 'flex', width: '100%', height: '100%' }}>
           <LNB />
