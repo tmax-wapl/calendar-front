@@ -4,12 +4,12 @@ import { autorun } from 'mobx';
 import { DateTime } from 'luxon';
 import { EventModel } from '@/stores';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { LoadingSpinner } from '@wapl/ui';
 import { isSameDate } from '@/utils';
 import { EventSearchViewContainer, EventListWrapper } from './EventSearchView.style';
 import DateInfo from './DateInfo';
 import EventItem from './EventItem';
 import NoResult from './NoResult';
+import { Loader } from '@/common/components/Loader';
 
 const EventSearchView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -57,7 +57,7 @@ const EventSearchView = () => {
   return (
     <EventSearchViewContainer>
       {isLoading ? (
-        <LoadingSpinner />
+        <Loader />
       ) : (
         <>
           {Array.from(searchEventMap).map(([date, eventList], index) => (
