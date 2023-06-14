@@ -11,7 +11,7 @@ import { CalendarContext } from '@/common/contexts/CalendarContext';
 const RoomCalendarList = observer(({ title, roomType }: { title: string; roomType: 'private' | 'org' }) => {
   const { userId } = useContext(CalendarContext);
   const [visible, setVisible] = useState(true);
-  const { calendarStore } = useCalendarStores();
+  const { calendarStore, uiStore } = useCalendarStores();
   const roomCalendarList = JSON.parse(localStorage.getItem('RoomCalendarList'));
   const [checkFlag, setCheckFlag] = useState((roomCalendarList[`${userId}_${roomType}`] as boolean) ?? true);
 
@@ -31,6 +31,7 @@ const RoomCalendarList = observer(({ title, roomType }: { title: string; roomTyp
     } = e;
     calendarStore.toggleRoomCalendarCheckAll(userId, roomType, checked);
     setCheckFlag(checked);
+    uiStore.changeDateRange();
   };
 
   return (
@@ -38,13 +39,13 @@ const RoomCalendarList = observer(({ title, roomType }: { title: string; roomTyp
       {calendarStore.roomCalendarList?.some(cal => cal.type === roomType) ? (
         <RoomListContainer>
           <Title>
-            <CheckBoxWrapper
+            {/* <CheckBoxWrapper
               calendarcolor={calendarStore.defaultColor}
               control={<Checkbox checked={checkFlag} onChange={handleCheckAllChange} />}
               label={''}
               type={roomType}
               sx={{ width: '28px !important;' }}
-            />
+            /> */}
             {title}
             <ArrowButton onClick={() => setVisible(!visible)}>
               {visible ? (
