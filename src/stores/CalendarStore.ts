@@ -169,6 +169,11 @@ export default class CalendarStore {
     }
   }
 
+  setLocalStorage(params: unknown) {
+    const settingString = JSON.stringify(params);
+    localStorage.setItem('RoomCalendarList', settingString);
+  }
+
   setLocalRoomCalendarList(personaId: number, roomList: Partial<CalendarDTO>[]) {
     let setting = JSON.parse(localStorage.getItem('RoomCalendarList'));
     if (!setting) {
@@ -178,8 +183,7 @@ export default class CalendarStore {
       setting[personaId] = [];
     }
     setting[personaId] = roomList;
-    const settingString = JSON.stringify(setting);
-    localStorage.setItem('RoomCalendarList', settingString);
+    this.setLocalStorage(setting);
     this.setRoomCalendarList(roomList.map(room => new CalendarModel(room)));
   }
 
@@ -193,9 +197,7 @@ export default class CalendarStore {
         );
       } else roomCalenarList[personaId] = [...roomCalenarList[personaId], roomItem];
 
-      const settingString = JSON.stringify(roomCalenarList);
-
-      localStorage.setItem('RoomCalendarList', settingString);
+      this.setLocalStorage(roomCalenarList);
     }
   }
 
@@ -213,5 +215,43 @@ export default class CalendarStore {
     );
     this.setRoomCalendarList(filteredRoomList);
     this.setInitialLocalRoomCalendarList(userId);
+  }
+
+  toggleRoomCalendarCheckAll(personaId: number, type: 'private' | 'org', checkFlag: boolean) {
+    const roomCalendarList = JSON.parse(localStorage.getItem('RoomCalendarList'));
+    this.roomCalendarListCheckAll(personaId, roomCalendarList, type, checkFlag);
+  }
+
+  roomCalendarListCheckAll(
+    personaId: number,
+    roomCalendarList: { [key: number]: CalendarDTO[] },
+    type: 'private' | 'org',
+    checkFlag: boolean,
+  ) {
+    const changeRoomList = this.roomCalendarList.map(room => {
+      if (room.type === type) {
+        if (!roomCalendarList[personaId]?.some((filteredRoom: CalendarDTO) => filteredRoom.id === room.id)) {
+          this.addLocalRoomCalendarItem(personaId, { ...room.dto, checkFlag });
+          return { ...room.dto, checkFlag };
+        }
+        this.setLocalRoomCalendarListCheckAll(personaId, roomCalendarList, type, checkFlag);
+        return { ...room.dto, checkFlag };
+      }
+      return { ...room.dto };
+    });
+    this.setRoomCalendarList(changeRoomList?.map(room => new CalendarModel(room)));
+  }
+
+  setLocalRoomCalendarListCheckAll(
+    personaId: number,
+    roomCalendarList: { [key: number | string]: CalendarDTO[] | boolean },
+    type: 'private' | 'org',
+    checkFlag: boolean,
+  ) {
+    roomCalendarList[personaId] = (roomCalendarList[personaId] as CalendarDTO[])?.map((room: CalendarDTO) =>
+      room.type === type ? { ...room, checkFlag } : room,
+    );
+    roomCalendarList[`${personaId}_${type}`] = checkFlag;
+    this.setLocalStorage(roomCalendarList);
   }
 }
