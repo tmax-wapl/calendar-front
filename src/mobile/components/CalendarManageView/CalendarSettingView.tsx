@@ -206,7 +206,7 @@ const CalendarSettingView = observer(() => {
         onClose={handleColorPickerClose}
         onClick={handleColorClick}
         Component={ColorItem}
-        isColor
+        isColor={false}
       />
     </>
   );
