@@ -99,7 +99,7 @@ export const ContextMenu = () => {
             <ColorPicker color={color} onClick={color => handleColorClick(color)} />
           </Mui.MenuItem>
         )}
-        <ContextMenuItem id={id} type={type} date={date} onClose={handleClose} />
+        <ContextMenuItem id={id} type={type} date={date} data={data} onClose={handleClose} />
       </Mui.Menu>
     </div>
   );

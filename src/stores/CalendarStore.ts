@@ -217,41 +217,14 @@ export default class CalendarStore {
     this.setInitialLocalRoomCalendarList(userId);
   }
 
-  toggleRoomCalendarCheckAll(personaId: number, type: 'private' | 'org', checkFlag: boolean) {
-    const roomCalendarList = JSON.parse(localStorage.getItem('RoomCalendarList'));
-    this.roomCalendarListCheckAll(personaId, roomCalendarList, type, checkFlag);
-  }
-
-  roomCalendarListCheckAll(
-    personaId: number,
-    roomCalendarList: { [key: number]: CalendarDTO[] },
-    type: 'private' | 'org',
-    checkFlag: boolean,
-  ) {
+  roomCalendarListCheckAll(personaId: number, type: 'private' | 'org', checkFlag: boolean) {
     const changeRoomList = this.roomCalendarList.map(room => {
       if (room.type === type) {
-        if (!roomCalendarList[personaId]?.some((filteredRoom: CalendarDTO) => filteredRoom.id === room.id)) {
-          this.addLocalRoomCalendarItem(personaId, { ...room.dto, checkFlag });
-          return { ...room.dto, checkFlag };
-        }
-        this.setLocalRoomCalendarListCheckAll(personaId, roomCalendarList, type, checkFlag);
+        this.addLocalRoomCalendarItem(personaId, { ...room.dto, checkFlag });
         return { ...room.dto, checkFlag };
       }
       return { ...room.dto };
     });
     this.setRoomCalendarList(changeRoomList?.map(room => new CalendarModel(room)));
-  }
-
-  setLocalRoomCalendarListCheckAll(
-    personaId: number,
-    roomCalendarList: { [key: number | string]: CalendarDTO[] | boolean },
-    type: 'private' | 'org',
-    checkFlag: boolean,
-  ) {
-    roomCalendarList[personaId] = (roomCalendarList[personaId] as CalendarDTO[])?.map((room: CalendarDTO) =>
-      room.type === type ? { ...room, checkFlag } : room,
-    );
-    roomCalendarList[`${personaId}_${type}`] = checkFlag;
-    this.setLocalStorage(roomCalendarList);
   }
 }

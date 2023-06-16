@@ -4,7 +4,7 @@ import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { CalendarModel } from '@/stores/model/CalendarModel';
 import { Checkbox, Icon, Tooltip } from '@wapl/ui';
-import { ItemContainer, CheckBoxWrapper, ButtonWarpper, ErrorIcon } from './Item.style';
+import { ItemContainer, CheckBoxWrapper, ButtonWrapper, ErrorIcon } from './Item.style';
 
 interface Props {
   calendar: CalendarModel;
@@ -52,9 +52,9 @@ const Item = observer(({ calendar }: Props) => {
           )}
         </>
       )}
-      <ButtonWarpper onClick={() => handleCalendarClick(calendar)}>
+      <ButtonWrapper onClick={() => handleCalendarClick(calendar)}>
         <Icon.MoreLine width={20} height={20} color="#BDC1C6" />
-      </ButtonWarpper>
+      </ButtonWrapper>
     </ItemContainer>
   );
 });

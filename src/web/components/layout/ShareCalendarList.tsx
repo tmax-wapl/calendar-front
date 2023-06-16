@@ -26,7 +26,6 @@ const ShareCalendarList = observer(() => {
         <ShareListContainer>
           {calendarStore.roomCalendarList.length > 0 && (
             <Title>
-              공유 받은 캘린더
               <ArrowButton onClick={() => setVisible(!visible)}>
                 {visible ? (
                   <Icon.ArrowTopLine width={16} height={16} color="#80868B" />
@@ -34,6 +33,7 @@ const ShareCalendarList = observer(() => {
                   <Icon.ArrowBottomLine width={16} height={16} color="#80868B" />
                 )}
               </ArrowButton>
+              공유 받은 캘린더
             </Title>
           )}
           {visible &&

@@ -5,6 +5,7 @@ import EventBar from '../header/EventBar';
 interface Props {
   open: boolean;
   title: string;
+  height?: number;
   selected: string;
   isColor?: boolean;
   items: { value: string; label: string }[];
@@ -16,6 +17,7 @@ interface Props {
 export const ContextMenu = ({
   open,
   title,
+  height,
   selected = '',
   isColor = false,
   items,
@@ -26,11 +28,11 @@ export const ContextMenu = ({
   return (
     <WaplContextMenu open={open} onClose={onClose}>
       <EventBar title={title} leftSide={[{ action: 'close', onClick: onClose }]} />
-      <BodyWrapper>
-        <ContentWrapper style={{ padding: '0 18px', minHeight: '575px' }}>
+      <BodyWrapper height={height}>
+        <ContentWrapper style={{ padding: '0 18px', minHeight: height ? `${height}px` : '575px' }}>
           {items.map(({ value, label }: { value: string; label: string }) => (
             <ItemWrapper isColor={isColor} key={value} onClick={() => onClick(value)}>
-              <Component color={value} label={label} />
+              <Component color={value as string} label={label} />
               <Selected selected={value === selected} />
             </ItemWrapper>
           ))}

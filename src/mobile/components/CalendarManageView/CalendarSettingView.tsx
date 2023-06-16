@@ -10,7 +10,6 @@ import {
   IconButton,
   Input,
   SettingItem,
-  Divider,
   DotIcon,
 } from './CalendarSettingView.style';
 import { ColorItemContent } from '../ColorPicker/ColorPicker.style';
@@ -134,7 +133,6 @@ const CalendarSettingView = () => {
           <DotIcon color={calColor || ''} width={20} height={20} className="mr-8" />
           {colors.find(color => color.value === calColor).label}
         </SettingItem>
-        {/* <Divider /> */}
       </CalendarSettingViewContainer>
       <ContextMenu
         open={isColorPickerOpen}

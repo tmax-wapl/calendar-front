@@ -18,8 +18,12 @@ export const FilterName = styled(Title)`
 `;
 
 export const IconButton = styled(Mui.IconButton)`
-  width: 28px;
+  width: 20px;
   height: 28px;
-  margin-left: auto;
+  margin-right: 7.5px;
   padding: 0;
+`;
+
+export const TitleSpan = styled.span`
+  margin-right: auto;
 `;

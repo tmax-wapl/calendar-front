@@ -1,7 +1,7 @@
 import { styled } from '@wapl/ui';
 
-export const BodyWrapper = styled.div`
-  max-height: 640px;
+export const BodyWrapper = styled.div<{ height?: number }>`
+  max-height: ${({ height }) => (height ? height : 640)}px;
   overflow: auto;
 `;
 

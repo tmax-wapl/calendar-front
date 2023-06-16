@@ -31,10 +31,10 @@ const SharedCalendarList = observer(() => {
         <SharedCalendarListContainer>
           {calendarStore.roomCalendarList.length > 0 && (
             <FilterName>
-              공유 받은 캘린더
               <IconButton onClick={() => setOpen(!isOpen)}>
                 <ExpandIcon />
               </IconButton>
+              공유 받은 캘린더
             </FilterName>
           )}
           {isOpen &&
