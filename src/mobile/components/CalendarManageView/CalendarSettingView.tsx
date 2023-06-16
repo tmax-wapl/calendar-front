@@ -142,7 +142,7 @@ const CalendarSettingView = () => {
         onClose={handleColorPickerClose}
         onClick={handleColorClick}
         Component={ColorItem}
-        isColor
+        isColor={false}
       />
     </>
   );
