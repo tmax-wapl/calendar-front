@@ -13,13 +13,13 @@ export const FilterName = styled.div`
   color: ${({ theme: { Color } }) => Color.Gray[600]};
 `;
 
-export const AddButton = styled(Mui.IconButton)`
-  width: 28px;
+export const IconButton = styled(Mui.IconButton)`
+  width: 20px;
   height: 28px;
-  margin-left: auto;
+  margin-right: 7.5px;
   padding: 0;
 `;
 
-export const MenuContent = styled.div`
-  display: flex;
+export const TitleSpan = styled.span`
+  margin-right: auto;
 `;

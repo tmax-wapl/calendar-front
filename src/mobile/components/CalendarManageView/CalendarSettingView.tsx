@@ -12,7 +12,6 @@ import {
   IconWrapper,
   Input,
   SettingItem,
-  Divider,
   DotIcon,
 } from './CalendarSettingView.style';
 import { ColorItemContent } from '../ColorPicker/ColorPicker.style';
@@ -198,19 +197,6 @@ const CalendarSettingView = observer(() => {
           <DotIcon color={calColor || ''} width={20} height={20} className="mr-8" />
           {colors.find(color => color.value === calColor).label}
         </SettingItem>
-        <Divider />
-        {type === 'url' && (
-          <SettingItem onClick={handleCalendarSync}>
-            <Icon.RenewLine width={20} height={20} className="mr-8" />
-            캘린더 동기화
-          </SettingItem>
-        )}
-        {type === 'url' && (
-          <SettingItem onClick={handleCalendarDelete}>
-            <Icon.DeleteLine width={20} height={20} className="mr-8" />
-            캘린더 삭제
-          </SettingItem>
-        )}
       </CalendarSettingViewContainer>
       <ContextMenu
         open={isColorPickerOpen}

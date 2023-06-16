@@ -33,10 +33,11 @@ interface Props {
     startdate?: string;
     enddate?: string;
   };
+  data?: any;
   onClose?: () => void;
 }
 
-export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
+export const ContextMenuItem = ({ id, type, date, data, onClose }: Props) => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore, eventStore } = useCalendarStores();
   const { isGuest } = useUserStore();
@@ -259,6 +260,11 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
     }
   };
 
+  const handleSelectAll = (checkFlag = true) => {
+    calendarStore.roomCalendarListCheckAll(userId, data, checkFlag);
+    uiStore.changeDateRange();
+  };
+
   const actions = {
     renameCalendar: {
       label: '이름 변경',
@@ -293,6 +299,18 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
       onClick: handleRoomCalendarDelete,
       icon: <Icon.DeleteLine width={16} height={16} className="mr-8" />,
     },
+    selectAll: [
+      {
+        label: '전체 선택',
+        onClick: () => handleSelectAll(),
+        icon: <Icon.SelectLine width={16} height={16} className="mr-8 mt-2" />,
+      },
+      {
+        label: '전체 선택 해제',
+        onClick: () => handleSelectAll(false),
+        icon: <Icon.UnselectLine width={16} height={16} className="mr-8 mt-2" />,
+      },
+    ],
   };
 
   const menuItems = (() => {
@@ -314,6 +332,8 @@ export const ContextMenuItem = ({ id, type, date, onClose }: Props) => {
         return [actions.updateEvent, actions.shareEvent, actions.deleteEvent];
       case 'shareEvent':
         return [actions.deleteEvent];
+      case 'selectAll':
+        return actions.selectAll;
       default:
         return [];
     }

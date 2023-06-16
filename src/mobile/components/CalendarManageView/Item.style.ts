@@ -36,7 +36,7 @@ export const ErrorIcon = styled(Icon.ErrorLine)`
   margin: 0px 4px 0px 12px;
 `;
 
-export const ButtonWarpper = styled(Mui.IconButton)`
+export const ButtonWrapper = styled(Mui.IconButton)`
   width: 28px;
   height: 28px;
   padding: 0px;

@@ -13,13 +13,15 @@ export const Title = styled.div`
   border-radius: 8px;
   align-items: center;
   box-sizing: border-box;
+  margin-right: auto;
+  cursor: default;
   ${({ theme: { Font } }) => Font.Text.m.Regular};
 `;
 
 export const AddButton = styled(Mui.IconButton)`
-  width: 28px;
-  height: 28px;
-  margin-left: auto;
+  width: 20px;
+  height: 20px;
+  margin-right: 7.5px;
   padding: 0;
 `;
 
@@ -44,4 +46,11 @@ export const OtherTitle = styled.div`
   cursor: default;
   ${({ theme: { Font } }) => Font.Text.xs.Regular};
   color: ${({ theme: { Color } }) => Color.Gray[600]};
+  &:hover {
+    background-color: ${({ theme: { Color } }) => Color.Black[4]};
+    svg,
+    button {
+      display: flex;
+    }
+  }
 `;
