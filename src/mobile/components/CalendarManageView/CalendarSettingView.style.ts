@@ -56,3 +56,16 @@ export const DotIcon = styled(Icon.CalendarDotFill)<{ color: string }>`
     stroke-linecap: round;
   }
 `;
+
+export const Toast = styled(Mui.Snackbar)`
+  left: 16px;
+  right: 16px;
+  bottom: 12px;
+  .MuiPaper-root {
+    height: 36px;
+    display: flex;
+    box-sizing: border-box;
+    padding: 0 16px;
+    background: ${({ theme: { Color } }) => Color.Black[70]};
+  }
+`;
