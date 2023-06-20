@@ -1,4 +1,4 @@
-import { styled, TextField, Button } from '@wapl/ui';
+import { styled, Button, Mui, TextField } from '@wapl/ui';
 
 export const UrlSubscribeViewContainer = styled.div`
   display: flex;
@@ -19,6 +19,10 @@ export const Input = styled(TextField)`
   }
 `;
 
+export const IconButton = styled(Mui.IconButton)`
+  padding: 0px;
+`;
+
 export const Description = styled.span`
   margin-top: 10px;
   color: ${({ theme: { Color } }) => Color.Gray[600]};
@@ -37,4 +41,17 @@ export const AddButton = styled(Button)`
   width: 100%;
   height: 48px;
   ${({ theme: { Font } }) => Font.Text.l.Regular};
+`;
+
+export const Toast = styled(Mui.Snackbar)`
+  left: 16px;
+  right: 16px;
+  bottom: 76px;
+  .MuiPaper-root {
+    height: 36px;
+    display: flex;
+    box-sizing: border-box;
+    padding: 0 16px;
+    background: ${({ theme: { Color } }) => Color.Black[70]};
+  }
 `;

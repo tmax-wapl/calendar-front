@@ -1,6 +1,6 @@
-import { Icon, useWaplUiStore, Mui } from '@wapl/ui';
+import { Icon } from '@wapl/ui';
 import { useEffect, useRef, useState, memo, useContext } from 'react';
-import { observer } from 'mobx-react-lite';
+import { Observer } from 'mobx-react-lite';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { ColorItem as colors } from '@/common';
@@ -9,25 +9,29 @@ import EventBar from '../header/EventBar';
 import {
   CalendarSettingViewContainer,
   CalendarName,
-  IconWrapper,
+  IconButton,
   Input,
   SettingItem,
   DotIcon,
+  Divider,
+  Toast,
 } from './CalendarSettingView.style';
 import { ColorItemContent } from '../ColorPicker/ColorPicker.style';
-import { CalendarModel, EventModel } from '@/stores';
-import { ContextMenu } from '../ContextMenu';
+import { EventModel, CalendarModel } from '@/stores';
+import { ContextMenu } from '@mcomponents/ContextMenu';
 
-const CalendarSettingView = observer(() => {
+const CalendarSettingView = () => {
   const { userId } = useContext(CalendarContext);
   const { uiStore, calendarStore } = useCalendarStores();
-  const {
-    toast: { notify },
-  } = useWaplUiStore();
-  const { id, roomId, name, type, mainFlag, color, subscribeStatus } = calendarStore.calendar;
+  const { id, roomId, name, type, color } = calendarStore.calendar;
   const calColor = colors.some(item => item.color === color) ? color : '';
   const [isEdit, setEdit] = useState<boolean>(false);
   const [isColorPickerOpen, setColorPickerOpen] = useState<boolean>(false);
+  const [toastState, setToastState] = useState({
+    toastOpen: false,
+    toastText: '',
+  });
+  const { toastOpen, toastText } = toastState;
   const [value, setValue] = useState<string>(name);
   const inputRef = useRef(null);
 
@@ -58,7 +62,7 @@ const CalendarSettingView = observer(() => {
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   });
 
-  const handleBack = () => {
+  const handleBackClick = () => {
     uiStore.setPageDialogInfo('calendarManage');
   };
 
@@ -100,11 +104,16 @@ const CalendarSettingView = observer(() => {
     handleColorPickerClose();
   };
 
+  const closeDialog = () => {
+    uiStore.setDialogInfo(null);
+  };
+
   const handleCalendarSync = async () => {
     try {
       const { start, end } = uiStore.dateRange;
       const iCalendar = await calendarStore.syncCalendar(id, start, end);
-      if (iCalendar.subscribeStatus === 'success') notify(`${iCalendar.name} 캘린더 동기화가 성공하였습니다.`);
+      if (iCalendar.subscribeStatus === 'success')
+        setToastState({ toastOpen: true, toastText: `${iCalendar.name} 캘린더 동기화가 성공하였습니다.` });
       else if (iCalendar.subscribeStatus === 'fail') {
         calendarStore.setCalendar(new CalendarModel(iCalendar));
         uiStore.setDialogInfo({
@@ -125,38 +134,19 @@ const CalendarSettingView = observer(() => {
   const deleteCalendar = async () => {
     await calendarStore.deleteCalendar(id);
     closeDialog();
-    handleBack();
+    uiStore.setPageDialogInfo('calendarManage');
   };
 
   const handleCalendarDelete = () => {
     uiStore.setDialogInfo({
-      action: type === 'url' ? 'subscriptionDelete' : 'calendarDelete',
+      action: 'subscriptionDelete',
       onClick: [closeDialog, deleteCalendar],
     });
   };
 
-  const deleteRoomCalendar = async () => {
-    const newRoomList = calendarStore.roomCalendarList
-      ?.filter((room: CalendarModel) => room.roomId !== roomId)
-      .map(room => room.dto);
-    calendarStore.setLocalRoomCalendarList(userId, newRoomList);
-    closeDialog();
-    handleBack();
-    uiStore.changeDateRange();
-  };
-
-  const handleRoomCalendarDelete = () => {
-    uiStore.setDialogInfo({
-      action: 'roomCalendarDelete',
-      onClick: [closeDialog, deleteRoomCalendar],
-    });
-  };
-
-  const closeDialog = () => uiStore.setDialogInfo(null);
-
   return (
     <>
-      <EventBar title="캘린더 설정" leftSide={[{ action: 'back', onClick: handleBack }]} />
+      <EventBar title="캘린더 설정" leftSide={[{ action: 'back', onClick: handleBackClick }]} />
       <CalendarSettingViewContainer>
         {isEdit ? (
           <Input
@@ -164,6 +154,7 @@ const CalendarSettingView = observer(() => {
             ref={inputRef}
             variant="filled"
             visibleClear
+            autoFocus
             limit={50}
             value={value}
             onChange={e => {
@@ -181,23 +172,46 @@ const CalendarSettingView = observer(() => {
         ) : (
           <CalendarName>
             {name}
-            <IconWrapper>
-              {type === 'url' && (
-                <>{subscribeStatus !== 'success' && <Icon.ErrorLine width={20} height={20} color=" #F44336" />}</>
-              )}
-              {!['share', 'org'].includes(type) && (
-                <Mui.IconButton onClick={() => setEdit(true)}>
-                  <Icon.EditLine color="#BDC1C6" width={20} height={20} />
-                </Mui.IconButton>
-              )}
-            </IconWrapper>
+            <Observer>
+              {() =>
+                type === 'url' &&
+                calendarStore.calendar.subscribeStatus !== 'success' && (
+                  <Icon.ErrorLine width={20} height={20} color=" #F44336" className="ml-4" />
+                )
+              }
+            </Observer>
+            {!['share', 'org'].includes(type) && (
+              <IconButton onClick={() => setEdit(true)}>
+                <Icon.EditLine color="#BDC1C6" width={20} height={20} />
+              </IconButton>
+            )}
           </CalendarName>
         )}
         <SettingItem onClick={handleColorPickerOpen}>
           <DotIcon color={calColor || ''} width={20} height={20} className="mr-8" />
           {colors.find(color => color.value === calColor).label}
         </SettingItem>
+        {['url'].includes(type) && (
+          <>
+            <Divider />
+            <SettingItem onClick={handleCalendarSync}>
+              <Icon.RenewLine width={20} height={20} className="mr-8" />
+              캘린더 동기화
+            </SettingItem>
+            <SettingItem onClick={handleCalendarDelete}>
+              <Icon.DeleteLine width={20} height={20} className="mr-8" />
+              캘린더 삭제
+            </SettingItem>
+          </>
+        )}
       </CalendarSettingViewContainer>
+      <Toast
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={toastOpen}
+        onClose={() => setToastState({ ...toastState, toastOpen: false })}
+        message={toastText}
+        autoHideDuration={4000}
+      />
       <ContextMenu
         open={isColorPickerOpen}
         selected={calColor}
@@ -210,6 +224,6 @@ const CalendarSettingView = observer(() => {
       />
     </>
   );
-});
+};
 
 export default CalendarSettingView;

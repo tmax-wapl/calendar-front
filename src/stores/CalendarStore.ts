@@ -227,4 +227,13 @@ export default class CalendarStore {
     });
     this.setRoomCalendarList(changeRoomList?.map(room => new CalendarModel(room)));
   }
+
+  sharedCalendarListCheckAll(checkFlag: boolean) {
+    this.calendarList
+      .filter(({ type }) => ['share', 'url'].includes(type))
+      .map(calendar => {
+        this.updateCalendar(calendar.id, { checkFlag });
+        this.updateCalendarChecked(calendar.id, checkFlag);
+      });
+  }
 }
