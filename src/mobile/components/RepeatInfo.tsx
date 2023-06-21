@@ -109,7 +109,10 @@ const RepeatInfo = ({
     if (eventStore.event.rrule?.freq === freq) return;
 
     onRRuleChange({
-      ...(freq > -1 && { interval: eventStore.event.rrule?.interval, freq }),
+      ...(freq > -1 && {
+        interval: eventStore.event.rrule?.interval < 100 ? eventStore.event.rrule?.interval : 1,
+        freq,
+      }),
       ...(freq === 2 && { byweekday: [startDate.weekday - 1] }),
     });
     onStartChange(freq > -1 ? startDate : undefined);
