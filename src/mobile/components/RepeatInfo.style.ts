@@ -32,26 +32,12 @@ export const RepeatIntervalInput = styled.input`
 export const PickerContainer = styled.div`
   display: flex;
   position: relative;
+  width: 100%;
   height: 126px;
-  padding: 0px 16px;
+  padding: 24px 16px;
   background: #f8f9fa;
   scrollbar-width: none;
-
-  div {
-    flex: 1;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-`;
-export const Selected = styled.span`
-  width: calc(100% - 32px);
-  position: absolute;
-  height: 46px;
-  top: 41px;
-  background: ${({ theme: { Color } }) => Color.Black[6]};
-  border-radius: 8px;
+  box-sizing: border-box;
 `;
 
 export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
