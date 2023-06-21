@@ -230,7 +230,7 @@ export default class CalendarStore {
 
   sharedCalendarListCheckAll(checkFlag: boolean) {
     this.calendarList
-      .filter(({ type }) => ['share', 'url'].includes(type))
+      .filter(({ type }) => ['share'].includes(type))
       .map(calendar => {
         this.updateCalendar(calendar.id, { checkFlag });
         this.updateCalendarChecked(calendar.id, checkFlag);

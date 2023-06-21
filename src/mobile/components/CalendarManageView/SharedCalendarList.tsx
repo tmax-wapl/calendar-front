@@ -19,7 +19,7 @@ const SharedCalendarList = observer(() => {
   const { calendarStore, uiStore } = useCalendarStores();
 
   const sortCalendarList = (): CalendarModel[] => {
-    const filteredCalendars = calendarStore.calendarList.filter(({ type }) => ['share', 'url'].includes(type)); // TODO: url추가
+    const filteredCalendars = calendarStore.calendarList.filter(({ type }) => ['share'].includes(type)); // TODO: url추가
     if (!filteredCalendars.length) return [];
     return filteredCalendars.sort((a, b) => new Date(b.regDate).getTime() - new Date(a.regDate).getTime());
   };
@@ -76,10 +76,10 @@ const SharedCalendarList = observer(() => {
           <ContextMenu
             open={isContextMenuOpen}
             selected=""
-            height={144}
+            height={104}
             title="더보기"
             items={[
-              { value: 'addSubscribe', label: '캘린더 추가' },
+              // { value: 'addSubscribe', label: '캘린더 추가' },
               { value: 'selectAll', label: '전체 선택' },
               {
                 value: 'deSelectAll',
