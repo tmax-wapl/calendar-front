@@ -80,6 +80,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["html-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.2.0"],\
             ["html-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:5.5.0"],\
             ["ignore-loader", "npm:0.1.2"],\
+            ["keen-slider", "npm:6.8.5"],\
             ["luxon", "npm:3.1.1"],\
             ["mobx", "npm:6.7.0"],\
             ["mobx-react", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.6.0"],\
@@ -10653,6 +10654,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["html-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.2.0"],\
             ["html-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:5.5.0"],\
             ["ignore-loader", "npm:0.1.2"],\
+            ["keen-slider", "npm:6.8.5"],\
             ["luxon", "npm:3.1.1"],\
             ["mobx", "npm:6.7.0"],\
             ["mobx-react", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.6.0"],\
@@ -20624,6 +20626,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/junk-npm-3.1.0-aa1fa701c6-6c4d68e8f8.zip/node_modules/junk/",\
           "packageDependencies": [\
             ["junk", "npm:3.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["keen-slider", [\
+        ["npm:6.8.5", {\
+          "packageLocation": "./.yarn/cache/keen-slider-npm-6.8.5-ecaa29641d-1ef25cde02.zip/node_modules/keen-slider/",\
+          "packageDependencies": [\
+            ["keen-slider", "npm:6.8.5"]\
           ],\
           "linkType": "HARD"\
         }]\
