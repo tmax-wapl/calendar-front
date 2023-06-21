@@ -61,8 +61,8 @@ const EventDetailView = () => {
   };
 
   const eventBarButtons = (event: EventModel): EventBarButton[] => {
-    if (event.subEvent || event.shareEvent || event.roomId) return;
-    // if (event.shareEvent) return [{ action: 'delete', onClick: handleDeleteClick }];
+    if (event.subEvent || event.roomId) return;
+    if (event.shareEvent) return [{ action: 'delete', onClick: handleDeleteClick }];
     return [
       { ...(!isGuest && { action: 'share', onClick: handleShareClick }) },
       { action: 'edit', onClick: handleEditClick },
