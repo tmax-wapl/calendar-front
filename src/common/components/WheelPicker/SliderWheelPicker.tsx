@@ -36,7 +36,7 @@ const SliderWheelPicker = ({
   const size = useRef(0);
   const options = useRef({
     slides: {
-      number: slides.length < 6 ? slides.length * 3 : slides.length,
+      number: loop && slides.length < 6 ? slides.length * 3 : slides.length,
       origin: loop ? 'center' : 'auto',
       perView: slidesPerView,
     },
@@ -68,7 +68,7 @@ const SliderWheelPicker = ({
   const slideValues = () => {
     if (!sliderState) return [];
     const offset = loop ? 1 / 2 - 1 / slidesPerView / 2 : 0;
-    return (slides.length < 6 ? slides.concat(slides, slides) : slides).map((value, index) => {
+    return (loop && slides.length < 6 ? slides.concat(slides, slides) : slides).map((value, index) => {
       const distance: number = (sliderState.slides[index].distance - offset) * slidesPerView;
       const rotate: number = Math.abs(distance) > wheelSize / 2 ? 180 : distance * (360 / wheelSize) * -1;
       const style = {
