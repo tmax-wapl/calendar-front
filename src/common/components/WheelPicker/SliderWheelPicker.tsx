@@ -99,16 +99,7 @@ const SliderWheelPicker = ({
             </WheelSlide>
           ))}
         </WheelSlides>
-        {label && (
-          <WheelLabel
-            style={{
-              transform: `translateZ(${radius}px)`,
-              WebkitTransform: `translateZ(${radius}px)`,
-            }}
-          >
-            {label}
-          </WheelLabel>
-        )}
+        {label && <WheelLabel>{label}</WheelLabel>}
       </WheelInner>
       <WheelShadowBottom
         style={{
