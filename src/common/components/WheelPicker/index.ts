@@ -1,1 +1,2 @@
-export { default as WheelPicker } from './WheelPicker';
+export { default as SwiperWheelPicker } from './SwiperWheelPicker';
+export { default as SliderWheelPicker } from './SliderWheelPicker';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Swiper } from 'swiper/react';
 import 'swiper/css';
-import { StyledSwiperSlide } from './WheelPicker.style';
+import { StyledSwiperSlide } from './SwiperWheelPicker.style';
 
 interface Props {
   visibleHeight: number;
@@ -13,7 +13,7 @@ interface Props {
   loop?: boolean;
 }
 
-const WheelPicker = ({
+const SwiperWheelPicker = ({
   visibleHeight,
   slides,
   slidesPerView,
@@ -56,4 +56,4 @@ const WheelPicker = ({
   );
 };
 
-export default WheelPicker;
+export default SwiperWheelPicker;
