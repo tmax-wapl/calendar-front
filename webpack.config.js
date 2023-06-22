@@ -8,12 +8,12 @@ const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = env => {
-  const { dev, develop, qa, app } = env;
+  const { dev, develop, qa } = env;
 
   const envPath = develop === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production';
 
   return {
-    entry: app === 'true' ? './src/index.ts' : './src/entry.tsx',
+    entry: './src/entry.tsx',
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
