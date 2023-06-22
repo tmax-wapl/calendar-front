@@ -1,33 +1,44 @@
-import path from 'path';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import resolve from '@rollup/plugin-node-resolve';
-import alias from '@rollup/plugin-alias';
-import json from '@rollup/plugin-json';
-import commonjs from '@rollup/plugin-commonjs';
-import typescript from 'rollup-plugin-typescript2';
-import ttypescript from 'ttypescript';
-import postcss from 'rollup-plugin-postcss';
-import { terser } from 'rollup-plugin-minification';
-import { babel } from '@rollup/plugin-babel';
-import replace from '@rollup/plugin-replace';
-import del from 'rollup-plugin-delete';
-import svgr from '@svgr/rollup';
-import url from '@rollup/plugin-url';
+const path = require('path');
+const resolve = require('@rollup/plugin-node-resolve').default;
+const alias = require('@rollup/plugin-alias');
+const json = require('@rollup/plugin-json');
+const commonjs = require('@rollup/plugin-commonjs');
+const babel = require('@rollup/plugin-babel').default;
+const builtins = require('builtin-modules');
 
-const extensions = ['.js', '.jsx', '.ts', '.tsx'];
+function setUpRollup({ input, output, format }) {
+  const packageJSON = require(path.join(__dirname, 'package.json'));
+  const extensions = ['.js', '.jsx', '.ts', '.tsx'];
+  const isESMFormat = format === 'es';
 
-process.env.BABEL_ENV = 'production';
+  const external = pkg => {
+    const externals = [...Object.keys({ ...packageJSON.dependencies, ...packageJSON.peerDependencies }), ...builtins];
 
-function setUpRollup({ input, output }) {
+    return externals.some(externalPkg => {
+      return pkg.startsWith(externalPkg);
+    });
+  };
+
   return {
     input,
-    output,
+    external,
+    output: [
+      {
+        format,
+        ...(isESMFormat
+          ? {
+              dir: path.dirname(output),
+              entryFileNames: `[name]${path.extname(output)}`,
+              preserveModulesRoot: isESMFormat ? path.dirname(input) : undefined,
+            }
+          : { file: output }),
+      },
+    ],
     plugins: [
-      peerDepsExternal(),
       resolve({
         extensions,
-        browser: true,
       }),
+      commonjs(),
       alias({
         entries: {
           '@': path.resolve(__dirname, 'src'),
@@ -39,48 +50,21 @@ function setUpRollup({ input, output }) {
           '@contexts': path.resolve(__dirname, 'src/common/contexts'),
         },
       }),
-      json(),
-      commonjs({
-        include: /node_modules/,
-      }),
-      typescript({
-        useTsconfigDeclarationDir: true,
-        typescript: ttypescript,
-        tsconfig: './tsconfig.json',
-      }),
       babel({
         extensions,
         babelHelpers: 'bundled',
-        presets: ['@babel/preset-env'],
-        plugins: [['@emotion', { sourceMap: true }]],
+        rootMode: 'upward',
       }),
-      terser(),
-      svgr(),
-      url(),
-      postcss(),
-      del({ targets: 'dist/*' }),
-      replace({
-        preventAssignment: true,
-        'process.browser': true,
-        'process.env.NODE_ENV': JSON.stringify('production'),
-      }),
+      json(),
     ],
+    preserveModules: isESMFormat,
   };
 }
 
 export default [
   setUpRollup({
     input: './src/index.ts',
-    output: [
-      {
-        file: 'dist/index.cjs.js',
-        sourcemap: true,
-        format: 'cjs',
-      },
-      // {
-      //   file: 'dist/index.esm.js',
-      //   format: 'esm',
-      // },
-    ],
+    output: 'dist/index.js',
+    format: 'cjs',
   }),
 ];

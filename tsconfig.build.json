@@ -1,0 +1,8 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "noImplicitReturns": false,
+      "outDir": "./dist",
+    },
+    "include": ["./src/common/components", "./src/common/hooks", "**/@types/*", "**/assets/index.d.ts", "./src/index.ts"]
+  }
