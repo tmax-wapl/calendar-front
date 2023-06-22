@@ -6,7 +6,6 @@ import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { ColorPicker, ContextMenuItem } from './index';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { EventModel } from '@/stores/model/EventModel';
-import { CalendarModel } from '@/stores';
 
 const style = [
   {

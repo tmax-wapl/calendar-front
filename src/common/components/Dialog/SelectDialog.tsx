@@ -51,7 +51,7 @@ export const SelectDialog = ({ open, title, buttons, selectType = 'hideNone' }: 
 
     return (
       <FormControl>
-        <RadioGroup value={selectItem} onChange={(e, value) => handleChange(value)}>
+        <RadioGroup value={selectItem} onChange={(_, value) => handleChange(value)}>
           {radioItem[selectType].map(item => (
             <SelectItemLabel
               key={item.value}
