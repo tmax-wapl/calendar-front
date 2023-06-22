@@ -53,5 +53,4 @@ const TimePicker = ({ value = DateTime.now(), height = 200, onChange, onOutsideC
     </TimePickerContainer>
   );
 };
-
 export default TimePicker;
