@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, memo, useContext } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
-import { ColorItem as colors } from '@/common';
+import { ColorItem as colors } from '@/common/constants';
 import { HTTPError } from '@/error';
 import EventBar from '../header/EventBar';
 import {

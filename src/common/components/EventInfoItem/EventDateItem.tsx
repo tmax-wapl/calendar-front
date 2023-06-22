@@ -11,7 +11,7 @@ import {
   TimePickerWrapper,
 } from './EventDateItem.style';
 import DatePicker from '../DatePicker/DatePicker';
-import TimePicker from '../TimePicker/TimePicker';
+import TimePicker from '../TimePicker/components/TimePicker';
 
 interface Props {
   title?: string;

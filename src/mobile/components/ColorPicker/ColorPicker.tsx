@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react';
 import { Icon } from '@wapl/ui';
 import { ColorWrapper, ItemContainer, CurrentColor, ColorLabel, ColorItemContent } from './ColorPicker.style';
-import { ColorItem as colors } from '@/common';
+import { ColorItem as colors } from '@/common/constants';
 import { ContextMenu } from '../ContextMenu';
 
 interface Props {

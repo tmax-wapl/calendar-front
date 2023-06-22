@@ -1,7 +1,7 @@
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
-import { Dialog } from '..';
+import { Dialog } from '@common/components/Dialog';
 import { Observer } from 'mobx-react-lite';
 import CalendarLayout from '@mcomponents/layout/CalendarLayout';
 import EventSearchView from '@mcomponents/Search/EventSearchView';
