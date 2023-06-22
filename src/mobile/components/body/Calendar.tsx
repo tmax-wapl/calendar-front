@@ -14,7 +14,7 @@ import { useSwipeable, LEFT, RIGHT, SwipeEventData } from 'react-swipeable';
 import { DateHandleType } from '@/web/components';
 import { Observer, observer } from 'mobx-react-lite';
 import { getStartDate, toDateString, toDateTime, toISO } from '@/utils';
-import { VIEW_MODE } from '@/common';
+import { VIEW_MODE } from '@/common/constants';
 import { autorun, transaction } from 'mobx';
 import { useParams } from 'react-router-dom';
 import { DateTime } from 'luxon';

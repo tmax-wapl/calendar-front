@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { StoreProvider } from './stores/StoreProvider';
 import CalendarProvider from '@contexts/CalendarContext';
 import { MODE } from './common/constants/common';
 import { useUserStore, usePersonaStore, useRoomStore } from '@wapl/core';
 import Web from './web';
 import Mobile from './mobile';
-import { SettingInstance, isDevelop } from './common';
+import { SettingInstance, isDevelop } from './common/lib';
 
 interface Props {
   data: { eventId: number; start: string };

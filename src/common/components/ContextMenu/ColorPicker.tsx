@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Icon } from '@wapl/ui';
 import { ColorWrapper, ColorItemWrapper } from './ColorPicker.style';
-import { ColorItem } from '@/common';
+import { ColorItem } from '@/common/constants';
 
 interface Props {
   color?: string;
