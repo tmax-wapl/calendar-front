@@ -24,7 +24,7 @@ export const useWebSocket = (isMobile = false) => {
     uiStore.changeDateRange();
   };
 
-  const handleCreateWs = (jsonMessage: JsonMessage) => {
+  const handleCreateWs = () => {
     uiStore.changeDateRange();
   };
 

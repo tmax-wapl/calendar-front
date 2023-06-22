@@ -1,16 +1,9 @@
-import React, { useRef, ChangeEvent } from 'react';
+import { useRef, ChangeEvent } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useRoomStore } from '@wapl/core';
 import { AttachmentInfo, Extension, FileInfo } from '@/common/constants/interfaces';
 import { Icon } from '@wapl/ui';
-import {
-  Accordion,
-  AccordionSummary,
-  AttachmentsCount,
-  AccordionDetails,
-  StyledAttachment,
-  AttachmentPlaceholder,
-} from './Attachments.style';
+import { Accordion, AccordionSummary, AttachmentsCount, AccordionDetails, StyledAttachment } from './Attachments.style';
 import { APP_ID } from '@/common/constants';
 
 interface Props {

@@ -15,7 +15,7 @@ import FullCalendar, {
 } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
+import interactionPlugin from '@fullcalendar/interaction';
 import { Icon, useWaplUiStore } from '@wapl/ui';
 import {
   AllDayText,
@@ -40,7 +40,7 @@ import Popover from '@common/components/Popover/Popover';
 import { DateTime } from 'luxon';
 import { EVENT_UPDATE_OPTION, VIEW_MODE } from '@common/constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { diffTime, toDateString, toISO, toDateTime, toUTC, getStartDate } from '@/utils';
+import { diffTime, toDateString, toISO, toDateTime, toUTC } from '@/utils';
 import { autorun, transaction } from 'mobx';
 import { Observer, observer } from 'mobx-react-lite';
 import { getLunar } from 'holiday-kr';
@@ -400,7 +400,7 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
 
   const updateRepeatEvent = async (value: string) => {
     const {
-      oldEvent: { id, start, end },
+      oldEvent: { id, start },
       newEvent: {
         extendedProps: { dto },
         start: newStart,
