@@ -3,7 +3,7 @@
     /* Modules */
     "baseUrl": ".",
     "module": "commonjs",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "paths": {
       "@/*": ["src/*"],
       "@common/*": ["src/common/*"],
