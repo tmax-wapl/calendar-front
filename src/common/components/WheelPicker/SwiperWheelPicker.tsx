@@ -1,5 +1,6 @@
 import React from 'react';
-import { Swiper } from 'swiper/react';
+// import { Swiper } from 'swiper/react';
+const { Swiper } = require('swiper/react');
 import 'swiper/css';
 import { StyledSwiperSlide } from './SwiperWheelPicker.style';
 
