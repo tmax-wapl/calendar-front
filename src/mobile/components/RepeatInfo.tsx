@@ -8,13 +8,12 @@ import {
   DateWrapper,
   DatePickerWrapper,
   RepeatDay,
-  Selected,
   RepeatLabel,
   RepeatItemWrapper,
   PickerWrapper,
 } from './RepeatInfo.style';
 import EventBar from './header/EventBar';
-import SpinnerPickerItem from '@/common/components/SpinnerPicker/SpinnerPickerItem';
+import { SliderWheelPicker } from '@common/components/WheelPicker';
 import DatePicker from './DatePicker/DatePicker';
 import { getRepeatSummary } from '@/utils';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -110,7 +109,10 @@ const RepeatInfo = ({
     if (eventStore.event.rrule?.freq === freq) return;
 
     onRRuleChange({
-      ...(freq > -1 && { interval: eventStore.event.rrule?.interval, freq }),
+      ...(freq > -1 && {
+        interval: eventStore.event.rrule?.interval < 100 ? eventStore.event.rrule?.interval : 1,
+        freq,
+      }),
       ...(freq === 2 && { byweekday: [startDate.weekday - 1] }),
     });
     onStartChange(freq > -1 ? startDate : undefined);
@@ -150,20 +152,33 @@ const RepeatInfo = ({
               <>
                 <PickerWrapper>
                   <PickerContainer>
-                    <Selected />
-                    <SpinnerPickerItem
-                      height={126}
-                      itemHeight={42}
-                      item={intervals}
-                      selectedValue={String(eventStore.event.rrule?.interval || 1)}
-                      onValueChange={handleIntervalChange}
-                    />
-                    <SpinnerPickerItem
-                      height={126}
-                      itemHeight={42}
-                      item={units}
-                      selectedValue={rruleUnits[eventStore.event.rrule?.freq]}
-                      onValueChange={handleUnitsChange}
+                    {intervals.length === 999 && (
+                      <SliderWheelPicker
+                        slides={intervals}
+                        loop
+                        initIndex={eventStore.event.rrule?.interval > 0 ? eventStore.event.rrule?.interval - 1 : 0}
+                        onChange={handleIntervalChange}
+                        align="flex-end"
+                        width={34}
+                      />
+                    )}
+                    {intervals.length === 99 && (
+                      <SliderWheelPicker
+                        slides={intervals}
+                        loop
+                        initIndex={eventStore.event.rrule?.interval < 100 ? eventStore.event.rrule?.interval - 1 : 0}
+                        onChange={handleIntervalChange}
+                        align="flex-end"
+                        width={34}
+                      />
+                    )}
+                    <SliderWheelPicker
+                      slides={units}
+                      loop
+                      initIndex={1}
+                      onChange={handleUnitsChange}
+                      align="flex-start"
+                      width={34}
                     />
                   </PickerContainer>
                   {rrule?.freq === 2 && (
