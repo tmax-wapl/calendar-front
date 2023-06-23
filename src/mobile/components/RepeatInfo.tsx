@@ -155,7 +155,7 @@ const RepeatInfo = ({
                     {intervals.length === 999 && (
                       <SliderWheelPicker
                         slides={intervals}
-                        loop={true}
+                        loop
                         initIndex={eventStore.event.rrule?.interval > 0 ? eventStore.event.rrule?.interval - 1 : 0}
                         onChange={handleIntervalChange}
                         align="flex-end"
@@ -165,7 +165,7 @@ const RepeatInfo = ({
                     {intervals.length === 99 && (
                       <SliderWheelPicker
                         slides={intervals}
-                        loop={true}
+                        loop
                         initIndex={eventStore.event.rrule?.interval < 100 ? eventStore.event.rrule?.interval - 1 : 0}
                         onChange={handleIntervalChange}
                         align="flex-end"
@@ -174,7 +174,7 @@ const RepeatInfo = ({
                     )}
                     <SliderWheelPicker
                       slides={units}
-                      loop={true}
+                      loop
                       initIndex={1}
                       onChange={handleUnitsChange}
                       align="flex-start"
