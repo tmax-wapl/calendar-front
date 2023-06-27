@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { Icon } from '@wapl/ui';
 import { LNBContainer, LNBHeader, DatePickerWrapper, FilterListWrapper, ScrollListWrapper, Divider } from './LNB.style';
-import DatePicker from '@common/components/DatePicker/DatePicker';
+import DatePicker from '@common/components/DatePicker/components/DatePicker';
 import FilterList from './FilterList';
 import CategoryList from './CategoryList';
 import OtherCalendarList from './OtherCalendarList';
