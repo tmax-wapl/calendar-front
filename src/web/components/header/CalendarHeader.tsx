@@ -16,7 +16,7 @@ import { DateTime } from 'luxon';
 import { DATE_EVENT, VIEW_MODE } from '@constants/common';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getStartDate, toISO } from '@/utils';
-import DatePicker from '@/common/components/DatePicker/DatePicker';
+import DatePicker from '@/common/components/DatePicker/components/DatePicker';
 import { autorun } from 'mobx';
 import { EventModel } from '@/stores/model/EventModel';
 

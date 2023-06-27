@@ -12,7 +12,7 @@ import {
   RepeatDay,
 } from './RepeatInfo.style';
 import Select from '../Select/Select';
-import DatePicker from '../DatePicker/DatePicker';
+import DatePicker from '../DatePicker/components/DatePicker';
 import { getRepeatSummary } from '@/utils';
 
 interface Props {

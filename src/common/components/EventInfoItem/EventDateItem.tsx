@@ -10,7 +10,7 @@ import {
   TimeValue,
   TimePickerWrapper,
 } from './EventDateItem.style';
-import DatePicker from '../DatePicker/DatePicker';
+import DatePicker from '../DatePicker/components/DatePicker';
 import TimePicker from '../TimePicker/components/TimePicker';
 
 interface Props {
