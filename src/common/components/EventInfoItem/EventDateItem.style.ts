@@ -38,7 +38,7 @@ export const DatePickerWrapper = styled.div<{ allDay?: boolean }>`
   position: absolute;
   top: 100%;
   transform: ${({ allDay }) => (allDay ? 'translate(-60%, 0)' : 'translate(-30%, 0)')};
-  z-index: 1;
+  z-index: 2;
   margin-top: 8px;
   padding: 16px;
   background: ${({ theme: { Color } }) => Color.White[100]};
