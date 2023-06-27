@@ -49,6 +49,6 @@
     // "outDir": "./dist",
     "noImplicitAny": false,
   },
-  "include": ["src/*"],
+  "include": ["src/*","**/@types/*", "**/assets/index.d.ts"],
   "exclude": ["**/dist/*", "**/stories/*" , "**/*.stories.*"]
 }
