@@ -15,26 +15,10 @@ interface DatePickerHeaderProps {
   selectedDate: DateTime;
   titleDate: DateTime;
   setTitleDate: React.Dispatch<React.SetStateAction<DateTime>>;
-<<<<<<< HEAD
-  isMobile?: boolean;
-=======
-  onPrevClick?: () => void;
-  onNextClick?: () => void;
-  prevDisabled?: boolean;
-  nextDisabled?: boolean;
->>>>>>> 0293881... feat: datePicker 관련 style, onPrevClick, onNextClick, prevDisabled, nextDisabled Props 제공
+  onChange?: (date: Date) => void;
 }
 
-const DatePickerHeader = ({
-  size = 1,
-  selectedDate,
-  titleDate,
-  setTitleDate,
-  onPrevClick,
-  onNextClick,
-  prevDisabled,
-  nextDisabled,
-}: DatePickerHeaderProps) => {
+const DatePickerHeader = ({ size = 1, selectedDate, titleDate, setTitleDate, onChange }: DatePickerHeaderProps) => {
   const [isPickerOpen, setPickerOpen] = useState<boolean>(false);
   const [isYearClick, setYearClick] = useState<boolean>(false);
   const [isMonthClick, setMonthClick] = useState<boolean>(false);
@@ -57,6 +41,7 @@ const DatePickerHeader = ({
     setTitleDate(newDate);
     setYearClick(prev => !prev);
     setPickerOpen(prev => !prev);
+    handleChange(newDate);
   };
 
   const handleMonthClick = (month: string) => {
@@ -64,6 +49,7 @@ const DatePickerHeader = ({
     setTitleDate(newDate);
     setMonthClick(prev => !prev);
     setPickerOpen(prev => !prev);
+    handleChange(newDate);
   };
 
   const handleOutsideClick = (type: string) => (e: MouseEvent) => {
@@ -76,13 +62,17 @@ const DatePickerHeader = ({
   const handlePrevClick = () => {
     const newDate = titleDate.plus({ months: -1 });
     setTitleDate(newDate);
-    if (onPrevClick) onPrevClick();
+    handleChange(newDate);
   };
 
   const handleNextClick = () => {
     const newDate = titleDate.plus({ months: 1 });
     setTitleDate(newDate);
-    if (onNextClick) onNextClick();
+    handleChange(newDate);
+  };
+
+  const handleChange = (date: DateTime) => {
+    if (onChange) onChange(date.toJSDate());
   };
 
   return (
@@ -117,10 +107,10 @@ const DatePickerHeader = ({
         />
       )}
       <CalendarPickerButtonWrapper>
-        <IconButton onClick={handlePrevClick} disabled={prevDisabled ?? false}>
+        <IconButton onClick={handlePrevClick}>
           <Icon.ArrowBackLine width={18} height={18} />
         </IconButton>
-        <IconButton onClick={handleNextClick} disabled={nextDisabled ?? false}>
+        <IconButton onClick={handleNextClick}>
           <Icon.ArrowFrontLine width={18} height={18} />
         </IconButton>
       </CalendarPickerButtonWrapper>
