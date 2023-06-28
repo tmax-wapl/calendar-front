@@ -14,6 +14,10 @@ interface DatePickerProps {
   date?: DateTime;
   onDateClick?: (selectedDate: DateTime) => void;
   onOutsideClick?: () => void;
+  onPrevClick?: () => void;
+  onNextClick?: () => void;
+  prevDisabled?: boolean;
+  nextDisabled?: boolean;
 }
 
 const DatePicker = ({
@@ -23,6 +27,10 @@ const DatePicker = ({
   date = DateTime.now(),
   onDateClick,
   onOutsideClick,
+  onPrevClick,
+  onNextClick,
+  prevDisabled,
+  nextDisabled,
 }: DatePickerProps) => {
   const pickerRef = useRef<HTMLDivElement | null>(null);
   const [selectedDate, setSelectedDate] = useState<DateTime>(date);
@@ -54,7 +62,16 @@ const DatePicker = ({
 
   return (
     <DatePickerContainer ref={pickerRef} backgroundColor={backgroundColor}>
-      <DatePickerHeader size={size} selectedDate={selectedDate} titleDate={titleDate} setTitleDate={setTitleDate} />
+      <DatePickerHeader
+        size={size}
+        selectedDate={selectedDate}
+        titleDate={titleDate}
+        setTitleDate={setTitleDate}
+        onPrevClick={onPrevClick}
+        onNextClick={onNextClick}
+        prevDisabled={prevDisabled}
+        nextDisabled={nextDisabled}
+      />
       <DatePickerBody size={size}>
         <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
           <CalendarPicker

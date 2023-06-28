@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { WaplUiProvider } from '@wapl/ui';
 import { DateTime } from 'luxon';
 import { PickerContainer, DatePickerWrapper } from '../../EventInfoItem/EventDateItem.style';
@@ -9,9 +9,24 @@ interface Props {
   date: Date;
   onChange?: (date: Date) => void;
   onOutsideClick?: () => void;
+  style?: CSSProperties;
+  onPrevClick?: () => void;
+  onNextClick?: () => void;
+  prevDisabled?: boolean;
+  nextDisabled?: boolean;
 }
 
-export const DatePicker: React.FC<Props> = ({ open, date, onOutsideClick, onChange }: Props) => {
+export const DatePicker: React.FC<Props> = ({
+  open,
+  date,
+  onOutsideClick,
+  onChange,
+  onPrevClick,
+  onNextClick,
+  prevDisabled,
+  nextDisabled,
+  style,
+}: Props) => {
   const handleDateChange = (date: DateTime) => {
     if (onChange) onChange(date.toJSDate());
   };
@@ -20,11 +35,15 @@ export const DatePicker: React.FC<Props> = ({ open, date, onOutsideClick, onChan
     <WaplUiProvider>
       <PickerContainer>
         {open && (
-          <DatePickerWrapper allDay>
+          <DatePickerWrapper allDay style={style}>
             <DatePickerCompo
               date={DateTime.fromJSDate(date)}
               onDateClick={handleDateChange}
               onOutsideClick={onOutsideClick}
+              onPrevClick={onPrevClick}
+              onNextClick={onNextClick}
+              prevDisabled={prevDisabled}
+              nextDisabled={nextDisabled}
             />
           </DatePickerWrapper>
         )}
