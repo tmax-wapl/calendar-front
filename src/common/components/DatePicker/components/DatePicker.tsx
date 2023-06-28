@@ -14,10 +14,7 @@ interface DatePickerProps {
   date?: DateTime;
   onDateClick?: (selectedDate: DateTime) => void;
   onOutsideClick?: () => void;
-  onPrevClick?: () => void;
-  onNextClick?: () => void;
-  prevDisabled?: boolean;
-  nextDisabled?: boolean;
+  onChange?: (date: Date) => void;
 }
 
 const DatePicker = ({
@@ -27,10 +24,7 @@ const DatePicker = ({
   date = DateTime.now(),
   onDateClick,
   onOutsideClick,
-  onPrevClick,
-  onNextClick,
-  prevDisabled,
-  nextDisabled,
+  onChange,
 }: DatePickerProps) => {
   const pickerRef = useRef<HTMLDivElement | null>(null);
   const [selectedDate, setSelectedDate] = useState<DateTime>(date);
@@ -67,10 +61,7 @@ const DatePicker = ({
         selectedDate={selectedDate}
         titleDate={titleDate}
         setTitleDate={setTitleDate}
-        onPrevClick={onPrevClick}
-        onNextClick={onNextClick}
-        prevDisabled={prevDisabled}
-        nextDisabled={nextDisabled}
+        onChange={onChange}
       />
       <DatePickerBody size={size}>
         <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">

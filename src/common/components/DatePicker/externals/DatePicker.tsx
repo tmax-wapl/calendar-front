@@ -10,23 +10,9 @@ interface Props {
   onChange?: (date: Date) => void;
   onOutsideClick?: () => void;
   style?: CSSProperties;
-  onPrevClick?: () => void;
-  onNextClick?: () => void;
-  prevDisabled?: boolean;
-  nextDisabled?: boolean;
 }
 
-export const DatePicker: React.FC<Props> = ({
-  open,
-  date,
-  onOutsideClick,
-  onChange,
-  onPrevClick,
-  onNextClick,
-  prevDisabled,
-  nextDisabled,
-  style,
-}: Props) => {
+export const DatePicker: React.FC<Props> = ({ open, date, onChange, onOutsideClick, style }: Props) => {
   const handleDateChange = (date: DateTime) => {
     if (onChange) onChange(date.toJSDate());
   };
@@ -40,10 +26,7 @@ export const DatePicker: React.FC<Props> = ({
               date={DateTime.fromJSDate(date)}
               onDateClick={handleDateChange}
               onOutsideClick={onOutsideClick}
-              onPrevClick={onPrevClick}
-              onNextClick={onNextClick}
-              prevDisabled={prevDisabled}
-              nextDisabled={nextDisabled}
+              onChange={onChange}
             />
           </DatePickerWrapper>
         )}
