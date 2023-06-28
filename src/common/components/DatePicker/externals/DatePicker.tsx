@@ -5,16 +5,17 @@ import { PickerContainer, DatePickerWrapper } from '../../EventInfoItem/EventDat
 import DatePickerCompo from '../components/DatePicker';
 
 interface Props {
-  open: boolean;
-  date: Date;
-  onChange?: (date: Date) => void;
-  onOutsideClick?: () => void;
+  open: boolean /** DatePicker의 열림 닫힘 여부 */;
+  date: Date /** 선택 된 Date */;
+  onDateChange?: (date: Date) => void /** '일' 선택 시 선택 된 '일'의 Date 객체 반환 */;
+  onChange?: (date: Date) => void /** '년도/월' 변경 시 현재 '년도/월'의 Date 객체 반환 */;
+  onOutsideClick?: () => void /** 바깥 영역 선택시 DatePicker 닫힌 후 콜백 */;
   style?: CSSProperties;
 }
 
-export const DatePicker: React.FC<Props> = ({ open, date, onChange, onOutsideClick, style }: Props) => {
+export const DatePicker: React.FC<Props> = ({ open, date, onDateChange, onChange, onOutsideClick, style }: Props) => {
   const handleDateChange = (date: DateTime) => {
-    if (onChange) onChange(date.toJSDate());
+    if (onDateChange) onDateChange(date.toJSDate());
   };
 
   return (
