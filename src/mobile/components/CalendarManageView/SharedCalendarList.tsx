@@ -86,9 +86,9 @@ const SharedCalendarList = observer(() => {
                 label: '전체 선택 해제',
               },
             ]}
+            type="selectAll"
             onClose={handleContextMenuClose}
             onClick={handleItemClick}
-            Component={SelectItem}
           />
         </SharedCalendarListContainer>
       ) : null}

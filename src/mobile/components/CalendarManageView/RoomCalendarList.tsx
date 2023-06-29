@@ -1,4 +1,4 @@
-import { memo, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
@@ -46,17 +46,6 @@ const RoomCalendarList = observer(({ title, roomType }: Props) => {
     setContextMenuOpen(false);
   };
 
-  const SelectItem = memo(({ color, label }: { color?: string; label?: string }) => (
-    <div style={{ height: '48px', display: 'flex', flex: 1, alignItems: 'center' }}>
-      {color === 'selectAll' ? (
-        <Icon.SelectLine width={18} height={18} className="mr-8 mt-2" />
-      ) : (
-        <Icon.UnselectLine width={18} height={18} className="mr-8 mt-2" />
-      )}
-      <span>{label}</span>
-    </div>
-  ));
-
   return (
     <>
       {calendarStore.roomCalendarList?.some(cal => cal.type === roomType) ? (
@@ -88,7 +77,7 @@ const RoomCalendarList = observer(({ title, roomType }: Props) => {
             ]}
             onClose={handleContextMenuClose}
             onClick={handleSelectAll}
-            Component={SelectItem}
+            type="selectAll"
             isColor
           />
         </RoomCalendarListContainer>

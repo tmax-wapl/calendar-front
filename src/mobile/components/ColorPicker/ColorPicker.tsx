@@ -1,6 +1,6 @@
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon } from '@wapl/ui';
-import { ColorWrapper, ItemContainer, CurrentColor, ColorLabel, ColorItemContent } from './ColorPicker.style';
+import { ColorWrapper, ItemContainer, CurrentColor } from './ColorPicker.style';
 import { ColorItem as colors } from '@/common/constants';
 import { ContextMenu } from '../ContextMenu';
 
@@ -28,13 +28,6 @@ export const ColorPicker = ({ color = '', onClick }: Props) => {
     setSelected(color ?? '');
   }, [color]);
 
-  const ColorItem = memo(({ color, label }: { color?: string; label?: string }) => (
-    <ColorItemContent>
-      <Icon.CalendarDotFill color={color} width={20} height={20} />
-      <ColorLabel>{label}</ColorLabel>
-    </ColorItemContent>
-  ));
-
   return (
     <ColorWrapper>
       <ItemContainer onClick={handleOpen}>
@@ -51,7 +44,7 @@ export const ColorPicker = ({ color = '', onClick }: Props) => {
         items={colors}
         onClose={handleClose}
         onClick={handleSelect}
-        Component={ColorItem}
+        type="color"
         isColor
       />
     </ColorWrapper>
