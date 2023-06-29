@@ -1,13 +1,6 @@
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 import { Icon } from '@wapl/ui';
-import {
-  NotificationsContainer,
-  ItemContainer,
-  NotificationAddItem,
-  NotificationsTitle,
-  Label,
-  ItemContent,
-} from './Notifications.style';
+import { NotificationsContainer, ItemContainer, NotificationAddItem, NotificationsTitle } from './Notifications.style';
 import NotificationItem from './NotificationItem';
 import { NotificationItems } from '@/common/constants';
 import { ContextMenu } from '@/mobile/components/ContextMenu';
@@ -62,12 +55,6 @@ const Notifications = ({ notifications = [], onChange, editable = false, isMobil
     setPickerToggle(false);
   };
 
-  const NotificationLabel = memo(({ label }: { label?: string }) => (
-    <ItemContent>
-      <Label>{label}</Label>
-    </ItemContent>
-  ));
-
   const getNotificationsTitle = (notifications: string[]) => {
     const [time, unit] = notifications[0].split(' ');
     return `${unit ? `${time}${units[unit]} 전` : '일정 당시'} 알림${
@@ -110,12 +97,12 @@ const Notifications = ({ notifications = [], onChange, editable = false, isMobil
         <ContextMenu
           open={pickerToggle}
           selected={selected}
-          title="일정 색상"
+          title="미리 알림"
           items={NotificationItems}
           onClose={handleClose}
           onClick={handleItemClick}
-          Component={NotificationLabel}
-          isColor
+          type="notification"
+          isColor={false}
         />
       )}
     </NotificationsContainer>

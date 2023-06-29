@@ -16,7 +16,6 @@ import {
   Divider,
   Toast,
 } from './CalendarSettingView.style';
-import { ColorItemContent } from '../ColorPicker/ColorPicker.style';
 import { EventModel, CalendarModel } from '@/stores';
 import { ContextMenu } from '@mcomponents/ContextMenu';
 
@@ -69,13 +68,6 @@ const CalendarSettingView = () => {
   const handleColorPickerOpen = () => setColorPickerOpen(true);
 
   const handleColorPickerClose = () => setColorPickerOpen(false);
-
-  const ColorItem = memo(({ color, label }: { color?: string; label?: string }) => (
-    <ColorItemContent>
-      <Icon.CalendarDotFill color={color} width={20} height={20} />
-      <span>{label}</span>
-    </ColorItemContent>
-  ));
 
   const handleColorClick = async (color: string) => {
     const calColor = color || calendarStore.defaultColor;
@@ -219,7 +211,7 @@ const CalendarSettingView = () => {
         items={colors}
         onClose={handleColorPickerClose}
         onClick={handleColorClick}
-        Component={ColorItem}
+        type="color"
         isColor={false}
       />
     </>
