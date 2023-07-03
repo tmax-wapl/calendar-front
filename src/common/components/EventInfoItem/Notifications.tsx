@@ -9,14 +9,14 @@ interface Props {
   notifications?: string[];
   onChange?: (value: string[]) => void;
   editable?: boolean;
-  isMobile?: boolean;
+  mobile?: boolean;
 }
 
 interface Unit {
   [key: string]: string;
 }
 
-const Notifications = ({ notifications = [], onChange, editable = false, isMobile = false }: Props) => {
+const Notifications = ({ notifications = [], onChange, editable = false, mobile = false }: Props) => {
   const [pickerToggle, setPickerToggle] = useState(false);
   const [selected, setSelected] = useState('');
   const [targetIndex, setTargetIndex] = useState(0);
@@ -40,7 +40,7 @@ const Notifications = ({ notifications = [], onChange, editable = false, isMobil
   };
 
   const handleNotificationAdd = () => {
-    if (!isMobile) {
+    if (!mobile) {
       if (!onChange) return;
       onChange([...notifications, '0']);
     } else {
@@ -71,11 +71,11 @@ const Notifications = ({ notifications = [], onChange, editable = false, isMobil
             <NotificationItem
               key={index}
               index={index}
-              isMobile={isMobile}
+              isMobile={mobile}
               notification={notification}
               onChange={handleSelectChange}
               onDelete={handleNotificationDelete}
-              {...(isMobile && {
+              {...(mobile && {
                 setTargetIndex: setTargetIndex,
                 setPickerToggle: setPickerToggle,
                 setSelected: setSelected,
@@ -93,7 +93,7 @@ const Notifications = ({ notifications = [], onChange, editable = false, isMobil
         <NotificationsTitle>{getNotificationsTitle(notifications)}</NotificationsTitle>
       )}
 
-      {isMobile && (
+      {mobile && (
         <ContextMenu
           open={pickerToggle}
           selected={selected}
