@@ -5,11 +5,15 @@ export const OtherCalendarListContainer = styled.div`
   flex-direction: column;
 `;
 
-export const FilterName = styled.div`
+export const Title = styled.div`
   display: flex;
   height: 28px;
   align-items: center;
   ${({ theme: { Font } }) => Font.Text.s.Medium};
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
+`;
+
+export const FilterName = styled(Title)`
   color: ${({ theme: { Color } }) => Color.Gray[600]};
 `;
 

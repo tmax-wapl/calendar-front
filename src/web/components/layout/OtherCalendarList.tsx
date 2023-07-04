@@ -1,13 +1,11 @@
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { CalendarModel } from '@/stores/model/CalendarModel';
 import { observer } from 'mobx-react-lite';
-import Item from './Item';
-import { Icon } from '@wapl/ui';
-import { OtherCalendarListContainer, Title, AddButton } from './OtherCalendarList.style';
-import RoomCalendarItem from './RoomCalendarItem';
+import { OtherCalendarListContainer, Title } from './OtherCalendarList.style';
+import RoomCalendarList from './RoomCalendarList';
+import ShareCalendarList from './ShareCalendarList';
 
 const OtherCalendarList = observer(() => {
-  const { uiStore, calendarStore } = useCalendarStores();
+  const { uiStore } = useCalendarStores();
 
   const onContextMenuOpen = (e: React.MouseEvent<Element, MouseEvent>) => {
     const target = e.target as HTMLDivElement;
@@ -20,31 +18,17 @@ const OtherCalendarList = observer(() => {
     });
   };
 
-  const sortCalendarList = (): CalendarModel[] => {
-    const filteredCalendars = calendarStore.calendarList
-      ?.concat(calendarStore.roomCalendarList)
-      .filter(({ type }) => ['url', 'share', 'private'].includes(type));
-
-    if (!filteredCalendars.length) return [];
-
-    return filteredCalendars.sort((a, b) => new Date(b.regDate).getTime() - new Date(a.regDate).getTime());
-  };
-
   return (
     <OtherCalendarListContainer>
       <Title>
         다른 캘린더
-        <AddButton onClick={onContextMenuOpen}>
+        {/* <AddButton onClick={onContextMenuOpen}>
           <Icon.Add2Line width={20} height={20} color="#80868B" />
-        </AddButton>
+        </AddButton> */}
       </Title>
-      {sortCalendarList().map((calendar: CalendarModel) =>
-        calendar.type === 'private' ? (
-          <RoomCalendarItem key={calendar.roomId} calendar={calendar} />
-        ) : (
-          <Item key={calendar.id} category={calendar} />
-        ),
-      )}
+      <ShareCalendarList />
+      <RoomCalendarList title="룸 캘린더" roomType="private" />
+      <RoomCalendarList title="조직 캘린더" roomType="org" />
     </OtherCalendarListContainer>
   );
 });

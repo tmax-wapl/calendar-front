@@ -1,8 +1,7 @@
 import { CalendarModel } from '@/stores/model/CalendarModel';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import Item from './Item';
-import { Icon } from '@wapl/ui';
-import { MyCalendarListContainer, FilterName, AddButton } from './MyCalendarList.style';
+import { MyCalendarListContainer, FilterName } from './MyCalendarList.style';
 import { observer } from 'mobx-react-lite';
 
 const MyCalendarList = observer(() => {
@@ -10,14 +9,9 @@ const MyCalendarList = observer(() => {
 
   return (
     <MyCalendarListContainer>
-      <FilterName>
-        내 캘린더
-        {/* <AddButton>
-          <Icon.Add2Line width={20} height={20} color="#80868B" />
-        </AddButton> */}
-      </FilterName>
+      <FilterName>내 캘린더</FilterName>
       {calendarStore.calendarList
-        ?.filter((calendar: CalendarModel) => calendar.type === null)
+        ?.filter((calendar: CalendarModel) => calendar.type !== 'url' && calendar.type !== 'share')
         .map((calendar: CalendarModel) => (
           <Item key={calendar.id} calendar={calendar} />
         ))}

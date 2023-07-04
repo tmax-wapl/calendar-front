@@ -43,7 +43,6 @@ const CalendarLayout = () => {
   const headerRightSide: HeaderButton[] = [
     { action: 'search', onClick: handleSearchClick },
     { action: 'setting', onClick: handleSettingClick },
-    { action: 'home', onClick: handleHomeClick },
   ];
 
   useEffect(() => {

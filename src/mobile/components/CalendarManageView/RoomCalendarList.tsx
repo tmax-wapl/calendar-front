@@ -7,12 +7,12 @@ import {
   IconButton,
   FilterName,
   OtherCalendarListContainer as RoomCalendarListContainer,
+  TitleSpan,
 } from './OtherCalendarList.style';
 import Item from './Item';
 import { ButtonWrapper } from './Item.style';
 import { ContextMenu } from '../ContextMenu';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
-import { TitleSpan } from '@/web/components/layout/RoomCalendarList';
 
 interface Props {
   title: string;

@@ -3,6 +3,7 @@ import { styled, Mui } from '@wapl/ui';
 export const OtherCalendarListContainer = styled.div`
   display: flex;
   flex-direction: column;
+  order: 3;
 `;
 
 export const Title = styled.div`
