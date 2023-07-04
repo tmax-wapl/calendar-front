@@ -372,9 +372,11 @@ export const DayNum = styled.span<{ isToday: boolean }>`
   ${({ isToday }) =>
     isToday &&
     `
-    position: relative;
-    top: 4px;
-    left: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;	
   `}
 `;
 
