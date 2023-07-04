@@ -187,7 +187,7 @@ export const Dialog = () => {
             open
             onClose={onCloseClick}
             title={data?.title}
-            tabs={['favorite', 'org', 'room']}
+            tabs={['favorite', 'contact', 'room']}
             confirmBtnText={'공유'}
             onComplete={onComplete}
           />
@@ -196,7 +196,7 @@ export const Dialog = () => {
             open
             onClose={onCloseClick}
             title={data?.title}
-            tabs={['favorite', 'org', 'room']}
+            tabs={['favorite', 'contact', 'room']}
             confirmBtnText={'공유'}
             onComplete={onComplete}
           />
