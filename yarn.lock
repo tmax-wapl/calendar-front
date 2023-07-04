@@ -5884,6 +5884,7 @@ __metadata:
     rollup: ^2.77.0
     rrule: ^2.7.1
     style-loader: ^3.3.1
+    swiper: ^9.3.2
     ts-loader: ^9.4.1
     tsconfig-paths-webpack-plugin: ^4.0.0
     typescript: ^4.4.2
@@ -19750,6 +19751,15 @@ __metadata:
     dom7: ^4.0.4
     ssr-window: ^4.0.2
   checksum: 7b790b897c4aeb616cae02517a1137dc3f8d552bcc3ecb2942ddf8e4ae75f2efeb28816d3d4e648248c3a24eb3611f2700f555372c15f7163cc2434da3ef8317
+  languageName: node
+  linkType: hard
+
+"swiper@npm:^9.3.2":
+  version: 9.4.1
+  resolution: "swiper@npm:9.4.1"
+  dependencies:
+    ssr-window: ^4.0.2
+  checksum: 1180b3b766f25cbe636fafbb56adbddf8a240077c504a335a62d1773f4452df1bd9ca09bccfe86478c3b9401879c4e8f7ed3824e74299f8b48953e8fc7f08bc3
   languageName: node
   linkType: hard
 

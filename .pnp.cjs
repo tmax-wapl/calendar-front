@@ -107,6 +107,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rollup", "npm:2.79.1"],\
             ["rrule", "npm:2.7.1"],\
             ["style-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.3.1"],\
+            ["swiper", "npm:9.4.1"],\
             ["ts-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:9.4.2"],\
             ["tsconfig-paths-webpack-plugin", "npm:4.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
@@ -7021,10 +7022,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-<<<<<<< HEAD
         ["virtual:24e6d655cb6681e426c6066a6aa68582cd2fdffb88160a9270328d62c13afb01a28293757da8659d6a808f4dae0274a9fbaac8c5d5e45eba5ba942d34a4f03d1#npm:5.0.2", {\
           "packageLocation": "./.yarn/__virtual__/@rollup-pluginutils-virtual-33390d2b28/0/cache/@rollup-pluginutils-npm-5.0.2-6aa9d0ddd4-edea15e543.zip/node_modules/@rollup/pluginutils/",\
-=======
+          "packageDependencies": [\
+            ["@rollup/pluginutils", "virtual:24e6d655cb6681e426c6066a6aa68582cd2fdffb88160a9270328d62c13afb01a28293757da8659d6a808f4dae0274a9fbaac8c5d5e45eba5ba942d34a4f03d1#npm:5.0.2"],\
+            ["@types/estree", "npm:1.0.0"],\
+            ["@types/rollup", null],\
+            ["estree-walker", "npm:2.0.2"],\
+            ["picomatch", "npm:2.3.1"],\
+            ["rollup", null]\
+          ],\
+          "packagePeers": [\
+            "@types/rollup",\
+            "rollup"\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["virtual:38c0a5f21c2b2d02822c1806e58ade80e23666cafb3a42a356ee54a78d2b24d653f90ca04a033d17bbf6d352cd3398d093967a33cdafd8b355baa346266a12ab#npm:5.0.2", {\
           "packageLocation": "./.yarn/__virtual__/@rollup-pluginutils-virtual-311c228532/0/cache/@rollup-pluginutils-npm-5.0.2-6aa9d0ddd4-edea15e543.zip/node_modules/@rollup/pluginutils/",\
           "packageDependencies": [\
@@ -7034,23 +7047,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["estree-walker", "npm:2.0.2"],\
             ["picomatch", "npm:2.3.1"],\
             ["rollup", "npm:2.79.1"]\
-          ],\
-          "packagePeers": [\
-            "@types/rollup",\
-            "rollup"\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["virtual:48b162daea0c118d7faf0304ab8992ae2eed4930ca7f9bb03d63d10c1003707b290b5c925bc8474b493d22187d8efebd8d4056c7e06a4ca4a9ecfa903bba6032#npm:3.1.0", {\
-          "packageLocation": "./.yarn/__virtual__/@rollup-pluginutils-virtual-9474d4f4cc/0/cache/@rollup-pluginutils-npm-3.1.0-b44b222e7d-8be16e2786.zip/node_modules/@rollup/pluginutils/",\
->>>>>>> 5b37870... feat(calendar): rollup 설정
-          "packageDependencies": [\
-            ["@rollup/pluginutils", "virtual:24e6d655cb6681e426c6066a6aa68582cd2fdffb88160a9270328d62c13afb01a28293757da8659d6a808f4dae0274a9fbaac8c5d5e45eba5ba942d34a4f03d1#npm:5.0.2"],\
-            ["@types/estree", "npm:1.0.0"],\
-            ["@types/rollup", null],\
-            ["estree-walker", "npm:2.0.2"],\
-            ["picomatch", "npm:2.3.1"],\
-            ["rollup", null]\
           ],\
           "packagePeers": [\
             "@types/rollup",\
@@ -10859,6 +10855,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rollup", "npm:2.79.1"],\
             ["rrule", "npm:2.7.1"],\
             ["style-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.3.1"],\
+            ["swiper", "npm:9.4.1"],\
             ["ts-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:9.4.2"],\
             ["tsconfig-paths-webpack-plugin", "npm:4.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
@@ -17374,7 +17371,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["minimatch", "npm:3.1.2"],\
             ["semver", "npm:5.7.1"],\
             ["tapable", "npm:1.1.3"],\
-            ["typescript", "patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=a66ed4"],\
+            ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
             ["vue-template-compiler", null],\
             ["webpack", "virtual:167349e2fd0efa6171de6032578b2b8fcd207a6daa9359eb1ef836b0ce2d26d42163377cc5fabd2e166b145d8cbf69cb23ab1a75e42eb4a7c713888897619e03#npm:4.46.0"],\
             ["worker-rpc", "npm:0.1.1"]\
@@ -17451,7 +17448,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["schema-utils", "npm:2.7.0"],\
             ["semver", "npm:7.3.8"],\
             ["tapable", "npm:1.1.3"],\
-            ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
+            ["typescript", null],\
             ["vue-template-compiler", null],\
             ["webpack", "virtual:38e8bff425929674d66c9e489c9ef006b792a93ecacd93af28c1fa13654adb317a9cf0b2267505572a44d8f894892ee29d86d151e5e39362127e9238bf1983c2#npm:5.75.0"]\
           ],\
@@ -28287,6 +28284,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["swiper", "npm:8.4.5"],\
             ["dom7", "npm:4.0.4"],\
+            ["ssr-window", "npm:4.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:9.4.1", {\
+          "packageLocation": "./.yarn/cache/swiper-npm-9.4.1-38d46d35a3-1180b3b766.zip/node_modules/swiper/",\
+          "packageDependencies": [\
+            ["swiper", "npm:9.4.1"],\
             ["ssr-window", "npm:4.0.2"]\
           ],\
           "linkType": "HARD"\
