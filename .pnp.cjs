@@ -79,7 +79,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["clean-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.0.0"],\
             ["cross-env", "npm:7.0.3"],\
             ["css-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:6.7.2"],\
-            ["dotenv", "npm:16.3.1"],\
             ["dotenv-webpack", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:8.0.1"],\
             ["eslint", "npm:8.29.0"],\
             ["eslint-config-prettier", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:8.5.0"],\
@@ -10828,7 +10827,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["clean-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.0.0"],\
             ["cross-env", "npm:7.0.3"],\
             ["css-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:6.7.2"],\
-            ["dotenv", "npm:16.3.1"],\
             ["dotenv-webpack", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:8.0.1"],\
             ["eslint", "npm:8.29.0"],\
             ["eslint-config-prettier", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:8.5.0"],\
@@ -15582,13 +15580,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/dotenv-npm-10.0.0-36b272df25-f412c5fe8c.zip/node_modules/dotenv/",\
           "packageDependencies": [\
             ["dotenv", "npm:10.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:16.3.1", {\
-          "packageLocation": "./.yarn/cache/dotenv-npm-16.3.1-e6d380a398-15d75e7279.zip/node_modules/dotenv/",\
-          "packageDependencies": [\
-            ["dotenv", "npm:16.3.1"]\
           ],\
           "linkType": "HARD"\
         }],\
