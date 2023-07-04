@@ -46,7 +46,7 @@
     "skipLibCheck": true,
 
     // "rootDir": "./src",
-    // "outDir": "./dist",
+    "outDir": "./dist",
     "noImplicitAny": false,
   },
   "include": ["src/*","**/@types/*", "**/assets/index.d.ts"],
