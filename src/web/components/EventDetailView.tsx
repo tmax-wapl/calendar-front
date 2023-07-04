@@ -26,7 +26,6 @@ interface OutletProps {
 
 const EventDetailView = () => {
   const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
-  const { isGuest } = useUserStore();
   const navigate = useNavigate();
   const { isEventUpdating, setEventUpdating } = useOutletContext<OutletProps>();
 
@@ -72,7 +71,7 @@ const EventDetailView = () => {
     if (isEventUpdating || event.subEvent || event.roomId) return;
     if (event.shareEvent) return [{ action: 'delete', onClick: handleDeleteClick }];
     return [
-      { ...(!isGuest && { action: 'share', onClick: handleShareClick }) },
+      { action: 'share', onClick: handleShareClick },
       { action: 'edit', onClick: handleEditClick },
       { action: 'delete', onClick: handleDeleteClick },
     ];

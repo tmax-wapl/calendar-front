@@ -24,7 +24,6 @@ import { getStartDate, toISO, isSameDate, applyWeekdayOffset } from '@/utils';
 import { EVENT_UPDATE_OPTION, VIEW_MODE, APP_ID } from '@/common/constants';
 import { useDidMountEffect } from '@/common/hooks';
 import { AttachmentInfo, EventMember } from '@/common/constants/interfaces';
-import { useUserStore } from '@wapl/core';
 import { UploadFileDTO, SyncFileDTOMsg, FileInfo } from '@/common/constants/interfaces';
 interface Props {
   action: 'create' | 'update';
@@ -36,7 +35,6 @@ interface OutletProps {
 
 const EventHandleView = ({ action }: Props) => {
   const { calendarStore, eventStore, uiStore, fileStore } = useCalendarStores();
-  const { isGuest } = useUserStore();
   const roomStore = useRoomStore();
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -417,21 +415,19 @@ const EventHandleView = ({ action }: Props) => {
             </FromInfo>
           )}
         </Observer>
-        {!isGuest && (
-          <Observer>
-            {() => (
-              <Participants
-                participants={
-                  eventStore.event.eventMember
-                    ? [...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]
-                    : []
-                }
-                onChange={(value: EventMember) => (eventStore.event.eventMember = value)}
-                editable
-              />
-            )}
-          </Observer>
-        )}
+        <Observer>
+          {() => (
+            <Participants
+              participants={
+                eventStore.event.eventMember
+                  ? [...eventStore.event.eventMember?.personaList, ...eventStore.event.eventMember?.roomList]
+                  : []
+              }
+              onChange={(value: EventMember) => (eventStore.event.eventMember = value)}
+              editable
+            />
+          )}
+        </Observer>
         <Observer>
           {() => (
             <Location
