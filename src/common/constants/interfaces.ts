@@ -145,7 +145,8 @@ export interface EventMember {
 }
 export interface EventMemberPersona {
   personaId: number;
-  personaNick: string;
+  personaNick?: string;
+  personaName?: string;
 }
 
 export interface EventMemberRoom {

@@ -129,7 +129,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
           participants.map(participant => (
             <ParticipantChip
               key={participant.roomId || participant.personaId}
-              label={participant.personaNick || participant.roomNick}
+              label={participant.personaName || participant.personaNick || participant.roomNick}
               editable={editable}
               {...(editable && { onDelete: () => handleDelete(participant) })}
             />
