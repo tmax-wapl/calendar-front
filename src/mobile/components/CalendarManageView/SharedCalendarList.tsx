@@ -19,7 +19,7 @@ const SharedCalendarList = observer(() => {
   const { calendarStore, uiStore } = useCalendarStores();
 
   const sortCalendarList = (): CalendarModel[] => {
-    const filteredCalendars = calendarStore.calendarList.filter(({ type }) => ['share'].includes(type)); // TODO: url추가
+    const filteredCalendars = calendarStore.calendarList.filter(({ type }) => ['share', 'url'].includes(type));
     if (!filteredCalendars.length) return [];
     return filteredCalendars.sort((a, b) => new Date(b.regDate).getTime() - new Date(a.regDate).getTime());
   };
@@ -58,22 +58,22 @@ const SharedCalendarList = observer(() => {
 
   return (
     <>
-      {calendarStore.calendarList?.some(cal => cal.type === 'share') ? (
+      {calendarStore.calendarList?.some(cal => cal.type === 'share' || cal.type === 'url') ? (
         <SharedCalendarListContainer>
-          {calendarStore.roomCalendarList.length > 0 && (
+          {calendarStore.calendarList.length > 0 && (
             <FilterName>
               <IconButton onClick={() => setOpen(!isOpen)}>
                 <ExpandIcon />
               </IconButton>
               <TitleSpan>공유 받은 캘린더</TitleSpan>
-              <ButtonWrapper onClick={handleContextMenuOpen}>
+              {/* <ButtonWrapper onClick={handleContextMenuOpen}>
                 <Icon.MoreLine width={20} height={20} color="#BDC1C6" />
-              </ButtonWrapper>
+              </ButtonWrapper> */}
             </FilterName>
           )}
           {isOpen &&
             sortCalendarList()?.map((calendar: CalendarModel) => <Item key={calendar.id} calendar={calendar} />)}
-          <ContextMenu
+          {/* <ContextMenu
             open={isContextMenuOpen}
             selected=""
             height={104}
@@ -89,7 +89,7 @@ const SharedCalendarList = observer(() => {
             type="selectAll"
             onClose={handleContextMenuClose}
             onClick={handleItemClick}
-          />
+          /> */}
         </SharedCalendarListContainer>
       ) : null}
     </>

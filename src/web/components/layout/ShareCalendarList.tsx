@@ -13,8 +13,7 @@ const ShareCalendarList = observer(() => {
   const sortCalendarList = (): CalendarModel[] => {
     const filteredCalendars = calendarStore.calendarList
       ?.concat(calendarStore.roomCalendarList)
-      .filter(({ type }) => ['share'].includes(type)); // TODO: url추가
-
+      .filter(({ type }) => ['share', 'url'].includes(type));
     if (!filteredCalendars.length) return [];
 
     return filteredCalendars.sort((a, b) => new Date(b.regDate).getTime() - new Date(a.regDate).getTime());
@@ -22,9 +21,9 @@ const ShareCalendarList = observer(() => {
 
   return (
     <>
-      {calendarStore.calendarList?.some(cal => cal.type === 'share') ? (
+      {calendarStore.calendarList?.some(cal => cal.type === 'share' || cal.type === 'url') ? (
         <ShareListContainer>
-          {calendarStore.roomCalendarList.length > 0 && (
+          {calendarStore.calendarList.length > 0 && (
             <Title>
               <ArrowButton onClick={() => setVisible(!visible)}>
                 {visible ? (

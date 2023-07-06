@@ -1,30 +1,20 @@
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { Icon } from '@wapl/ui';
 import { observer } from 'mobx-react-lite';
-import { OtherCalendarListContainer, Title } from './OtherCalendarList.style';
+import { AddButton, OtherCalendarListContainer, Title } from './OtherCalendarList.style';
 import RoomCalendarList from './RoomCalendarList';
 import ShareCalendarList from './ShareCalendarList';
 
 const OtherCalendarList = observer(() => {
-  const { uiStore } = useCalendarStores();
-
-  const onContextMenuOpen = (e: React.MouseEvent<Element, MouseEvent>) => {
-    const target = e.target as HTMLDivElement;
-    if (!target) return;
-    uiStore.setContextClickArg({
-      target,
-      position: { top: e.clientY, left: e.clientX },
-      hideColorPicker: true,
-      type: 'addOther',
-    });
-  };
+  const { calendarStore } = useCalendarStores();
 
   return (
     <OtherCalendarListContainer>
       <Title>
         다른 캘린더
-        {/* <AddButton onClick={onContextMenuOpen}>
+        <AddButton onClick={() => calendarStore.handleUrlSubscribe()}>
           <Icon.Add2Line width={20} height={20} color="#80868B" />
-        </AddButton> */}
+        </AddButton>
       </Title>
       <ShareCalendarList />
       <RoomCalendarList title="룸 캘린더" roomType="private" />

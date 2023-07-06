@@ -64,17 +64,17 @@ export const Dialog = () => {
         };
       case 'subscribe':
         return {
-          title: '구독 캘린더 추가',
-          description: `URL을 통해 공유 받은 캘린더에 외부 캘린더를 추가할 수 있습니다.`,
+          title: '다른 캘린더 추가',
+          description: `URL을 통해 다른 캘린더를 추가할 수 있습니다.`,
         };
       case 'subscribeFail':
         return {
-          title: '구독 캘린더 추가 실패',
+          title: '다른 캘린더 추가 실패',
           description: `입력하신 URL을 다시 확인해 주세요.`,
         };
       case 'subscribeDuplication':
         return {
-          title: '구독 캘린더 추가 실패',
+          title: '다른 캘린더 추가 실패',
           description: `이미 구독 중입니다.`,
         };
       case 'syncFail':

@@ -4,6 +4,7 @@ import CalendarRepo from './repository/CalendarRepo';
 import { CalendarDTO, CalendarPatchDTO, CalendarShareDTO, HolidayDTO } from '@/common/constants/interfaces';
 import { CalendarModel } from './model/CalendarModel';
 import { EventModel } from './model/EventModel';
+import { HTTPError } from '@/error';
 
 export default class CalendarStore {
   rootStore: RootStore;
@@ -71,10 +72,7 @@ export default class CalendarStore {
 
   async getCalendarList() {
     const data = await this.repo.getCalendarList();
-    return data.map(
-      (dto: CalendarDTO) =>
-        new CalendarModel({ ...dto, color: dto.color || this.rootStore.calendarStore.defaultColor }),
-    );
+    return data.map((dto: CalendarDTO) => new CalendarModel({ ...dto, color: dto.color || this.defaultColor }));
   }
 
   async syncCalendar(calId: number, start: string, end: string) {
@@ -235,5 +233,38 @@ export default class CalendarStore {
         this.updateCalendar(calendar.id, { checkFlag });
         this.updateCalendarChecked(calendar.id, checkFlag);
       });
+  }
+
+  async handleSubscribe(url: string) {
+    try {
+      await this.createCalendar({ url, type: 'url' });
+      this.closeDialog();
+    } catch (e) {
+      if (e instanceof HTTPError && e.status === 400) {
+        this.rootStore.uiStore.setDialogInfo({
+          action: 'subscribeDuplication',
+          onClick: [() => this.closeDialog()],
+        });
+      } else {
+        this.rootStore.uiStore.setDialogInfo({
+          action: 'subscribeFail',
+          onClick: [() => this.closeDialog()],
+        });
+      }
+    }
+  }
+
+  handleUrlSubscribe() {
+    this.rootStore.uiStore.setDialogInfo({
+      action: 'subscribe',
+      onCloseClick: () => this.closeDialog(),
+      onClick: [() => this.closeDialog(), (url: string) => this.handleSubscribe(url)],
+      data: { placeholder: 'URL 입력' },
+      type: 'input',
+    });
+  }
+
+  closeDialog() {
+    this.rootStore.uiStore.setDialogInfo(null);
   }
 }

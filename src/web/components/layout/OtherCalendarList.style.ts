@@ -17,6 +17,7 @@ export const Title = styled.div`
   margin-right: auto;
   cursor: default;
   ${({ theme: { Font } }) => Font.Text.m.Regular};
+  justify-content: space-between;
 `;
 
 export const AddButton = styled(Mui.IconButton)`

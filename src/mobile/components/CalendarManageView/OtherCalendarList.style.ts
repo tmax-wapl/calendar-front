@@ -11,6 +11,7 @@ export const Title = styled.div`
   align-items: center;
   ${({ theme: { Font } }) => Font.Text.s.Medium};
   color: ${({ theme: { Color } }) => Color.Gray[900]};
+  justify-content: space-between;
 `;
 
 export const FilterName = styled(Title)`
@@ -22,6 +23,11 @@ export const IconButton = styled(Mui.IconButton)`
   height: 28px;
   margin-right: 7.5px;
   padding: 0;
+`;
+
+export const AddButton = styled(IconButton)`
+  width: 26px;
+  margin-right: 1.5px;
 `;
 
 export const TitleSpan = styled.span`
