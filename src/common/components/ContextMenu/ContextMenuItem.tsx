@@ -1,5 +1,5 @@
 import { Icon, Mui, styled, useWaplUiStore } from '@wapl/ui';
-import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
+import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes, ContactData } from '@wapl/core';
 import { useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -222,7 +222,7 @@ export const ContextMenuItem = ({ id, type, date, data, onClose }: Props) => {
   };
 
   const handleEventShare = async (
-    personaIdList: Partial<Member>[],
+    personaIdList: Partial<Member & ContactData>[],
     roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
   ) => {
     await eventStore.shareEvent({

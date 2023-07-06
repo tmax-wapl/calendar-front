@@ -10,7 +10,7 @@ import {
 } from './Participants.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EventMember, EventMemberPersona, EventMemberRoom } from '@constants/interfaces';
-import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
+import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes, ContactData } from '@wapl/core';
 interface Props {
   participants?: Partial<EventMemberPersona & EventMemberRoom>[];
   onChange?: (value?: EventMember) => void;
@@ -69,7 +69,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
   };
 
   const onComplete = (
-    personaIdList: Partial<Member>[],
+    personaIdList: Partial<Member & ContactData>[],
     roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
   ) => {
     const { eventMember } = eventStore.event;
@@ -82,7 +82,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
     const personaList = removeDuplicates([
       ...eventMember.personaList,
       ...personaIdList?.map(item => {
-        return { personaId: item.personaId, personaNick: item.nick };
+        return { personaId: item.personaId, personaNick: item.nick ?? item.personaName };
       }),
     ]) as EventMemberPersona[];
 
@@ -129,7 +129,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
           participants.map(participant => (
             <ParticipantChip
               key={participant.roomId || participant.personaId}
-              label={participant.personaName || participant.personaNick || participant.roomNick}
+              label={participant.personaNick || participant.roomNick}
               editable={editable}
               {...(editable && { onDelete: () => handleDelete(participant) })}
             />

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Observer } from 'mobx-react-lite';
 import { Icon } from '@wapl/ui';
-import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
+import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes, ContactData } from '@wapl/core';
 import { useNavigate } from 'react-router-dom';
 import {
   EventDetailViewContainer,
@@ -103,7 +103,7 @@ const EventDetailView = () => {
   };
 
   const shareEvent = async (
-    personaIdList: Partial<Member>[],
+    personaIdList: Partial<Member & ContactData>[],
     roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
   ) => {
     const event = eventStore.event;
