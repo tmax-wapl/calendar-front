@@ -128,16 +128,21 @@ export default class EventStore {
     return this.event;
   }
 
+  async updateEventColor(eventId: number, { dto }: EventModel) {
+    await this.repo.updateEventColor(eventId, dto);
+  }
+
   async deleteEvent(eventId: number) {
     const res = await this.repo.deleteEvent(eventId);
     return res;
   }
 
-  updateEventColor(id: string, color: string) {
+  updateEventListColor(id: string, color: string) {
     this.rootStore.calendarStore.eventList = this.rootStore.calendarStore.eventList.map(event => {
       if (event.id === id) event.color = color;
       return event;
     });
+    if (this.event.id === id) this.event = new EventModel({ ...this.event.dto, color });
   }
 
   async shareEvent(dto: EventShareDTO) {

@@ -67,6 +67,22 @@ export default class EventRepo {
     }
   }
 
+  async updateEventColor(eventId: number, dto: Partial<EventDTO>) {
+    try {
+      const {
+        data: { response, success },
+      } = await API.patch<Partial<EventDTO>, ResponseData<EventDTO>>(
+        `${baseUrl}/apis/v1/event/update/color/${eventId}`,
+        dto,
+      );
+      if (success) return response;
+    } catch (e) {
+      if (e instanceof HTTPError) {
+        throw Error(JSON.stringify(e));
+      }
+    }
+  }
+
   async deleteEvent(eventId: number) {
     try {
       const {

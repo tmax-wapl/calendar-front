@@ -59,8 +59,8 @@ export const ContextMenu = () => {
       case 'repeatEvent':
       case 'event':
         const event = new EventModel({ color, calId: calendarStore.getCalendarId() });
-        await eventStore.updateEvent(id, event, EVENT_UPDATE_OPTION.DEFAULT);
-        eventStore.updateEventColor('' + id, color);
+        await eventStore.updateEventColor(id, event);
+        eventStore.updateEventListColor('' + id, color);
         uiStore.setContextClickArg({ ...uiStore.contextClickArg, color });
         break;
       case 'orgCalendar':
