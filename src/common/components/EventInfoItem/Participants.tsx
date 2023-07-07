@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@wapl/ui';
+import { Avatar, Icon } from '@wapl/ui';
 import {
   Accordion,
   AccordionSummary,
@@ -39,15 +39,20 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
   const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>) => {
     switch (true) {
       case isRoomModel(item as RoomModel):
-        const { id, displayName } = item;
-        return { roomId: id, roomNick: displayName };
+        const { id, displayName, displayPhoto } = item;
+        return { roomId: id, roomNick: displayName, displayPhoto, memberCount: displayPhoto.length };
       case isSearchOrgRes(item as SearchOrgRes):
         const {
           org: { roomId, orgName },
         } = item;
         return { roomId, roomNick: orgName };
       default:
-        return { roomId: item.roomId, roomNick: item.orgName };
+        return {
+          roomId: item.roomId,
+          roomNick: item.orgName,
+          displayPhoto: item.displayPhoto,
+          memberCount: displayPhoto.length,
+        };
     }
   };
 
@@ -82,7 +87,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
     const personaList = removeDuplicates([
       ...eventMember.personaList,
       ...personaIdList?.map(item => {
-        return { personaId: item.personaId, personaNick: item.nick ?? item.personaName };
+        return { personaId: item.personaId, personaNick: item.nick ?? item.personaName, displayPhoto: [''] };
       }),
     ]) as EventMemberPersona[];
 
@@ -126,14 +131,20 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
       </AccordionSummary>
       <AccordionDetails editable={editable} isExist={editable && !!participants?.length}>
         {participants.length ? (
-          participants.map(participant => (
-            <ParticipantChip
-              key={participant.roomId || participant.personaId}
-              label={participant.personaNick || participant.roomNick}
-              editable={editable}
-              {...(editable && { onDelete: () => handleDelete(participant) })}
-            />
-          ))
+          participants.map(participant => {
+            if (participant.memberCount)
+              participant.displayPhoto = Array.from({ length: participant.memberCount }, () => '');
+            return (
+              <ParticipantChip
+                key={participant.roomId || participant.personaId}
+                label={participant.personaNick || participant.roomNick}
+                avatar={<Avatar imgSrc={participant?.displayPhoto ?? undefined} size={20} />}
+                avatarCount={participant.displayPhoto?.length}
+                editable={editable}
+                {...(editable && { onDelete: () => handleDelete(participant) })}
+              />
+            );
+          })
         ) : (
           <ParticipantsPlaceholder {...(editable && { onClick: handleShareClick })}>
             ‘참여 구성원’ 혹은 이 곳을 클릭해 주세요.

@@ -1,4 +1,5 @@
-import { styled, Mui, Chip } from '@wapl/ui';
+import { styled, Mui } from '@wapl/ui';
+import { DesktopRoom } from '@wapl/core';
 
 export const Accordion = styled(Mui.Accordion)`
   &:before {
@@ -27,15 +28,13 @@ export const AccordionDetails = styled(Mui.AccordionDetails, {
   border-radius: 8px;
 `;
 
-export const ParticipantChip = styled(Chip, {
+export const ParticipantChip = styled(DesktopRoom.StyledMuiChip, {
   shouldForwardProp: (prop: string) => prop !== 'editable',
 })<{ editable: boolean }>`
   ${({ editable }) => !editable && 'height: 32px !important; padding: 6px !important;'}
-  :not(:last-child) {
-    margin: 0px 2px 2px 0px;
-  }
+  margin: 0 2px 2px;
   .MuiChip-label {
-    max-width: ${({ editable }) => (editable ? '188px' : '180px')};
+    max-width: ${({ editable }) => (editable ? '136px' : '146px')};
   }
 `;
 

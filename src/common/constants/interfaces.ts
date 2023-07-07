@@ -152,6 +152,8 @@ export interface EventMemberPersona {
 export interface EventMemberRoom {
   roomId: number;
   roomNick: string;
+  displayPhoto?: string[];
+  memberCount?: number;
 }
 
 export interface EventListDTO {
