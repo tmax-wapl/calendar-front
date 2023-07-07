@@ -6080,7 +6080,7 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": 0.5.23
+    "@wapl/core": 0.5.24
     "@wapl/ui": 0.2.35
     axios: ^0.27.2
     babel-loader: ^9.0.1
@@ -6128,9 +6128,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:0.5.23":
-  version: 0.5.23
-  resolution: "@wapl/core@npm:0.5.23"
+"@wapl/core@npm:0.5.24":
+  version: 0.5.24
+  resolution: "@wapl/core@npm:0.5.24"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
     "@wapl/ui": ^0.2.30
@@ -6161,7 +6161,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: 1c04182ca718606b49fb4cb4b741d8bb817b6acf0d93e541d5ae0bcb40d72389ffbb0041733cef6cfa29a70f0d8b28d573d725113176ae004e27047689ade7b3
+  checksum: d6f4f86edcb91ef7efa8494ca2ca5df0933fcde3a7f75563a3ad6567a207ffeb4d794746912a64d9713e9f5ff12620acc1149b6dcf0a1347900e515d1e81e056
   languageName: node
   linkType: hard
 
