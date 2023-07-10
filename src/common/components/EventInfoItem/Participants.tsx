@@ -131,9 +131,10 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
       <AccordionDetails editable={editable} isExist={editable && !!participants?.length}>
         {participants.length ? (
           participants.map(participant => {
-            participant.displayPhoto = participant.displayPhoto?.map(item =>
-              item !== '' && !item.includes(window.location.origin) ? `${window.location.origin}/${item}` : item,
-            );
+            participant.displayPhoto = participant.displayPhoto?.map(item => {
+              const origin = window.location.ancestorOrigins[0] ?? window.location.origin;
+              return item !== '' && !item.includes(origin) ? `${origin}/${item}` : item;
+            });
             return (
               <ParticipantChip
                 key={participant.roomId || participant.personaId}
