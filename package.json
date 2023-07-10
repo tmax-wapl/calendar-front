@@ -33,7 +33,7 @@
     "@mui/system": "^5.10.14",
     "@mui/x-date-pickers": "^5.0.8",
     "@wapl/core": "0.5.25",
-    "@wapl/ui": "0.2.35",
+    "@wapl/ui": "0.2.31",
     "axios": "^0.27.2",
     "fullcalendar": "^5.11.3",
     "keen-slider": "^6.8.5",
