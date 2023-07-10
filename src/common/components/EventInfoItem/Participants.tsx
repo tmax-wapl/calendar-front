@@ -40,7 +40,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
     switch (true) {
       case isRoomModel(item as RoomModel):
         const { id, displayName, displayPhoto } = item;
-        return { roomId: id, roomNick: displayName, displayPhoto, memberCount: displayPhoto.length };
+        return { roomId: id, roomNick: displayName, displayPhoto };
       case isSearchOrgRes(item as SearchOrgRes):
         const {
           org: { roomId, orgName },
@@ -51,7 +51,6 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
           roomId: item.roomId,
           roomNick: item.orgName,
           displayPhoto: item.displayPhoto,
-          memberCount: displayPhoto.length,
         };
     }
   };
@@ -132,8 +131,9 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
       <AccordionDetails editable={editable} isExist={editable && !!participants?.length}>
         {participants.length ? (
           participants.map(participant => {
-            if (participant.memberCount)
-              participant.displayPhoto = Array.from({ length: participant.memberCount }, () => '');
+            participant.displayPhoto = participant.displayPhoto?.map(item =>
+              item !== '' && !item.includes(window.location.origin) ? `${window.location.origin}/${item}` : item,
+            );
             return (
               <ParticipantChip
                 key={participant.roomId || participant.personaId}
