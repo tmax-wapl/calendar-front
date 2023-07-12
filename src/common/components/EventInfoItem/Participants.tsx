@@ -86,7 +86,11 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
     const personaList = removeDuplicates([
       ...eventMember.personaList,
       ...personaIdList?.map(item => {
-        return { personaId: item.personaId, personaNick: item.nick ?? item.personaName, displayPhoto: [''] };
+        return {
+          personaId: item.personaId,
+          personaNick: item.nick ?? item.personaName,
+          displayPhoto: [item.profileImage],
+        };
       }),
     ]) as EventMemberPersona[];
 
