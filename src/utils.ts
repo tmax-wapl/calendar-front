@@ -99,3 +99,25 @@ export const isDateTime = (date: Date | DateTime): date is DateTime => {
 export const toUTC = (date: Date | DateTime): string => {
   return isDateTime(date) ? toISO(date.toUTC()) : toISO(DateTime.fromJSDate(date).toUTC());
 };
+
+export const getDateTime = (type: string, date: DateTime, value?: string) => {
+  let meridiem = date.toFormat('a', { locale: 'ko' });
+  let hour = date.toFormat('h');
+  let minute = date.toFormat('mm');
+
+  switch (type) {
+    case 'time':
+      [hour, minute] = value.split(':');
+      minute = minute.padStart(2, '0');
+      break;
+    case 'meridiem':
+      meridiem = value;
+      break;
+    default:
+      break;
+  }
+  const time = DateTime.fromFormat(`${meridiem} ${hour}:${minute}`, 'a h:mm', {
+    locale: 'ko',
+  });
+  return date.set({ hour: time.hour, minute: time.minute });
+};
