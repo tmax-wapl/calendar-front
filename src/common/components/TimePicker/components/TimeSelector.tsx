@@ -1,7 +1,7 @@
 import { RefObject, useCallback, useEffect, useRef } from 'react';
 import { DateTime } from 'luxon';
 import { TimeSelectorContainer } from './TimeSelector.style';
-import PickerItem from './PickerItem';
+import PickerItem from './PickerItemInput';
 import { getDateTime } from '@/utils';
 
 interface Props {
