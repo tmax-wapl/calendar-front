@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Icon, Tooltip, WaplUiProvider } from '@wapl/ui';
+import { Icon, styled, Tooltip, WaplUiProvider } from '@wapl/ui';
 import { DateTime } from 'luxon';
-import { PickerContainer, DateWrapper, DatePickerWrapper } from '../../EventInfoItem/EventDateItem.style';
+import { DateWrapper, DatePickerWrapper } from '../../EventInfoItem/EventDateItem.style';
 import DatePicker from '../components/DatePicker';
 
 interface Props {
@@ -57,3 +57,9 @@ export const DateItem: React.FC<Props> = ({ date, isDateInvalid, inValidTitle, o
 };
 
 DateItem.displayName = 'DateItem';
+
+const PickerContainer = styled.div`
+  display: flex;
+  position: relative;
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
+`;
