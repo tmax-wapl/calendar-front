@@ -7,8 +7,6 @@
     "paths": {
       "@/*": ["src/*"],
       "@common/*": ["src/common/*"],
-      "@constants/*": ["src/common/constants/*"],
-      "@api/*": ["src/common/lib/*"],
       "@wcomponents/*": ["src/web/components/*"],
       "@mcomponents/*": ["src/mobile/components/*"],
       "@contexts/*": ["src/common/contexts/*"]
@@ -49,6 +47,6 @@
     "outDir": "./dist",
     "noImplicitAny": false
   },
-  "include": ["src/*", "**/@types/*", "**/assets/index.d.ts"],
+  "include": ["src/**/*", "**/@types/*", "**/assets/index.d.ts"],
   "exclude": ["**/dist/*", "**/stories/*", "**/*.stories.*"]
 }
