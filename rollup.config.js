@@ -5,6 +5,7 @@ const json = require('@rollup/plugin-json');
 const commonjs = require('@rollup/plugin-commonjs');
 const babel = require('@rollup/plugin-babel').default;
 const builtins = require('builtin-modules');
+const nodePolyfills = require('rollup-plugin-node-polyfills');
 
 function setUpRollup({ input, output, format }) {
   const packageJSON = require(path.join(__dirname, 'package.json'));
@@ -56,6 +57,7 @@ function setUpRollup({ input, output, format }) {
         rootMode: 'upward',
       }),
       json(),
+      nodePolyfills(),
     ],
     preserveModules: isESMFormat,
   };
