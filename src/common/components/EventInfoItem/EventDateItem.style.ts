@@ -32,13 +32,14 @@ export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   :hover {
     background: ${({ theme: { Color } }) => Color.Black[6]};
   }
+  text-decoration: ${({ isInvalid }) => (isInvalid ? 'line-through' : 'none')};
 `;
 
 export const DatePickerWrapper = styled.div<{ allDay?: boolean }>`
   position: absolute;
   top: 100%;
   transform: ${({ allDay }) => (allDay ? 'translate(-60%, 0)' : 'translate(-30%, 0)')};
-  z-index: 2;
+  z-index: 1;
   margin-top: 8px;
   padding: 16px;
   background: ${({ theme: { Color } }) => Color.White[100]};
@@ -52,14 +53,15 @@ export const TimeWrapper = styled.div<{ isInvalid?: boolean }>`
   box-sizing: border-box;
   padding: 5px;
   border-radius: 6px;
-  cursor: pointer;
+  /* cursor: pointer; */
   border: 1px solid ${({ isInvalid, theme: { Color } }) => (isInvalid ? Color.Validation.negative : 'transparent')};
-  :hover {
+  /* :hover {
     background: ${({ theme: { Color } }) => Color.Black[6]};
-  }
+  } */
   > :last-child {
     margin-left: auto;
   }
+  text-decoration: ${({ isInvalid }) => (isInvalid ? 'line-through' : 'none')};
 `;
 
 export const TimeValue = styled.span`
@@ -67,6 +69,31 @@ export const TimeValue = styled.span`
 `;
 
 export const TimePickerWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1;
+  margin-top: 8px;
+  background: ${({ theme: { Color } }) => Color.White[100]};
+`;
+
+export const MeridiemValueWrapper = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  padding: 1px;
+  border-radius: 6px;
+  cursor: pointer;
+  :hover {
+    background: ${({ theme: { Color } }) => Color.Black[6]};
+  }
+`;
+
+export const TimeValueWrapper = styled(MeridiemValueWrapper)`
+  justify-self: end;
+  max-width: 55%;
+`;
+
+export const TimeSelectorWrapper = styled.div`
   position: absolute;
   top: 100%;
   right: 0;
