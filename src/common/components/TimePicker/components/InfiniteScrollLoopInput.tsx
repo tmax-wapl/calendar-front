@@ -1,10 +1,11 @@
-import { useRef, useState, useCallback, useLayoutEffect } from 'react';
+import { useRef, useState, useCallback, useLayoutEffect, useEffect } from 'react';
 import { InfiniteScrollLoopWrapper, LoopContents } from './InfiniteScrollLoop.style';
 
 interface Props {
   visibleHeight: number;
   surroundingBackup?: number;
   scrollTopValue?: string;
+  onOutsideClick?: () => void;
 }
 
 const InfiniteScrollLoop = ({
@@ -12,6 +13,7 @@ const InfiniteScrollLoop = ({
   surroundingBackup = 2,
   scrollTopValue,
   children,
+  onOutsideClick,
 }: React.PropsWithChildren<Props>) => {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -33,7 +35,23 @@ const InfiniteScrollLoop = ({
       el => el.textContent === scrollTopValue,
     )?.offsetTop;
     scrollRef.current.scrollTop = scrollTop || contentRef.current.offsetHeight * surroundingBackup;
-  }, [surroundingBackup]);
+  }, [surroundingBackup, scrollTopValue]);
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    const scrollTop = scrollRef.current.scrollTop;
+    if (e.key === 'ArrowDown') {
+      scrollRef.current.scrollTop = scrollTop + 30;
+    } else if (e.key === 'ArrowUp') {
+      scrollRef.current.scrollTop = scrollTop - 30;
+    } else if (e.key === 'Enter') {
+      onOutsideClick();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <InfiniteScrollLoopWrapper>
