@@ -19,8 +19,6 @@ module.exports = env => {
       alias: {
         '@': path.resolve(__dirname, 'src'),
         '@common': path.resolve(__dirname, 'src/common'),
-        '@constants': path.resolve(__dirname, 'src/common/constants'),
-        '@api': path.resolve(__dirname, 'src/common/lib'),
         '@wcomponents': path.resolve(__dirname, 'src/web/components'),
         '@mcomponents': path.resolve(__dirname, 'src/mobile/components'),
         '@contexts': path.resolve(__dirname, 'src/common/contexts'),
