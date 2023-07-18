@@ -17,6 +17,10 @@ const EventTitle = ({ title = '', importance, onTitleChange, onImportanceChange 
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!onTitleChange) return;
+    if (e.target.value.length > 50) {
+      onTitleChange(title);
+      return;
+    }
     onTitleChange(e.target.value);
   };
 

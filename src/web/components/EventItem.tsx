@@ -1,4 +1,4 @@
-import { Icon } from '@wapl/ui';
+import { Icon, Tooltip } from '@wapl/ui';
 import { EventModel } from '@/stores/model/EventModel';
 import {
   EventItemContainer,
@@ -23,7 +23,20 @@ const EventItem = ({ event, isDetail = false, onClick }: Props) => {
       <ItemTitleContainer isDetail={isDetail}>
         <Icon.CalendarDotFill color={event.backgroundColor} width={20} height={20} />
         {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
-        <EventTitle>{event.title}</EventTitle>
+        <Tooltip
+          placement="bottom-start"
+          title={event.title}
+          sx={{
+            '.MuiTooltip-tooltip': {
+              maxWidth: '183px',
+              color: 'white',
+              backgroundColor: '#202124',
+              textAlign: 'center',
+            },
+          }}
+        >
+          <EventTitle>{event.title}</EventTitle>
+        </Tooltip>
       </ItemTitleContainer>
       <EventInfoContainer isDetail={isDetail}>
         <EventInfo>{getEventDuration(event.startDate, event.endDate, event.allDay)}</EventInfo>
