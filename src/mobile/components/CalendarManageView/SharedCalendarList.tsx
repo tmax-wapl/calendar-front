@@ -46,11 +46,13 @@ const SharedCalendarList = observer(() => {
     </div>
   );
 
-  const handleItemClick = (value: string) => {
+  const handleItemClick = async (value: string) => {
     if (value === 'addSubscribe') uiStore.setPageDialogInfo('addSubscribe');
     else {
       const checkFlag = value === 'selectAll';
-      calendarStore.sharedCalendarListCheckAll(checkFlag);
+      const res = calendarStore.sharedCalendarListCheckAll(checkFlag);
+      console.log(res);
+      await Promise.all(res.map(promise => promise.catch(err => null)));
       uiStore.changeDateRange();
     }
     setContextMenuOpen(false);

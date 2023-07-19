@@ -229,10 +229,10 @@ export default class CalendarStore {
   }
 
   sharedCalendarListCheckAll(checkFlag: boolean) {
-    this.calendarList
+    return this.calendarList
       .filter(({ type }) => ['share'].includes(type))
-      .map(calendar => {
-        this.updateCalendar(calendar.id, { checkFlag });
+      .map(async calendar => {
+        await this.updateCalendar(calendar.id, { checkFlag });
         this.updateCalendarChecked(calendar.id, checkFlag);
       });
   }

@@ -43,6 +43,7 @@ const RoomCalendarList = observer(({ title, roomType }: Props) => {
   const handleSelectAll = (value: string) => {
     const checkFlag = value === 'selectAll';
     calendarStore.roomCalendarListCheckAll(userId, roomType, checkFlag);
+    uiStore.changeDateRange();
     setContextMenuOpen(false);
   };
 
