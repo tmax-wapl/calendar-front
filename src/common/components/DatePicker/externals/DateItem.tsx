@@ -9,9 +9,18 @@ interface Props {
   isDateInvalid?: boolean;
   inValidTitle?: string;
   onChange?: (date: Date) => void;
+  isMasked?: boolean;
+  dateFormat?: 'yyyy.LL.dd' | 'yyyy-LL-dd' | 'dd/LL/yyyy';
 }
 
-export const DateItem: React.FC<Props> = ({ date, isDateInvalid, inValidTitle, onChange }: Props) => {
+export const DateItem: React.FC<Props> = ({
+  date,
+  isDateInvalid,
+  inValidTitle,
+  onChange,
+  isMasked,
+  dateFormat = 'yyyy.LL.dd',
+}: Props) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
 
   const handleDateClick = () => {
@@ -36,7 +45,7 @@ export const DateItem: React.FC<Props> = ({ date, isDateInvalid, inValidTitle, o
             isInvalid={isDateInvalid}
             onClick={handleDateClick}
           >
-            {DateTime.fromJSDate(date).toFormat('yyyy.LL.dd')}
+            {isMasked ? dateFormat.replace(/[^/.]/g, '-') : DateTime.fromJSDate(date).toFormat(dateFormat)}
             <span style={{ display: 'flex', marginLeft: '4px' }}>
               <Icon.CalendarLine width={16} height={16} />
             </span>
