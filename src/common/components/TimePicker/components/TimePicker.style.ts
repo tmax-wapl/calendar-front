@@ -10,6 +10,7 @@ export const TimePickerContainer = styled('div', { shouldForwardProp: (prop: str
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
   scrollbar-width: none;
+  box-sizing: content-box;
 
   div {
     scrollbar-width: none;
