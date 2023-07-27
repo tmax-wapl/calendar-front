@@ -15,6 +15,7 @@ interface DatePickerProps {
   onDateClick?: (selectedDate: DateTime) => void;
   onOutsideClick?: () => void;
   onChange?: (date: Date) => void;
+  disabledDateList?: string[];
 }
 
 const DatePicker = ({
@@ -25,6 +26,7 @@ const DatePicker = ({
   onDateClick,
   onOutsideClick,
   onChange,
+  disabledDateList,
 }: DatePickerProps) => {
   const pickerRef = useRef<HTMLDivElement | null>(null);
   const [selectedDate, setSelectedDate] = useState<DateTime>(date);
@@ -73,6 +75,7 @@ const DatePicker = ({
             setTitleDate={setTitleDate}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
+            disabledDateList={disabledDateList}
           />
         </LocalizationProvider>
       </DatePickerBody>

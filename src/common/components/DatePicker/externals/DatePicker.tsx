@@ -12,6 +12,7 @@ interface Props {
   onDateChange?: (date: Date) => void /** '일' 선택 시 선택 된 '일'의 Date 객체 반환 */;
   onChange?: (date: Date) => void /** '년도/월' 변경 시 현재 '년도/월'의 Date 객체 반환 */;
   onOutsideClick?: () => void /** 바깥 영역 선택시 DatePicker 닫힌 후 콜백 */;
+  disabledDateList?: string[] /** disabled 처리하고 싶은 날짜 목록 (ex: ['2023-07-23', '2023-07-28']) */;
   style?: CSSProperties;
 }
 
@@ -22,6 +23,7 @@ export const DatePicker: React.FC<Props> = ({
   onDateChange,
   onChange,
   onOutsideClick,
+  disabledDateList,
   style,
 }: Props) => {
   const handleDateChange = (date: DateTime) => {
@@ -48,6 +50,7 @@ export const DatePicker: React.FC<Props> = ({
             onDateClick={handleDateChange}
             onOutsideClick={onOutsideClick}
             onChange={onChange}
+            disabledDateList={disabledDateList}
           />
         </Wrapper>
       </PickerContainer>

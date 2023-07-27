@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import TimePickerContainer from '../components/TimePicker';
 import { DateTime } from 'luxon';
 import { PickerContainer, TimePickerWrapper, TimeValue, TimeWrapper } from '../../EventInfoItem/EventDateItem.style';
@@ -7,10 +7,11 @@ import { WaplUiProvider } from '@wapl/ui';
 interface Props {
   value?: Date;
   height?: number;
-  onChange?: (time: Date) => void;
+  onChange?: (time: Date) => void /** 시간 선택시 Date 객체 반환 */;
+  style?: CSSProperties;
 }
 
-export const TimePicker: React.FC<Props> = ({ value, height, onChange }: Props) => {
+export const TimePicker: React.FC<Props> = ({ value, height, onChange, style }: Props) => {
   const [isTimePickerOpen, setIsTimePickerOpen] = useState<boolean>(false);
   const [date, setDate] = useState(DateTime.fromJSDate(value));
 
@@ -25,8 +26,8 @@ export const TimePicker: React.FC<Props> = ({ value, height, onChange }: Props) 
 
   return (
     <WaplUiProvider>
-      <PickerContainer>
-        <TimeWrapper className={`${isTimePickerOpen ? 'selected' : ''}`} onClick={handleTimeClick}>
+      <PickerContainer style={style}>
+        <TimeWrapper style={{ background: isTimePickerOpen ? 'rgba(0, 0, 0, 0.06)' : '' }} onClick={handleTimeClick}>
           <TimeValue>{date.toFormat('a', { locale: 'ko' })}</TimeValue>
           <TimeValue>{date.toFormat('h:mm')}</TimeValue>
         </TimeWrapper>

@@ -9,6 +9,7 @@ interface CalendarPickerProps {
   setTitleDate: React.Dispatch<React.SetStateAction<DateTime>>;
   selectedDate: DateTime;
   setSelectedDate: React.Dispatch<React.SetStateAction<DateTime>>;
+  disabledDateList?: string[];
 }
 
 const CalendarPicker = ({
@@ -19,6 +20,7 @@ const CalendarPicker = ({
   setTitleDate,
   selectedDate,
   setSelectedDate,
+  disabledDateList = [],
 }: CalendarPickerProps) => {
   const weekdays = Array.from(
     { length: 7 },
@@ -48,6 +50,10 @@ const CalendarPicker = ({
             }}
             size={size}
             backgroundcolor={backgroundColor}
+            {...(disabledDateList.length > 0 && {
+              disabled: disabledDateList.includes(value.toFormat('yyyy-LL-dd')),
+              disableday: disabledDateList.includes(value.toFormat('yyyy-LL-dd')),
+            })}
             isSunday={value.weekday === 7}
             isOutside={date.month !== value.month}
             today={value.toFormat('yyyy-LL-dd') === DateTime.local().toFormat('yyyy-LL-dd')}

@@ -22,17 +22,19 @@ export const CalendarContent = styled.div<{ size: number }>`
 
 export const CustomPickersDay = styled(PickersDay<DateTime>, {
   shouldForwardProp: (prop: string) => prop !== 'isOutside' && prop !== 'isSunday',
-})<{ isOutside: boolean; isSunday: boolean; size: number; backgroundcolor: string }>`
+})<{ isOutside: boolean; isSunday: boolean; size: number; backgroundcolor: string; disableday?: boolean }>`
   width: calc(24px * ${({ size }) => size}) !important;
   height: calc(24px * ${({ size }) => size}) !important;
   margin: calc(4px * ${({ size }) => size}) !important;
   background-color: ${({ backgroundcolor }) => backgroundcolor} !important;
   border: 0px !important;
-  color: ${({ isOutside, isSunday, theme: { Color } }) =>
+  color: ${({ isOutside, isSunday, disableday, theme: { Color } }) =>
     isOutside
       ? isSunday
         ? 'rgba(244, 67, 54, 0.3)'
         : Color.Gray[400]
+      : disableday
+      ? Color.Gray[200]
       : isSunday
       ? '#F44336'
       : Color.Gray[900]} !important;

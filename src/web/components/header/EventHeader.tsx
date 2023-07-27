@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { autorun } from 'mobx';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EventHeaderContainer, EventCreateButton, SearchField } from './EventHeader.style';
+import { DatePicker } from '@/common/components/DatePicker/externals/DatePicker';
 
 const EventHeader: React.FC = () => {
   const [keyword, setKeyword] = useState('');
@@ -37,7 +38,7 @@ const EventHeader: React.FC = () => {
   return (
     <EventHeaderContainer>
       <EventCreateButton onClick={handleCreateClick}>새 일정</EventCreateButton>
-
+      <DatePicker open date={new Date()} disabledDateList={['2023-07-16', '2023-07-19', '2023-07-20', '2023-08-16']} />
       {/* <SearchBar type="search" placeholder="캘린더 일정 검색" /> */}
       <SearchField
         ref={searchFieldRef}
