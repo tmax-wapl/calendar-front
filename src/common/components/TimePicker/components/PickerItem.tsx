@@ -10,7 +10,7 @@ interface ValueProps {
 
 const PickerValue = React.memo(({ value, onClick, isSelected = false }: ValueProps) => {
   return (
-    <PickerValueWrapper className={isSelected ? 'selected' : ''} onClick={() => onClick(value)}>
+    <PickerValueWrapper style={{ background: isSelected ? 'rgba(0, 0, 0, 0.06)' : '' }} onClick={() => onClick(value)}>
       {value}
     </PickerValueWrapper>
   );
