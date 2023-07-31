@@ -2856,7 +2856,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.10.16, @mui/material@npm:^5.4.1":
+"@mui/material@npm:^5.10.16":
   version: 5.10.16
   resolution: "@mui/material@npm:5.10.16"
   dependencies:
@@ -6081,7 +6081,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
     "@wapl/core": 0.5.25
-    "@wapl/ui": 0.2.31
+    "@wapl/ui": 0.2.38-foodist
     axios: ^0.27.2
     babel-loader: ^9.0.1
     builtin-modules: ^3.3.0
@@ -6166,13 +6166,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wapl/ui@npm:0.2.31":
-  version: 0.2.31
-  resolution: "@wapl/ui@npm:0.2.31"
+"@wapl/ui@npm:0.2.38-foodist":
+  version: 0.2.38-foodist
+  resolution: "@wapl/ui@npm:0.2.38-foodist"
   dependencies:
     "@emotion/react": ^11.7.1
     "@emotion/styled": ^11.6.0
-    "@mui/material": ^5.4.1
+    "@mui/material": 5.4.1
     emotion-reset: ^3.0.1
     lodash.clonedeep: ^4.5.0
     mobx: ^6.3.12
@@ -6188,7 +6188,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-router-dom: ^6.2.1
-  checksum: 6b064faa68f8a539ffbdf10b09200ca47569cc65a22ceaeb88d21c77d12417cffb755c571f63e634fba5ebfdc5ae6eae9ccd22c1afad61875a0f5cdc98b7a0e1
+  checksum: 086a9ca93e0144cce1852cfc754559fc712dc7bf074916b6d2cdace6238d09b67c12075d39e1c6714a75c4e979d5a9d736cc408178d115e98d4fa7f5cbc7ed66
   languageName: node
   linkType: hard
 
