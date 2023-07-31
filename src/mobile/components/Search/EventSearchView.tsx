@@ -59,7 +59,7 @@ const EventSearchView = () => {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === 'Enter') handleSearch(keyword);
+    if (e.key === 'Enter') handleSearch(keyword);
   };
 
   const handleCancelClick = () => {
