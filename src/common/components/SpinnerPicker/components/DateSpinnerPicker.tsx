@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DateTime } from 'luxon';
 import { ContextMenu, ContentMenuHeader } from '@wapl/ui';
 import SpinnerPickerItem from './SpinnerPickerItem';
-import { PickerContainer, ButtonWrapper, Selected, StyledButton } from './DateSpinnerPicker.style';
+import { PickerContainer, ButtonWrapper, Selected, StyledButton } from './SpinnerPicker.style';
 import { useDidMountEffect } from '@/common/hooks';
 
 interface DatePickerProps {
