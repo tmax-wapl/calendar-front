@@ -13,7 +13,10 @@ function setUpRollup({ input, output, format }) {
   const isESMFormat = format === 'es';
 
   const external = pkg => {
-    const externals = [...Object.keys({ ...packageJSON.dependencies, ...packageJSON.peerDependencies }), ...builtins];
+    const externals = [
+      ...Object.keys({ ...packageJSON.dependencies, ...packageJSON.peerDependencies }),
+      ...builtins,
+    ].filter(item => item !== '@wapl/ui' || item !== '@wapl/core');
 
     return externals.some(externalPkg => {
       return pkg.startsWith(externalPkg);
