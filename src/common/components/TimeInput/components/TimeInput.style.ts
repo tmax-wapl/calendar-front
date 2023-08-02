@@ -11,13 +11,10 @@ export const PickerContainer = styled.div`
 
 export const TimeWrapper = styled.div<{ isInvalid?: boolean }>`
   display: flex;
-  width: 75px;
+  justify-content: space-between;
   box-sizing: border-box;
-  border-radius: 6px;
+  width: 75px;
   border: 1px solid ${({ isInvalid, theme: { Color } }) => (isInvalid ? Color.Validation.negative : 'transparent')};
-  > :last-child {
-    margin-left: auto;
-  }
   text-decoration: ${({ isInvalid }) => (isInvalid ? 'line-through' : 'none')};
 `;
 
@@ -37,11 +34,14 @@ export const MeridiemValueWrapper = styled.div`
 `;
 
 export const TimeValueWrapper = styled(MeridiemValueWrapper)`
-  justify-self: end;
-  max-width: 52%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 51.8%;
 `;
 
-export const TimeInputWrapper = styled(TimeValueWrapper)`
+export const TimeInputWrapper = styled(MeridiemValueWrapper)`
+  max-width: 51.8%;
   padding: 0 5px 0 0;
 `;
 
