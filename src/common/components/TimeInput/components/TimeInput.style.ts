@@ -1,19 +1,54 @@
 import { styled } from '@wapl/ui';
 
-export const TimeInputContainer = styled.div<{ isValid: boolean }>`
+export const PickerContainer = styled.div`
   display: flex;
-  border: none;
+  position: relative;
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
+  :first-of-type {
+    margin-left: auto;
+  }
 `;
 
-export const InputArea = styled.input`
-  width: 100%;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  box-sizing: content-box;
-  text-align: end;
-  border: none;
-  outline: none;
-  font-size: 12px;
-  font-family: 'Spoqa Han Sans Neo', sans-serif;
+export const TimeWrapper = styled.div<{ isInvalid?: boolean }>`
+  display: flex;
+  width: 75px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid ${({ isInvalid, theme: { Color } }) => (isInvalid ? Color.Validation.negative : 'transparent')};
+  > :last-child {
+    margin-left: auto;
+  }
+  text-decoration: ${({ isInvalid }) => (isInvalid ? 'line-through' : 'none')};
+`;
+
+export const TimeValue = styled.span`
+  display: flex;
+`;
+
+export const MeridiemValueWrapper = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  padding: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  :hover {
+    background: ${({ theme: { Color } }) => Color.Black[6]};
+  }
+`;
+
+export const TimeValueWrapper = styled(MeridiemValueWrapper)`
+  justify-self: end;
+  max-width: 52%;
+`;
+
+export const TimeInputWrapper = styled(TimeValueWrapper)`
+  padding: 0 5px 0 0;
+`;
+
+export const TimeSelectorWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  z-index: 2;
+  margin-top: 8px;
+  background: ${({ theme: { Color } }) => Color.White[100]};
 `;

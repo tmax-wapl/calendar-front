@@ -1,6 +1,6 @@
 import React from 'react';
-import { PickerItemContainer, PickerValueWrapper } from '../../TimePicker/components/PickerItem.style';
-import InfiniteScrollLoop from './InfiniteScrollLoopInput';
+import InfiniteScrollLoop from './InfiniteScrollLoop';
+import { PickerItemContainer, PickerValueWrapper } from './SelectItem.style';
 
 interface ValueProps {
   value: string;
@@ -26,7 +26,7 @@ interface Props {
   onOutsideClick?: () => void;
 }
 
-const PickerItem = ({
+const SelectItem = ({
   height,
   item,
   selectedValue,
@@ -55,6 +55,6 @@ const PickerItem = ({
   );
 };
 
-export default React.memo(PickerItem, (prev, next) =>
+export default React.memo(SelectItem, (prev, next) =>
   prev.currentValue ? prev.currentValue === next.currentValue : prev.selectedValue === next.selectedValue,
 );
