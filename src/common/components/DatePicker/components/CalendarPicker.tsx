@@ -1,5 +1,6 @@
 import { DateTime, Info } from 'luxon';
 import { CalendarHeaderContainer, CalendarHeader, CalendarContent, CustomPickersDay } from './CalendarPickers.style';
+import { useWaplUiStore } from '@wapl/ui';
 
 interface CalendarPickerProps {
   size: number;
@@ -29,6 +30,7 @@ const CalendarPicker = ({
   const startOfMonth = date.set({ day: 1 }).set({ weekday: startingDay });
   const firstDay = startOfMonth > date.set({ day: 1 }) ? startOfMonth.minus({ weeks: 1 }) : startOfMonth;
   const dayOfMonth = Array.from({ length: 42 }, (_, i) => firstDay.plus({ days: i }));
+  const { themeKey } = useWaplUiStore();
 
   return (
     <>
@@ -50,6 +52,7 @@ const CalendarPicker = ({
             }}
             size={size}
             backgroundcolor={backgroundColor}
+            isLight={themeKey === 'light'}
             {...(disabledDateList.length > 0 && {
               disabled: disabledDateList.includes(value.toFormat('yyyy-LL-dd')),
               disableday: disabledDateList.includes(value.toFormat('yyyy-LL-dd')),

@@ -20,7 +20,7 @@ interface DatePickerProps {
 
 const DatePicker = ({
   size = 1,
-  backgroundColor = '#ffffff',
+  backgroundColor,
   startingDay = 7,
   date = DateTime.now(),
   onDateClick,
