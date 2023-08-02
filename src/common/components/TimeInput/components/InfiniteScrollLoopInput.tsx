@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useLayoutEffect, useEffect } from 'react';
-import { InfiniteScrollLoopWrapper, LoopContents } from './InfiniteScrollLoop.style';
+import { InfiniteScrollLoopWrapper, LoopContents } from '../../TimePicker/components/InfiniteScrollLoop.style';
 
 interface Props {
   visibleHeight: number;

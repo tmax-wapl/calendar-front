@@ -14,8 +14,8 @@ import {
   TimeValueWrapper,
 } from './EventDateItemInput.style';
 import DatePicker from '../DatePicker/components/DatePicker';
-import TimeSelector from '../TimePicker/components/TimeSelector';
-import TimeInput from '../TimePicker/components/TimeInput';
+import TimeSelector from '../TimeInput/components/TimeSelector';
+import TimeInput from '../TimeInput/components/TimeInput';
 
 interface Props {
   title?: string;

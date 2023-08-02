@@ -1,5 +1,5 @@
 import React from 'react';
-import { PickerItemContainer, PickerValueWrapper } from './PickerItem.style';
+import { PickerItemContainer, PickerValueWrapper } from '../../TimePicker/components/PickerItem.style';
 import InfiniteScrollLoop from './InfiniteScrollLoopInput';
 
 interface ValueProps {
