@@ -14,7 +14,9 @@ export const NotificationItemWrapper = styled.div`
   height: 48px;
 `;
 
-export const IconButton = styled(Mui.IconButton)<{ isMobile: boolean }>`
+export const IconButton = styled(Mui.IconButton, {
+  shouldForwardProp: (prop: string) => prop !== 'isMobile',
+})<{ isMobile: boolean }>`
   padding: 0;
   ${({ isMobile }) => (isMobile ? '' : 'margin-left: auto;')}
 `;
