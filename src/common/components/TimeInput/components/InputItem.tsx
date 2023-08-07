@@ -1,17 +1,16 @@
 import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'react';
 import { DateTime } from 'luxon';
 import { getDateTime } from '@/utils';
-import { InputArea, TimeInputContainer } from './TimeInput.style';
+import { InputWrapper, InputArea } from './InputItem.style';
 
 interface Props {
   value?: DateTime;
   onChange?: (time: DateTime) => void;
 }
 
-const TimeInput = ({ value, onChange }: Props) => {
+const InputItem = ({ value, onChange }: Props) => {
   const [time, setTime] = useState<string>(value.toFormat('h:mm'));
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [isValid, setIsValid] = useState<boolean>(true);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let [hour, minute] = e.target.value.split(':');
@@ -40,16 +39,12 @@ const TimeInput = ({ value, onChange }: Props) => {
   useEffect(() => {
     const [hour, minute] = time.split(':');
     if (hour && !minute) handleSelcetionRange(hour.length);
-    if (isValidFormat(time)) {
-      setIsValid(true);
-      onChange(getDateTime('time', value, time));
-    } else {
-      setIsValid(false);
-    }
+    if (isValidFormat(time)) onChange(getDateTime('time', value, time));
+    else onChange(value);
   }, [time]);
 
   return (
-    <TimeInputContainer isValid={isValid}>
+    <InputWrapper>
       <InputArea
         type="text"
         ref={inputRef}
@@ -61,8 +56,8 @@ const TimeInput = ({ value, onChange }: Props) => {
         }}
         onChange={handleChange}
       />
-    </TimeInputContainer>
+    </InputWrapper>
   );
 };
 
-export default TimeInput;
+export default InputItem;

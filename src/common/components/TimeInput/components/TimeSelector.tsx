@@ -1,8 +1,8 @@
 import { RefObject, useCallback, useEffect, useRef } from 'react';
 import { DateTime } from 'luxon';
-import { TimeSelectorContainer } from './TimeSelector.style';
-import PickerItem from './PickerItemInput';
 import { getDateTime } from '@/utils';
+import SelectItem from './SelectItem';
+import { TimeSelectorContainer } from './TimeSelector.style';
 
 interface Props {
   type: string;
@@ -22,7 +22,7 @@ const TimeSelector = ({
   value,
   currentValue,
   selectedValue,
-  height,
+  height = 200,
   item,
   exceptClickRef,
   isInfinite,
@@ -55,7 +55,7 @@ const TimeSelector = ({
   return (
     <TimeSelectorContainer ref={selectorRef} height={height}>
       {selectedValue && (
-        <PickerItem
+        <SelectItem
           height={height}
           item={item}
           currentValue={currentValue}
