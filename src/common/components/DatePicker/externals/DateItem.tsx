@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
 import { Icon, styled, Tooltip, WaplUiProvider } from '@wapl/ui';
 import { DateTime } from 'luxon';
 import { DateWrapper, DatePickerWrapper } from '../../EventInfoItem/EventDateItem.style';
@@ -10,7 +10,8 @@ interface Props {
   inValidTitle?: string;
   onChange?: (date: Date) => void;
   isMasked?: boolean;
-  dateFormat?: 'yyyy.LL.dd' | 'yyyy-LL-dd' | 'dd/LL/yyyy';
+  dateFormat?: 'yyyy.LL.dd' | 'yyyy.mm.dd' | 'yyyy-LL-dd' | 'dd/LL/yyyy' | 'dd/mm/aaaa';
+  style?: CSSProperties;
 }
 
 export const DateItem: React.FC<Props> = ({
@@ -20,15 +21,29 @@ export const DateItem: React.FC<Props> = ({
   onChange,
   isMasked,
   dateFormat = 'yyyy.LL.dd',
+  style,
 }: Props) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
+  const [value, setValue] = useState<DateTime>(DateTime.fromJSDate(date));
 
   const handleDateClick = () => {
     setIsDatePickerOpen(prev => !prev);
   };
 
   const handleDateChange = (date: DateTime) => {
+    setValue(date);
     if (onChange) onChange(date.toJSDate());
+  };
+
+  const validFormat = () => {
+    switch (dateFormat) {
+      case 'dd/mm/aaaa':
+        return value.toFormat('dd/LL/yyyy');
+      case 'yyyy.mm.dd':
+        return value.toFormat('yyyy.LL.dd');
+      default:
+        return value.toFormat(dateFormat);
+    }
   };
 
   return (
@@ -43,9 +58,11 @@ export const DateItem: React.FC<Props> = ({
           <DateWrapper
             className={`${isDatePickerOpen ? 'selected' : ''}`}
             isInvalid={isDateInvalid}
+            isMasked={isMasked}
             onClick={handleDateClick}
+            style={style}
           >
-            {isMasked ? dateFormat.replace(/[^/.]/g, '-') : DateTime.fromJSDate(date).toFormat(dateFormat)}
+            {isMasked ? dateFormat : validFormat()}
             <span style={{ display: 'flex', marginLeft: '4px' }}>
               <Icon.CalendarLine width={16} height={16} />
             </span>
@@ -53,11 +70,7 @@ export const DateItem: React.FC<Props> = ({
         </Tooltip>
         {isDatePickerOpen && (
           <DatePickerWrapper allDay>
-            <DatePicker
-              date={DateTime.fromJSDate(date)}
-              onDateClick={handleDateChange}
-              onOutsideClick={handleDateClick}
-            />
+            <DatePicker date={value} onDateClick={handleDateChange} onOutsideClick={handleDateClick} />
           </DatePickerWrapper>
         )}
       </PickerContainer>

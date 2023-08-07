@@ -19,7 +19,7 @@ export const PickerContainer = styled.div`
   }
 `;
 
-export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
+export const DateWrapper = styled.div<{ isInvalid?: boolean; isMasked?: boolean }>`
   display: flex;
   width: 100px;
   padding: 6px;
@@ -32,6 +32,7 @@ export const DateWrapper = styled.div<{ isInvalid?: boolean }>`
   :hover {
     background: ${({ theme: { Color } }) => Color.Black[6]};
   }
+  ${({ theme: { Color }, isMasked }) => isMasked && `color: ${Color.Gray[400]};`}
 `;
 
 export const DatePickerWrapper = styled.div<{ allDay?: boolean }>`
@@ -41,7 +42,7 @@ export const DatePickerWrapper = styled.div<{ allDay?: boolean }>`
   z-index: 2;
   margin-top: 8px;
   padding: 16px;
-  background: ${({ theme: { Color } }) => Color.White[100]};
+  background: ${({ theme: { Color } }) => Color.Background[2]};
   box-shadow: 0px 0px 8px rgb(0 0 0 / 20%);
   border-radius: 12px;
 `;

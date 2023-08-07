@@ -10,7 +10,7 @@ import {
   TextButton,
   TodayButton,
 } from './CalendarHeader.style';
-import DateSpinnerPicker from '@/common/components/SpinnerPicker/DateSpinnerPicker';
+import DateSpinnerPicker from '@/common/components/SpinnerPicker/components/DateSpinnerPicker';
 import { Observer, observer } from 'mobx-react-lite';
 
 export const DateHeader = observer(({ togglePicker }: { togglePicker: () => void }) => {

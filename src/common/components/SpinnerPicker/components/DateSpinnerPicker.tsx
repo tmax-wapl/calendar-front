@@ -2,16 +2,22 @@ import { useState } from 'react';
 import { DateTime } from 'luxon';
 import { ContextMenu, ContentMenuHeader } from '@wapl/ui';
 import SpinnerPickerItem from './SpinnerPickerItem';
-import { PickerContainer, ButtonWrapper, Selected, StyledButton } from './DateSpinnerPicker.style';
+import { PickerContainer, ButtonWrapper, Selected, StyledButton } from './SpinnerPicker.style';
 import { useDidMountEffect } from '@/common/hooks';
 
 interface DatePickerProps {
+  title?: string;
   date?: DateTime;
   onDateChange?: (selectedDate: DateTime) => void;
   onOutsideClick?: () => void;
 }
 
-const DateSpinnerPicker = ({ date = DateTime.now(), onDateChange, onOutsideClick }: DatePickerProps) => {
+const DateSpinnerPicker = ({
+  title = '캘린더 날짜 선택',
+  date = DateTime.now(),
+  onDateChange,
+  onOutsideClick,
+}: DatePickerProps) => {
   const [year, setYear] = useState<string>(`${date.year}년`);
   const [month, setMonth] = useState<string>(`${date.month}월`);
   const [day, setDay] = useState<string>(`${date.day}일`);
@@ -41,7 +47,7 @@ const DateSpinnerPicker = ({ date = DateTime.now(), onDateChange, onOutsideClick
 
   return (
     <ContextMenu open>
-      <ContentMenuHeader>캘린더 날짜 선택</ContentMenuHeader>
+      <ContentMenuHeader>{title}</ContentMenuHeader>
       <PickerContainer id="itemContainer">
         <Selected id="selectedDiv" />
         <SpinnerPickerItem height={108} item={years} selectedValue={year} onValueChange={handleYearChange} />
