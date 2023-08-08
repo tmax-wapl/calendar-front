@@ -18,6 +18,7 @@ export const WaplShellProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     CALENDAR_API_URL: process.env.REACT_APP_CALENDAR_API_URL,
     ORG_API_URL: process.env.REACT_APP_ORG_API_URL,
     SOCKET_URL: process.env.REACT_APP_SOCKET_URL,
+    AUTH_SOLUTION_URL: process.env.REACT_APP_AUTH_SOLUTION_URL,
   };
 
   return process.env.NODE_ENV === 'development' ? (
