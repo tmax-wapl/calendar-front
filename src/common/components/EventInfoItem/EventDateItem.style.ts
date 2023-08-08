@@ -42,7 +42,7 @@ export const DatePickerWrapper = styled.div<{ allDay?: boolean }>`
   z-index: 2;
   margin-top: 8px;
   padding: 16px;
-  background: ${({ theme: { Color } }) => Color.Background[2]};
+  background: ${({ theme: { Color } }) => Color.White[100]};
   box-shadow: 0px 0px 8px rgb(0 0 0 / 20%);
   border-radius: 12px;
 `;

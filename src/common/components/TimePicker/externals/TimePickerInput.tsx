@@ -7,10 +7,10 @@ import {
   MeridiemValueWrapper,
   TimeSelectorWrapper,
   TimeValueWrapper,
-} from '../../EventInfoItem/EventDateItemInput.style';
+} from '../../TimeInput/components/TimeInput.style';
 import { WaplUiProvider } from '@wapl/ui';
-import TimeSelector from '../components/TimeSelector';
-import TimeInput from '../components/TimeInput';
+import TimeSelector from '../../TimeInput/components/TimeSelector';
+import TimeInput from '../../TimeInput/components/TimeInput';
 import { getDateTime } from '@/utils';
 
 interface Props {
@@ -93,7 +93,7 @@ export const TimePickerInput: React.FC<Props> = ({ value, height, onChange }: Pr
             className={`${isTimeSelectorOpen ? 'selected' : ''}`}
           >
             {isTimeSelectorOpen ? (
-              <TimeInput onChange={handleChange} value={date}></TimeInput>
+              <TimeInput handleChange={handleChange} date={date} />
             ) : (
               <TimeValue>{date.toFormat('h:mm')}</TimeValue>
             )}

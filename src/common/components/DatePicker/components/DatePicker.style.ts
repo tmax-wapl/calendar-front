@@ -4,7 +4,7 @@ export const DatePickerContainer = styled.div<{ backgroundColor?: string }>`
   width: max-content;
   height: max-content;
   background-color: ${({ backgroundColor, theme: { Color } }) =>
-    backgroundColor ? backgroundColor : Color.Background[2]};
+    backgroundColor ? backgroundColor : Color.White[100]};
 `;
 
 export const DatePickerBody = styled.div<{ size: number }>`

@@ -33,8 +33,8 @@ export const CustomPickersDay = styled(PickersDay<DateTime>, {
   width: calc(24px * ${({ size }) => size}) !important;
   height: calc(24px * ${({ size }) => size}) !important;
   margin: calc(4px * ${({ size }) => size}) !important;
-  background-color: ${({ backgroundcolor, theme: { Color } }) =>
-    backgroundcolor ? backgroundcolor : Color.Background[2]} !important;
+  background-color: ${({ backgroundcolor, isLight, theme: { Color } }) =>
+    backgroundcolor ? backgroundcolor : isLight ? Color.White[100] : Color.Gray[900]} !important;
   border: 0px !important;
   color: ${({ isOutside, isSunday, disableday, isLight, theme: { Color } }) =>
     isOutside
