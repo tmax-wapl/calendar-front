@@ -6125,15 +6125,12 @@ __metadata:
     webpack-bundle-analyzer: ^4.8.0
     webpack-cli: ^4.10.0
     webpack-dev-server: ^4.11.1
-  peerDependencies:
-    "@wapl/core": 0.1.0-cdms
-    "@wapl/ui": 0.2.36-seoul-edu
   languageName: unknown
   linkType: soft
 
-"@wapl/core@portal:/E:/wapl-core::locator=%40wapl%2Fcalendar%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@wapl/core@portal:/E:/wapl-core::locator=%40wapl%2Fcalendar%40workspace%3A."
+"@wapl/core@npm:0.1.0-cdms":
+  version: 0.1.0-cdms
+  resolution: "@wapl/core@npm:0.1.0-cdms"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
     "@wapl/ui": 0.2.36-seoul-edu
@@ -6166,8 +6163,9 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
+  checksum: 9d5671e0cf7988f606b26b5fc05c44c0209f56153d1ddb4a323275a99002b8c4c627a9d6f4897d98a78e935c5f7ea595c96650538741884f2098a50f4cadedf1
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@wapl/ui@npm:0.2.36-seoul-edu":
   version: 0.2.36-seoul-edu
