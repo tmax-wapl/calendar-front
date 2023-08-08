@@ -1,6 +1,8 @@
 import { styled, Mui } from '@wapl/ui';
 
-export const NotificationItemContainer = styled.div<{ isMobile: boolean }>`
+export const NotificationItemContainer = styled('div', { shouldForwardProp: (prop: string) => prop !== 'isMobile' })<{
+  isMobile: boolean;
+}>`
   display: flex;
   height: ${({ isMobile }) => (isMobile ? 48 : 44)}px;
   align-items: center;
@@ -14,7 +16,9 @@ export const NotificationItemWrapper = styled.div`
   height: 48px;
 `;
 
-export const IconButton = styled(Mui.IconButton)<{ isMobile: boolean }>`
+export const IconButton = styled(Mui.IconButton, {
+  shouldForwardProp: (prop: string) => prop !== 'isMobile',
+})<{ isMobile: boolean }>`
   padding: 0;
   ${({ isMobile }) => (isMobile ? '' : 'margin-left: auto;')}
 `;
