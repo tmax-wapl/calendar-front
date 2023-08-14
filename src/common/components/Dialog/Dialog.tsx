@@ -1,7 +1,7 @@
 import { Dialog as DialogCompo, AlertWrapper, Button } from '@wapl/ui';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CustomRoomDTO } from '@/common/constants/interfaces';
-import { DesktopRoom, MobileRoom } from '@wapl/core';
+import { DesktopRoom, MobileRoom, useCoreStore } from '@wapl/core';
 import { Title, SubTitle, Description, DialogButtonWrapper } from './Dialog.style';
 import { InputDialog } from './InputDialog';
 import { SelectDialog } from './SelectDialog';
@@ -15,6 +15,7 @@ export interface DialogButton {
 
 export const Dialog = () => {
   const { uiStore, eventStore } = useCalendarStores();
+  const { userStore, roomStore } = useCoreStore();
   const { action, onCloseClick, onClick, data, type, onComplete } = uiStore.dialogInfo;
   const isMobile = process.env.IS_MOBILE ?? false;
 
@@ -191,8 +192,8 @@ export const Dialog = () => {
             confirmBtnText={'공유'}
             onComplete={onComplete}
             chipListText={'공유할 멤버를 선택하세요.\n 공유 최대 멤버는 200명입니다.'}
-            disabledPersonaList={eventStore.event?.eventMember?.personaIdList}
-            disabledRoomList={eventStore.event?.eventMember?.roomIdList}
+            disabledPersonaList={[...eventStore.event?.eventMember?.personaIdList, userStore.selectedPersona.id]}
+            disabledRoomList={[...eventStore.event?.eventMember?.roomIdList, roomStore.myRoom.id]}
           />
         ) : (
           <MobileRoom.MemberSelectorDialog
