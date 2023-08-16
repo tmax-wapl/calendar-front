@@ -6126,9 +6126,6 @@ __metadata:
     webpack-bundle-analyzer: ^4.8.0
     webpack-cli: ^4.10.0
     webpack-dev-server: ^4.11.1
-  peerDependencies:
-    "@wapl/core": 0.5.25
-    "@wapl/ui": 0.2.38-foodist
   languageName: unknown
   linkType: soft
 
