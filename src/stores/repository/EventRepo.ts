@@ -48,12 +48,20 @@ export default class EventRepo {
     }
   }
 
-  async updateEvent(eventId: number, dto: Partial<EventDTO>, updateOption: EVENT_UPDATE_OPTION, originStart?: string) {
+  async updateEvent(
+    eventId: number,
+    dto: Partial<EventDTO>,
+    updateOption: EVENT_UPDATE_OPTION,
+    originStart?: string,
+    isDrag = false,
+  ) {
     try {
       const {
         data: { response, success },
       } = await API.patch<Partial<EventDTO>, ResponseData<EventDTO>>(
-        `${baseUrl}/apis/v1/event/update/${eventId}/${updateOption}${originStart ? `?date=${originStart}` : ''}`,
+        `${baseUrl}/apis/v1/event/update/${eventId}/${updateOption}${originStart ? `?date=${originStart}` : ''}${
+          isDrag ? (originStart ? '&isDrag=true' : '?isDrag=true') : ''
+        }`,
         dto,
       );
       if (success) return response;

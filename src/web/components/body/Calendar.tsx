@@ -393,6 +393,8 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
         end: toISO(DateTime.fromJSDate(event.end).toUTC()),
       }),
       EVENT_UPDATE_OPTION.DEFAULT,
+      '',
+      true,
     );
     uiStore.changeDateRange();
     navigate(`/main/view-mode/${uiStore.viewMode}/detail`);
@@ -420,6 +422,7 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
           }),
           EVENT_UPDATE_OPTION.ONCE_REPEAT_EVENT,
           toDateTime(start).toUTC().toFormat('yyyy-LL-dd'),
+          true,
         );
         uiStore.setDateDay(toDateTime(newStart));
         break;
@@ -438,6 +441,7 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
           }),
           EVENT_UPDATE_OPTION.AFTER_REPEAT_EVENT,
           toDateTime(start).toUTC().toFormat('yyyy-LL-dd'),
+          true,
         );
         uiStore.setDateDay(toDateTime(newStart));
         break;
