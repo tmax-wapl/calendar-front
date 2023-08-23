@@ -6039,6 +6039,7 @@ __metadata:
     react-router-dom: ^6.4.3
     react-split-pane: ^0.1.92
     react-swipeable: ^7.0.0
+    react-virtuoso: ^4.5.0
     rollup: ^2.77.0
     rollup-plugin-node-polyfills: ^0.2.1
     rrule: ^2.7.1
@@ -18098,6 +18099,16 @@ __metadata:
     react: ">=16 || >=17 || >= 18"
     react-dom: ">=16 || >=17 || >= 18"
   checksum: a87c6550cc20e9f3de8763ecf1fa3b6bf7ca201eafc17bcf40626f43cb78a7dcb5643124707f021621df0d3048b696c63b78e2dc00025cceb68cc7a8f38703d3
+  languageName: node
+  linkType: hard
+
+"react-virtuoso@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "react-virtuoso@npm:4.5.0"
+  peerDependencies:
+    react: ">=16 || >=17 || >= 18"
+    react-dom: ">=16 || >=17 || >= 18"
+  checksum: 5de22196428e318a0a1454cfcd8d73a1495a19471a895b2d943a86c80a5d9d3ab3637ef81c1612c270a1f362285403d3d2a918da7ec40e3c4aecbe0b28f77776
   languageName: node
   linkType: hard
 

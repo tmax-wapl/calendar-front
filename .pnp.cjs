@@ -105,6 +105,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-router-dom", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:6.4.4"],\
             ["react-split-pane", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:0.1.92"],\
             ["react-swipeable", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.0.0"],\
+            ["react-virtuoso", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.5.0"],\
             ["rollup", "npm:2.79.1"],\
             ["rollup-plugin-node-polyfills", "npm:0.2.1"],\
             ["rrule", "npm:2.7.1"],\
@@ -11001,6 +11002,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-router-dom", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:6.4.4"],\
             ["react-split-pane", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:0.1.92"],\
             ["react-swipeable", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.0.0"],\
+            ["react-virtuoso", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.5.0"],\
             ["rollup", "npm:2.79.1"],\
             ["rollup-plugin-node-polyfills", "npm:0.2.1"],\
             ["rrule", "npm:2.7.1"],\
@@ -26329,6 +26331,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-virtuoso", "npm:2.19.1"]\
           ],\
           "linkType": "SOFT"\
+        }],\
+        ["npm:4.5.0", {\
+          "packageLocation": "./.yarn/cache/react-virtuoso-npm-4.5.0-98054907f2-5de2219642.zip/node_modules/react-virtuoso/",\
+          "packageDependencies": [\
+            ["react-virtuoso", "npm:4.5.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.5.0", {\
+          "packageLocation": "./.yarn/__virtual__/react-virtuoso-virtual-6e58cae4a8/0/cache/react-virtuoso-npm-4.5.0-98054907f2-5de2219642.zip/node_modules/react-virtuoso/",\
+          "packageDependencies": [\
+            ["react-virtuoso", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:4.5.0"],\
+            ["@types/react", "npm:18.2.20"],\
+            ["@types/react-dom", "npm:18.2.7"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
         }],\
         ["virtual:93130135088164ee0afdd1e35b5d11c786eaf1de8f15accfcb43d7db1ce747e2a90c54bfa46e5b0995204af75dbf9ce94c869ec5328ce5492130c8d36c1bba25#npm:2.19.1", {\
           "packageLocation": "./.yarn/__virtual__/react-virtuoso-virtual-1d24008b60/0/cache/react-virtuoso-npm-2.19.1-a24ec2d41f-a87c6550cc.zip/node_modules/react-virtuoso/",\

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { autorun } from 'mobx';
 import { DateTime } from 'luxon';
@@ -10,16 +10,15 @@ import DateInfo from './DateInfo';
 import EventItem from './EventItem';
 import NoResult from './NoResult';
 import { Loader } from '@/common/components/Loader';
+import { Virtuoso } from 'react-virtuoso';
 
 const EventSearchView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [searchEventMap, setSearchEventMap] = useState<Map<string, EventModel[]>>(null);
+  const [searchEventList, setSearchEventList] = useState<[string, EventModel[]][]>(null);
   const { eventStore, uiStore } = useCalendarStores();
   const navigate = useNavigate();
 
-  const isToday = (date: DateTime) => {
-    return isSameDate(date, DateTime.now());
-  };
+  const isToday = (date: DateTime) => isSameDate(date, DateTime.now());
 
   const handleEventClick = useCallback(async (event: EventModel) => {
     const eventInfo = await eventStore.getEventInfo(+event.id, event.start);
@@ -45,7 +44,7 @@ const EventSearchView = () => {
     const dispose = autorun(async () => {
       setIsLoading(true);
       const res = await eventStore.searchEvent(eventStore.searchKeyword, 'T');
-      setSearchEventMap(groupByDate(res));
+      setSearchEventList(Array.from(groupByDate(res)));
       setIsLoading(false);
     });
     return () => {
@@ -54,23 +53,33 @@ const EventSearchView = () => {
     };
   }, []);
 
+  const SearchItem = useCallback((_: number, data: [string, EventModel[]]) => <EventList data={data} />, []);
+
+  const EventList = memo(({ data }: { data: [string, EventModel[]] }) => {
+    const [date, eventList] = data;
+    return (
+      <>
+        <DateInfo date={DateTime.fromISO(date)} highlightToday={isToday(DateTime.fromISO(date))} />
+        <EventListWrapper>
+          {eventList.map((event, index) => (
+            <EventItem key={index} event={event} onClick={handleEventClick} />
+          ))}
+        </EventListWrapper>
+      </>
+    );
+  });
+
   return (
     <EventSearchViewContainer>
       {isLoading ? (
         <Loader />
       ) : (
         <>
-          {Array.from(searchEventMap).map(([date, eventList], index) => (
-            <React.Fragment key={index}>
-              <DateInfo date={DateTime.fromISO(date)} highlightToday={isToday(DateTime.fromISO(date))} />
-              <EventListWrapper>
-                {eventList.map((event, index) => (
-                  <EventItem key={index} event={event} onClick={handleEventClick} />
-                ))}
-              </EventListWrapper>
-            </React.Fragment>
-          ))}
-          {!searchEventMap?.size && <NoResult type={'search'} subtitle={eventStore.searchKeyword} />}
+          {searchEventList?.length > 0 ? (
+            <Virtuoso data={searchEventList} itemContent={SearchItem} />
+          ) : (
+            <NoResult type={'search'} subtitle={eventStore.searchKeyword} />
+          )}
         </>
       )}
     </EventSearchViewContainer>
