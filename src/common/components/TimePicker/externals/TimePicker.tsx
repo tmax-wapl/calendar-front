@@ -9,9 +9,10 @@ interface Props {
   height?: number;
   onChange?: (time: Date) => void /** 시간 선택시 Date 객체 반환 */;
   style?: CSSProperties;
+  mode?: 'default' | 'hour' /** default: 기존 모드 / hour: 시간 선택 모드 */;
 }
 
-export const TimePicker: React.FC<Props> = ({ value, height, onChange, style }: Props) => {
+export const TimePicker: React.FC<Props> = ({ value, height, onChange, style, mode = 'default' }: Props) => {
   const [isTimePickerOpen, setIsTimePickerOpen] = useState<boolean>(false);
   const [date, setDate] = useState(DateTime.fromJSDate(value));
 
@@ -29,7 +30,7 @@ export const TimePicker: React.FC<Props> = ({ value, height, onChange, style }: 
       <PickerContainer style={style}>
         <TimeWrapper style={{ background: isTimePickerOpen ? 'rgba(0, 0, 0, 0.06)' : '' }} onClick={handleTimeClick}>
           <TimeValue>{date.toFormat('a', { locale: 'ko' })}</TimeValue>
-          <TimeValue>{date.toFormat('h:mm')}</TimeValue>
+          <TimeValue>{date.toFormat(mode === 'hour' ? 'h:00' : 'h:mm')}</TimeValue>
         </TimeWrapper>
         {isTimePickerOpen && (
           <TimePickerWrapper style={{ right: 'initial' }}>
@@ -38,6 +39,7 @@ export const TimePicker: React.FC<Props> = ({ value, height, onChange, style }: 
               height={height}
               onChange={handleChange}
               onOutsideClick={handleTimeClick}
+              mode={mode}
             />
           </TimePickerWrapper>
         )}

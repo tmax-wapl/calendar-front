@@ -9,15 +9,18 @@ interface Props {
   height?: number;
   onChange?: (time: DateTime) => void;
   onOutsideClick?: () => void;
+  mode?: 'default' | 'hour';
 }
 
-const TimePicker = ({ value = DateTime.now(), height = 200, onChange, onOutsideClick }: Props) => {
+const TimePicker = ({ value = DateTime.now(), height = 200, onChange, onOutsideClick, mode = 'default' }: Props) => {
   const pickerRef = useRef<HTMLDivElement | null>(null);
+  const isHourMode = mode === 'hour';
   const [meridiem, setMeridiem] = useState<string>(value.toFormat('a', { locale: 'ko' }));
-  const [hour, setHour] = useState<string>(value.toFormat('h'));
+  const [hour, setHour] = useState<string>(value.toFormat(isHourMode ? 'h:00' : 'h'));
   const [minute, setMinute] = useState<string>(value.toFormat('mm'));
   const ampm = ['오전', '오후'];
-  const hours = ['12', ...Array.from({ length: 11 }, (_, i) => `${i + 1}`)];
+  const hourPrefix = isHourMode ? ':00' : '';
+  const hours = [`12${hourPrefix}`, ...Array.from({ length: 11 }, (_, i) => `${i + 1}${hourPrefix}`)];
   const minutes = Array.from({ length: 60 }, (_, i) => ('00' + i).slice(-2));
 
   const handleMeridiemClick = useCallback((meridiem: string) => setMeridiem(meridiem), []);
@@ -36,7 +39,8 @@ const TimePicker = ({ value = DateTime.now(), height = 200, onChange, onOutsideC
 
   useDidMountEffect(() => {
     if (!onChange) return;
-    const time = DateTime.fromFormat(`${meridiem} ${hour}:${minute}`, 'a h:mm', { locale: 'ko' });
+    const timeString = isHourMode ? hour : `${hour}:${minute}`;
+    const time = DateTime.fromFormat(`${meridiem} ${timeString}`, 'a h:mm', { locale: 'ko' });
     onChange(value.set({ hour: time.hour, minute: time.minute }));
   }, [meridiem, hour, minute]);
 
@@ -49,7 +53,9 @@ const TimePicker = ({ value = DateTime.now(), height = 200, onChange, onOutsideC
     <TimePickerContainer ref={pickerRef} height={height}>
       <PickerItem height={height} item={ampm} selectedValue={meridiem} onValueClick={handleMeridiemClick} />
       <PickerItem height={height} item={hours} selectedValue={hour} onValueClick={handleHourClick} isInfinite />
-      <PickerItem height={height} item={minutes} selectedValue={minute} onValueClick={handleMinuteClick} isInfinite />
+      {!isHourMode && (
+        <PickerItem height={height} item={minutes} selectedValue={minute} onValueClick={handleMinuteClick} isInfinite />
+      )}
     </TimePickerContainer>
   );
 };
