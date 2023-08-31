@@ -62,7 +62,7 @@ export const DateItem: React.FC<Props> = ({
             onClick={handleDateClick}
             style={style}
           >
-            {isMasked ? dateFormat : validFormat()}
+            {isMasked ? '날짜 선택' : validFormat()}
             <span style={{ display: 'flex', marginLeft: '4px' }}>
               <Icon.CalendarLine width={16} height={16} />
             </span>
