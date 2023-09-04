@@ -144,7 +144,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
                 key={participant.roomId || participant.personaId}
                 label={participant.personaNick || participant.roomNick}
                 avatar={<Avatar imgSrc={participant?.displayPhoto ?? undefined} size={20} />}
-                avatarCount={participant.displayPhoto?.length}
+                // avatarCount={participant.displayPhoto?.length}
                 editable={editable}
                 {...(editable && { onDelete: () => handleDelete(participant) })}
               />
