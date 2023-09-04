@@ -1,6 +1,6 @@
 {
   "name": "@wapl/calendar",
-  "version": "0.0.33-foodist",
+  "version": "0.0.34-foodist",
   "homepage": ".",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,7 +32,7 @@
     "@mui/material": "^5.10.16",
     "@mui/system": "^5.10.14",
     "@mui/x-date-pickers": "^5.0.8",
-    "@wapl/core": "0.5.25",
+    "@wapl/core": "0.4.31-foodist",
     "@wapl/ui": "0.2.38-foodist",
     "axios": "^0.27.2",
     "fullcalendar": "^5.11.3",
@@ -116,7 +116,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "peerDependencies": {
-    "@wapl/core": "0.5.25",
+    "@wapl/core": "0.4.31-foodist",
     "@wapl/ui": "0.2.38-foodist"
   },
   "resolutions": {

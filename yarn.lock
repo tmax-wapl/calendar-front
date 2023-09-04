@@ -6080,7 +6080,7 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": 0.5.25
+    "@wapl/core": 0.4.31-foodist
     "@wapl/ui": 0.2.38-foodist
     axios: ^0.27.2
     babel-loader: ^9.0.1
@@ -6127,17 +6127,17 @@ __metadata:
     webpack-cli: ^4.10.0
     webpack-dev-server: ^4.11.1
   peerDependencies:
-    "@wapl/core": 0.5.25
+    "@wapl/core": 0.4.31-foodist
     "@wapl/ui": 0.2.38-foodist
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:0.5.25":
-  version: 0.5.25
-  resolution: "@wapl/core@npm:0.5.25"
+"@wapl/core@npm:0.4.31-foodist":
+  version: 0.4.31-foodist
+  resolution: "@wapl/core@npm:0.4.31-foodist"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
-    "@wapl/ui": ^0.2.30
+    "@wapl/ui": 0.2.40-foodist
     axios: ^0.27.2
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
@@ -6146,8 +6146,10 @@ __metadata:
     mobx: ^6.5.0
     mobx-react: ^7.5.0
     mobx-react-lite: ^3.3.0
+    moment: ^2.29.4
     rc-upload: ^4.3.4
     react: ^17.0.2
+    react-daum-postcode: ^3.1.3
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
     react-scripts: 5.0.0
@@ -6156,7 +6158,7 @@ __metadata:
     swiper: ^8.3.1
     use-long-press: 1.1.2
   peerDependencies:
-    "@wapl/ui": ^0.2.30
+    "@wapl/ui": 0.2.40-foodist
     axios: ^0.26.1
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
@@ -6165,7 +6167,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: de4c08d7f49d81d6cc3b757416806cae99b7f16fe725d1d439af2203f409c4940b18df6dd08d38285af241b687da10d1c720fe1abf4df04c48de429d4fbe7103
+  checksum: dd7cedbbd8e86b08bb7c8d1f16404e5a6dd0df171f1eac93e2c4c36cb35fef91313865535c4b8e00ca91d0bb35df2344946f3bc97d35f50402428373decb46b3
   languageName: node
   linkType: hard
 
@@ -6195,9 +6197,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wapl/ui@npm:^0.2.30":
-  version: 0.2.36
-  resolution: "@wapl/ui@npm:0.2.36"
+"@wapl/ui@npm:0.2.40-foodist":
+  version: 0.2.40-foodist
+  resolution: "@wapl/ui@npm:0.2.40-foodist"
   dependencies:
     "@emotion/react": ^11.7.1
     "@emotion/styled": ^11.6.0
@@ -6217,7 +6219,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-router-dom: ^6.2.1
-  checksum: 865c961d8a4cd017cf06dafde2ff1661df5b8a8739bc96c7d8227867f484a34d60312685eb28d08c05c2ef345158c705b4f4c6d9d03791878a6b193eb799ac00
+  checksum: 0e36ee9a13b7a7070d99668f43acd7b5aad5e653b92c9f9e8642ad8e4d9a44e1b34d328dd5885a1c750877a05f5da6e0827390e935b6a5bab235777d41386a56
   languageName: node
   linkType: hard
 
@@ -17765,6 +17767,15 @@ __metadata:
     regenerator-runtime: ^0.13.9
     whatwg-fetch: ^3.6.2
   checksum: 1bb031080af15397d6eb9c69a0c2e93799991f7197a086e4409ba719398f1256b542a3d6c9a34673d516c684eef3e8226c99b335982593851f58f65f6e43571b
+  languageName: node
+  linkType: hard
+
+"react-daum-postcode@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "react-daum-postcode@npm:3.1.3"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 559c2463b30d023f5e21072c3dc08f3de51cf58ad8f0ea13241330e3a65158c1b2747530b6f37adfde92029d83a7d0201ad580400079155e27ec06e8c9a0591f
   languageName: node
   linkType: hard
 
