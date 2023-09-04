@@ -1,5 +1,5 @@
 import { UploadFileDTO, DeleteFileDTO, SyncFileDTO } from '@/common/constants/interfaces';
-import { API, docsUrlPath, OfficeAPI, docsEventUrlPath } from '@/common/lib/API';
+import { API, OfficeAPI, URL } from '@/common/lib/API';
 import { HTTPError } from '@/error';
 import { CancelToken } from 'axios';
 
@@ -10,7 +10,7 @@ export default class FileRepo {
       form.append('file', file);
       const blob = new Blob([JSON.stringify(dto)], { type: 'application/json' });
       form.append('input', blob);
-      const { data } = await API.post(`${docsUrlPath}/document/upload`, form, { cancelToken });
+      const { data } = await API.post(`${URL().docsUrl}/document/upload`, form, { cancelToken });
       return data;
     } catch (e) {
       if (e instanceof HTTPError) {
@@ -21,7 +21,7 @@ export default class FileRepo {
 
   async deleteFile(dto: DeleteFileDTO) {
     try {
-      const { status } = await API.post(`${docsUrlPath}/document/delete`, dto);
+      const { status } = await API.post(`${URL().docsUrl}/document/delete`, dto);
       return status;
     } catch (e) {
       if (e instanceof HTTPError) {
@@ -34,7 +34,7 @@ export default class FileRepo {
     try {
       const common = API.instance.defaults.headers.common;
       const auth = common.Authorization;
-      const res = await OfficeAPI.post(`${docsEventUrlPath}/apis/v1/events/websockets`, dto, {
+      const res = await OfficeAPI.post(`${URL().docsEventUrl}/apis/v1/events/websockets`, dto, {
         headers: {
           authorization: auth,
         },

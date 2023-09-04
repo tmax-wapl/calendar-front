@@ -4,13 +4,9 @@ import { ERROR_STATUS } from '../constants';
 import axios from 'axios';
 
 export const isDevelop = process.env.NODE_ENV === 'development';
-export const baseUrl = isDevelop ? 'https://superapp-calendar.teespace.net' : process.env.REACT_APP_CALENDAR_API_URL;
-
-export const docsUrlPath =
-  process.env.REACT_APP_OFFICE_API_URL ?? 'https://superapp-office-api.catchbird.net/superoffice';
-export const docsEventUrlPath = process.env.REACT_APP_OFFICE_EVENT_URL ?? 'https://superapp-office-cms.catchbird.net';
 
 export const SettingInstance = (() => {
+  if (!CoreAPI) return;
   CoreAPI.instance.interceptors.response.use(
     // 동일한 instance 공유하다보니 custom 수정하면 공통 서비스 콜에서 에러
     response => {
@@ -39,6 +35,16 @@ export const SettingInstance = (() => {
   };
 })();
 
-export const API = SettingInstance.CoreAPI;
+export const API = CoreAPI && SettingInstance?.CoreAPI;
 
 export const OfficeAPI = axios.create();
+
+export const URL = () => {
+  return {
+    baseUrl: process.env ? process.env.REACT_APP_CALENDAR_API_URL : 'https://superapp-calendar.teespace.net',
+    docsUrl: process.env
+      ? process.env.REACT_APP_OFFICE_API_URL
+      : 'https://superapp-office-api.catchbird.net/superoffice',
+    docsEventUrl: process.env ? process.env.EACT_APP_OFFICE_EVENT_URL : 'https://superapp-office-cms.catchbird.net',
+  };
+};
