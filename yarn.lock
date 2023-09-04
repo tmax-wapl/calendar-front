@@ -6080,7 +6080,7 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": 0.4.31-foodist
+    "@wapl/core": 0.4.32-foodist
     "@wapl/ui": 0.2.38-foodist
     axios: ^0.27.2
     babel-loader: ^9.0.1
@@ -6127,14 +6127,14 @@ __metadata:
     webpack-cli: ^4.10.0
     webpack-dev-server: ^4.11.1
   peerDependencies:
-    "@wapl/core": 0.4.31-foodist
+    "@wapl/core": 0.4.32-foodist
     "@wapl/ui": 0.2.38-foodist
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:0.4.31-foodist":
-  version: 0.4.31-foodist
-  resolution: "@wapl/core@npm:0.4.31-foodist"
+"@wapl/core@npm:0.4.32-foodist":
+  version: 0.4.32-foodist
+  resolution: "@wapl/core@npm:0.4.32-foodist"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
     "@wapl/ui": 0.2.40-foodist
@@ -6167,7 +6167,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: dd7cedbbd8e86b08bb7c8d1f16404e5a6dd0df171f1eac93e2c4c36cb35fef91313865535c4b8e00ca91d0bb35df2344946f3bc97d35f50402428373decb46b3
+  checksum: d8fbc230dab994212fb87afeacd7e043c34164adb12c7510fb82fc26c34104772ebd547439d21d6e69869a7a4141f0cc32aeaf5058114ee8020c63c39fcdce14
   languageName: node
   linkType: hard
 
