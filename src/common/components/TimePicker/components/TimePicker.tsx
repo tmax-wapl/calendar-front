@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { DateTime } from 'luxon';
-import { useDidMountEffect } from '@common/hooks';
+import { useDidMountEffect } from '@common/hooks/useDidMountEffect';
 import { TimePickerContainer } from './TimePicker.style';
 import PickerItem from './PickerItem';
 

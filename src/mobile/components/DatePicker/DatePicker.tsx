@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { useDidMountEffect } from '@common/hooks';
+import { useDidMountEffect } from '@common/hooks/useDidMountEffect';
 import { DatePickerContainer, DatePickerBody } from './DatePicker.style';
 import DatePickerHeader from './DatePickerHeader';
 import CalendarPicker from './CalendarPicker';

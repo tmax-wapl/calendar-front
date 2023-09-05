@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { ContextMenu, ContentMenuHeader } from '@wapl/ui';
 import SpinnerPickerItem from './SpinnerPickerItem';
 import { PickerContainer, ButtonWrapper, Selected, StyledButton } from './SpinnerPicker.style';
-import { useDidMountEffect } from '@/common/hooks';
+import { useDidMountEffect } from '@/common/hooks/useDidMountEffect';
 
 interface DatePickerProps {
   title?: string;
