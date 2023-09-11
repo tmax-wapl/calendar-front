@@ -26,12 +26,15 @@ const EventListView = () => {
   useEffect(() => {
     const fetchData = async (dateDay: DateTime) => {
       const date = dateDay.startOf('day');
-      const eventList = calendarStore.eventList.filter(
-        event =>
-          date < toLuxon(event.end) &&
-          toLuxon(event.start) < date.plus({ days: 1 }) &&
-          (event.importance || !uiStore.isImportanceChecked),
-      );
+      const eventList = calendarStore.eventList
+        .filter(
+          event =>
+            date < toLuxon(event.end) &&
+            toLuxon(event.start) < date.plus({ days: 1 }) &&
+            (event.importance || !uiStore.isImportanceChecked),
+        )
+        .sort((a, b) => (b.importance ? 1 : 0) - (a.importance ? 1 : 0));
+
       setEventList(eventList);
     };
     const dispose = autorun(() => {
