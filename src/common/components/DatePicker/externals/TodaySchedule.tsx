@@ -5,7 +5,6 @@ import { Icon, useWaplUiStore } from '@wapl/ui';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { getEventDuration, toDateString, toLuxon, toUTC } from '@/utils';
-import { Holiday } from '@/web/components';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EventTitle } from '@/web/components';
 import {
@@ -59,9 +58,7 @@ export const TodaySchedule = () => {
     return (
       <>
         {holidayList.map((holiday, index) => (
-          <Holiday key={index} isRed={holiday.isRed}>
-            {holiday.name}
-          </Holiday>
+          <HolidayText key={index}>{holiday.name}</HolidayText>
         ))}
       </>
     );
@@ -119,7 +116,6 @@ export const TodaySchedule = () => {
           <div>{date.toFormat('cccc', { locale: 'ko' })}</div>
           <LunarText>{lunar()}</LunarText>
           {uiStore.isHolidayChecked && holiday()}
-          <HolidayText>추석 연휴</HolidayText>
         </DateInfoContainer>
         <DatePickerBody size={size} onClick={handleClickCalendar}>
           <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
@@ -156,7 +152,7 @@ export const TodaySchedule = () => {
 
       {eventList.length > 0 ? (
         <BodyContainer>
-          {eventList.slice(0, 4).map((event, idx) => (
+          {eventList.slice(0, 3).map((event, idx) => (
             <EventWrapper key={idx} onClick={() => handleClickEvent(event)}>
               <EventColor color={event.color ?? event.backgroundColor} />
               <EventItemContainer>
@@ -177,7 +173,7 @@ export const TodaySchedule = () => {
               </EventItemContainer>
             </EventWrapper>
           ))}
-          {eventList.length > 4 && <MoreResultText onClick={handleClickMoreEvent}>일정 더 보기...</MoreResultText>}
+          {eventList.length > 3 && <MoreResultText onClick={handleClickMoreEvent}>일정 더 보기...</MoreResultText>}
         </BodyContainer>
       ) : (
         <NoResultContainer>
