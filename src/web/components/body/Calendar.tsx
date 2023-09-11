@@ -104,11 +104,16 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
     });
   };
 
-  const fetchEvent = () => {
-    if (!uiStore.notiData?.eventId) return;
-    const event = uiStore.mainApi.getEventById(`${uiStore.notiData.eventId}`);
-    if (!event) return;
-    handleEventClick({ event });
+  const fetchEvent = async () => {
+    if (!uiStore.notiData?.eventId || !uiStore.notiData.start) return;
+    const eventInfo = await eventStore.getEventInfo(
+      uiStore.notiData.eventId,
+      uiStore.notiData.start,
+      uiStore.notiData.roomId,
+    );
+    if (!eventInfo) return;
+    eventStore.setEvent(eventInfo);
+    if (!pathname.includes('detail')) goRoute('detail');
     uiStore.setNotiData(null);
   };
 
@@ -532,6 +537,9 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
     if (!uiStore.notiData?.start) return;
     uiStore.mainApi?.gotoDate(uiStore.notiData.start);
     uiStore.changeDateRange();
+    uiStore.setDateDay(toDateTime(new Date(uiStore.notiData?.start)));
+    if (uiStore.notiData.eventId) return;
+    goRoute('date');
   }, [uiStore.notiData]);
 
   return (
