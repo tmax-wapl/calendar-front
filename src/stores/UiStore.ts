@@ -133,11 +133,6 @@ export default class UiStore {
   }
 
   changeDateRange(selectDate?: Date) {
-    console.log(
-      toDateString(this.mainApi.view.activeStart),
-      toDateString(this.mainApi.view.activeEnd),
-      DateTime.fromJSDate(!selectDate ? this.mainApi?.getDate() : selectDate),
-    );
     this.setDateRange({
       start: toDateString(this.mainApi.view.activeStart),
       view: DateTime.fromJSDate(!selectDate ? this.mainApi?.getDate() : selectDate),

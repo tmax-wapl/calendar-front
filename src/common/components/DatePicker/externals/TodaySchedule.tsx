@@ -4,14 +4,12 @@ import { getLunar } from 'holiday-kr';
 import { Icon, useWaplUiStore } from '@wapl/ui';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { getEventDuration, toDateString, toLuxon, toUTC } from '@/utils';
+import { getEventDuration, toLuxon, toUTC } from '@/utils';
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { EventTitle } from '@/web/components';
 import {
   BodyContainer,
   DateInfoContainer,
   DatePickerBody,
-  EventColor,
   EventInfoContainer,
   EventItemContainer,
   EventWrapper,
@@ -29,6 +27,9 @@ import {
   LunarText,
   DateDayText,
   HolidayText,
+  DateYearText,
+  DateDaysOfWeekText,
+  EventTitle,
 } from './TodaySchedule.style';
 import { EventModel } from '@/stores';
 import { APP_ID } from '@/common/constants';
@@ -38,7 +39,7 @@ export const TodaySchedule = () => {
   const { themeKey } = useWaplUiStore();
   const [date] = useState(DateTime.now().startOf('day'));
   const [eventList, setEventList] = useState<EventModel[]>([]);
-  const size = 0.7;
+  const size = 1;
   const startingDay = 7;
   const weekdays = Array.from(
     { length: 7 },
@@ -99,7 +100,10 @@ export const TodaySchedule = () => {
     arr.filter(event => date < toLuxon(event.end) && toLuxon(event.start) < date.plus({ days: 1 }));
 
   const fetchEventList = async () => {
-    const { eventList } = await eventStore.getEventList(toDateString(date.toJSDate()), toDateString(date.toJSDate()));
+    const { eventList } = await eventStore.getEventList(
+      date.plus({ days: 1 }).toFormat('yyyy-LL-dd'),
+      date.plus({ days: 1 }).toFormat('yyyy-LL-dd'),
+    );
     setEventList(SortEventList(eventList));
   };
 
@@ -110,13 +114,6 @@ export const TodaySchedule = () => {
   return (
     <TodayScheduleContainer>
       <HeaderContainer size={size}>
-        <DateInfoContainer onClick={handleClickCalendar}>
-          <div>{date.toFormat('yyyy.LL.', { locale: 'ko' })}</div>
-          <DateDayText>{date.toFormat('dd', { locale: 'ko' })}</DateDayText>
-          <div>{date.toFormat('cccc', { locale: 'ko' })}</div>
-          <LunarText>{lunar()}</LunarText>
-          {uiStore.isHolidayChecked && holiday()}
-        </DateInfoContainer>
         <DatePickerBody size={size} onClick={handleClickCalendar}>
           <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
             <>
@@ -148,19 +145,24 @@ export const TodaySchedule = () => {
             </>
           </LocalizationProvider>
         </DatePickerBody>
+        <DateInfoContainer onClick={handleClickCalendar}>
+          <DateYearText>{date.toFormat('yyyy.LL.', { locale: 'ko' })}</DateYearText>
+          <DateDayText>{date.toFormat('dd', { locale: 'ko' })}</DateDayText>
+          <DateDaysOfWeekText>{date.toFormat('cccc', { locale: 'ko' })}</DateDaysOfWeekText>
+          <LunarText>{lunar()}</LunarText>
+          {uiStore.isHolidayChecked && holiday()}
+        </DateInfoContainer>
       </HeaderContainer>
 
       {eventList.length > 0 ? (
         <BodyContainer>
           {eventList.slice(0, 3).map((event, idx) => (
             <EventWrapper key={idx} onClick={() => handleClickEvent(event)}>
-              <EventColor color={event.color ?? event.backgroundColor} />
               <EventItemContainer>
                 <ItemTitleContainer>
+                  <Icon.CalendarDotFill color={event.backgroundColor} width={18} height={18} />
                   {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
-                  <EventTitle isHalfLess>
-                    {event.title.length < 11 ? event.title : `${event.title.slice(0, 10)}...`}
-                  </EventTitle>
+                  <EventTitle>{event.title}</EventTitle>
                 </ItemTitleContainer>
                 <EventInfoContainer>
                   <EventInfo>
@@ -173,7 +175,7 @@ export const TodaySchedule = () => {
               </EventItemContainer>
             </EventWrapper>
           ))}
-          {eventList.length > 3 && <MoreResultText onClick={handleClickMoreEvent}>일정 더 보기...</MoreResultText>}
+          {eventList.length > 3 && <MoreResultText onClick={handleClickMoreEvent}>일정 더 보기</MoreResultText>}
         </BodyContainer>
       ) : (
         <NoResultContainer>
