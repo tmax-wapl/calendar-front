@@ -37,8 +37,8 @@ import { APP_ID } from '@/common/constants';
 export const TodaySchedule = () => {
   const { calendarStore, eventStore, uiStore } = useCalendarStores();
   const { themeKey } = useWaplUiStore();
-  const [date] = useState(DateTime.now().startOf('day'));
   const [eventList, setEventList] = useState<EventModel[]>([]);
+  const date = DateTime.now().startOf('day');
   const size = 1;
   const startingDay = 7;
   const weekdays = Array.from(
@@ -168,9 +168,6 @@ export const TodaySchedule = () => {
                   <EventInfo>
                     {getEventDuration(DateTime.fromISO(event.start), DateTime.fromISO(event.end), event.allDay)}
                   </EventInfo>
-                  {/* {event.repeatEndDate && (
-                    <EventInfo>{DateTime.fromISO(event.repeatEndDate).toFormat('yyyy. LL. dd. 종료')}</EventInfo>
-                  )} */}
                 </EventInfoContainer>
               </EventItemContainer>
             </EventWrapper>
