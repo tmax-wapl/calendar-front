@@ -4,11 +4,6 @@ import { ERROR_STATUS } from '../constants';
 import axios from 'axios';
 
 export const isDevelop = process.env.NODE_ENV === 'development';
-export const baseUrl = isDevelop ? 'https://superapp-calendar.teespace.net' : process.env.REACT_APP_CALENDAR_API_URL;
-
-export const docsUrlPath =
-  process.env.REACT_APP_OFFICE_API_URL ?? 'https://superapp-office-api.catchbird.net/superoffice';
-export const docsEventUrlPath = process.env.REACT_APP_OFFICE_EVENT_URL ?? 'https://superapp-office-cms.catchbird.net';
 
 export const SettingInstance = (() => {
   CoreAPI.instance.interceptors.response.use(
@@ -42,3 +37,23 @@ export const SettingInstance = (() => {
 export const API = SettingInstance.CoreAPI;
 
 export const OfficeAPI = axios.create();
+
+export const URL = () => {
+  return {
+    baseUrl: process.env
+      ? process.env.REACT_APP_CALENDAR_API_URL
+      : window.env
+      ? window.env.REACT_APP_CALENDAR_API_URL
+      : 'https://superapp-calendar.teespace.net',
+    docsUrl: process.env
+      ? process.env.REACT_APP_OFFICE_API_URL
+      : window.env
+      ? window.env.REACT_APP_OFFICE_API_URL
+      : 'https://superapp-office-api.catchbird.net/superoffice',
+    docsEventUrl: process.env
+      ? process.env.EACT_APP_OFFICE_EVENT_URL
+      : window.env
+      ? window.env.EACT_APP_OFFICE_EVENT_URL
+      : 'https://superapp-office-cms.catchbird.net',
+  };
+};
