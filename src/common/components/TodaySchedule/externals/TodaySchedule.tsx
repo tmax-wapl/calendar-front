@@ -33,11 +33,13 @@ import {
 } from './TodaySchedule.style';
 import { EventModel } from '@/stores';
 import { APP_ID } from '@/common/constants';
+import { HolidayDTO } from '@/common/constants/interfaces';
 
 export const TodaySchedule = () => {
-  const { calendarStore, eventStore, uiStore } = useCalendarStores();
+  const { eventStore } = useCalendarStores();
   const { themeKey } = useWaplUiStore();
   const [eventList, setEventList] = useState<EventModel[]>([]);
+  const [holidayList, setHolidayList] = useState<HolidayDTO[]>([]);
   const date = DateTime.now().startOf('day');
   const size = 1;
   const startingDay = 7;
@@ -52,17 +54,6 @@ export const TodaySchedule = () => {
   const lunar = () => {
     const { month, day } = getLunar(date.toJSDate());
     return `음력 ${month}.${day}`;
-  };
-
-  const holiday = () => {
-    const holidayList = calendarStore.holidayList.filter(holiday => holiday.dateDay === date.toFormat('yyyy-LL-dd'));
-    return (
-      <>
-        {holidayList.map((holiday, index) => (
-          <HolidayText key={index}>{holiday.name}</HolidayText>
-        ))}
-      </>
-    );
   };
 
   const handleClickCalendar = (e: MouseEvent<HTMLDivElement>) => {
@@ -100,10 +91,11 @@ export const TodaySchedule = () => {
     arr.filter(event => date < toLuxon(event.end) && toLuxon(event.start) < date.plus({ days: 1 }));
 
   const fetchEventList = async () => {
-    const { eventList } = await eventStore.getEventList(
+    const { eventList, holidayList } = await eventStore.getEventList(
       date.plus({ days: 1 }).toFormat('yyyy-LL-dd'),
       date.plus({ days: 1 }).toFormat('yyyy-LL-dd'),
     );
+    setHolidayList(holidayList);
     setEventList(eventStore.sortEventList(FilterEventList(eventList)));
   };
 
@@ -137,7 +129,6 @@ export const TodaySchedule = () => {
                     isSunday={value.weekday === 7}
                     isOutside={date.month !== value.month}
                     today={value.toFormat('yyyy-LL-dd') === DateTime.local().toFormat('yyyy-LL-dd')}
-                    selected={value.toFormat('yyyy-LL-dd') === date.toFormat('yyyy-LL-dd')}
                     outsideCurrentMonth={false}
                   />
                 ))}
@@ -150,7 +141,9 @@ export const TodaySchedule = () => {
           <DateDayText>{date.toFormat('dd', { locale: 'ko' })}</DateDayText>
           <DateDaysOfWeekText>{date.toFormat('cccc', { locale: 'ko' })}</DateDaysOfWeekText>
           <LunarText>{lunar()}</LunarText>
-          {uiStore.isHolidayChecked && holiday()}
+          {holidayList.map((holiday, index) => (
+            <HolidayText key={index}>{holiday.name}</HolidayText>
+          ))}
         </DateInfoContainer>
       </HeaderContainer>
 
