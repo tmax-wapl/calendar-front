@@ -4,7 +4,7 @@ import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
 import { EventDTO, EventShareDTO, FileInfo } from '@/common/constants/interfaces';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
-import { toISO, applyWeekdayOffset } from '@/utils';
+import { toISO, applyWeekdayOffset, diffTime } from '@/utils';
 import { DateTime } from 'luxon';
 
 export default class EventStore {
@@ -185,5 +185,30 @@ export default class EventStore {
 
   setFileList(list: FileInfo[]) {
     this.fileList = list;
+  }
+
+  sortEventList(arr: EventModel[]) {
+    const sortedArr = arr.slice();
+    sortedArr.sort((a, b) => {
+      // 중요 일정
+      if (a.importance && !b.importance) return -1;
+      if (b.importance && !a.importance) return 1;
+
+      // 종일 일정
+      if (a.allDay && !b.allDay) return -1;
+      if (b.allDay && !a.allDay) return 1;
+
+      // 시작 시간
+      const startDiff = diffTime(b.start, a.start).diff;
+      if (startDiff) return startDiff;
+
+      // 종료 시간
+      const endDiff = diffTime(a.end, b.end).diff;
+      if (endDiff) return endDiff;
+
+      // 생성일
+      return diffTime(b.regDate, a.regDate).diff;
+    });
+    return sortedArr;
   }
 }

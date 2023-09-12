@@ -96,7 +96,7 @@ export const TodaySchedule = () => {
       },
     });
 
-  const SortEventList = (arr: EventModel[]) =>
+  const FilterEventList = (arr: EventModel[]) =>
     arr.filter(event => date < toLuxon(event.end) && toLuxon(event.start) < date.plus({ days: 1 }));
 
   const fetchEventList = async () => {
@@ -104,7 +104,7 @@ export const TodaySchedule = () => {
       date.plus({ days: 1 }).toFormat('yyyy-LL-dd'),
       date.plus({ days: 1 }).toFormat('yyyy-LL-dd'),
     );
-    setEventList(SortEventList(eventList));
+    setEventList(eventStore.sortEventList(FilterEventList(eventList)));
   };
 
   useEffect(() => {
