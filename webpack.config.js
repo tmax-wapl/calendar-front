@@ -34,7 +34,7 @@ module.exports = env => {
     devtool: dev === 'true' && 'eval-source-map',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: '[name].[chunkhash].js',
+      filename: 'js/[name].[chunkhash].js',
       publicPath: dev === 'true' ? '/' : '',
     },
     optimization: {
@@ -103,6 +103,18 @@ module.exports = env => {
         {
           test: /\.svg$/,
           use: ['@svgr/webpack'],
+        },
+        {
+          test: /\.(woff2|woff|ttf)$/,
+          type: 'asset',
+          parser: {
+            dataUrlCondition: {
+              maxSize: 10 * 1024,
+            },
+          },
+          generator: {
+            filename: './fonts/[name].[contenthash:12][ext]',
+          },
         },
       ],
     },
