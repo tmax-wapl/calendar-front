@@ -2,14 +2,14 @@ import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { EventDTO, EventListDTO, EventShareDTO, EventSearchDTO, ResponseData } from '@/common/constants/interfaces';
 import { HTTPError } from '@/error';
 import { AxiosError } from 'axios';
-import { API, baseUrl } from '../../common/lib/API';
+import { API, URL } from '../../common/lib/API';
 
 export default class EventRepo {
   async createEvent(dto: Partial<EventDTO>) {
     try {
       const {
         data: { response, success },
-      } = await API.post<Partial<EventDTO>, ResponseData<EventDTO>>(`${baseUrl}/apis/v1/event/create`, dto);
+      } = await API.post<Partial<EventDTO>, ResponseData<EventDTO>>(`${URL().baseUrl}/apis/v1/event/create`, dto);
       if (success) return response;
     } catch (e) {
       if (e instanceof HTTPError) {
@@ -23,7 +23,7 @@ export default class EventRepo {
       const {
         data: { response, success },
       } = await API.get<EventDTO, ResponseData<EventDTO>>(
-        `${baseUrl}/apis/v1/event/${eventId}${roomId ? `?roomId=${roomId}&` : '?'}date=${date}`,
+        `${URL().baseUrl}/apis/v1/event/${eventId}${roomId ? `?roomId=${roomId}&` : '?'}date=${date}`,
       );
       if (success) return response;
     } catch (e) {
@@ -38,7 +38,7 @@ export default class EventRepo {
       const {
         data: { response, success },
       } = await API.get<EventListDTO, ResponseData<EventListDTO>>(
-        `${baseUrl}/apis/v1/user/list/event/holiday?start=${start}&end=${end}`,
+        `${URL().baseUrl}/apis/v1/user/list/event/holiday?start=${start}&end=${end}`,
       );
       if (success) return response;
     } catch (e) {
@@ -53,7 +53,7 @@ export default class EventRepo {
       const {
         data: { response, success },
       } = await API.patch<Partial<EventDTO>, ResponseData<EventDTO>>(
-        `${baseUrl}/apis/v1/event/update/${eventId}/${updateOption}${originStart ? `?date=${originStart}` : ''}`,
+        `${URL().baseUrl}/apis/v1/event/update/${eventId}/${updateOption}${originStart ? `?date=${originStart}` : ''}`,
         dto,
       );
       if (success) return response;
@@ -72,7 +72,7 @@ export default class EventRepo {
       const {
         data: { response, success },
       } = await API.patch<Partial<EventDTO>, ResponseData<EventDTO>>(
-        `${baseUrl}/apis/v1/event/update/color/${eventId}`,
+        `${URL().baseUrl}/apis/v1/event/update/color/${eventId}`,
         dto,
       );
       if (success) return response;
@@ -87,7 +87,7 @@ export default class EventRepo {
     try {
       const {
         data: { response, success },
-      } = await API.delete<EventDTO, ResponseData<EventDTO>>(`${baseUrl}/apis/v1/event/delete/${eventId}`);
+      } = await API.delete<EventDTO, ResponseData<EventDTO>>(`${URL().baseUrl}/apis/v1/event/delete/${eventId}`);
       if (success) return response;
     } catch (e) {
       if (e instanceof HTTPError) {
@@ -99,7 +99,7 @@ export default class EventRepo {
     try {
       const {
         data: { response, success },
-      } = await API.post<EventShareDTO, ResponseData<EventDTO>>(`${baseUrl}/apis/v1/share/event`, dto);
+      } = await API.post<EventShareDTO, ResponseData<EventDTO>>(`${URL().baseUrl}/apis/v1/share/event`, dto);
       if (success) return response;
     } catch (e) {
       if (e instanceof HTTPError) {
@@ -113,7 +113,9 @@ export default class EventRepo {
       const {
         data: { response, success },
       } = await API.get<EventDTO, ResponseData<EventSearchDTO>>(
-        `${baseUrl}/apis/v1/event/search?page=${page}&size=${size}&type=${type}&text=${encodeURIComponent(keyword)}`,
+        `${URL().baseUrl}/apis/v1/event/search?page=${page}&size=${size}&type=${type}&text=${encodeURIComponent(
+          keyword,
+        )}`,
       );
       if (success) return response;
     } catch (e) {
