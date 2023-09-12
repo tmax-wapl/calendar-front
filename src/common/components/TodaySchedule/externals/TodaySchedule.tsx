@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react';
 import { DateTime, Info } from 'luxon';
 import { getLunar } from 'holiday-kr';
-import { Icon, useWaplUiStore } from '@wapl/ui';
+import { Icon, useWaplUiStore, WaplUiProvider } from '@wapl/ui';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { getEventDuration, toLuxon, toUTC } from '@/utils';
@@ -35,7 +35,7 @@ import { EventModel } from '@/stores';
 import { APP_ID } from '@/common/constants';
 import { HolidayDTO } from '@/common/constants/interfaces';
 
-export const TodaySchedule = () => {
+export const TodaySchedule: React.FC = () => {
   const { eventStore } = useCalendarStores();
   const { themeKey } = useWaplUiStore();
   const [eventList, setEventList] = useState<EventModel[]>([]);
@@ -104,75 +104,77 @@ export const TodaySchedule = () => {
   }, []);
 
   return (
-    <TodayScheduleContainer>
-      <HeaderContainer size={size}>
-        <DatePickerBody size={size} onClick={handleClickCalendar}>
-          <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
-            <>
-              <CalendarHeaderContainer size={size}>
-                {weekdays.map((day, index) => (
-                  <CalendarHeader key={day} isRed={(index + startingDay - 1) % 7 === 6}>
-                    {day}
-                  </CalendarHeader>
-                ))}
-              </CalendarHeaderContainer>
-              <CalendarContent size={size}>
-                {dayOfMonth.map(value => (
-                  <CustomPickersDay
-                    key={value.toFormat('yyyy-LL-dd')}
-                    day={value}
-                    onDaySelect={() => {
-                      null;
-                    }}
-                    size={size}
-                    isLight={themeKey === 'light'}
-                    isSunday={value.weekday === 7}
-                    isOutside={date.month !== value.month}
-                    today={value.toFormat('yyyy-LL-dd') === DateTime.local().toFormat('yyyy-LL-dd')}
-                    outsideCurrentMonth={false}
-                  />
-                ))}
-              </CalendarContent>
-            </>
-          </LocalizationProvider>
-        </DatePickerBody>
-        <DateInfoContainer onClick={handleClickCalendar}>
-          <DateYearText>{date.toFormat('yyyy.LL.', { locale: 'ko' })}</DateYearText>
-          <DateDayText>{date.toFormat('dd', { locale: 'ko' })}</DateDayText>
-          <DateDaysOfWeekText>{date.toFormat('cccc', { locale: 'ko' })}</DateDaysOfWeekText>
-          <LunarText>{lunar()}</LunarText>
-          {holidayList.map((holiday, index) => (
-            <HolidayText key={index}>{holiday.name}</HolidayText>
-          ))}
-        </DateInfoContainer>
-      </HeaderContainer>
+    <WaplUiProvider>
+      <TodayScheduleContainer>
+        <HeaderContainer size={size}>
+          <DatePickerBody size={size} onClick={handleClickCalendar}>
+            <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
+              <>
+                <CalendarHeaderContainer size={size}>
+                  {weekdays.map((day, index) => (
+                    <CalendarHeader key={day} isRed={(index + startingDay - 1) % 7 === 6}>
+                      {day}
+                    </CalendarHeader>
+                  ))}
+                </CalendarHeaderContainer>
+                <CalendarContent size={size}>
+                  {dayOfMonth.map(value => (
+                    <CustomPickersDay
+                      key={value.toFormat('yyyy-LL-dd')}
+                      day={value}
+                      onDaySelect={() => {
+                        null;
+                      }}
+                      size={size}
+                      isLight={themeKey === 'light'}
+                      isSunday={value.weekday === 7}
+                      isOutside={date.month !== value.month}
+                      today={value.toFormat('yyyy-LL-dd') === DateTime.local().toFormat('yyyy-LL-dd')}
+                      outsideCurrentMonth={false}
+                    />
+                  ))}
+                </CalendarContent>
+              </>
+            </LocalizationProvider>
+          </DatePickerBody>
+          <DateInfoContainer onClick={handleClickCalendar}>
+            <DateYearText>{date.toFormat('yyyy.LL.', { locale: 'ko' })}</DateYearText>
+            <DateDayText>{date.toFormat('dd', { locale: 'ko' })}</DateDayText>
+            <DateDaysOfWeekText>{date.toFormat('cccc', { locale: 'ko' })}</DateDaysOfWeekText>
+            <LunarText>{lunar()}</LunarText>
+            {holidayList.map((holiday, index) => (
+              <HolidayText key={index}>{holiday.name}</HolidayText>
+            ))}
+          </DateInfoContainer>
+        </HeaderContainer>
 
-      {eventList.length > 0 ? (
-        <BodyContainer>
-          {eventList.slice(0, 3).map((event, idx) => (
-            <EventWrapper key={idx} onClick={() => handleClickEvent(event)}>
-              <EventItemContainer>
-                <ItemTitleContainer>
-                  <Icon.CalendarDotFill color={event.backgroundColor} width={18} height={18} />
-                  {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
-                  <EventTitle>{event.title}</EventTitle>
-                </ItemTitleContainer>
-                <EventInfoContainer>
-                  <EventInfo>
-                    {getEventDuration(DateTime.fromISO(event.start), DateTime.fromISO(event.end), event.allDay)}
-                  </EventInfo>
-                </EventInfoContainer>
-              </EventItemContainer>
-            </EventWrapper>
-          ))}
-          {eventList.length > 3 && <MoreResultText onClick={handleClickMoreEvent}>일정 더 보기</MoreResultText>}
-        </BodyContainer>
-      ) : (
-        <NoResultContainer>
-          <NoResultTitle>일정이 없습니다.</NoResultTitle>
-        </NoResultContainer>
-      )}
-    </TodayScheduleContainer>
+        {eventList.length > 0 ? (
+          <BodyContainer>
+            {eventList.slice(0, 3).map((event, idx) => (
+              <EventWrapper key={idx} onClick={() => handleClickEvent(event)}>
+                <EventItemContainer>
+                  <ItemTitleContainer>
+                    <Icon.CalendarDotFill color={event.backgroundColor} width={18} height={18} />
+                    {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
+                    <EventTitle>{event.title}</EventTitle>
+                  </ItemTitleContainer>
+                  <EventInfoContainer>
+                    <EventInfo>
+                      {getEventDuration(DateTime.fromISO(event.start), DateTime.fromISO(event.end), event.allDay)}
+                    </EventInfo>
+                  </EventInfoContainer>
+                </EventItemContainer>
+              </EventWrapper>
+            ))}
+            {eventList.length > 3 && <MoreResultText onClick={handleClickMoreEvent}>일정 더 보기</MoreResultText>}
+          </BodyContainer>
+        ) : (
+          <NoResultContainer>
+            <NoResultTitle>일정이 없습니다.</NoResultTitle>
+          </NoResultContainer>
+        )}
+      </TodayScheduleContainer>
+    </WaplUiProvider>
   );
 };
 
