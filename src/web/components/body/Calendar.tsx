@@ -537,7 +537,7 @@ const Calendar = observer(({ isEventUpdating }: { isEventUpdating: boolean }) =>
     if (!uiStore.notiData?.start) return;
     uiStore.mainApi?.gotoDate(uiStore.notiData.start);
     uiStore.changeDateRange();
-    uiStore.setDateDay(toLuxon(uiStore.notiData.start));
+    uiStore.setDateDay(toLuxon(uiStore.notiData.start).startOf('day'));
     if (uiStore.notiData.eventId) return;
     goRoute('date');
   }, [uiStore.notiData]);
