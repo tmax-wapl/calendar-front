@@ -4,7 +4,7 @@ import { ERROR_STATUS } from '../constants';
 import axios from 'axios';
 
 export const isDevelop = process.env.NODE_ENV === 'development';
-export const baseUrl = process.env.REACT_APP_CALENDAR_API_URL;
+export const baseUrl = isDevelop ? 'https://superapp-calendar.teespace.net' : process.env.REACT_APP_CALENDAR_API_URL;
 
 export const docsUrlPath =
   process.env.REACT_APP_OFFICE_API_URL ?? 'https://superapp-office-api.catchbird.net/superoffice';
