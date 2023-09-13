@@ -73,8 +73,9 @@ export default class EventStore {
   makeRRuleObject(event: EventDTO) {
     const { rruleObj, startDate, endDate, rrule } = new EventModel(event);
 
-    const activeStart = this.rootStore.uiStore.mainApi.view.activeStart;
-    const activeEnd = this.rootStore.uiStore.mainApi.view.activeEnd;
+    const activeStart = this.rootStore.uiStore.mainApi ? this.rootStore.uiStore.mainApi.view.activeStart : new Date();
+    const activeEnd = this.rootStore.uiStore.mainApi ? this.rootStore.uiStore.mainApi.view.activeEnd : new Date();
+
     const duration = endDate.diff(startDate);
     activeStart.setDate(activeStart.getDate() - 1);
 

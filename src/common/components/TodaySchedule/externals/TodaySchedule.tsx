@@ -34,8 +34,14 @@ import {
 import { EventModel } from '@/stores';
 import { APP_ID } from '@/common/constants';
 import { HolidayDTO } from '@/common/constants/interfaces';
+import { SettingInstance } from '../../../lib/API';
 
-export const TodaySchedule: React.FC = () => {
+interface Props {
+  token?: string;
+  userId?: number;
+}
+
+export const TodaySchedule: React.FC<Props> = ({ token, userId }: Props) => {
   const { eventStore } = useCalendarStores();
   const { themeKey } = useWaplUiStore();
   const [eventList, setEventList] = useState<EventModel[]>([]);
@@ -100,8 +106,11 @@ export const TodaySchedule: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchEventList();
-  }, []);
+    if (token && userId) {
+      SettingInstance.setToken(token, userId);
+      fetchEventList();
+    }
+  }, [token, userId]);
 
   return (
     <WaplUiProvider>
