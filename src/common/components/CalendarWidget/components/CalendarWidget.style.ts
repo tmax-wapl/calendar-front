@@ -2,7 +2,7 @@ import { styled } from '@wapl/ui';
 import { DateTime } from 'luxon';
 import { PickersDay } from '@mui/x-date-pickers';
 
-export const TodayScheduleContainer = styled.div`
+export const CalendarWidgetContainer = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -17,28 +17,28 @@ export const HeaderContainer = styled.div<{ size: number }>`
   justify-content: space-between;
 `;
 
-export const EventInfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  ${({ theme: { Font } }) => Font.Text.s.Regular};
-  color: ${({ theme: { Color } }) => Color.Gray[600]};
-  margin-left: 28px;
+export const CalendarContainer = styled.div<{ size: number }>`
+  width: calc(224px * ${({ size }) => size});
+  height: calc(208px * ${({ size }) => size});
+  cursor: pointer;
 `;
 
-export const ItemTitleContainer = styled.div`
+export const CalendarHeaderWrapper = styled.div<{ size: number }>`
+  height: calc(16px * ${({ size }) => size});
   display: flex;
-  align-items: center;
-  > svg:first-of-type {
-    margin-right: 10px !important;
-  }
 `;
 
-export const EventItemContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const CalendarHeader = styled.div<{ isRed: boolean }>`
   width: 100%;
-  height: fit-content;
-  box-sizing: border-box;
+  height: 100%;
+  text-align: center;
+  color: ${({ isRed, theme: { Color } }) => (isRed ? '#f44336' : Color.Gray[900])};
+  ${({ theme: { Font } }) => Font.Text.xxs.Medium};
+`;
+
+export const CalendarContent = styled.div<{ size: number }>`
+  width: 100%;
+  height: calc(208px * ${({ size }) => size});
 `;
 
 export const DateInfoContainer = styled.div`
@@ -61,60 +61,6 @@ export const DateInfoContainer = styled.div`
       margin: 0;
     }
   }
-`;
-
-export const EventWrapper = styled.div`
-  display: flex;
-  margin: 12px 0 10px;
-  width: 100%;
-  height: 40px;
-  cursor: pointer;
-  gap: 10px;
-`;
-
-export const EventTitle = styled.span`
-  ${({ theme: { Font } }) => Font.Text.m.Regular};
-  color: ${({ theme: { Color } }) => Color.Gray[900]};
-  display: block;
-  flex: 1;
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
-export const DatePickerBody = styled.div<{ size: number }>`
-  width: calc(224px * ${({ size }) => size});
-  height: calc(208px * ${({ size }) => size});
-  cursor: pointer;
-`;
-
-export const BodyContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 225px;
-  padding: 0 24px;
-`;
-
-export const NoResultContainer = styled.div`
-  display: flex;
-  height: 225px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const EventInfo = styled.span``;
-
-export const MoreResultText = styled.span`
-  ${({ theme: { Font } }) => Font.Text.s.Regular};
-  color: ${({ theme: { Color } }) => Color.Gray[600]};
-  text-align: center;
-  cursor: pointer;
-`;
-
-export const NoResultTitle = styled.span`
-  ${({ theme: { Font } }) => Font.Text.s.Regular};
-  color: ${({ theme: { Color } }) => Color.Gray[600]};
 `;
 
 export const DateYearText = styled.span`
@@ -154,23 +100,76 @@ export const HolidayText = styled.span`
   line-height: 15px;
   text-align: right;
 `;
-
-export const CalendarHeaderContainer = styled.div<{ size: number }>`
-  height: calc(16px * ${({ size }) => size});
+export const BodyContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  height: 225px;
+  padding: 0 24px;
 `;
 
-export const CalendarHeader = styled.div<{ isRed: boolean }>`
+export const BodyContent = styled.div`
+  display: flex;
+  margin: 12px 0 10px;
   width: 100%;
-  height: 100%;
+  height: 40px;
+  cursor: pointer;
+  gap: 10px;
+`;
+
+export const EventContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+  box-sizing: border-box;
+`;
+
+export const EventTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  > svg:first-of-type {
+    margin-right: 10px !important;
+  }
+`;
+
+export const EventTitle = styled.span`
+  ${({ theme: { Font } }) => Font.Text.m.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
+  display: block;
+  flex: 1;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+export const EventInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[600]};
+  margin-left: 28px;
+`;
+
+export const EventInfo = styled.span``;
+
+export const MoreResultText = styled.span`
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[600]};
   text-align: center;
-  color: ${({ isRed, theme: { Color } }) => (isRed ? '#f44336' : Color.Gray[900])};
-  ${({ theme: { Font } }) => Font.Text.xxs.Medium};
+  cursor: pointer;
 `;
 
-export const CalendarContent = styled.div<{ size: number }>`
-  width: 100%;
-  height: calc(208px * ${({ size }) => size});
+export const NoResultWrapper = styled.div`
+  display: flex;
+  height: 225px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const NoResultText = styled.span`
+  ${({ theme: { Font } }) => Font.Text.s.Regular};
+  color: ${({ theme: { Color } }) => Color.Gray[600]};
 `;
 
 export const CustomPickersDay = styled(PickersDay<DateTime>, {

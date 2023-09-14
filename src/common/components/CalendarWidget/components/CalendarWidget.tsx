@@ -7,41 +7,41 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { getEventDuration, toLuxon, toUTC } from '@/utils';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import {
-  BodyContainer,
-  DateInfoContainer,
-  DatePickerBody,
-  EventInfoContainer,
-  EventItemContainer,
-  EventWrapper,
+  CalendarWidgetContainer,
   HeaderContainer,
-  ItemTitleContainer,
-  NoResultContainer,
-  NoResultTitle,
-  TodayScheduleContainer,
-  EventInfo,
-  CalendarHeaderContainer,
+  CalendarContainer,
+  CalendarHeaderWrapper,
   CalendarHeader,
   CalendarContent,
   CustomPickersDay,
-  MoreResultText,
-  LunarText,
-  DateDayText,
-  HolidayText,
+  DateInfoContainer,
   DateYearText,
+  DateDayText,
   DateDaysOfWeekText,
+  LunarText,
+  HolidayText,
+  BodyContainer,
+  BodyContent,
+  EventContainer,
+  EventTitleWrapper,
   EventTitle,
-} from './TodaySchedule.style';
+  EventInfoWrapper,
+  EventInfo,
+  MoreResultText,
+  NoResultWrapper,
+  NoResultText,
+} from './CalendarWidget.style';
 import { EventModel } from '@/stores';
 import { APP_ID } from '@/common/constants';
 import { HolidayDTO } from '@/common/constants/interfaces';
-import { SettingInstance } from '../../../lib/API';
+import { SettingInstance } from '@/common/lib/API';
 
 interface Props {
   token?: string;
   userId?: number;
 }
 
-export const TodaySchedule: React.FC<Props> = ({ token, userId }: Props) => {
+const CalendarWidget = ({ token, userId }: Props) => {
   const { eventStore } = useCalendarStores();
   const { themeKey } = useWaplUiStore();
   const [eventList, setEventList] = useState<EventModel[]>([]);
@@ -114,18 +114,18 @@ export const TodaySchedule: React.FC<Props> = ({ token, userId }: Props) => {
 
   return (
     <WaplUiProvider>
-      <TodayScheduleContainer>
+      <CalendarWidgetContainer>
         <HeaderContainer size={size}>
-          <DatePickerBody size={size} onClick={handleClickCalendar}>
+          <CalendarContainer size={size} onClick={handleClickCalendar}>
             <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="ko">
               <>
-                <CalendarHeaderContainer size={size}>
+                <CalendarHeaderWrapper size={size}>
                   {weekdays.map((day, index) => (
                     <CalendarHeader key={day} isRed={(index + startingDay - 1) % 7 === 6}>
                       {day}
                     </CalendarHeader>
                   ))}
-                </CalendarHeaderContainer>
+                </CalendarHeaderWrapper>
                 <CalendarContent size={size}>
                   {dayOfMonth.map(value => (
                     <CustomPickersDay
@@ -145,7 +145,7 @@ export const TodaySchedule: React.FC<Props> = ({ token, userId }: Props) => {
                 </CalendarContent>
               </>
             </LocalizationProvider>
-          </DatePickerBody>
+          </CalendarContainer>
           <DateInfoContainer onClick={handleClickCalendar}>
             <DateYearText>{date.toFormat('yyyy.LL.', { locale: 'ko' })}</DateYearText>
             <DateDayText>{date.toFormat('dd', { locale: 'ko' })}</DateDayText>
@@ -160,31 +160,30 @@ export const TodaySchedule: React.FC<Props> = ({ token, userId }: Props) => {
         {eventList.length > 0 ? (
           <BodyContainer>
             {eventList.slice(0, 3).map((event, idx) => (
-              <EventWrapper key={idx} onClick={() => handleClickEvent(event)}>
-                <EventItemContainer>
-                  <ItemTitleContainer>
+              <BodyContent key={idx} onClick={() => handleClickEvent(event)}>
+                <EventContainer>
+                  <EventTitleWrapper>
                     <Icon.CalendarDotFill color={event.backgroundColor} width={18} height={18} />
                     {event.importance && <Icon.BookmarkFill className="mr-8" color="#fcbb00" width={16} height={16} />}
                     <EventTitle>{event.title}</EventTitle>
-                  </ItemTitleContainer>
-                  <EventInfoContainer>
+                  </EventTitleWrapper>
+                  <EventInfoWrapper>
                     <EventInfo>
                       {getEventDuration(DateTime.fromISO(event.start), DateTime.fromISO(event.end), event.allDay)}
                     </EventInfo>
-                  </EventInfoContainer>
-                </EventItemContainer>
-              </EventWrapper>
+                  </EventInfoWrapper>
+                </EventContainer>
+              </BodyContent>
             ))}
             {eventList.length > 3 && <MoreResultText onClick={handleClickMoreEvent}>일정 더 보기</MoreResultText>}
           </BodyContainer>
         ) : (
-          <NoResultContainer>
-            <NoResultTitle>일정이 없습니다.</NoResultTitle>
-          </NoResultContainer>
+          <NoResultWrapper>
+            <NoResultText>일정이 없습니다.</NoResultText>
+          </NoResultWrapper>
         )}
-      </TodayScheduleContainer>
+      </CalendarWidgetContainer>
     </WaplUiProvider>
   );
 };
-
-TodaySchedule.displayName = 'TodaySchedule';
+export default CalendarWidget;
