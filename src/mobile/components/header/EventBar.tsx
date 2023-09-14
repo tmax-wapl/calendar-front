@@ -25,6 +25,7 @@ const EventBar = ({ title, leftSide = [], rightSide = [] }: Props) => {
     search: <Icon.SearchLine width={24} height={24} />,
     setting: <Icon.SettingLine width={24} height={24} />,
     home: (
+      // @ts-ignore
       <Badge badgeContent={notiStore.unreadCount} variant="dot" size={4} right={-4}>
         <Icon.HomeLine width={24} height={24} />
       </Badge>
