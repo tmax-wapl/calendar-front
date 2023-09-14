@@ -41,6 +41,7 @@ interface ContextClickArg {
 interface NotiData {
   eventId: number;
   start: string;
+  roomId?: number;
 }
 
 export default class UiStore {
