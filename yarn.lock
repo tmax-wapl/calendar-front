@@ -6044,7 +6044,7 @@ __metadata:
     rollup-plugin-node-polyfills: ^0.2.1
     rrule: ^2.7.1
     style-loader: ^3.3.1
-    swiper: ^9.3.2
+    swiper: 8.4.5
     ts-loader: ^9.4.1
     tsconfig-paths-webpack-plugin: ^4.0.0
     typescript: ^4.4.2
@@ -20059,22 +20059,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^8.3.1":
+"swiper@npm:8.4.5, swiper@npm:^8.3.1":
   version: 8.4.5
   resolution: "swiper@npm:8.4.5"
   dependencies:
     dom7: ^4.0.4
     ssr-window: ^4.0.2
   checksum: 7b790b897c4aeb616cae02517a1137dc3f8d552bcc3ecb2942ddf8e4ae75f2efeb28816d3d4e648248c3a24eb3611f2700f555372c15f7163cc2434da3ef8317
-  languageName: node
-  linkType: hard
-
-"swiper@npm:^9.3.2":
-  version: 9.3.2
-  resolution: "swiper@npm:9.3.2"
-  dependencies:
-    ssr-window: ^4.0.2
-  checksum: 9ccb6a0ef67d71ac780d7d1f3b2c2daf6f1846d3df8810aff6dcb8501c87b7769540a869cdd83eb902e5278396e5379cb32d9ed397234f7700ef55f0209f4592
   languageName: node
   linkType: hard
 

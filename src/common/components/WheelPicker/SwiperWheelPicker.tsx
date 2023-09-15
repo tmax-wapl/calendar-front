@@ -1,7 +1,8 @@
 import React from 'react';
 // import { Swiper } from 'swiper/react';
 const { Swiper } = require('swiper/react');
-import 'swiper/css';
+import 'swiper/swiper-bundle.min.css';
+import 'swiper/swiper.min.css';
 import { StyledSwiperSlide } from './SwiperWheelPicker.style';
 
 interface Props {

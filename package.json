@@ -1,6 +1,6 @@
 {
   "name": "@wapl/calendar",
-  "version": "0.0.28",
+  "version": "0.0.30",
   "homepage": ".",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -48,7 +48,7 @@
     "react-swipeable": "^7.0.0",
     "react-virtuoso": "^4.5.0",
     "rrule": "^2.7.1",
-    "swiper": "^9.3.2"
+    "swiper": "8.4.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",

@@ -110,7 +110,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rollup-plugin-node-polyfills", "npm:0.2.1"],\
             ["rrule", "npm:2.7.1"],\
             ["style-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.3.1"],\
-            ["swiper", "npm:9.3.2"],\
+            ["swiper", "npm:8.4.5"],\
             ["ts-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:9.4.2"],\
             ["tsconfig-paths-webpack-plugin", "npm:4.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
@@ -11007,7 +11007,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rollup-plugin-node-polyfills", "npm:0.2.1"],\
             ["rrule", "npm:2.7.1"],\
             ["style-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.3.1"],\
-            ["swiper", "npm:9.3.2"],\
+            ["swiper", "npm:8.4.5"],\
             ["ts-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:9.4.2"],\
             ["tsconfig-paths-webpack-plugin", "npm:4.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
@@ -28564,14 +28564,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["swiper", "npm:8.4.5"],\
             ["dom7", "npm:4.0.4"],\
-            ["ssr-window", "npm:4.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:9.3.2", {\
-          "packageLocation": "./.yarn/cache/swiper-npm-9.3.2-a973b47a13-9ccb6a0ef6.zip/node_modules/swiper/",\
-          "packageDependencies": [\
-            ["swiper", "npm:9.3.2"],\
             ["ssr-window", "npm:4.0.2"]\
           ],\
           "linkType": "HARD"\
