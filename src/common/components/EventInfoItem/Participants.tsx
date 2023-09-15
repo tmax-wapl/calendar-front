@@ -126,7 +126,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
     <Accordion disableGutters elevation={0} defaultExpanded={!!participants?.length} expanded={editable || undefined}>
       <AccordionSummary expandIcon={<ExpandIcon />} {...(editable && { onClick: handleShareClick })}>
         <Icon.UserLine className="mr-8" width={20} height={20} />
-        참여 구성원
+        공람자
         {!editable && <ParticipantsCount>&nbsp;{participants?.length}</ParticipantsCount>}
       </AccordionSummary>
       <AccordionDetails editable={editable} isExist={editable && !!participants?.length}>
@@ -141,7 +141,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
           ))
         ) : (
           <ParticipantsPlaceholder {...(editable && { onClick: handleShareClick })}>
-            ‘참여 구성원’ 혹은 이 곳을 클릭해 주세요.
+            ‘공람자’ 혹은 이 곳을 클릭해 주세요.
           </ParticipantsPlaceholder>
         )}
       </AccordionDetails>
