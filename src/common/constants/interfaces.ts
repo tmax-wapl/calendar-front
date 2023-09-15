@@ -216,3 +216,8 @@ export interface EventSearchDTO {
   content: EventDTO[];
   last: boolean;
 }
+
+export interface WidgetDate {
+  start: Date;
+  end: Date;
+}

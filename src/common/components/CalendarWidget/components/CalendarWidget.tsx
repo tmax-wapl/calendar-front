@@ -112,6 +112,13 @@ const CalendarWidget = ({ token, userId }: Props) => {
     }
   }, [token, userId]);
 
+  useEffect(() => {
+    eventStore.setWidgetDate({
+      start: firstDay.toJSDate(),
+      end: firstDay.plus({ days: 42 }).toJSDate(),
+    });
+  }, []);
+
   return (
     <WaplUiProvider>
       <CalendarWidgetContainer>

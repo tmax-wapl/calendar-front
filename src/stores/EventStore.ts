@@ -2,7 +2,7 @@ import { makeObservable, observable, action } from 'mobx';
 import RootStore from './RootStore';
 import EventRepo from './repository/EventRepo';
 import { EventModel } from './model/EventModel';
-import { EventDTO, EventShareDTO, FileInfo } from '@/common/constants/interfaces';
+import { EventDTO, EventShareDTO, FileInfo, WidgetDate } from '@/common/constants/interfaces';
 import { EVENT_UPDATE_OPTION } from '@/common/constants';
 import { toISO, applyWeekdayOffset, diffTime } from '@/utils';
 import { DateTime } from 'luxon';
@@ -13,6 +13,7 @@ export default class EventStore {
   event: EventModel = new EventModel({});
   searchKeyword = '';
   fileList: FileInfo[] = [];
+  widgetDate: WidgetDate;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -34,6 +35,10 @@ export default class EventStore {
 
   setSearchKeyword(keyword: string) {
     this.searchKeyword = keyword;
+  }
+
+  setWidgetDate(widgetDate: WidgetDate) {
+    this.widgetDate = widgetDate;
   }
 
   preprocessEvent(event: EventModel) {
@@ -72,9 +77,12 @@ export default class EventStore {
 
   makeRRuleObject(event: EventDTO) {
     const { rruleObj, startDate, endDate, rrule } = new EventModel(event);
-
-    const activeStart = this.rootStore.uiStore.mainApi ? this.rootStore.uiStore.mainApi.view.activeStart : new Date();
-    const activeEnd = this.rootStore.uiStore.mainApi ? this.rootStore.uiStore.mainApi.view.activeEnd : new Date();
+    const activeStart = this.rootStore.uiStore.mainApi
+      ? this.rootStore.uiStore.mainApi.view.activeStart
+      : this.widgetDate.start;
+    const activeEnd = this.rootStore.uiStore.mainApi
+      ? this.rootStore.uiStore.mainApi.view.activeEnd
+      : this.widgetDate.end;
 
     const duration = endDate.diff(startDate);
     activeStart.setDate(activeStart.getDate() - 1);
