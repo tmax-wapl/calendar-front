@@ -13,11 +13,11 @@ interface Props {
 
 const App = ({ data }: Props) => {
   const isMobile = process.env.IS_MOBILE ?? false;
-  const { selectedPersona, keycloakInstance } = useUserStore();
+  const { selectedPersona, token } = useUserStore();
   const personaStore = usePersonaStore();
   const roomStore = useRoomStore();
 
-  if (isDevelop) SettingInstance.setToken(keycloakInstance.token, selectedPersona.id);
+  if (isDevelop) SettingInstance.setToken(token, selectedPersona.id);
 
   useEffect(() => {
     personaStore.getWsClient(selectedPersona.id).setClientQuery({
