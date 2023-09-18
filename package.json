@@ -1,6 +1,6 @@
 {
   "name": "@wapl/calendar",
-  "version": "0.0.37-foodist",
+  "version": "0.0.38-foodist",
   "homepage": ".",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
