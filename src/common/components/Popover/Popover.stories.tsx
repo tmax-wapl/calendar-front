@@ -1,17 +1,13 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Popover from './Popover';
+import { ComponentMeta } from '@storybook/react';
+import Compo from './Popover';
 import { PopoverData } from './Popover.data';
 import PopOverProps from './Popover';
+import { BrowserRouter } from 'react-router-dom';
 
 export default {
-  title: 'Components/Popover',
-  component: Popover,
+  title: 'Calendar/Popover',
+  component: Compo,
   args: {},
 } as ComponentMeta<typeof PopOverProps>;
 
-const Template: ComponentStory<typeof Popover> = args => <Popover {...args} />;
-
-export const Story = Template.bind({});
-Story.args = { moreLinkData: { position: PopoverData.position, date: PopoverData.date } };
-// TODO:// 다시 수정 필요
+const Popover = args => <Popover {...args} />;

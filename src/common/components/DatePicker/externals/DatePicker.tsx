@@ -5,7 +5,7 @@ import { PickerContainer, DatePickerWrapper } from '../../EventInfoItem/EventDat
 import { DatePickerWrapper as DatePickerInlineWrapper } from '@/mobile/components/RepeatInfo.style';
 import DatePickerCompo from '../components/DatePicker';
 
-interface Props {
+export interface Props {
   open?: boolean /** DatePicker의 열림 닫힘 여부 (inline일 경우 제외) */;
   date: Date /** 선택 된 Date */;
   mode?: 'modal' | 'inline' /** 기본 Picker 형태는 modal, inline일 경우 컴포넌트 내부로 사용 가능 */;
