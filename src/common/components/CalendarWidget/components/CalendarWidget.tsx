@@ -39,9 +39,10 @@ import { SettingInstance } from '@/common/lib/API';
 interface Props {
   token?: string;
   userId?: number;
+  getEventCount?: (eventCount: number) => void;
 }
 
-const CalendarWidget = ({ token, userId }: Props) => {
+const CalendarWidget = ({ token, userId, getEventCount }: Props) => {
   const { eventStore } = useCalendarStores();
   const { themeKey } = useWaplUiStore();
   const [eventList, setEventList] = useState<EventModel[]>([]);
@@ -102,7 +103,9 @@ const CalendarWidget = ({ token, userId }: Props) => {
       date.plus({ days: 1 }).toFormat('yyyy-LL-dd'),
     );
     setHolidayList(holidayList);
-    setEventList(eventStore.sortEventList(FilterEventList(eventList)));
+    const newEventList = eventStore.sortEventList(FilterEventList(eventList));
+    setEventList(newEventList);
+    getEventCount && getEventCount(newEventList.length);
   };
 
   useEffect(() => {
