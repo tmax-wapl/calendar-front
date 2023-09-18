@@ -1,7 +1,7 @@
 import React, { CSSProperties, useState } from 'react';
 import { Icon, styled, Tooltip, WaplUiProvider } from '@wapl/ui';
 import { DateTime } from 'luxon';
-import { DateWrapper, DatePickerWrapper } from '../../EventInfoItem/EventDateItem.style';
+import { DatePickerWrapper } from '../../EventInfoItem/EventDateItem.style';
 import DatePicker from '../components/DatePicker';
 
 interface Props {
@@ -64,7 +64,7 @@ export const DateItem: React.FC<Props> = ({
           >
             {isMasked ? '날짜 선택' : validFormat()}
             <span style={{ display: 'flex', marginLeft: '4px' }}>
-              <Icon.CalendarLine width={16} height={16} />
+              <CalIcon width={16} height={16} />
             </span>
           </DateWrapper>
         </Tooltip>
@@ -84,4 +84,26 @@ const PickerContainer = styled.div`
   display: flex;
   position: relative;
   ${({ theme: { Font } }) => Font.Text.s.Regular};
+`;
+
+const DateWrapper = styled.div<{ isInvalid?: boolean; isMasked?: boolean }>`
+  background: ${({ theme }) => theme.Color.Background[0]};
+  color: ${({ theme: { Color } }) => Color.Gray[900]};
+  display: flex;
+  width: 100px;
+  padding: 6px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid ${({ isInvalid, theme: { Color } }) => (isInvalid ? Color.Validation.negative : 'transparent')};
+  cursor: pointer;
+  :hover {
+    background: ${({ theme: { Color } }) => Color.Gray[200]};
+  }
+  ${({ theme: { Color }, isMasked }) => isMasked && `color: ${Color.Gray[400]};`}
+`;
+
+const CalIcon = styled(Icon.CalendarLine)`
+  color: ${({ theme: { Color } }) => Color.Gray[600]};
 `;
