@@ -18,8 +18,8 @@
     "dev:build_mobile": "cross-env NODE_ENV=production IS_MOBILE=true webpack --env dev=false develop=true && build.bat dev_mobile",
     "stag:build_mobile": "cross-env NODE_ENV=production IS_MOBILE=true webpack --env dev=false qa=false && build.bat stag_mobile",
     "qa:build_mobile": "cross-env NODE_ENV=production IS_MOBILE=true webpack --env dev=false qa=true && build.bat qa_mobile",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "build": "rm -rf dist esm && tsc -p tsconfig.build.json --declaration --emitDeclarationOnly --declarationDir dist && rollup -c rollup.config.js"
   },
   "dependencies": {
@@ -67,15 +67,15 @@
     "@rollup/plugin-commonjs": "^25.0.2",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
-    "@storybook/addon-actions": "^6.5.13",
-    "@storybook/addon-docs": "^6.5.13",
-    "@storybook/addon-essentials": "^6.5.13",
-    "@storybook/addon-interactions": "^6.5.13",
-    "@storybook/addon-links": "^6.5.13",
-    "@storybook/builder-webpack5": "^6.5.13",
-    "@storybook/manager-webpack5": "^6.5.13",
-    "@storybook/react": "^6.5.13",
-    "@storybook/testing-library": "^0.0.13",
+    "@storybook/addon-essentials": "7.4.2",
+    "@storybook/addon-interactions": "7.4.2",
+    "@storybook/addon-links": "7.4.2",
+    "@storybook/addon-onboarding": "1.0.8",
+    "@storybook/blocks": "7.4.2",
+    "@storybook/builder-vite": "^7.4.2",
+    "@storybook/react": "7.4.2",
+    "@storybook/react-webpack5": "7.4.2",
+    "@storybook/testing-library": "0.2.1",
     "@svgr/webpack": "^6.5.1",
     "@types/luxon": "^3",
     "@types/node": "^20.3.1",
@@ -97,6 +97,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.13",
     "holiday-kr": "^0.1.5",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.0",
@@ -107,11 +108,13 @@
     "react-router-dom": "^6.4.3",
     "rollup": "^2.77.0",
     "rollup-plugin-node-polyfills": "^0.2.1",
+    "storybook": "7.4.2",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.1",
     "tsconfig-paths-webpack-plugin": "^4.0.0",
     "typescript": "^4.4.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
+    "vite": "^4.4.9",
     "webpack": "^5.74.0",
     "webpack-bundle-analyzer": "^4.8.0",
     "webpack-cli": "^4.10.0",
@@ -126,5 +129,10 @@
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.4.1",
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
+  }
 }

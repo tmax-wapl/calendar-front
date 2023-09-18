@@ -10,7 +10,8 @@
       "@constants/*": ["src/common/constants/*"],
       "@wcomponents/*": ["src/web/components/*"],
       "@mcomponents/*": ["src/mobile/components/*"],
-      "@contexts/*": ["src/common/contexts/*"]
+      "@contexts/*": ["src/common/contexts/*"],
+      "@storybook/*": ["src/stories/calendar/*"]
     },
     "resolveJsonModule": true,
 
@@ -49,5 +50,5 @@
     "noImplicitAny": false
   },
   "include": ["src/**/*", "**/@types/*", "**/assets/index.d.ts"],
-  "exclude": ["**/dist/*", "**/stories/*", "**/*.stories.*"]
+  "exclude": ["**/dist/*"]
 }

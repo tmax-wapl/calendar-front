@@ -1,9 +1,10 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-      "noImplicitReturns": false,
-      "moduleResolution": "NodeNext",
-      "outDir": "./dist",
-    },
-    "include": ["./src/common/components", "./src/common/hooks", "**/@types/*", "**/assets/index.d.ts", "./src/index.ts"]
-  }
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noImplicitReturns": false,
+    "moduleResolution": "NodeNext",
+    "outDir": "./dist"
+  },
+  "include": ["./src/common/components", "./src/common/hooks", "**/@types/*", "**/assets/index.d.ts", "./src/index.ts"],
+  "exclude": ["**/stories/*", "**/*.stories.*"]
+}
