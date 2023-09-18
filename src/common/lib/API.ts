@@ -44,16 +44,22 @@ export const URL = () => {
       ? process.env.REACT_APP_CALENDAR_API_URL
       : window.env
       ? window.env.REACT_APP_CALENDAR_API_URL
+      : window.parent.env
+      ? window.parent.env.REACT_APP_CALENDAR_API_URL
       : 'https://superapp-calendar.teespace.net',
     docsUrl: process.env
       ? process.env.REACT_APP_OFFICE_API_URL
       : window.env
       ? window.env.REACT_APP_OFFICE_API_URL
+      : window.parent.env
+      ? window.parent.env.REACT_APP_OFFICE_API_URL
       : 'https://superapp-office-api.catchbird.net/superoffice',
     docsEventUrl: process.env
-      ? process.env.EACT_APP_OFFICE_EVENT_URL
+      ? process.env.REACT_APP_OFFICE_EVENT_URL
       : window.env
-      ? window.env.EACT_APP_OFFICE_EVENT_URL
+      ? window.env.REACT_APP_OFFICE_EVENT_URL
+      : window.parent.env
+      ? window.parent.env.REACT_APP_OFFICE_EVENT_URL
       : 'https://superapp-office-cms.catchbird.net',
   };
 };
