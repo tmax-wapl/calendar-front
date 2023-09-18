@@ -8,7 +8,7 @@ const WaplShellApp: React.FC = () => {
   const handleRouting = ({ data: messageData }: MessageEvent) => {
     if (
       messageData.type !== 'topping:onStart' ||
-      (messageData.args?.from !== 'noti' && messageData.args?.from !== 'search')
+      (messageData.args?.from !== 'noti' && messageData.args?.from !== 'search' && messageData.args?.from !== 'widget')
     )
       return;
     setData(messageData.args);
