@@ -7,17 +7,16 @@ const WaplShellApp: React.FC = () => {
 
   const handleRouting = ({ data: messageData }: MessageEvent) => {
     if (
-      messageData.type !== 'shell:runTopping' ||
-      (messageData.options?.from !== 'noti' &&
-        messageData.options?.from !== 'search' &&
-        messageData.options?.from !== 'widget')
+      messageData.type !== 'topping:onStart' ||
+      (messageData.args?.from !== 'noti' && messageData.args?.from !== 'search' && messageData.args?.from !== 'widget')
     )
       return;
-    setData(messageData.options);
+    setData(messageData.args);
   };
 
   useEffect(() => {
     window.addEventListener('message', handleRouting);
+    window.parent.postMessage({ type: 'topping:ready', appId: '4' }, '*');
     return () => window.removeEventListener('message', handleRouting);
   }, []);
 
