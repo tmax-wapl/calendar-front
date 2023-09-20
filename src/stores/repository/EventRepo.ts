@@ -33,12 +33,12 @@ export default class EventRepo {
     }
   }
 
-  async getEventList(start: string, end: string) {
+  async getEventList(start: string, end: string, isWidget: boolean) {
     try {
       const {
         data: { response, success },
       } = await API.get<EventListDTO, ResponseData<EventListDTO>>(
-        `${URL().baseUrl}/apis/v1/user/list/event/holiday?start=${start}&end=${end}`,
+        `${URL().baseUrl}/apis/v1/user/list/event/holiday?start=${start}&end=${end}${isWidget ? '&isWidget=true' : ''}`,
       );
       if (success) return response;
     } catch (e) {

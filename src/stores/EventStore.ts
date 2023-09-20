@@ -61,11 +61,11 @@ export default class EventStore {
     return this.preprocessEvent(new EventModel(res));
   }
 
-  async getEventList(start: string, end: string = start) {
+  async getEventList(start: string, end: string = start, isWidget = false) {
     const utcStart = DateTime.fromISO(start).toUTC().toISODate();
     const utcEnd = DateTime.fromISO(end).toUTC().toISODate();
-    const { eventList, holidayList } = await this.repo.getEventList(utcStart, utcEnd);
-    const eventListMap = this.roomFilteredEventMap(eventList); // TODO: 룸 일정 필터 로직 추후 제거
+    const { eventList, holidayList } = await this.repo.getEventList(utcStart, utcEnd, isWidget);
+    const eventListMap = this.roomFilteredEventMap(eventList, isWidget); // TODO: 룸 일정 필터 로직 추후 제거
 
     const arr: EventModel[] = [];
     Array.from(eventListMap.values()).map(event => {
@@ -97,12 +97,12 @@ export default class EventStore {
     });
   }
 
-  roomFilteredEventMap(eventList: EventDTO[]) {
+  roomFilteredEventMap(eventList: EventDTO[], isWidget: boolean) {
     const eventListMap = new Map();
     const defaultCalendarColor = this.rootStore.calendarStore.defaultColor;
     const checkedRoomIdListMap = this.rootStore.calendarStore.roomCalendarList?.reduce(
       (map, { roomId, color, checkFlag }, index) => {
-        if (checkFlag) map.set(roomId, { index, calendarColor: color || defaultCalendarColor });
+        if (isWidget || checkFlag) map.set(roomId, { index, calendarColor: color || defaultCalendarColor });
         return map;
       },
       new Map(),
