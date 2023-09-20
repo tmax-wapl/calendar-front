@@ -10,7 +10,7 @@ import {
 } from './Participants.style';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { EventMember, EventMemberPersona, EventMemberRoom } from '@constants/interfaces';
-import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
+import { Member, RoomModel, SearchOrgRes, Org } from '@wapl/core';
 interface Props {
   participants?: Partial<EventMemberPersona & EventMemberRoom>[];
   onChange?: (value?: EventMember) => void;
@@ -36,7 +36,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
     return !('orgId' in searchOrgItem);
   };
 
-  const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>) => {
+  const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & Org>) => {
     switch (true) {
       case isRoomModel(item as RoomModel):
         const { id, displayName } = item;
@@ -68,10 +68,7 @@ const Participants = ({ participants = [], onChange, editable = false }: Props) 
     return uniqueIdList;
   };
 
-  const onComplete = (
-    personaIdList: Partial<Member>[],
-    roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
-  ) => {
+  const onComplete = (personaIdList: Partial<Member>[], roomIdList: Partial<RoomModel & SearchOrgRes & Org>[]) => {
     const { eventMember } = eventStore.event;
 
     const roomList = removeDuplicates([

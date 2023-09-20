@@ -1,5 +1,5 @@
 import { Icon, Mui, styled, useWaplUiStore } from '@wapl/ui';
-import { Member, RoomModel, SearchOrgRes, GetFavoriteOrgRes } from '@wapl/core';
+import { Member, RoomModel, SearchOrgRes, Org } from '@wapl/core';
 import { useContext } from 'react';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { CalendarContext } from '@/common/contexts/CalendarContext';
@@ -210,7 +210,7 @@ export const ContextMenuItem = ({ id, type, date, data, onClose }: Props) => {
     return !('orgId' in searchOrgItem);
   };
 
-  const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>) => {
+  const convertRoomObj = (item: Partial<RoomModel & SearchOrgRes & Org>) => {
     switch (true) {
       case isRoomModel(item as RoomModel):
         return item?.id;
@@ -223,7 +223,7 @@ export const ContextMenuItem = ({ id, type, date, data, onClose }: Props) => {
 
   const handleEventShare = async (
     personaIdList: Partial<Member>[],
-    roomIdList: Partial<RoomModel & SearchOrgRes & GetFavoriteOrgRes>[],
+    roomIdList: Partial<RoomModel & SearchOrgRes & Org>[],
   ) => {
     await eventStore.shareEvent({
       eventId: id,
