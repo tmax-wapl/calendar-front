@@ -101,6 +101,7 @@ const CalendarWidget = ({ token, userId, getEventCount }: Props) => {
     const { eventList, holidayList } = await eventStore.getEventList(
       date.plus({ days: 1 }).toFormat('yyyy-LL-dd'),
       date.plus({ days: 1 }).toFormat('yyyy-LL-dd'),
+      true,
     );
     setHolidayList(holidayList);
     const newEventList = eventStore.sortEventList(FilterEventList(eventList));
