@@ -61,7 +61,6 @@ export default class EventRepo {
       if (e instanceof HTTPError) {
       }
       if (e instanceof AxiosError) {
-        console.error('allk');
         throw Error(JSON.stringify(e));
       }
     }

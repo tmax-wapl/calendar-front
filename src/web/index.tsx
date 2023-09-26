@@ -19,7 +19,7 @@ const WebApp = ({ data }: MessageProps) => {
 
   useEffect(() => {
     if (!data) return;
-    if (data !== 'backEvent') uiStore.setNotiData(data);
+    uiStore.setNotiData(data);
   }, [data]);
 
   return (

@@ -8,7 +8,7 @@ import Mobile from './mobile';
 import { SettingInstance, isDevelop } from './common/lib';
 
 interface Props {
-  data: { eventId: number; start: string } | 'backEvent';
+  data: { eventId: number; start: string };
 }
 
 const App = ({ data }: Props) => {
