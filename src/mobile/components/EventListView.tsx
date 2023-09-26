@@ -16,7 +16,7 @@ const EventListView = ({ bottomElement }: { bottomElement: ForwardedRef<HTMLDivE
   const [eventList, setEventList] = useState([]);
 
   const handleClickEvent = useCallback(async (event: EventModel) => {
-    const eventInfo = await eventStore.getEventInfo(+event.id, event.start);
+    const eventInfo = await eventStore.getEventInfo(+event.id, event.start, event.roomId);
     eventStore.setEvent(eventInfo);
     uiStore.setPageDialogInfo('detail');
   }, []);
