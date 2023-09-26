@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCoreStore } from '@wapl/core';
-import { Icon, styled } from '@wapl/ui';
+import { styled } from '@wapl/ui';
 import { default as MainHeader, EventBarButton as HeaderButton } from '../header/EventBar';
 import CalendarHeader from '../header/CalendarHeader';
 import SplitLayout from './SplitLayout';
@@ -9,11 +9,11 @@ import { CalendarContext } from '@/common/contexts/CalendarContext';
 import { useCalendarStores } from '@/stores/StoreProvider';
 import { useWebSocket } from '@common/hooks';
 import { Observer } from 'mobx-react-lite';
-import PageRoutes from './PageRoutes';
 import FAB from '../FAB';
 import { Loader } from '@/common/components/Loader';
+import { MessageProps } from '@/WaplShellApp';
 
-const CalendarLayout = () => {
+const CalendarLayout = ({ data }: MessageProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { userId } = useContext(CalendarContext);
   const { calendarStore, uiStore } = useCalendarStores();
@@ -37,6 +37,14 @@ const CalendarLayout = () => {
       },
       '*',
     );
+
+  const handleRoute = () => {
+    if (uiStore.pageDialogInfo || uiStore.dialogInfo) {
+      uiStore[uiStore.pageDialogInfo ? 'setPageDialogInfo' : 'setDialogInfo'](null);
+      return;
+    }
+    navigate(-1);
+  };
 
   const headerLeftSide: HeaderButton[] = [{ action: 'home', onClick: handleHomeClick }];
 
@@ -64,6 +72,11 @@ const CalendarLayout = () => {
       personaStore.getWsClient(userStore.selectedPersona.id).removeHandler('DELETE_EVENT');
     };
   }, [userStore.selectedPersona.id]);
+
+  useEffect(() => {
+    if (!data) return;
+    if (data === 'backEvent') handleRoute();
+  }, [data]);
 
   return (
     <>

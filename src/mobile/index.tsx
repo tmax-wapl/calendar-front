@@ -7,33 +7,20 @@ import { Observer } from 'mobx-react-lite';
 import CalendarLayout from '@mcomponents/layout/CalendarLayout';
 import EventSearchView from '@mcomponents/Search/EventSearchView';
 import PageRoutes from './components/layout/PageRoutes';
+import { MessageProps } from '@/WaplShellApp';
 
-interface Props {
-  data: { eventId: number; start: string } | 'backEvent';
-}
-
-const MobileApp = ({ data }: Props) => {
+const MobileApp = ({ data }: MessageProps) => {
   const { uiStore } = useCalendarStores();
-  const navigate = useNavigate();
-
-  const handleRoute = () => {
-    if (uiStore.pageDialogInfo || uiStore.dialogInfo) {
-      uiStore[uiStore.pageDialogInfo ? 'setPageDialogInfo' : 'setDialogInfo'](null);
-      return;
-    }
-    navigate(-1);
-  };
 
   useEffect(() => {
     if (!data) return;
     if (data !== 'backEvent') uiStore.setNotiData(data);
-    else handleRoute();
   }, [data]);
 
   return (
     <Router basename="/">
       <Routes>
-        <Route path={ROUTES.MOBILE.MAIN} element={<CalendarLayout />} />
+        <Route path={ROUTES.MOBILE.MAIN} element={<CalendarLayout data={data} />} />
         <Route path="*" element={<Navigate to={ROUTES.MOBILE.PATH_MAIN} replace />} />
         <Route path={ROUTES.MOBILE.SEARCH} element={<EventSearchView />} />
       </Routes>
