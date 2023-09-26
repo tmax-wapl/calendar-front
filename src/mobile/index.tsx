@@ -1,14 +1,34 @@
 import { useCalendarStores } from '@/stores/StoreProvider';
-import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 import { Dialog } from '@common/components/Dialog';
 import { Observer } from 'mobx-react-lite';
 import CalendarLayout from '@mcomponents/layout/CalendarLayout';
 import EventSearchView from '@mcomponents/Search/EventSearchView';
 import PageRoutes from './components/layout/PageRoutes';
+import { useEffect } from 'react';
 
-const MobileApp: React.FC = () => {
+interface Props {
+  data: { eventId: number; start: string } | 'backEvent';
+}
+
+const MobileApp = ({ data }: Props) => {
   const { uiStore } = useCalendarStores();
+  const navigate = useNavigate();
+
+  const handleRoute = () => {
+    if (uiStore.pageDialogInfo || uiStore.dialogInfo) {
+      uiStore[uiStore.pageDialogInfo ? 'setPageDialogInfo' : 'setDialogInfo'](null);
+      return;
+    }
+    navigate(-1);
+  };
+
+  useEffect(() => {
+    if (!data) return;
+    if (data !== 'backEvent') uiStore.setNotiData(data);
+    else handleRoute();
+  }, [data]);
 
   return (
     <Router basename="/">
