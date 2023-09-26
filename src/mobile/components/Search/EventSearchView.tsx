@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchField } from '@wapl/ui';
 import { EventModel } from '@/stores';
@@ -11,6 +11,7 @@ import {
 } from './EventSearchView.style';
 import SearchEventList from './SearchEventList';
 import { Loader } from '@/common/components/Loader';
+import { autorun } from 'mobx';
 
 interface SearchResult {
   eventMap: Map<string, Map<string, EventModel[]>>;
@@ -70,6 +71,16 @@ const EventSearchView = () => {
     const eventInfo = await eventStore.getEventInfo(+event.id, event.start);
     eventStore.setEvent(eventInfo);
     uiStore.setPageDialogInfo('detail');
+  }, []);
+
+  useEffect(() => {
+    const dispose = autorun(() => {
+      if (uiStore.backEvent) {
+        handleCancelClick();
+        uiStore.setBackEvent(false);
+      }
+    });
+    return () => dispose();
   }, []);
 
   return (

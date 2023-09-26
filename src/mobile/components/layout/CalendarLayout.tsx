@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCoreStore } from '@wapl/core';
 import { styled } from '@wapl/ui';
 import { default as MainHeader, EventBarButton as HeaderButton } from '../header/EventBar';
@@ -11,9 +11,9 @@ import { useWebSocket } from '@common/hooks';
 import { Observer } from 'mobx-react-lite';
 import FAB from '../FAB';
 import { Loader } from '@/common/components/Loader';
-import { MessageProps } from '@/WaplShellApp';
+import { autorun } from 'mobx';
 
-const CalendarLayout = ({ data }: MessageProps) => {
+const CalendarLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { userId } = useContext(CalendarContext);
   const { calendarStore, uiStore } = useCalendarStores();
@@ -41,9 +41,12 @@ const CalendarLayout = ({ data }: MessageProps) => {
   const handleRoute = () => {
     if (uiStore.pageDialogInfo || uiStore.dialogInfo) {
       uiStore[uiStore.pageDialogInfo ? 'setPageDialogInfo' : 'setDialogInfo'](null);
+      uiStore.setBackEvent(false);
       return;
+    } else {
+      handleHomeClick();
+      uiStore.setBackEvent(false);
     }
-    navigate(-1);
   };
 
   const headerLeftSide: HeaderButton[] = [{ action: 'home', onClick: handleHomeClick }];
@@ -74,9 +77,11 @@ const CalendarLayout = ({ data }: MessageProps) => {
   }, [userStore.selectedPersona.id]);
 
   useEffect(() => {
-    if (!data) return;
-    if (data === 'backEvent') handleRoute();
-  }, [data]);
+    const dispose = autorun(() => {
+      if (uiStore.backEvent) handleRoute();
+    });
+    return () => dispose();
+  }, []);
 
   return (
     <>

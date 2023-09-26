@@ -14,13 +14,13 @@ const MobileApp = ({ data }: MessageProps) => {
 
   useEffect(() => {
     if (!data) return;
-    if (data !== 'backEvent') uiStore.setNotiData(data);
+    uiStore.setNotiData(data);
   }, [data]);
 
   return (
     <Router basename="/">
       <Routes>
-        <Route path={ROUTES.MOBILE.MAIN} element={<CalendarLayout data={data} />} />
+        <Route path={ROUTES.MOBILE.MAIN} element={<CalendarLayout />} />
         <Route path="*" element={<Navigate to={ROUTES.MOBILE.PATH_MAIN} replace />} />
         <Route path={ROUTES.MOBILE.SEARCH} element={<EventSearchView />} />
       </Routes>

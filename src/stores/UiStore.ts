@@ -58,6 +58,7 @@ export default class UiStore {
   isLunarChecked = true;
   notiData: NotiData = null;
   isDetail = false;
+  backEvent = false;
 
   pageDialogInfo: string = null;
 
@@ -84,6 +85,8 @@ export default class UiStore {
       setNotiData: action,
       isDetail: observable,
       setIsDetail: action,
+      backEvent: observable,
+      setBackEvent: action,
     });
   }
 
@@ -149,5 +152,8 @@ export default class UiStore {
     this.setDateDay(date);
 
     if (callback) callback();
+  }
+  setBackEvent(flag: boolean) {
+    this.backEvent = flag;
   }
 }
