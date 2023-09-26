@@ -12,12 +12,9 @@ import { Observer } from 'mobx-react-lite';
 import { Dialog } from '@/common/components/Dialog';
 import { ContextMenu } from '@/common/components/ContextMenu';
 import { useCalendarStores } from '@/stores/StoreProvider';
+import { MessageProps } from '@/WaplShellApp';
 
-interface Props {
-  data: { eventId: number; start: string } | 'backEvent';
-}
-
-const WebApp = ({ data }: Props) => {
+const WebApp = ({ data }: MessageProps) => {
   const { uiStore } = useCalendarStores();
 
   useEffect(() => {

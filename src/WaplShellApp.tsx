@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { WaplShellProvider } from './stores/StoreProvider';
 import App from './App';
 
+export interface MessageProps {
+  data: { eventId: number; start: string } | 'backEvent';
+}
+
 const WaplShellApp: React.FC = () => {
   const [data, setData] = useState<{ eventId: number; start: string } | 'backEvent'>(null);
 
