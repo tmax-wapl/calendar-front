@@ -14,7 +14,7 @@ import { ContextMenu } from '@/common/components/ContextMenu';
 import { useCalendarStores } from '@/stores/StoreProvider';
 
 interface Props {
-  data: { eventId: number; start: string };
+  data: { eventId: number; start: string } | 'backEvent';
 }
 
 const WebApp = ({ data }: Props) => {
@@ -22,7 +22,7 @@ const WebApp = ({ data }: Props) => {
 
   useEffect(() => {
     if (!data) return;
-    uiStore.setNotiData(data);
+    if (data !== 'backEvent') uiStore.setNotiData(data);
   }, [data]);
 
   return (

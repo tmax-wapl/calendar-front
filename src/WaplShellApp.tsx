@@ -3,9 +3,13 @@ import { WaplShellProvider } from './stores/StoreProvider';
 import App from './App';
 
 const WaplShellApp: React.FC = () => {
-  const [data, setData] = useState<{ eventId: number; start: string }>(null);
+  const [data, setData] = useState<{ eventId: number; start: string } | 'backEvent'>(null);
 
   const handleRouting = ({ data: messageData }: MessageEvent) => {
+    if (messageData.type === 'shell:onBackButton') {
+      setData('backEvent');
+      return;
+    }
     if (
       messageData.type !== 'topping:onStart' ||
       (messageData.args?.from !== 'noti' && messageData.args?.from !== 'search' && messageData.args?.from !== 'widget')
