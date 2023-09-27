@@ -3,6 +3,7 @@ import { Icon, Mui } from '@wapl/ui';
 import { NotificationItemContainer, IconButton, NotificationLabel } from './NotificationItem.style';
 import { NotificationItems } from '@/common/constants';
 import Select from '../Select/Select';
+import { useCalendarStores } from '@/stores/StoreProvider';
 
 interface Props {
   index: number;
@@ -11,7 +12,6 @@ interface Props {
   onChange?: (changedNotification: string, targetIndex: number) => void;
   onDelete?: (index: number) => void;
   setTargetIndex?: Dispatch<SetStateAction<number>>;
-  setPickerToggle?: Dispatch<SetStateAction<boolean>>;
   setSelected?: Dispatch<SetStateAction<string>>;
 }
 
@@ -22,11 +22,11 @@ const NotificationItem = ({
   isMobile,
   onDelete,
   setTargetIndex,
-  setPickerToggle,
   setSelected,
 }: Props) => {
+  const { uiStore } = useCalendarStores();
   const openPicker = () => {
-    setPickerToggle(true);
+    uiStore.setPickerInfo('notification');
     setSelected(notification);
     setTargetIndex(index);
   };

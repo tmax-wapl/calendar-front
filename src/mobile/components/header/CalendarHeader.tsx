@@ -27,7 +27,6 @@ export const DateHeader = observer(({ togglePicker }: { togglePicker: () => void
 const CalendarHeader = () => {
   const { uiStore } = useCalendarStores();
   const [titleDate, setTitleDate] = useState<DateTime>(DateTime.now());
-  const [isDateSpinnerOpen, setIsDateSpinnerOpen] = useState(false);
 
   const BookMarkIcon = memo(({ color, onClick }: { color: string; onClick: () => void }) => {
     return (
@@ -54,7 +53,7 @@ const CalendarHeader = () => {
     uiStore.setDateDay(titleDate);
   };
 
-  const togglePicker = () => setIsDateSpinnerOpen(!isDateSpinnerOpen);
+  const togglePicker = () => uiStore.setPickerInfo(uiStore.pickerInfo ? null : 'date');
 
   const toggleImportance = () => uiStore.setImportanceChecked(!uiStore.isImportanceChecked);
 
@@ -73,13 +72,17 @@ const CalendarHeader = () => {
         </Observer>
         <TodayButton onClick={handleToday}>오늘</TodayButton>
       </RightContainer>
-      {isDateSpinnerOpen && (
-        <DateSpinnerPicker
-          date={uiStore.dateRange.view}
-          onDateChange={selectedDate => uiStore.handleDateClick(selectedDate, togglePicker)}
-          onOutsideClick={togglePicker}
-        />
-      )}
+      <Observer>
+        {() =>
+          uiStore.pickerInfo === 'date' && (
+            <DateSpinnerPicker
+              date={uiStore.dateRange.view}
+              onDateChange={selectedDate => uiStore.handleDateClick(selectedDate, togglePicker)}
+              onOutsideClick={togglePicker}
+            />
+          )
+        }
+      </Observer>
     </CalendarHeaderContainer>
   );
 };
