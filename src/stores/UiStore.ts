@@ -61,6 +61,7 @@ export default class UiStore {
   backEvent = false;
 
   pageDialogInfo: string = null;
+  pickerInfo: 'date' | 'color' | 'repeat' | 'notification' | null = null;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -87,6 +88,8 @@ export default class UiStore {
       setIsDetail: action,
       backEvent: observable,
       setBackEvent: action,
+      pickerInfo: observable,
+      setPickerInfo: action,
     });
   }
 
@@ -102,6 +105,10 @@ export default class UiStore {
 
   setDialogInfo(dialogInfo: DialogInfo) {
     this.dialogInfo = dialogInfo;
+  }
+
+  setPickerInfo(pickerType: 'date' | 'color' | 'repeat' | 'notification' | null) {
+    this.pickerInfo = pickerType;
   }
 
   setContextClickArg(contextClickArg: ContextClickArg) {

@@ -25,7 +25,6 @@ const CalendarSettingView = () => {
   const { id, roomId, name, type, color } = calendarStore.calendar;
   const calColor = colors.some(item => item.color === color) ? color : '';
   const [isEdit, setEdit] = useState<boolean>(false);
-  const [isColorPickerOpen, setColorPickerOpen] = useState<boolean>(false);
   const [toastState, setToastState] = useState({
     toastOpen: false,
     toastText: '',
@@ -65,9 +64,9 @@ const CalendarSettingView = () => {
     uiStore.setPageDialogInfo('calendarManage');
   };
 
-  const handleColorPickerOpen = () => setColorPickerOpen(true);
+  const handleColorPickerOpen = () => uiStore.setPickerInfo('color');
 
-  const handleColorPickerClose = () => setColorPickerOpen(false);
+  const handleColorPickerClose = () => uiStore.setPickerInfo(null);
 
   const handleColorClick = async (color: string) => {
     const calColor = color || calendarStore.defaultColor;
@@ -204,16 +203,20 @@ const CalendarSettingView = () => {
         message={toastText}
         autoHideDuration={4000}
       />
-      <ContextMenu
-        open={isColorPickerOpen}
-        selected={calColor}
-        title="캘린더 색상"
-        items={colors}
-        onClose={handleColorPickerClose}
-        onClick={handleColorClick}
-        type="color"
-        isColor={false}
-      />
+      <Observer>
+        {() => (
+          <ContextMenu
+            open={uiStore.pickerInfo === 'color'}
+            selected={calColor}
+            title="캘린더 색상"
+            items={colors}
+            onClose={handleColorPickerClose}
+            onClick={handleColorClick}
+            type="color"
+            isColor={false}
+          />
+        )}
+      </Observer>
     </>
   );
 };

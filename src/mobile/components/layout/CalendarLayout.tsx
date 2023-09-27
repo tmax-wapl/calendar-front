@@ -39,8 +39,8 @@ const CalendarLayout = () => {
     );
 
   const handleRoute = () => {
-    if (uiStore.pageDialogInfo || uiStore.dialogInfo) {
-      uiStore[uiStore.pageDialogInfo ? 'setPageDialogInfo' : 'setDialogInfo'](null);
+    if (uiStore.pageDialogInfo || uiStore.dialogInfo || uiStore.pickerInfo) {
+      uiStore[uiStore.pickerInfo ? 'setPickerInfo' : uiStore.dialogInfo ? 'setDialogInfo' : 'setPageDialogInfo'](null);
       uiStore.setBackEvent(false);
       return;
     } else {

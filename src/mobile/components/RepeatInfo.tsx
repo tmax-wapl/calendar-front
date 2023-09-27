@@ -24,6 +24,7 @@ import {
   ItemContainer,
   ItemTitleContainer,
 } from './common/styles/common.style';
+import { Observer } from 'mobx-react-lite';
 
 interface Props {
   rrule?: Partial<Options>;
@@ -48,8 +49,7 @@ const RepeatInfo = ({
   onStartChange,
   onEndChange,
 }: Props) => {
-  const { eventStore } = useCalendarStores();
-  const [open, setOpen] = useState(false);
+  const { eventStore, uiStore } = useCalendarStores();
   const [repeatToggle, setRepeatToggle] = useState(rrule ? true : false);
   const rruleUnits = ['년', '월', '주', '일'];
   const [intervals, setIntervals] = useState<string[]>(Array.from({ length: 99 }, (_, i) => '' + (i + 1)));
@@ -90,11 +90,11 @@ const RepeatInfo = ({
     onRRuleChange({ ...rrule, byweekday: byweekday.filter(weekday => weekday !== index) });
   };
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => uiStore.setPickerInfo('repeat');
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => uiStore.setPickerInfo(null);
 
-  const handleOk = () => setOpen(false);
+  const handleOk = () => uiStore.setPickerInfo(null);
 
   const handleIntervalChange = (index: number) => {
     const interval = Number(intervals[index]);
@@ -140,104 +140,114 @@ const RepeatInfo = ({
         </RepeatItemWrapper>
         <Icon.ArrowFrontLine width={20} height={20} />
       </ItemContainer>
-      <ContextMenu open={open} onClose={handleClose}>
-        <EventBar title={'반복 설정'} leftSide={[{ action: 'close', onClick: handleClose }]} />
-        <BodyWrapper>
-          <ContentWrapper>
-            <ItemTitleContainer>
-              반복
-              <Switch size="small" checked={repeatToggle} onChange={handleRepeatSwitch} />
-            </ItemTitleContainer>
-            {repeatToggle ? (
-              <>
-                <PickerWrapper>
-                  <PickerContainer>
-                    {intervals.length === 999 && (
-                      <SliderWheelPicker
-                        slides={intervals}
-                        loop
-                        initIndex={eventStore.event.rrule?.interval > 0 ? eventStore.event.rrule?.interval - 1 : 0}
-                        onChange={handleIntervalChange}
-                        align="flex-end"
-                        width={34}
-                      />
-                    )}
-                    {intervals.length === 99 && (
-                      <SliderWheelPicker
-                        slides={intervals}
-                        loop
-                        initIndex={eventStore.event.rrule?.interval < 100 ? eventStore.event.rrule?.interval - 1 : 0}
-                        onChange={handleIntervalChange}
-                        align="flex-end"
-                        width={34}
-                      />
-                    )}
-                    <SliderWheelPicker
-                      slides={units}
-                      loop
-                      initIndex={1}
-                      onChange={handleUnitsChange}
-                      align="flex-start"
-                      width={34}
-                    />
-                  </PickerContainer>
-                  {rrule?.freq === 2 && (
-                    <ItemContainer style={{ padding: '0 48px', maxWidth: '262px', margin: 'auto' }}>
-                      {dayOfWeek.map((day, index) => {
-                        return (
-                          <RepeatDay
-                            key={day}
-                            className={`${byweekday?.includes(index) ? 'select' : ''}`}
-                            onClick={() => handleDayClick(index)}
-                          >
-                            {day}
-                          </RepeatDay>
-                        );
-                      })}
-                    </ItemContainer>
-                  )}
-                </PickerWrapper>
-                {eventStore.event.rrule && (
-                  <RepeatLabel style={{ marginBottom: '24px' }}>
-                    {`일정이 ${eventStore.event.rrule?.interval}${repeatSummary()} 간격 반복됩니다.`}
-                  </RepeatLabel>
-                )}
+      <Observer>
+        {() => (
+          <ContextMenu open={uiStore.pickerInfo === 'repeat'} onClose={handleClose}>
+            <EventBar title={'반복 설정'} leftSide={[{ action: 'close', onClick: handleClose }]} />
+            <BodyWrapper>
+              <ContentWrapper>
                 <ItemTitleContainer>
-                  반복 종료
-                  <Switch size="small" checked={!!repeatEndDate} onChange={handleEndDateSwitch} />
+                  반복
+                  <Switch size="small" checked={repeatToggle} onChange={handleRepeatSwitch} />
                 </ItemTitleContainer>
-                {repeatEndDate && (
+                {repeatToggle ? (
                   <>
+                    <PickerWrapper>
+                      <PickerContainer>
+                        {intervals.length === 999 && (
+                          <SliderWheelPicker
+                            slides={intervals}
+                            loop
+                            initIndex={eventStore.event.rrule?.interval > 0 ? eventStore.event.rrule?.interval - 1 : 0}
+                            onChange={handleIntervalChange}
+                            align="flex-end"
+                            width={34}
+                          />
+                        )}
+                        {intervals.length === 99 && (
+                          <SliderWheelPicker
+                            slides={intervals}
+                            loop
+                            initIndex={
+                              eventStore.event.rrule?.interval < 100 ? eventStore.event.rrule?.interval - 1 : 0
+                            }
+                            onChange={handleIntervalChange}
+                            align="flex-end"
+                            width={34}
+                          />
+                        )}
+                        <SliderWheelPicker
+                          slides={units}
+                          loop
+                          initIndex={1}
+                          onChange={handleUnitsChange}
+                          align="flex-start"
+                          width={34}
+                        />
+                      </PickerContainer>
+                      {rrule?.freq === 2 && (
+                        <ItemContainer style={{ padding: '0 48px', maxWidth: '262px', margin: 'auto' }}>
+                          {dayOfWeek.map((day, index) => {
+                            return (
+                              <RepeatDay
+                                key={day}
+                                className={`${byweekday?.includes(index) ? 'select' : ''}`}
+                                onClick={() => handleDayClick(index)}
+                              >
+                                {day}
+                              </RepeatDay>
+                            );
+                          })}
+                        </ItemContainer>
+                      )}
+                    </PickerWrapper>
+                    {eventStore.event.rrule && (
+                      <RepeatLabel style={{ marginBottom: '24px' }}>
+                        {`일정이 ${eventStore.event.rrule?.interval}${repeatSummary()} 간격 반복됩니다.`}
+                      </RepeatLabel>
+                    )}
                     <ItemTitleContainer>
-                      종료 날짜
-                      <Tooltip
-                        disableHoverListener={startDate <= repeatEndDate}
-                        placement="top"
-                        title="시작일과 같거나 이후로 설정해 주세요."
-                        sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
-                      >
-                        <DateWrapper isInvalid={startDate > repeatEndDate}>
-                          {repeatEndDate.toFormat('yyyy.LL.dd')}
-                        </DateWrapper>
-                      </Tooltip>
+                      반복 종료
+                      <Switch size="small" checked={!!repeatEndDate} onChange={handleEndDateSwitch} />
                     </ItemTitleContainer>
-                    <DatePickerWrapper>
-                      <DatePicker date={repeatEndDate} onDateClick={handleEndDateChange} backgroundColor="#F8F9FA" />
-                    </DatePickerWrapper>
+                    {repeatEndDate && (
+                      <>
+                        <ItemTitleContainer>
+                          종료 날짜
+                          <Tooltip
+                            disableHoverListener={startDate <= repeatEndDate}
+                            placement="top"
+                            title="시작일과 같거나 이후로 설정해 주세요."
+                            sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
+                          >
+                            <DateWrapper isInvalid={startDate > repeatEndDate}>
+                              {repeatEndDate.toFormat('yyyy.LL.dd')}
+                            </DateWrapper>
+                          </Tooltip>
+                        </ItemTitleContainer>
+                        <DatePickerWrapper>
+                          <DatePicker
+                            date={repeatEndDate}
+                            onDateClick={handleEndDateChange}
+                            backgroundColor="#F8F9FA"
+                          />
+                        </DatePickerWrapper>
+                      </>
+                    )}
                   </>
+                ) : (
+                  <RepeatLabel>일정 반복이 꺼져있습니다.</RepeatLabel>
                 )}
-              </>
-            ) : (
-              <RepeatLabel>일정 반복이 꺼져있습니다.</RepeatLabel>
-            )}
-          </ContentWrapper>
-          <ButtonWrapper>
-            <Button width="100%" variant={'primary'} onClick={handleOk}>
-              확인
-            </Button>
-          </ButtonWrapper>
-        </BodyWrapper>
-      </ContextMenu>
+              </ContentWrapper>
+              <ButtonWrapper>
+                <Button width="100%" variant={'primary'} onClick={handleOk}>
+                  확인
+                </Button>
+              </ButtonWrapper>
+            </BodyWrapper>
+          </ContextMenu>
+        )}
+      </Observer>
     </RepeatInfoContainer>
   );
 };

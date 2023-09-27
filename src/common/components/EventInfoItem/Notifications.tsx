@@ -4,6 +4,8 @@ import { NotificationsContainer, ItemContainer, NotificationAddItem, Notificatio
 import NotificationItem from './NotificationItem';
 import { NotificationItems } from '@/common/constants';
 import { ContextMenu } from '@/mobile/components/ContextMenu';
+import { useCalendarStores } from '@/stores/StoreProvider';
+import { Observer } from 'mobx-react-lite';
 
 interface Props {
   notifications?: string[];
@@ -17,7 +19,7 @@ interface Unit {
 }
 
 const Notifications = ({ notifications = [], onChange, editable = false, mobile = false }: Props) => {
-  const [pickerToggle, setPickerToggle] = useState(false);
+  const { uiStore } = useCalendarStores();
   const [selected, setSelected] = useState('');
   const [targetIndex, setTargetIndex] = useState(0);
 
@@ -27,7 +29,7 @@ const Notifications = ({ notifications = [], onChange, editable = false, mobile 
     d: '일',
   };
 
-  const handleClose = () => setPickerToggle(false);
+  const handleClose = () => uiStore.setPickerInfo(null);
 
   const handleSelectChange = (changedNotification: string, targetIndex: number) => {
     if (!onChange) return;
@@ -44,7 +46,7 @@ const Notifications = ({ notifications = [], onChange, editable = false, mobile 
       if (!onChange) return;
       onChange([...notifications, '0']);
     } else {
-      setPickerToggle(true);
+      uiStore.setPickerInfo('notification');
       setSelected('');
     }
   };
@@ -52,7 +54,7 @@ const Notifications = ({ notifications = [], onChange, editable = false, mobile 
   const handleItemClick = (selectedNotification: string) => {
     if (onChange && !selected) onChange([...notifications, selectedNotification]);
     else handleSelectChange(selectedNotification, targetIndex);
-    setPickerToggle(false);
+    uiStore.setPickerInfo(null);
   };
 
   const getNotificationsTitle = (notifications: string[]) => {
@@ -77,7 +79,6 @@ const Notifications = ({ notifications = [], onChange, editable = false, mobile 
               onDelete={handleNotificationDelete}
               {...(mobile && {
                 setTargetIndex: setTargetIndex,
-                setPickerToggle: setPickerToggle,
                 setSelected: setSelected,
               })}
             />
@@ -94,16 +95,20 @@ const Notifications = ({ notifications = [], onChange, editable = false, mobile 
       )}
 
       {mobile && (
-        <ContextMenu
-          open={pickerToggle}
-          selected={selected}
-          title="미리 알림"
-          items={NotificationItems}
-          onClose={handleClose}
-          onClick={handleItemClick}
-          type="notification"
-          isColor={false}
-        />
+        <Observer>
+          {() => (
+            <ContextMenu
+              open={uiStore.pickerInfo === 'notification'}
+              selected={selected}
+              title="미리 알림"
+              items={NotificationItems}
+              onClose={handleClose}
+              onClick={handleItemClick}
+              type="notification"
+              isColor={false}
+            />
+          )}
+        </Observer>
       )}
     </NotificationsContainer>
   );
