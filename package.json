@@ -19,7 +19,7 @@
     "stag:build_mobile": "cross-env NODE_ENV=production IS_MOBILE=true webpack --env dev=false qa=false && build.bat stag_mobile",
     "qa:build_mobile": "cross-env NODE_ENV=production IS_MOBILE=true webpack --env dev=false qa=true && build.bat qa_mobile",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build-storybook": "rm -rf public/index.html && storybook build && git checkout public/index.html",
     "build": "rm -rf dist esm && tsc -p tsconfig.build.json --declaration --emitDeclarationOnly --declarationDir dist && rollup -c rollup.config.js"
   },
   "dependencies": {
