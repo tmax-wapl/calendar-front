@@ -30,7 +30,7 @@ const Button = styled.div`
   position: relative;
   width: 48px;
   height: 48px;
-  background: #ff6258;
+  background: #5782f6;
   display: flex;
   align-items: center;
   justify-content: center;
