@@ -4,9 +4,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //추가
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //추가
 const Dotenv = require('dotenv-webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const PreloadWebpackPlugin = require('preload-webpack-plugin');
+// const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const { EsbuildPlugin } = require('esbuild-loader');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = env => {
   const { dev, develop, qa } = env;
@@ -129,12 +129,12 @@ module.exports = env => {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
         'process.env.IS_MOBILE': JSON.stringify(process.env.IS_MOBILE),
       }),
-      new PreloadWebpackPlugin({
-        rel: 'preload',
-        as: 'font',
-        include: 'allAssets',
-        fileWhitelist: [/(.woff2)/i],
-      }),
+      // new PreloadWebpackPlugin({
+      //   rel: 'preload',
+      //   as: 'font',
+      //   include: 'allAssets',
+      //   fileWhitelist: [/(.woff2)/i],
+      // }),
       !dev
         ? new UglifyJSPlugin({
             uglifyOptions: {
