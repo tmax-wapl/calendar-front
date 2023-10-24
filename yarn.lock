@@ -6005,8 +6005,8 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": 0.5.11-seouledu
-    "@wapl/ui": 0.2.36-seoul-edu
+    "@wapl/core": 0.5.12-seouledu
+    "@wapl/ui": 0.2.38-seoul-edu
     axios: ^0.27.2
     babel-loader: ^9.0.1
     builtin-modules: ^3.3.0
@@ -6054,12 +6054,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:0.5.11-seouledu":
-  version: 0.5.11-seouledu
-  resolution: "@wapl/core@npm:0.5.11-seouledu"
+"@wapl/core@npm:0.5.12-seouledu":
+  version: 0.5.12-seouledu
+  resolution: "@wapl/core@npm:0.5.12-seouledu"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
-    "@wapl/ui": 0.2.36-seoul-edu
+    "@wapl/ui": 0.2.38-seoul-edu
     axios: ^0.27.2
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
@@ -6088,13 +6088,13 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: 3e2b62c37b1e571b50e122f21cd0d5dccd4edd51ac9575465a76c2b0144049b4bafe4a0060b8fdc8612ce9dc1b55c43ae126ed43d5b4cd00e7d0365e255641a7
+  checksum: 5220a09176fec14affd721ddc9f2b4aa5b20d8a3ebd36191010374566f9022cde742b43b725d3428ba0bd9f7b6ddd1c17da655da0e82e77e7686d8053aee842e
   languageName: node
   linkType: hard
 
-"@wapl/ui@npm:0.2.36-seoul-edu":
-  version: 0.2.36-seoul-edu
-  resolution: "@wapl/ui@npm:0.2.36-seoul-edu"
+"@wapl/ui@npm:0.2.38-seoul-edu":
+  version: 0.2.38-seoul-edu
+  resolution: "@wapl/ui@npm:0.2.38-seoul-edu"
   dependencies:
     "@emotion/react": ^11.7.1
     "@emotion/styled": ^11.6.0
@@ -6114,7 +6114,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-router-dom: ^6.2.1
-  checksum: c884008270ee812090d506c6f8aa0e2e33aed74cb8e96866c6401991667bc8fe0231396a00bcaa58b64138d24f266fd7a3147f193e32288b42bebca267c21c04
+  checksum: 165491bb324aae577070386f6ab47b3b0bc535b0f43d0c57ac87492f220492b4e423d95f44e029f9e31e9c2a5646f5da4446d8231bd3efb38efa1cda6f0de439
   languageName: node
   linkType: hard
 
