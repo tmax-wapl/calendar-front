@@ -6005,8 +6005,8 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": 0.5.12-seouledu
-    "@wapl/ui": 0.2.38-seoul-edu
+    "@wapl/core": 0.5.15-seouledu
+    "@wapl/ui": 0.2.39-seoul-edu
     axios: ^0.27.2
     babel-loader: ^9.0.1
     builtin-modules: ^3.3.0
@@ -6054,12 +6054,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:0.5.12-seouledu":
-  version: 0.5.12-seouledu
-  resolution: "@wapl/core@npm:0.5.12-seouledu"
+"@wapl/core@npm:0.5.15-seouledu":
+  version: 0.5.15-seouledu
+  resolution: "@wapl/core@npm:0.5.15-seouledu"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
-    "@wapl/ui": 0.2.38-seoul-edu
+    "@wapl/ui": 0.2.39-seoul-edu
     axios: ^0.27.2
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
@@ -6079,7 +6079,7 @@ __metadata:
     swiper: ^8.3.1
     use-long-press: 1.2.0
   peerDependencies:
-    "@wapl/ui": 0.2.36-seoul-edu
+    "@wapl/ui": 0.2.39-seoul-edu
     axios: ^0.26.1
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
@@ -6088,13 +6088,13 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: 5220a09176fec14affd721ddc9f2b4aa5b20d8a3ebd36191010374566f9022cde742b43b725d3428ba0bd9f7b6ddd1c17da655da0e82e77e7686d8053aee842e
+  checksum: da7a4c70b3db0061efa7644cb43474645becb2695aea51d479c9f1edd4a2f8b82159bda4cc14ab402fac31608a771f669cf96bb40e625936e038ae1586e699a4
   languageName: node
   linkType: hard
 
-"@wapl/ui@npm:0.2.38-seoul-edu":
-  version: 0.2.38-seoul-edu
-  resolution: "@wapl/ui@npm:0.2.38-seoul-edu"
+"@wapl/ui@npm:0.2.39-seoul-edu":
+  version: 0.2.39-seoul-edu
+  resolution: "@wapl/ui@npm:0.2.39-seoul-edu"
   dependencies:
     "@emotion/react": ^11.7.1
     "@emotion/styled": ^11.6.0
@@ -6114,7 +6114,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-router-dom: ^6.2.1
-  checksum: 165491bb324aae577070386f6ab47b3b0bc535b0f43d0c57ac87492f220492b4e423d95f44e029f9e31e9c2a5646f5da4446d8231bd3efb38efa1cda6f0de439
+  checksum: a20eb23d01ff3e4bbd66f8e1c0ffc8256c2ffe46d54fa314fd5d289c65104238505053dace52efbdc2a3cce207fdbc989a390785a02f9e99c1a88f51c5f3f193
   languageName: node
   linkType: hard
 
