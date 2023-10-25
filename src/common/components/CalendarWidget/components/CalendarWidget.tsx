@@ -75,7 +75,7 @@ const CalendarWidget = ({ token, userId, getEventCount }: Props) => {
     window.parent.postMessage({
       type: 'shell:runTopping',
       appId: APP_ID.CALENDAR,
-      options: {
+      args: {
         from: 'widget',
         eventId: event.id,
         start: event.start,
@@ -88,7 +88,7 @@ const CalendarWidget = ({ token, userId, getEventCount }: Props) => {
     window.parent.postMessage({
       type: 'shell:runTopping',
       appId: APP_ID.CALENDAR,
-      options: {
+      args: {
         from: 'widget',
         start: toUTC(date),
       },
