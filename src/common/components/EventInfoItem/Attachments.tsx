@@ -85,7 +85,7 @@ const Attachments = ({
     window.parent.postMessage({
       type: 'shell:runTopping',
       appId: APP_ID.OFFICE,
-      options: {
+      args: {
         runToppingType: 2,
         roomId: roomId || myRoomId,
       },
