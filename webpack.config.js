@@ -6,6 +6,7 @@ const Dotenv = require('dotenv-webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 // const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const { EsbuildPlugin } = require('esbuild-loader');
+const Vendor = require('./vendor');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = env => {
@@ -34,7 +35,7 @@ module.exports = env => {
     devtool: dev === 'true' && 'eval-source-map',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: '[name].[chunkhash].js',
+      filename: 'js/[name].[chunkhash].js',
       publicPath: dev === 'true' ? '/' : '',
     },
     optimization: {
@@ -45,29 +46,9 @@ module.exports = env => {
         }),
       ],
       splitChunks: {
-        cacheGroups: {
-          waplUiVendor: {
-            test: /[\\/]node_modules[\\/]@wapl[\\-]ui/,
-            name: 'ui-vendors',
-            chunks: 'all',
-          },
-          waplCoreVendor: {
-            test: /[\\/]node_modules[\\/]@wapl[\\-]core/,
-            name: 'core-vendors',
-            chunks: 'all',
-          },
-          muiVendor: {
-            test: /[\\/]node_modules[\\/]@mui[\\-]/,
-            name: 'mui-vendors',
-            chunks: 'all',
-          },
-          calVendor: {
-            test: /[\\/]node_modules[\\/](luxon|@fullcalendar)[\\/]/,
-            name: 'cal-vendors',
-            chunks: 'all',
-          },
-        },
+        cacheGroups: Vendor,
         name: 'vendors',
+        maxSize: 500000,
         chunks: 'all',
       },
       usedExports: true,
