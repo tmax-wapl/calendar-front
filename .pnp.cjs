@@ -34,6 +34,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-numeric-separator", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.18.6"],\
             ["@babel/plugin-proposal-private-methods", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.18.6"],\
             ["@babel/plugin-proposal-private-property-in-object", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.20.5"],\
+            ["@babel/plugin-transform-react-pure-annotations", "virtual:76e3197dc5a11a4c7f0ba22fbdf03778f2e52ff37800eb86fb078d6cb6f102f4106d70d00e369b2c58b0e368635d9f9059ddc776bfe35f679a6361b5522710d6#npm:7.22.5"],\
             ["@babel/preset-env", "virtual:388a8b2a89937f340c752c3bc1b0426d3d325132ecbdd9e670254690d35fc807639274cf62d067745f76a19fef7bf3bfc29ee293d6628dcf5d05c2265d1eb62f#npm:7.22.20"],\
             ["@babel/preset-react", "virtual:388a8b2a89937f340c752c3bc1b0426d3d325132ecbdd9e670254690d35fc807639274cf62d067745f76a19fef7bf3bfc29ee293d6628dcf5d05c2265d1eb62f#npm:7.22.15"],\
             ["@babel/preset-typescript", "virtual:388a8b2a89937f340c752c3bc1b0426d3d325132ecbdd9e670254690d35fc807639274cf62d067745f76a19fef7bf3bfc29ee293d6628dcf5d05c2265d1eb62f#npm:7.22.15"],\
@@ -10293,6 +10294,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-numeric-separator", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.18.6"],\
             ["@babel/plugin-proposal-private-methods", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.18.6"],\
             ["@babel/plugin-proposal-private-property-in-object", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:7.20.5"],\
+            ["@babel/plugin-transform-react-pure-annotations", "virtual:76e3197dc5a11a4c7f0ba22fbdf03778f2e52ff37800eb86fb078d6cb6f102f4106d70d00e369b2c58b0e368635d9f9059ddc776bfe35f679a6361b5522710d6#npm:7.22.5"],\
             ["@babel/preset-env", "virtual:388a8b2a89937f340c752c3bc1b0426d3d325132ecbdd9e670254690d35fc807639274cf62d067745f76a19fef7bf3bfc29ee293d6628dcf5d05c2265d1eb62f#npm:7.22.20"],\
             ["@babel/preset-react", "virtual:388a8b2a89937f340c752c3bc1b0426d3d325132ecbdd9e670254690d35fc807639274cf62d067745f76a19fef7bf3bfc29ee293d6628dcf5d05c2265d1eb62f#npm:7.22.15"],\
             ["@babel/preset-typescript", "virtual:388a8b2a89937f340c752c3bc1b0426d3d325132ecbdd9e670254690d35fc807639274cf62d067745f76a19fef7bf3bfc29ee293d6628dcf5d05c2265d1eb62f#npm:7.22.15"],\

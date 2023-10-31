@@ -9,5 +9,6 @@ module.exports = {
     [require.resolve('@babel/plugin-proposal-private-methods'), { loose: true }],
     [require.resolve('@babel/plugin-proposal-private-property-in-object'), { loose: true }],
     require.resolve('@babel/plugin-proposal-numeric-separator'),
+    require.resolve('@babel/plugin-transform-react-pure-annotations'),
   ],
 };
