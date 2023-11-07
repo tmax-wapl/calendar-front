@@ -6663,7 +6663,7 @@ __metadata:
     "@types/webpack-bundle-analyzer": ^4
     "@typescript-eslint/eslint-plugin": ^5.42.0
     "@typescript-eslint/parser": ^5.42.0
-    "@wapl/core": 0.1.5-cdms
+    "@wapl/core": 0.5.27-alpha
     "@wapl/ui": 0.2.39-alpha
     axios: ^0.27.2
     babel-loader: ^9.0.1
@@ -6717,33 +6717,32 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wapl/core@npm:0.1.5-cdms":
-  version: 0.1.5-cdms
-  resolution: "@wapl/core@npm:0.1.5-cdms"
+"@wapl/core@npm:0.5.27-alpha":
+  version: 0.5.27-alpha
+  resolution: "@wapl/core@npm:0.5.27-alpha"
   dependencies:
     "@rollup/plugin-url": ^8.0.1
-    "@wapl/ui": 0.2.42-seoul-edu
+    "@wapl/ui": 0.2.39-alpha
     axios: ^0.27.2
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
-    js-cookie: ^3.0.5
     keycloak-js: ^18.0.0
     lottie-web: ^5.9.4
     mobx: ^6.5.0
     mobx-react: ^7.5.0
     mobx-react-lite: ^3.3.0
+    moment: ^2.29.4
     rc-upload: ^4.3.4
-    react: ^17.0.2
-    react-dom: ^17.0.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-i18next: ^11.16.9
-    react-intersection-observer: ^9.4.3
     react-scripts: 5.0.0
     react-virtuoso: ^2.12.1
     socket.io-client: ^4.6.1
     swiper: ^8.3.1
-    use-long-press: 1.2.0
+    use-long-press: 1.1.2
   peerDependencies:
-    "@wapl/ui": 0.2.36-seoul-edu
+    "@wapl/ui": ^0.2.30
     axios: ^0.26.1
     i18next: ^21.8.4
     i18next-browser-languagedetector: ^6.1.4
@@ -6752,7 +6751,7 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-i18next: ^11.16.9
-  checksum: 3ef32c47b596f6d6ad7a4963f5e6109fdbd4372906f0539501288903605c82b5d5cf21c18ba6af435974e4435d2f319190a4591b8c0e5d0d63101c5718519699
+  checksum: 62fc9f31e51ac1b2e45a23fef76868d1abfcf533ea1907e46321a5c8da02908564c16b6db4d81c0be3855504ca88273871e7cde6be26696c33dcf94a41f21fa5
   languageName: node
   linkType: hard
 
@@ -6779,32 +6778,6 @@ __metadata:
     react-dom: ^18.2.0
     react-router-dom: ^6.2.1
   checksum: ced9712b2edaa9c8f3d6eee7ca40cfffe259bf0b779657b0e357df7cca67a3d1d10c767bb84e56532ac88dbc03f103198de65e26ab63f1b46058b2c367f979e3
-  languageName: node
-  linkType: hard
-
-"@wapl/ui@npm:0.2.42-seoul-edu":
-  version: 0.2.42-seoul-edu
-  resolution: "@wapl/ui@npm:0.2.42-seoul-edu"
-  dependencies:
-    "@emotion/react": ^11.7.1
-    "@emotion/styled": ^11.6.0
-    "@mui/material": 5.4.1
-    emotion-reset: ^3.0.1
-    lodash.clonedeep: ^4.5.0
-    mobx: ^6.3.12
-    mobx-react-lite: ^3.3.0
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-router-dom: ^6.2.1
-    react-scripts: 5.0.0
-    react-spring: ^9.4.2
-  peerDependencies:
-    mobx: ^6.3.12
-    mobx-react-lite: ^3.3.0
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-router-dom: ^6.2.1
-  checksum: 38351bbf81235770af431d8ad88432652a4920b19c9018d5fa234e2f6ddef1ad634b97e45707f62dc1cef28fa8cc76140271caa645a00d10b637b5a1aedd7ae2
   languageName: node
   linkType: hard
 
@@ -13466,13 +13439,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-cookie@npm:^3.0.5":
-  version: 3.0.5
-  resolution: "js-cookie@npm:3.0.5"
-  checksum: 2dbd2809c6180fbcf060c6957cb82dbb47edae0ead6bd71cbeedf448aa6b6923115003b995f7d3e3077bfe2cb76295ea6b584eb7196cca8ba0a09f389f64967a
-  languageName: node
-  linkType: hard
-
 "js-sdsl@npm:^4.1.4":
   version: 4.2.0
   resolution: "js-sdsl@npm:4.2.0"
@@ -16703,15 +16669,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-intersection-observer@npm:^9.4.3":
-  version: 9.5.2
-  resolution: "react-intersection-observer@npm:9.5.2"
-  peerDependencies:
-    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: cdbe40544930d59fc3820bce017fb688910cbecd7baaf382387a3d60d98a36e1d1e4bc27a876775e99b2a9f86762286a29d7bca21f3345f653cff29850c2641d
-  languageName: node
-  linkType: hard
-
 "react-is@npm:18.1.0":
   version: 18.1.0
   resolution: "react-is@npm:18.1.0"
@@ -19383,12 +19340,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-long-press@npm:1.2.0":
-  version: 1.2.0
-  resolution: "use-long-press@npm:1.2.0"
+"use-long-press@npm:1.1.2":
+  version: 1.1.2
+  resolution: "use-long-press@npm:1.1.2"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
-  checksum: 0ebb74f7c98b07181115138d9e404e653e755fa0fd0cd98853ddef25a20555c9f1b02a647077cea85bf84bac5f117c5e79a0639498b3d5385d786b8ada8df604
+  checksum: 7eb81e9e7a8341b123b9926ac50a7ececc8d1faea837f45df964664ec19724e6e8c45b455c2dda192373d0052a1359510926de6284a9e674ff8043188bd4c660
   languageName: node
   linkType: hard
 
