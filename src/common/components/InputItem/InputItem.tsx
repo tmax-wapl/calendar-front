@@ -7,7 +7,7 @@ import { useDidMountEffect } from '@/common/hooks';
 interface Props {
   value?: DateTime;
   onChange?: (time: DateTime) => void;
-  type: 'time' | 'date';
+  type?: 'time' | 'date';
   onPickerClose?: () => void;
 }
 
