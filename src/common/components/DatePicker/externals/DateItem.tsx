@@ -3,9 +3,11 @@ import { Icon, styled, Tooltip, WaplUiProvider } from '@wapl/ui';
 import { DateTime } from 'luxon';
 import { DatePickerWrapper } from '../../EventInfoItem/EventDateItem.style';
 import DatePicker from '../components/DatePicker';
+import InputItem from '../../InputItem/InputItem';
 
 interface Props {
   date: Date;
+  type?: 'default' | 'input';
   isDateInvalid?: boolean;
   inValidTitle?: string;
   onChange?: (date: Date) => void;
@@ -16,6 +18,7 @@ interface Props {
 
 export const DateItem: React.FC<Props> = ({
   date,
+  type = 'default',
   isDateInvalid,
   inValidTitle,
   onChange,
@@ -46,28 +49,38 @@ export const DateItem: React.FC<Props> = ({
     }
   };
 
+  const DateComponent = () => (
+    <Tooltip
+      disableHoverListener={!isDateInvalid}
+      placement="top"
+      title={inValidTitle ?? '시작일과 같거나 이후로 설정해 주세요.'}
+      sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
+    >
+      <DateWrapper
+        className={`${isDatePickerOpen ? 'selected' : ''}`}
+        isInvalid={isDateInvalid}
+        isMasked={isMasked}
+        onClick={handleDateClick}
+        style={style}
+      >
+        {isMasked ? '날짜 선택' : validFormat()}
+        <span style={{ display: 'flex', marginLeft: '4px' }}>
+          <CalIcon width={16} height={16} />
+        </span>
+      </DateWrapper>
+    </Tooltip>
+  );
+
   return (
     <WaplUiProvider>
       <PickerContainer>
-        <Tooltip
-          disableHoverListener={!isDateInvalid}
-          placement="top"
-          title={inValidTitle ?? '시작일과 같거나 이후로 설정해 주세요.'}
-          sx={{ '.MuiTooltip-tooltip': { maxWidth: '250px' } }}
-        >
-          <DateWrapper
-            className={`${isDatePickerOpen ? 'selected' : ''}`}
-            isInvalid={isDateInvalid}
-            isMasked={isMasked}
-            onClick={handleDateClick}
-            style={style}
-          >
-            {isMasked ? '날짜 선택' : validFormat()}
-            <span style={{ display: 'flex', marginLeft: '4px' }}>
-              <CalIcon width={16} height={16} />
-            </span>
+        {type === 'default' || (type === 'input' && !isDatePickerOpen) ? (
+          <DateComponent />
+        ) : (
+          <DateWrapper>
+            <InputItem value={value} onChange={handleDateChange} onPickerClose={handleDateClick} type="date" />
           </DateWrapper>
-        </Tooltip>
+        )}
         {isDatePickerOpen && (
           <DatePickerWrapper allDay>
             <DatePicker date={value} onDateClick={handleDateChange} onOutsideClick={handleDateClick} />

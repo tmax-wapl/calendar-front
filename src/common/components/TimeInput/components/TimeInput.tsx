@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DateTime } from 'luxon';
 import { Tooltip } from '@wapl/ui';
 import { getDateTime } from '@/utils';
-import InputItem from './InputItem';
+import InputItem from '../../InputItem/InputItem';
 import TimeSelector from './TimeSelector';
 import {
   PickerContainer,

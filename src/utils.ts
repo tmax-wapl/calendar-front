@@ -121,3 +121,18 @@ export const getDateTime = (type: string, date: DateTime, value?: string) => {
   });
   return date.set({ hour: time.hour, minute: time.minute });
 };
+
+const isValidMonth = (month: number) => month !== 0 && month <= 12;
+
+const isValidDay = (year: number, month: number, day: number) => {
+  const date = new Date(year, month - 1, day);
+  return !isNaN(date.getDate()) && date.getFullYear() === year && date.getMonth() === month - 1;
+};
+
+const isValidYear = (year: number) => {
+  const thisYear = DateTime.now().year;
+  return thisYear - 100 <= year && year <= thisYear + 100;
+};
+
+export const isValidDate = (year: number, month: number, day: number) =>
+  isValidYear(year) && isValidMonth(month) && isValidDay(year, month, day);

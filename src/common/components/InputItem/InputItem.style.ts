@@ -16,4 +16,6 @@ export const InputArea = styled.input`
   outline: none;
   font-size: 12px;
   font-family: 'Spoqa Han Sans Neo', sans-serif;
+  background-color: inherit;
+  text-align: center;
 `;
