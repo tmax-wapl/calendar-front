@@ -9,6 +9,12 @@ export default {
     date: {
       description: 'Date 값을 넣어주세요.',
     },
+    type: {
+      control: 'radio',
+      options: ['default', 'input'],
+      description:
+        'DateItem의 (`default` | `input`) 입력 모드를 지원 합니다.  \n\n `input`시 현재 년도의 -100년 ~ 100년까지의 범위와 유효한 날짜 입력 후 엔터로 입력하시면 됩니다.',
+    },
     isDateInvalid: {
       type: 'boolean',
       defaultValue: false,
@@ -35,7 +41,7 @@ export default {
 export const DateItem = args => (
   <WaplUiProvider>
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <Compo date={new Date()} {...args} style={{ minWidth: '120px' }} />
+      <Compo date={new Date()} {...args} style={{ minWidth: '120px' }} type={args.type} />
     </div>
   </WaplUiProvider>
 );
