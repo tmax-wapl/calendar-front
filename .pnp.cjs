@@ -69,6 +69,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prop-types", "npm:15.7.5"],\
             ["@types/react", "npm:18.2.21"],\
             ["@types/react-dom", "npm:18.2.7"],\
+            ["@types/speed-measure-webpack-plugin", "npm:1.3.6"],\
             ["@types/webpack-bundle-analyzer", "npm:4.6.0"],\
             ["@typescript-eslint/eslint-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:5.45.1"],\
             ["@typescript-eslint/parser", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:5.45.1"],\
@@ -111,6 +112,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rollup", "npm:2.79.1"],\
             ["rollup-plugin-node-polyfills", "npm:0.2.1"],\
             ["rrule", "npm:2.7.1"],\
+            ["speed-measure-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:1.5.0"],\
             ["storybook", "npm:7.4.2"],\
             ["style-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.3.1"],\
             ["swiper", "npm:8.4.5"],\
@@ -9791,11 +9793,39 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/source-list-map", [\
+        ["npm:0.1.6", {\
+          "packageLocation": "./.yarn/cache/@types-source-list-map-npm-0.1.6-2e7e79b68d-9cd294c121.zip/node_modules/@types/source-list-map/",\
+          "packageDependencies": [\
+            ["@types/source-list-map", "npm:0.1.6"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/speed-measure-webpack-plugin", [\
+        ["npm:1.3.6", {\
+          "packageLocation": "./.yarn/cache/@types-speed-measure-webpack-plugin-npm-1.3.6-be4512f6b6-f4464eedad.zip/node_modules/@types/speed-measure-webpack-plugin/",\
+          "packageDependencies": [\
+            ["@types/speed-measure-webpack-plugin", "npm:1.3.6"],\
+            ["@types/webpack", "npm:4.41.38"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/stack-utils", [\
         ["npm:2.0.1", {\
           "packageLocation": "./.yarn/cache/@types-stack-utils-npm-2.0.1-867718ab70-205fdbe332.zip/node_modules/@types/stack-utils/",\
           "packageDependencies": [\
             ["@types/stack-utils", "npm:2.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/tapable", [\
+        ["npm:1.0.12", {\
+          "packageLocation": "./.yarn/cache/@types-tapable-npm-1.0.12-fb0f138e72-5312fbc01e.zip/node_modules/@types/tapable/",\
+          "packageDependencies": [\
+            ["@types/tapable", "npm:1.0.12"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9809,11 +9839,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/uglify-js", [\
+        ["npm:3.17.4", {\
+          "packageLocation": "./.yarn/cache/@types-uglify-js-npm-3.17.4-905c69fca5-fe28aea9a2.zip/node_modules/@types/uglify-js/",\
+          "packageDependencies": [\
+            ["@types/uglify-js", "npm:3.17.4"],\
+            ["source-map", "npm:0.6.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/unist", [\
         ["npm:2.0.8", {\
           "packageLocation": "./.yarn/cache/@types-unist-npm-2.0.8-c7fd7db3e3-f4852d10a6.zip/node_modules/@types/unist/",\
           "packageDependencies": [\
             ["@types/unist", "npm:2.0.8"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/webpack", [\
+        ["npm:4.41.38", {\
+          "packageLocation": "./.yarn/cache/@types-webpack-npm-4.41.38-3fdf86c5ec-d3de65993e.zip/node_modules/@types/webpack/",\
+          "packageDependencies": [\
+            ["@types/webpack", "npm:4.41.38"],\
+            ["@types/node", "npm:20.3.1"],\
+            ["@types/tapable", "npm:1.0.12"],\
+            ["@types/uglify-js", "npm:3.17.4"],\
+            ["@types/webpack-sources", "npm:3.2.3"],\
+            ["anymatch", "npm:3.1.3"],\
+            ["source-map", "npm:0.6.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9826,6 +9881,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:20.3.1"],\
             ["tapable", "npm:2.2.1"],\
             ["webpack", "virtual:38e8bff425929674d66c9e489c9ef006b792a93ecacd93af28c1fa13654adb317a9cf0b2267505572a44d8f894892ee29d86d151e5e39362127e9238bf1983c2#npm:5.88.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/webpack-sources", [\
+        ["npm:3.2.3", {\
+          "packageLocation": "./.yarn/cache/@types-webpack-sources-npm-3.2.3-dce1c60a50-7b557f242e.zip/node_modules/@types/webpack-sources/",\
+          "packageDependencies": [\
+            ["@types/webpack-sources", "npm:3.2.3"],\
+            ["@types/node", "npm:20.3.1"],\
+            ["@types/source-list-map", "npm:0.1.6"],\
+            ["source-map", "npm:0.7.4"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10329,6 +10396,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prop-types", "npm:15.7.5"],\
             ["@types/react", "npm:18.2.21"],\
             ["@types/react-dom", "npm:18.2.7"],\
+            ["@types/speed-measure-webpack-plugin", "npm:1.3.6"],\
             ["@types/webpack-bundle-analyzer", "npm:4.6.0"],\
             ["@typescript-eslint/eslint-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:5.45.1"],\
             ["@typescript-eslint/parser", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:5.45.1"],\
@@ -10371,6 +10439,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rollup", "npm:2.79.1"],\
             ["rollup-plugin-node-polyfills", "npm:0.2.1"],\
             ["rrule", "npm:2.7.1"],\
+            ["speed-measure-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:1.5.0"],\
             ["storybook", "npm:7.4.2"],\
             ["style-loader", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:3.3.1"],\
             ["swiper", "npm:8.4.5"],\
@@ -24894,6 +24963,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["obuf", "npm:1.1.2"],\
             ["readable-stream", "npm:3.6.2"],\
             ["wbuf", "npm:1.7.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["speed-measure-webpack-plugin", [\
+        ["npm:1.5.0", {\
+          "packageLocation": "./.yarn/cache/speed-measure-webpack-plugin-npm-1.5.0-32e7d61e93-5562da1e02.zip/node_modules/speed-measure-webpack-plugin/",\
+          "packageDependencies": [\
+            ["speed-measure-webpack-plugin", "npm:1.5.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:1.5.0", {\
+          "packageLocation": "./.yarn/__virtual__/speed-measure-webpack-plugin-virtual-db08a669f6/0/cache/speed-measure-webpack-plugin-npm-1.5.0-32e7d61e93-5562da1e02.zip/node_modules/speed-measure-webpack-plugin/",\
+          "packageDependencies": [\
+            ["speed-measure-webpack-plugin", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:1.5.0"],\
+            ["@types/webpack", null],\
+            ["chalk", "npm:4.1.2"],\
+            ["webpack", "virtual:6045d5093780e3b5177a444d4df0b2353f1d94522ae287391b1ab0ec997a55dad4aa9cb37658f05d63668d4fcbfebdf17d7e6289586caad1ed38b6b2aa33a815#npm:5.88.2"]\
+          ],\
+          "packagePeers": [\
+            "@types/webpack",\
+            "webpack"\
           ],\
           "linkType": "HARD"\
         }]\

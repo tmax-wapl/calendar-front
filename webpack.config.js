@@ -7,14 +7,17 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 // const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const { EsbuildPlugin } = require('esbuild-loader');
 const Vendor = require('./vendor');
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+const smp = new SpeedMeasurePlugin();
 
 module.exports = env => {
   const { dev, develop, qa } = env;
 
   const envPath = develop === 'true' ? './.env.development' : qa === 'true' ? './.env.qa' : './.env.production';
 
-  return {
+  return smp.wrap({
     entry: './src/entry.tsx',
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -126,5 +129,5 @@ module.exports = env => {
         : false,
       // new BundleAnalyzerPlugin({}), // for bundle size
     ].filter(n => n),
-  };
+  });
 };
